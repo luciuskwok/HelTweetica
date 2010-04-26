@@ -1,0 +1,899 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D3623260D0F684500981E51 /* HelTweeticaAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* HelTweeticaAppDelegate.m */; };
+		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
+		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
+		28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
+		28F335F11007B36200424DE2 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
+		E00C262A1162D90800F62B70 /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = E00C26281162D90800F62B70 /* Login.xib */; };
+		E00C262B1162D90800F62B70 /* Compose.xib in Resources */ = {isa = PBXBuildFile; fileRef = E00C26291162D90800F62B70 /* Compose.xib */; };
+		E00C26301162D91600F62B70 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C262D1162D91600F62B70 /* LoginViewController.m */; };
+		E00C26311162D91600F62B70 /* ComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C262F1162D91600F62B70 /* ComposeViewController.m */; };
+		E00C26361162D91C00F62B70 /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C26331162D91C00F62B70 /* Twitter.m */; };
+		E00C26371162D91C00F62B70 /* TwitterAtomParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C26351162D91C00F62B70 /* TwitterAtomParser.m */; };
+		E00C26CA1162E93E00F62B70 /* tab-bkgnd.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C61162E93E00F62B70 /* tab-bkgnd.png */; };
+		E00C26CB1162E93E00F62B70 /* tab-off.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C71162E93E00F62B70 /* tab-off.png */; };
+		E00C26CC1162E93E00F62B70 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C81162E93E00F62B70 /* tab.png */; };
+		E00C26CD1162E93E00F62B70 /* style-ipad.css in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C91162E93E00F62B70 /* style-ipad.css */; };
+		E00C281711631B6F00F62B70 /* functions.js in Resources */ = {isa = PBXBuildFile; fileRef = E00C27DA11630B7900F62B70 /* functions.js */; };
+		E0175C62117C1C87003F5970 /* AllStarsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0904272117A21BC00CE8CB9 /* AllStarsViewController.xib */; };
+		E0175C63117C1C97003F5970 /* AllStarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */; };
+		E0175C6F117C1CB4003F5970 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E036EF4F117B816B00D52BF6 /* AudioToolbox.framework */; };
+		E0175C70117C1CB4003F5970 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E036EF53117B817600D52BF6 /* AVFoundation.framework */; };
+		E01864EE1184C0240021995D /* TwitterFavoriteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E01864ED1184C0240021995D /* TwitterFavoriteAction.m */; };
+		E01864EF1184C0240021995D /* TwitterFavoriteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E01864ED1184C0240021995D /* TwitterFavoriteAction.m */; };
+		E01865491184C8980021995D /* TwitterUpdateStatusAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E01865481184C8980021995D /* TwitterUpdateStatusAction.m */; };
+		E018654A1184C8980021995D /* TwitterUpdateStatusAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E01865481184C8980021995D /* TwitterUpdateStatusAction.m */; };
+		E018656E1184CC680021995D /* TwitterRetweetAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E018656D1184CC680021995D /* TwitterRetweetAction.m */; };
+		E018656F1184CC680021995D /* TwitterRetweetAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E018656D1184CC680021995D /* TwitterRetweetAction.m */; };
+		E01B9182117B5E60001949B6 /* shuffle.png in Resources */ = {isa = PBXBuildFile; fileRef = E01B9181117B5E60001949B6 /* shuffle.png */; };
+		E01B9183117B5E60001949B6 /* shuffle.png in Resources */ = {isa = PBXBuildFile; fileRef = E01B9181117B5E60001949B6 /* shuffle.png */; };
+		E02B294B1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
+		E02B294C1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
+		E03570741174E6BE004B9A0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
+		E03570751174E6BE004B9A0F /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
+		E03570761174E6BE004B9A0F /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = E00C26281162D90800F62B70 /* Login.xib */; };
+		E03570771174E6BE004B9A0F /* Compose.xib in Resources */ = {isa = PBXBuildFile; fileRef = E00C26291162D90800F62B70 /* Compose.xib */; };
+		E03570781174E6BE004B9A0F /* tab-bkgnd.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C61162E93E00F62B70 /* tab-bkgnd.png */; };
+		E03570791174E6BE004B9A0F /* tab-off.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C71162E93E00F62B70 /* tab-off.png */; };
+		E035707A1174E6BE004B9A0F /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C81162E93E00F62B70 /* tab.png */; };
+		E035707B1174E6BE004B9A0F /* style-ipad.css in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C91162E93E00F62B70 /* style-ipad.css */; };
+		E035707C1174E6BE004B9A0F /* functions.js in Resources */ = {isa = PBXBuildFile; fileRef = E00C27DA11630B7900F62B70 /* functions.js */; };
+		E035707D1174E6BE004B9A0F /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13AE11646FB7004FE7B9 /* reload.png */; };
+		E035707E1174E6BE004B9A0F /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13D611647B0B004FE7B9 /* Icon.png */; };
+		E035707F1174E6BE004B9A0F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13E711647FAD004FE7B9 /* Default.png */; };
+		E03570801174E6BE004B9A0F /* Analyze.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0CB319F116691400086CEFE /* Analyze.xib */; };
+		E03570811174E6BE004B9A0F /* spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = E08646451166F6FB00844FCE /* spinner.gif */; };
+		E03570821174E6BE004B9A0F /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0EC7243116AAE5F001078B7 /* MainWindow-iPad.xib */; };
+		E03570831174E6BE004B9A0F /* action-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41034116C204C0052BAE7 /* action-1.png */; };
+		E03570841174E6BE004B9A0F /* action-2.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41035116C204C0052BAE7 /* action-2.png */; };
+		E03570851174E6BE004B9A0F /* action-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41036116C204C0052BAE7 /* action-3.png */; };
+		E03570861174E6BE004B9A0F /* action-4.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41037116C204C0052BAE7 /* action-4.png */; };
+		E03570871174E6BE004B9A0F /* WebBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A41058116C40E40052BAE7 /* WebBrowser.xib */; };
+		E03570881174E6BE004B9A0F /* triangle-left.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A4105C116C443D0052BAE7 /* triangle-left.png */; };
+		E03570891174E6BE004B9A0F /* triangle-right.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A4105D116C443D0052BAE7 /* triangle-right.png */; };
+		E035708A1174E6BE004B9A0F /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41184116C6D430052BAE7 /* lock.png */; };
+		E035708C1174E6BE004B9A0F /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0CBCC41116DDBC80000C281 /* action-4-on.png */; };
+		E035708D1174E6BE004B9A0F /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3382116E4CCE0098CF12 /* retweet.png */; };
+		E035708E1174E6BE004B9A0F /* Accounts.xib in Resources */ = {isa = PBXBuildFile; fileRef = E06A34C6116E96C60098CF12 /* Accounts.xib */; };
+		E035708F1174E6BE004B9A0F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3678116EEA920098CF12 /* Default-Landscape.png */; };
+		E03570901174E6BE004B9A0F /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3679116EEA920098CF12 /* Default-Portrait.png */; };
+		E03570911174E6BE004B9A0F /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E0448843116EF16B008603EB /* Icon-72.png */; };
+		E03570921174E6BE004B9A0F /* Lists.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0448951116F245C008603EB /* Lists.xib */; };
+		E03570931174E6BE004B9A0F /* Search.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0F04C7711723DBF00AAA38E /* Search.xib */; };
+		E03570951174E6BE004B9A0F /* InstapaperSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = E07E12531173E1740083EC11 /* InstapaperSettings.xib */; };
+		E03570971174E6BE004B9A0F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		E03570981174E6BE004B9A0F /* HelTweeticaAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* HelTweeticaAppDelegate.m */; };
+		E03570991174E6BE004B9A0F /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
+		E035709A1174E6BE004B9A0F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C262D1162D91600F62B70 /* LoginViewController.m */; };
+		E035709B1174E6BE004B9A0F /* ComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C262F1162D91600F62B70 /* ComposeViewController.m */; };
+		E035709C1174E6BE004B9A0F /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C26331162D91C00F62B70 /* Twitter.m */; };
+		E035709D1174E6BE004B9A0F /* TwitterAtomParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C26351162D91C00F62B70 /* TwitterAtomParser.m */; };
+		E035709E1174E6BE004B9A0F /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC9A231163CA7A0027C422 /* OAuthClient.m */; };
+		E035709F1174E6BE004B9A0F /* TwitterMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0DF1272116453EB004FE7B9 /* TwitterMessage.m */; };
+		E03570A01174E6BE004B9A0F /* Analyze.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CB319E116691400086CEFE /* Analyze.m */; };
+		E03570A11174E6BE004B9A0F /* WebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A41057116C40E40052BAE7 /* WebBrowserViewController.m */; };
+		E03570A21174E6BE004B9A0F /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */; };
+		E03570A31174E6BE004B9A0F /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */; };
+		E03570A41174E6BE004B9A0F /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A348C116E8B7D0098CF12 /* TwitterAccount.m */; };
+		E03570A51174E6BE004B9A0F /* AccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A34C5116E96C60098CF12 /* AccountsViewController.m */; };
+		E03570A61174E6BE004B9A0F /* ListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0448950116F245C008603EB /* ListsViewController.m */; };
+		E03570A71174E6BE004B9A0F /* TwitterListsJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E06DEF3F116FCE1000772680 /* TwitterListsJSONParser.m */; };
+		E03570A81174E6BE004B9A0F /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E06DEF44116FD0FD00772680 /* TwitterList.m */; };
+		E03570A91174E6BE004B9A0F /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F04C7611723DBF00AAA38E /* SearchViewController.m */; };
+		E03570AA1174E6BE004B9A0F /* TwitterSavedSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F04CBF11729EBC00AAA38E /* TwitterSavedSearchJSONParser.m */; };
+		E03570AB1174E6BE004B9A0F /* InstapaperSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E07E12521173E1740083EC11 /* InstapaperSettingsViewController.m */; };
+		E03570AC1174E6BE004B9A0F /* Instapaper.m in Sources */ = {isa = PBXBuildFile; fileRef = E07E12661173E47B0083EC11 /* Instapaper.m */; };
+		E03570AE1174E6BE004B9A0F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		E03570AF1174E6BE004B9A0F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		E03570B01174E6BE004B9A0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
+		E03570B11174E6BE004B9A0F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0F04DFB11737F2A00AAA38E /* MessageUI.framework */; };
+		E036EF3C117B7F3300D52BF6 /* SoundEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = E036EF3B117B7F3300D52BF6 /* SoundEffects.m */; };
+		E036EF3D117B7F3300D52BF6 /* SoundEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = E036EF3B117B7F3300D52BF6 /* SoundEffects.m */; };
+		E036EF50117B816B00D52BF6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E036EF4F117B816B00D52BF6 /* AudioToolbox.framework */; };
+		E036EF54117B817600D52BF6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E036EF53117B817600D52BF6 /* AVFoundation.framework */; };
+		E036EF67117B859400D52BF6 /* selectMessageSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = E036EF66117B859400D52BF6 /* selectMessageSound.caf */; };
+		E036EF68117B859400D52BF6 /* selectMessageSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = E036EF66117B859400D52BF6 /* selectMessageSound.caf */; };
+		E036EF88117B874D00D52BF6 /* showMessageSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = E036EF87117B874D00D52BF6 /* showMessageSound.caf */; };
+		E036EF89117B874D00D52BF6 /* showMessageSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = E036EF87117B874D00D52BF6 /* showMessageSound.caf */; };
+		E0448844116EF16B008603EB /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E0448843116EF16B008603EB /* Icon-72.png */; };
+		E0448952116F245C008603EB /* ListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0448950116F245C008603EB /* ListsViewController.m */; };
+		E0448953116F245C008603EB /* Lists.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0448951116F245C008603EB /* Lists.xib */; };
+		E04BD349116C97C2004BFF3D /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */; };
+		E06A3383116E4CCE0098CF12 /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3382116E4CCE0098CF12 /* retweet.png */; };
+		E06A348D116E8B7D0098CF12 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A348C116E8B7D0098CF12 /* TwitterAccount.m */; };
+		E06A34C7116E96C60098CF12 /* AccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A34C5116E96C60098CF12 /* AccountsViewController.m */; };
+		E06A34C8116E96C60098CF12 /* Accounts.xib in Resources */ = {isa = PBXBuildFile; fileRef = E06A34C6116E96C60098CF12 /* Accounts.xib */; };
+		E06A367A116EEA920098CF12 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3678116EEA920098CF12 /* Default-Landscape.png */; };
+		E06A367B116EEA920098CF12 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3679116EEA920098CF12 /* Default-Portrait.png */; };
+		E06DEF40116FCE1000772680 /* TwitterListsJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E06DEF3F116FCE1000772680 /* TwitterListsJSONParser.m */; };
+		E06DEF45116FD0FD00772680 /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E06DEF44116FD0FD00772680 /* TwitterList.m */; };
+		E07E12151173D12D0083EC11 /* style-iphone.css in Resources */ = {isa = PBXBuildFile; fileRef = E07E12141173D12D0083EC11 /* style-iphone.css */; };
+		E07E12541173E1740083EC11 /* InstapaperSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E07E12521173E1740083EC11 /* InstapaperSettingsViewController.m */; };
+		E07E12551173E1740083EC11 /* InstapaperSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = E07E12531173E1740083EC11 /* InstapaperSettings.xib */; };
+		E07E12671173E47B0083EC11 /* Instapaper.m in Sources */ = {isa = PBXBuildFile; fileRef = E07E12661173E47B0083EC11 /* Instapaper.m */; };
+		E08646461166F6FB00844FCE /* spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = E08646451166F6FB00844FCE /* spinner.gif */; };
+		E0904273117A21BC00CE8CB9 /* AllStarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */; };
+		E0904274117A21BC00CE8CB9 /* AllStarsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0904272117A21BC00CE8CB9 /* AllStarsViewController.xib */; };
+		E090427E117A236300CE8CB9 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = E090427D117A236300CE8CB9 /* close.png */; };
+		E090427F117A236300CE8CB9 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = E090427D117A236300CE8CB9 /* close.png */; };
+		E0904324117A42B100CE8CB9 /* AllStarsMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0904322117A42B100CE8CB9 /* AllStarsMessageViewController.m */; };
+		E0904325117A42B100CE8CB9 /* AllStarsMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0904323117A42B100CE8CB9 /* AllStarsMessageViewController.xib */; };
+		E0904326117A42B100CE8CB9 /* AllStarsMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0904322117A42B100CE8CB9 /* AllStarsMessageViewController.m */; };
+		E0904327117A42B100CE8CB9 /* AllStarsMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0904323117A42B100CE8CB9 /* AllStarsMessageViewController.xib */; };
+		E0904392117A4D2C00CE8CB9 /* scanner_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = E0904391117A4D2C00CE8CB9 /* scanner_frame.png */; };
+		E0904393117A4D2C00CE8CB9 /* scanner_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = E0904391117A4D2C00CE8CB9 /* scanner_frame.png */; };
+		E0A41038116C204C0052BAE7 /* action-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41034116C204C0052BAE7 /* action-1.png */; };
+		E0A41039116C204C0052BAE7 /* action-2.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41035116C204C0052BAE7 /* action-2.png */; };
+		E0A4103A116C204C0052BAE7 /* action-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41036116C204C0052BAE7 /* action-3.png */; };
+		E0A4103B116C204C0052BAE7 /* action-4.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41037116C204C0052BAE7 /* action-4.png */; };
+		E0A41059116C40E40052BAE7 /* WebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A41057116C40E40052BAE7 /* WebBrowserViewController.m */; };
+		E0A4105A116C40E40052BAE7 /* WebBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A41058116C40E40052BAE7 /* WebBrowser.xib */; };
+		E0A4105E116C443D0052BAE7 /* triangle-left.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A4105C116C443D0052BAE7 /* triangle-left.png */; };
+		E0A4105F116C443D0052BAE7 /* triangle-right.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A4105D116C443D0052BAE7 /* triangle-right.png */; };
+		E0A41185116C6D430052BAE7 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41184116C6D430052BAE7 /* lock.png */; };
+		E0A8F16E116D799900DF2BDB /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = E0A8F16D116D799900DF2BDB /* test.json */; };
+		E0A8F1E0116D902B00DF2BDB /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */; };
+		E0CB31A0116691400086CEFE /* Analyze.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CB319E116691400086CEFE /* Analyze.m */; };
+		E0CB31A1116691400086CEFE /* Analyze.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0CB319F116691400086CEFE /* Analyze.xib */; };
+		E0CBCC42116DDBC80000C281 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0CBCC41116DDBC80000C281 /* action-4-on.png */; };
+		E0DF1273116453EB004FE7B9 /* TwitterMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0DF1272116453EB004FE7B9 /* TwitterMessage.m */; };
+		E0DF13AF11646FB7004FE7B9 /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13AE11646FB7004FE7B9 /* reload.png */; };
+		E0DF13D711647B0B004FE7B9 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13D611647B0B004FE7B9 /* Icon.png */; };
+		E0DF13E811647FAD004FE7B9 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13E711647FAD004FE7B9 /* Default.png */; };
+		E0EC7244116AAE5F001078B7 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0EC7243116AAE5F001078B7 /* MainWindow-iPad.xib */; };
+		E0F04C7811723DBF00AAA38E /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F04C7611723DBF00AAA38E /* SearchViewController.m */; };
+		E0F04C7911723DBF00AAA38E /* Search.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0F04C7711723DBF00AAA38E /* Search.xib */; };
+		E0F04CC011729EBC00AAA38E /* TwitterSavedSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F04CBF11729EBC00AAA38E /* TwitterSavedSearchJSONParser.m */; };
+		E0F04DFC11737F2A00AAA38E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0F04DFB11737F2A00AAA38E /* MessageUI.framework */; };
+		E0FC9A241163CA7A0027C422 /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC9A231163CA7A0027C422 /* OAuthClient.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D3623240D0F684500981E51 /* HelTweeticaAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweeticaAppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* HelTweeticaAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelTweeticaAppDelegate.m; sourceTree = "<group>"; };
+		1D6058910D05DD3D006BFB54 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		28A0AAE50D9B0CCF005BE974 /* HelTweetica_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweetica_Prefix.pch; sourceTree = "<group>"; };
+		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
+		28C286DF0D94DF7D0034E888 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		28C286E00D94DF7D0034E888 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		28F335F01007B36200424DE2 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RootViewController.xib; path = ../Resources/RootViewController.xib; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* HelTweetica-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "HelTweetica-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		E00C26281162D90800F62B70 /* Login.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Login.xib; path = ../Resources/Login.xib; sourceTree = "<group>"; };
+		E00C26291162D90800F62B70 /* Compose.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Compose.xib; path = ../Resources/Compose.xib; sourceTree = "<group>"; };
+		E00C262C1162D91600F62B70 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		E00C262D1162D91600F62B70 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		E00C262E1162D91600F62B70 /* ComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeViewController.h; sourceTree = "<group>"; };
+		E00C262F1162D91600F62B70 /* ComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeViewController.m; sourceTree = "<group>"; };
+		E00C26321162D91C00F62B70 /* Twitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Twitter.h; sourceTree = "<group>"; };
+		E00C26331162D91C00F62B70 /* Twitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Twitter.m; sourceTree = "<group>"; };
+		E00C26341162D91C00F62B70 /* TwitterAtomParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAtomParser.h; sourceTree = "<group>"; };
+		E00C26351162D91C00F62B70 /* TwitterAtomParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAtomParser.m; sourceTree = "<group>"; };
+		E00C26C61162E93E00F62B70 /* tab-bkgnd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tab-bkgnd.png"; path = "Resources/tab-bkgnd.png"; sourceTree = SOURCE_ROOT; };
+		E00C26C71162E93E00F62B70 /* tab-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tab-off.png"; path = "Resources/tab-off.png"; sourceTree = SOURCE_ROOT; };
+		E00C26C81162E93E00F62B70 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tab.png; path = Resources/tab.png; sourceTree = SOURCE_ROOT; };
+		E00C26C91162E93E00F62B70 /* style-ipad.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "style-ipad.css"; path = "Resources/style-ipad.css"; sourceTree = "<group>"; };
+		E00C27DA11630B7900F62B70 /* functions.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = functions.js; path = Resources/functions.js; sourceTree = SOURCE_ROOT; };
+		E01864EC1184C0240021995D /* TwitterFavoriteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterFavoriteAction.h; sourceTree = "<group>"; };
+		E01864ED1184C0240021995D /* TwitterFavoriteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterFavoriteAction.m; sourceTree = "<group>"; };
+		E01865471184C8980021995D /* TwitterUpdateStatusAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUpdateStatusAction.h; sourceTree = "<group>"; };
+		E01865481184C8980021995D /* TwitterUpdateStatusAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUpdateStatusAction.m; sourceTree = "<group>"; };
+		E018656C1184CC680021995D /* TwitterRetweetAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterRetweetAction.h; sourceTree = "<group>"; };
+		E018656D1184CC680021995D /* TwitterRetweetAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterRetweetAction.m; sourceTree = "<group>"; };
+		E01B9181117B5E60001949B6 /* shuffle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shuffle.png; path = Resources/shuffle.png; sourceTree = "<group>"; };
+		E02B29491184A13F0037F359 /* TwitterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAction.h; sourceTree = "<group>"; };
+		E02B294A1184A13F0037F359 /* TwitterAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAction.m; sourceTree = "<group>"; };
+		E03570B51174E6BE004B9A0F /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E03570B71174E6BE004B9A0F /* AppStore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppStore-Info.plist"; sourceTree = "<group>"; };
+		E036EF3A117B7F3300D52BF6 /* SoundEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffects.h; sourceTree = "<group>"; };
+		E036EF3B117B7F3300D52BF6 /* SoundEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundEffects.m; sourceTree = "<group>"; };
+		E036EF4F117B816B00D52BF6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		E036EF53117B817600D52BF6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E036EF66117B859400D52BF6 /* selectMessageSound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = selectMessageSound.caf; path = Resources/selectMessageSound.caf; sourceTree = SOURCE_ROOT; };
+		E036EF87117B874D00D52BF6 /* showMessageSound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = showMessageSound.caf; path = Resources/showMessageSound.caf; sourceTree = SOURCE_ROOT; };
+		E0448843116EF16B008603EB /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
+		E044894F116F245C008603EB /* ListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListsViewController.h; sourceTree = "<group>"; };
+		E0448950116F245C008603EB /* ListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListsViewController.m; sourceTree = "<group>"; };
+		E0448951116F245C008603EB /* Lists.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Lists.xib; sourceTree = "<group>"; };
+		E04BD347116C97C2004BFF3D /* TwitterMessageJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessageJSONParser.h; sourceTree = "<group>"; };
+		E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessageJSONParser.m; sourceTree = "<group>"; };
+		E06A3382116E4CCE0098CF12 /* retweet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = retweet.png; path = Resources/retweet.png; sourceTree = "<group>"; };
+		E06A348B116E8B7D0098CF12 /* TwitterAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAccount.h; sourceTree = "<group>"; };
+		E06A348C116E8B7D0098CF12 /* TwitterAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAccount.m; sourceTree = "<group>"; };
+		E06A34C4116E96C60098CF12 /* AccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsViewController.h; sourceTree = "<group>"; };
+		E06A34C5116E96C60098CF12 /* AccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsViewController.m; sourceTree = "<group>"; };
+		E06A34C6116E96C60098CF12 /* Accounts.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Accounts.xib; sourceTree = "<group>"; };
+		E06A3678116EEA920098CF12 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape.png"; path = "Resources/Default-Landscape.png"; sourceTree = "<group>"; };
+		E06A3679116EEA920098CF12 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait.png"; path = "Resources/Default-Portrait.png"; sourceTree = "<group>"; };
+		E06DEF3E116FCE1000772680 /* TwitterListsJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterListsJSONParser.h; sourceTree = "<group>"; };
+		E06DEF3F116FCE1000772680 /* TwitterListsJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterListsJSONParser.m; sourceTree = "<group>"; };
+		E06DEF43116FD0FD00772680 /* TwitterList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterList.h; sourceTree = "<group>"; };
+		E06DEF44116FD0FD00772680 /* TwitterList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterList.m; sourceTree = "<group>"; };
+		E07E12141173D12D0083EC11 /* style-iphone.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "style-iphone.css"; path = "Resources/style-iphone.css"; sourceTree = "<group>"; };
+		E07E12511173E1740083EC11 /* InstapaperSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstapaperSettingsViewController.h; sourceTree = "<group>"; };
+		E07E12521173E1740083EC11 /* InstapaperSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstapaperSettingsViewController.m; sourceTree = "<group>"; };
+		E07E12531173E1740083EC11 /* InstapaperSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InstapaperSettings.xib; sourceTree = "<group>"; };
+		E07E12651173E47B0083EC11 /* Instapaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Instapaper.h; sourceTree = "<group>"; };
+		E07E12661173E47B0083EC11 /* Instapaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Instapaper.m; sourceTree = "<group>"; };
+		E08646451166F6FB00844FCE /* spinner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = spinner.gif; path = Resources/spinner.gif; sourceTree = "<group>"; };
+		E0904270117A21BC00CE8CB9 /* AllStarsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllStarsViewController.h; sourceTree = "<group>"; };
+		E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllStarsViewController.m; sourceTree = "<group>"; };
+		E0904272117A21BC00CE8CB9 /* AllStarsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllStarsViewController.xib; sourceTree = "<group>"; };
+		E090427D117A236300CE8CB9 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close.png; path = Resources/close.png; sourceTree = "<group>"; };
+		E0904321117A42B100CE8CB9 /* AllStarsMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllStarsMessageViewController.h; sourceTree = "<group>"; };
+		E0904322117A42B100CE8CB9 /* AllStarsMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllStarsMessageViewController.m; sourceTree = "<group>"; };
+		E0904323117A42B100CE8CB9 /* AllStarsMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllStarsMessageViewController.xib; sourceTree = "<group>"; };
+		E0904391117A4D2C00CE8CB9 /* scanner_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scanner_frame.png; path = Resources/scanner_frame.png; sourceTree = "<group>"; };
+		E0A41034116C204C0052BAE7 /* action-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-1.png"; path = "Resources/action-1.png"; sourceTree = "<group>"; };
+		E0A41035116C204C0052BAE7 /* action-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-2.png"; path = "Resources/action-2.png"; sourceTree = "<group>"; };
+		E0A41036116C204C0052BAE7 /* action-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-3.png"; path = "Resources/action-3.png"; sourceTree = "<group>"; };
+		E0A41037116C204C0052BAE7 /* action-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-4.png"; path = "Resources/action-4.png"; sourceTree = "<group>"; };
+		E0A41056116C40E40052BAE7 /* WebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebBrowserViewController.h; sourceTree = "<group>"; };
+		E0A41057116C40E40052BAE7 /* WebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebBrowserViewController.m; sourceTree = "<group>"; };
+		E0A41058116C40E40052BAE7 /* WebBrowser.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebBrowser.xib; sourceTree = "<group>"; };
+		E0A4105C116C443D0052BAE7 /* triangle-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "triangle-left.png"; path = "Resources/triangle-left.png"; sourceTree = "<group>"; };
+		E0A4105D116C443D0052BAE7 /* triangle-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "triangle-right.png"; path = "Resources/triangle-right.png"; sourceTree = "<group>"; };
+		E0A41184116C6D430052BAE7 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lock.png; path = Resources/lock.png; sourceTree = "<group>"; };
+		E0A8F16D116D799900DF2BDB /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = test.json; path = Resources/test.json; sourceTree = "<group>"; };
+		E0A8F1DE116D902B00DF2BDB /* LKJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKJSONParser.h; sourceTree = "<group>"; };
+		E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKJSONParser.m; sourceTree = "<group>"; };
+		E0B8B5FA11863778005BCA07 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
+		E0CB319D116691400086CEFE /* Analyze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analyze.h; sourceTree = "<group>"; };
+		E0CB319E116691400086CEFE /* Analyze.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analyze.m; sourceTree = "<group>"; };
+		E0CB319F116691400086CEFE /* Analyze.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Analyze.xib; sourceTree = "<group>"; };
+		E0CBCC41116DDBC80000C281 /* action-4-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-4-on.png"; path = "Resources/action-4-on.png"; sourceTree = "<group>"; };
+		E0DF1271116453EB004FE7B9 /* TwitterMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessage.h; sourceTree = "<group>"; };
+		E0DF1272116453EB004FE7B9 /* TwitterMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessage.m; sourceTree = "<group>"; };
+		E0DF13AE11646FB7004FE7B9 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = reload.png; path = Resources/reload.png; sourceTree = "<group>"; };
+		E0DF13D611647B0B004FE7B9 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
+		E0DF13E711647FAD004FE7B9 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
+		E0EC7243116AAE5F001078B7 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
+		E0F04C7511723DBF00AAA38E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		E0F04C7611723DBF00AAA38E /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		E0F04C7711723DBF00AAA38E /* Search.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Search.xib; sourceTree = "<group>"; };
+		E0F04CBE11729EBC00AAA38E /* TwitterSavedSearchJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSavedSearchJSONParser.h; sourceTree = "<group>"; };
+		E0F04CBF11729EBC00AAA38E /* TwitterSavedSearchJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSavedSearchJSONParser.m; sourceTree = "<group>"; };
+		E0F04DFB11737F2A00AAA38E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		E0FC9A221163CA7A0027C422 /* OAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthClient.h; sourceTree = "<group>"; };
+		E0FC9A231163CA7A0027C422 /* OAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthClient.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
+				E0F04DFC11737F2A00AAA38E /* MessageUI.framework in Frameworks */,
+				E036EF50117B816B00D52BF6 /* AudioToolbox.framework in Frameworks */,
+				E036EF54117B817600D52BF6 /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E03570AD1174E6BE004B9A0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E03570AE1174E6BE004B9A0F /* Foundation.framework in Frameworks */,
+				E03570AF1174E6BE004B9A0F /* UIKit.framework in Frameworks */,
+				E03570B01174E6BE004B9A0F /* CoreGraphics.framework in Frameworks */,
+				E03570B11174E6BE004B9A0F /* MessageUI.framework in Frameworks */,
+				E0175C6F117C1CB4003F5970 /* AudioToolbox.framework in Frameworks */,
+				E0175C70117C1CB4003F5970 /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E0175BAB117BFAA1003F5970 /* RootView */,
+				E0175BAA117BFA7F003F5970 /* WebBrowser */,
+				E036EF69117B859B00D52BF6 /* AllStars */,
+				E0175BA9117BFA4D003F5970 /* Twitter */,
+				E01865461184C87F0021995D /* TwitterActions */,
+				E0DF0EA91163DC82004FE7B9 /* OAuthClient */,
+				1D3623240D0F684500981E51 /* HelTweeticaAppDelegate.h */,
+				1D3623250D0F684500981E51 /* HelTweeticaAppDelegate.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* HelTweetica.app */,
+				E03570B51174E6BE004B9A0F /* HelTweetica.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				28A0AAE50D9B0CCF005BE974 /* HelTweetica_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
+				E0EC7243116AAE5F001078B7 /* MainWindow-iPad.xib */,
+				E0A41034116C204C0052BAE7 /* action-1.png */,
+				E0A41035116C204C0052BAE7 /* action-2.png */,
+				E0A41036116C204C0052BAE7 /* action-3.png */,
+				E0A41037116C204C0052BAE7 /* action-4.png */,
+				E0CBCC41116DDBC80000C281 /* action-4-on.png */,
+				E090427D117A236300CE8CB9 /* close.png */,
+				E0A41184116C6D430052BAE7 /* lock.png */,
+				E0DF13AE11646FB7004FE7B9 /* reload.png */,
+				E06A3382116E4CCE0098CF12 /* retweet.png */,
+				E0904391117A4D2C00CE8CB9 /* scanner_frame.png */,
+				E01B9181117B5E60001949B6 /* shuffle.png */,
+				E08646451166F6FB00844FCE /* spinner.gif */,
+				E00C26C61162E93E00F62B70 /* tab-bkgnd.png */,
+				E00C26C71162E93E00F62B70 /* tab-off.png */,
+				E00C26C81162E93E00F62B70 /* tab.png */,
+				E0A4105C116C443D0052BAE7 /* triangle-left.png */,
+				E0A4105D116C443D0052BAE7 /* triangle-right.png */,
+				E00C27DA11630B7900F62B70 /* functions.js */,
+				E00C26C91162E93E00F62B70 /* style-ipad.css */,
+				E07E12141173D12D0083EC11 /* style-iphone.css */,
+				E0A8F16D116D799900DF2BDB /* test.json */,
+				E0DF13E711647FAD004FE7B9 /* Default.png */,
+				E06A3678116EEA920098CF12 /* Default-Landscape.png */,
+				E06A3679116EEA920098CF12 /* Default-Portrait.png */,
+				E0DF13D611647B0B004FE7B9 /* Icon.png */,
+				E0448843116EF16B008603EB /* Icon-72.png */,
+				8D1107310486CEB800E47090 /* HelTweetica-Info.plist */,
+				E03570B71174E6BE004B9A0F /* AppStore-Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */,
+				E0F04DFB11737F2A00AAA38E /* MessageUI.framework */,
+				E036EF4F117B816B00D52BF6 /* AudioToolbox.framework */,
+				E036EF53117B817600D52BF6 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E0175BA9117BFA4D003F5970 /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				E0B8B5FA11863778005BCA07 /* (HelTweeticaConsumerToken).h */,
+				E00C26321162D91C00F62B70 /* Twitter.h */,
+				E00C26331162D91C00F62B70 /* Twitter.m */,
+				E06A348B116E8B7D0098CF12 /* TwitterAccount.h */,
+				E06A348C116E8B7D0098CF12 /* TwitterAccount.m */,
+				E0DF1271116453EB004FE7B9 /* TwitterMessage.h */,
+				E0DF1272116453EB004FE7B9 /* TwitterMessage.m */,
+				E04BD347116C97C2004BFF3D /* TwitterMessageJSONParser.h */,
+				E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */,
+				E06DEF43116FD0FD00772680 /* TwitterList.h */,
+				E06DEF44116FD0FD00772680 /* TwitterList.m */,
+				E06DEF3E116FCE1000772680 /* TwitterListsJSONParser.h */,
+				E06DEF3F116FCE1000772680 /* TwitterListsJSONParser.m */,
+				E0F04CBE11729EBC00AAA38E /* TwitterSavedSearchJSONParser.h */,
+				E0F04CBF11729EBC00AAA38E /* TwitterSavedSearchJSONParser.m */,
+				E00C26341162D91C00F62B70 /* TwitterAtomParser.h */,
+				E00C26351162D91C00F62B70 /* TwitterAtomParser.m */,
+				E0A8F1DE116D902B00DF2BDB /* LKJSONParser.h */,
+				E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */,
+			);
+			name = Twitter;
+			sourceTree = "<group>";
+		};
+		E0175BAA117BFA7F003F5970 /* WebBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				E0A41056116C40E40052BAE7 /* WebBrowserViewController.h */,
+				E0A41057116C40E40052BAE7 /* WebBrowserViewController.m */,
+				E0A41058116C40E40052BAE7 /* WebBrowser.xib */,
+				E07E12511173E1740083EC11 /* InstapaperSettingsViewController.h */,
+				E07E12521173E1740083EC11 /* InstapaperSettingsViewController.m */,
+				E07E12531173E1740083EC11 /* InstapaperSettings.xib */,
+				E07E12651173E47B0083EC11 /* Instapaper.h */,
+				E07E12661173E47B0083EC11 /* Instapaper.m */,
+			);
+			name = WebBrowser;
+			sourceTree = "<group>";
+		};
+		E0175BAB117BFAA1003F5970 /* RootView */ = {
+			isa = PBXGroup;
+			children = (
+				28C286DF0D94DF7D0034E888 /* RootViewController.h */,
+				28C286E00D94DF7D0034E888 /* RootViewController.m */,
+				28F335F01007B36200424DE2 /* RootViewController.xib */,
+				E06A34C4116E96C60098CF12 /* AccountsViewController.h */,
+				E06A34C5116E96C60098CF12 /* AccountsViewController.m */,
+				E06A34C6116E96C60098CF12 /* Accounts.xib */,
+				E00C262C1162D91600F62B70 /* LoginViewController.h */,
+				E00C262D1162D91600F62B70 /* LoginViewController.m */,
+				E00C26281162D90800F62B70 /* Login.xib */,
+				E044894F116F245C008603EB /* ListsViewController.h */,
+				E0448950116F245C008603EB /* ListsViewController.m */,
+				E0448951116F245C008603EB /* Lists.xib */,
+				E0F04C7511723DBF00AAA38E /* SearchViewController.h */,
+				E0F04C7611723DBF00AAA38E /* SearchViewController.m */,
+				E0F04C7711723DBF00AAA38E /* Search.xib */,
+				E0CB319D116691400086CEFE /* Analyze.h */,
+				E0CB319E116691400086CEFE /* Analyze.m */,
+				E0CB319F116691400086CEFE /* Analyze.xib */,
+				E00C262E1162D91600F62B70 /* ComposeViewController.h */,
+				E00C262F1162D91600F62B70 /* ComposeViewController.m */,
+				E00C26291162D90800F62B70 /* Compose.xib */,
+			);
+			name = RootView;
+			sourceTree = "<group>";
+		};
+		E01865461184C87F0021995D /* TwitterActions */ = {
+			isa = PBXGroup;
+			children = (
+				E02B29491184A13F0037F359 /* TwitterAction.h */,
+				E02B294A1184A13F0037F359 /* TwitterAction.m */,
+				E01864EC1184C0240021995D /* TwitterFavoriteAction.h */,
+				E01864ED1184C0240021995D /* TwitterFavoriteAction.m */,
+				E01865471184C8980021995D /* TwitterUpdateStatusAction.h */,
+				E01865481184C8980021995D /* TwitterUpdateStatusAction.m */,
+				E018656C1184CC680021995D /* TwitterRetweetAction.h */,
+				E018656D1184CC680021995D /* TwitterRetweetAction.m */,
+			);
+			name = TwitterActions;
+			sourceTree = "<group>";
+		};
+		E036EF69117B859B00D52BF6 /* AllStars */ = {
+			isa = PBXGroup;
+			children = (
+				E0904270117A21BC00CE8CB9 /* AllStarsViewController.h */,
+				E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */,
+				E0904272117A21BC00CE8CB9 /* AllStarsViewController.xib */,
+				E0904321117A42B100CE8CB9 /* AllStarsMessageViewController.h */,
+				E0904322117A42B100CE8CB9 /* AllStarsMessageViewController.m */,
+				E0904323117A42B100CE8CB9 /* AllStarsMessageViewController.xib */,
+				E036EF3A117B7F3300D52BF6 /* SoundEffects.h */,
+				E036EF3B117B7F3300D52BF6 /* SoundEffects.m */,
+				E036EF66117B859400D52BF6 /* selectMessageSound.caf */,
+				E036EF87117B874D00D52BF6 /* showMessageSound.caf */,
+			);
+			name = AllStars;
+			sourceTree = "<group>";
+		};
+		E0DF0EA91163DC82004FE7B9 /* OAuthClient */ = {
+			isa = PBXGroup;
+			children = (
+				E0FC9A221163CA7A0027C422 /* OAuthClient.h */,
+				E0FC9A231163CA7A0027C422 /* OAuthClient.m */,
+			);
+			name = OAuthClient;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* Dev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Dev" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dev;
+			productName = HelTweetica;
+			productReference = 1D6058910D05DD3D006BFB54 /* HelTweetica.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E03570721174E6BE004B9A0F /* AppStore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E03570B21174E6BE004B9A0F /* Build configuration list for PBXNativeTarget "AppStore" */;
+			buildPhases = (
+				E03570731174E6BE004B9A0F /* Resources */,
+				E03570961174E6BE004B9A0F /* Sources */,
+				E03570AD1174E6BE004B9A0F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AppStore;
+			productName = HelTweetica;
+			productReference = E03570B51174E6BE004B9A0F /* HelTweetica.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "HelTweetica" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				en,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* Dev */,
+				E03570721174E6BE004B9A0F /* AppStore */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
+				28F335F11007B36200424DE2 /* RootViewController.xib in Resources */,
+				E00C262A1162D90800F62B70 /* Login.xib in Resources */,
+				E00C262B1162D90800F62B70 /* Compose.xib in Resources */,
+				E00C26CA1162E93E00F62B70 /* tab-bkgnd.png in Resources */,
+				E00C26CB1162E93E00F62B70 /* tab-off.png in Resources */,
+				E00C26CC1162E93E00F62B70 /* tab.png in Resources */,
+				E00C26CD1162E93E00F62B70 /* style-ipad.css in Resources */,
+				E00C281711631B6F00F62B70 /* functions.js in Resources */,
+				E0DF13AF11646FB7004FE7B9 /* reload.png in Resources */,
+				E0DF13D711647B0B004FE7B9 /* Icon.png in Resources */,
+				E0DF13E811647FAD004FE7B9 /* Default.png in Resources */,
+				E0CB31A1116691400086CEFE /* Analyze.xib in Resources */,
+				E08646461166F6FB00844FCE /* spinner.gif in Resources */,
+				E0EC7244116AAE5F001078B7 /* MainWindow-iPad.xib in Resources */,
+				E0A41038116C204C0052BAE7 /* action-1.png in Resources */,
+				E0A41039116C204C0052BAE7 /* action-2.png in Resources */,
+				E0A4103A116C204C0052BAE7 /* action-3.png in Resources */,
+				E0A4103B116C204C0052BAE7 /* action-4.png in Resources */,
+				E0A4105A116C40E40052BAE7 /* WebBrowser.xib in Resources */,
+				E0A4105E116C443D0052BAE7 /* triangle-left.png in Resources */,
+				E0A4105F116C443D0052BAE7 /* triangle-right.png in Resources */,
+				E0A41185116C6D430052BAE7 /* lock.png in Resources */,
+				E0A8F16E116D799900DF2BDB /* test.json in Resources */,
+				E0CBCC42116DDBC80000C281 /* action-4-on.png in Resources */,
+				E06A3383116E4CCE0098CF12 /* retweet.png in Resources */,
+				E06A34C8116E96C60098CF12 /* Accounts.xib in Resources */,
+				E06A367A116EEA920098CF12 /* Default-Landscape.png in Resources */,
+				E06A367B116EEA920098CF12 /* Default-Portrait.png in Resources */,
+				E0448844116EF16B008603EB /* Icon-72.png in Resources */,
+				E0448953116F245C008603EB /* Lists.xib in Resources */,
+				E0F04C7911723DBF00AAA38E /* Search.xib in Resources */,
+				E07E12151173D12D0083EC11 /* style-iphone.css in Resources */,
+				E07E12551173E1740083EC11 /* InstapaperSettings.xib in Resources */,
+				E0904274117A21BC00CE8CB9 /* AllStarsViewController.xib in Resources */,
+				E090427E117A236300CE8CB9 /* close.png in Resources */,
+				E0904325117A42B100CE8CB9 /* AllStarsMessageViewController.xib in Resources */,
+				E0904392117A4D2C00CE8CB9 /* scanner_frame.png in Resources */,
+				E01B9182117B5E60001949B6 /* shuffle.png in Resources */,
+				E036EF67117B859400D52BF6 /* selectMessageSound.caf in Resources */,
+				E036EF88117B874D00D52BF6 /* showMessageSound.caf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E03570731174E6BE004B9A0F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E03570741174E6BE004B9A0F /* MainWindow.xib in Resources */,
+				E03570751174E6BE004B9A0F /* RootViewController.xib in Resources */,
+				E03570761174E6BE004B9A0F /* Login.xib in Resources */,
+				E03570771174E6BE004B9A0F /* Compose.xib in Resources */,
+				E03570781174E6BE004B9A0F /* tab-bkgnd.png in Resources */,
+				E03570791174E6BE004B9A0F /* tab-off.png in Resources */,
+				E035707A1174E6BE004B9A0F /* tab.png in Resources */,
+				E035707B1174E6BE004B9A0F /* style-ipad.css in Resources */,
+				E035707C1174E6BE004B9A0F /* functions.js in Resources */,
+				E035707D1174E6BE004B9A0F /* reload.png in Resources */,
+				E035707E1174E6BE004B9A0F /* Icon.png in Resources */,
+				E035707F1174E6BE004B9A0F /* Default.png in Resources */,
+				E03570801174E6BE004B9A0F /* Analyze.xib in Resources */,
+				E03570811174E6BE004B9A0F /* spinner.gif in Resources */,
+				E03570821174E6BE004B9A0F /* MainWindow-iPad.xib in Resources */,
+				E03570831174E6BE004B9A0F /* action-1.png in Resources */,
+				E03570841174E6BE004B9A0F /* action-2.png in Resources */,
+				E03570851174E6BE004B9A0F /* action-3.png in Resources */,
+				E03570861174E6BE004B9A0F /* action-4.png in Resources */,
+				E03570871174E6BE004B9A0F /* WebBrowser.xib in Resources */,
+				E03570881174E6BE004B9A0F /* triangle-left.png in Resources */,
+				E03570891174E6BE004B9A0F /* triangle-right.png in Resources */,
+				E035708A1174E6BE004B9A0F /* lock.png in Resources */,
+				E035708C1174E6BE004B9A0F /* action-4-on.png in Resources */,
+				E035708D1174E6BE004B9A0F /* retweet.png in Resources */,
+				E035708E1174E6BE004B9A0F /* Accounts.xib in Resources */,
+				E035708F1174E6BE004B9A0F /* Default-Landscape.png in Resources */,
+				E03570901174E6BE004B9A0F /* Default-Portrait.png in Resources */,
+				E03570911174E6BE004B9A0F /* Icon-72.png in Resources */,
+				E03570921174E6BE004B9A0F /* Lists.xib in Resources */,
+				E03570931174E6BE004B9A0F /* Search.xib in Resources */,
+				E03570951174E6BE004B9A0F /* InstapaperSettings.xib in Resources */,
+				E090427F117A236300CE8CB9 /* close.png in Resources */,
+				E0904327117A42B100CE8CB9 /* AllStarsMessageViewController.xib in Resources */,
+				E0904393117A4D2C00CE8CB9 /* scanner_frame.png in Resources */,
+				E01B9183117B5E60001949B6 /* shuffle.png in Resources */,
+				E036EF68117B859400D52BF6 /* selectMessageSound.caf in Resources */,
+				E036EF89117B874D00D52BF6 /* showMessageSound.caf in Resources */,
+				E0175C62117C1C87003F5970 /* AllStarsViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				1D3623260D0F684500981E51 /* HelTweeticaAppDelegate.m in Sources */,
+				28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */,
+				E00C26301162D91600F62B70 /* LoginViewController.m in Sources */,
+				E00C26311162D91600F62B70 /* ComposeViewController.m in Sources */,
+				E00C26361162D91C00F62B70 /* Twitter.m in Sources */,
+				E00C26371162D91C00F62B70 /* TwitterAtomParser.m in Sources */,
+				E0FC9A241163CA7A0027C422 /* OAuthClient.m in Sources */,
+				E0DF1273116453EB004FE7B9 /* TwitterMessage.m in Sources */,
+				E0CB31A0116691400086CEFE /* Analyze.m in Sources */,
+				E0A41059116C40E40052BAE7 /* WebBrowserViewController.m in Sources */,
+				E04BD349116C97C2004BFF3D /* TwitterMessageJSONParser.m in Sources */,
+				E0A8F1E0116D902B00DF2BDB /* LKJSONParser.m in Sources */,
+				E06A348D116E8B7D0098CF12 /* TwitterAccount.m in Sources */,
+				E06A34C7116E96C60098CF12 /* AccountsViewController.m in Sources */,
+				E0448952116F245C008603EB /* ListsViewController.m in Sources */,
+				E06DEF40116FCE1000772680 /* TwitterListsJSONParser.m in Sources */,
+				E06DEF45116FD0FD00772680 /* TwitterList.m in Sources */,
+				E0F04C7811723DBF00AAA38E /* SearchViewController.m in Sources */,
+				E0F04CC011729EBC00AAA38E /* TwitterSavedSearchJSONParser.m in Sources */,
+				E07E12541173E1740083EC11 /* InstapaperSettingsViewController.m in Sources */,
+				E07E12671173E47B0083EC11 /* Instapaper.m in Sources */,
+				E0904273117A21BC00CE8CB9 /* AllStarsViewController.m in Sources */,
+				E0904324117A42B100CE8CB9 /* AllStarsMessageViewController.m in Sources */,
+				E036EF3C117B7F3300D52BF6 /* SoundEffects.m in Sources */,
+				E02B294B1184A13F0037F359 /* TwitterAction.m in Sources */,
+				E01864EF1184C0240021995D /* TwitterFavoriteAction.m in Sources */,
+				E018654A1184C8980021995D /* TwitterUpdateStatusAction.m in Sources */,
+				E018656F1184CC680021995D /* TwitterRetweetAction.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E03570961174E6BE004B9A0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E03570971174E6BE004B9A0F /* main.m in Sources */,
+				E03570981174E6BE004B9A0F /* HelTweeticaAppDelegate.m in Sources */,
+				E03570991174E6BE004B9A0F /* RootViewController.m in Sources */,
+				E035709A1174E6BE004B9A0F /* LoginViewController.m in Sources */,
+				E035709B1174E6BE004B9A0F /* ComposeViewController.m in Sources */,
+				E035709C1174E6BE004B9A0F /* Twitter.m in Sources */,
+				E035709D1174E6BE004B9A0F /* TwitterAtomParser.m in Sources */,
+				E035709E1174E6BE004B9A0F /* OAuthClient.m in Sources */,
+				E035709F1174E6BE004B9A0F /* TwitterMessage.m in Sources */,
+				E03570A01174E6BE004B9A0F /* Analyze.m in Sources */,
+				E03570A11174E6BE004B9A0F /* WebBrowserViewController.m in Sources */,
+				E03570A21174E6BE004B9A0F /* TwitterMessageJSONParser.m in Sources */,
+				E03570A31174E6BE004B9A0F /* LKJSONParser.m in Sources */,
+				E03570A41174E6BE004B9A0F /* TwitterAccount.m in Sources */,
+				E03570A51174E6BE004B9A0F /* AccountsViewController.m in Sources */,
+				E03570A61174E6BE004B9A0F /* ListsViewController.m in Sources */,
+				E03570A71174E6BE004B9A0F /* TwitterListsJSONParser.m in Sources */,
+				E03570A81174E6BE004B9A0F /* TwitterList.m in Sources */,
+				E03570A91174E6BE004B9A0F /* SearchViewController.m in Sources */,
+				E03570AA1174E6BE004B9A0F /* TwitterSavedSearchJSONParser.m in Sources */,
+				E03570AB1174E6BE004B9A0F /* InstapaperSettingsViewController.m in Sources */,
+				E03570AC1174E6BE004B9A0F /* Instapaper.m in Sources */,
+				E0904326117A42B100CE8CB9 /* AllStarsMessageViewController.m in Sources */,
+				E036EF3D117B7F3300D52BF6 /* SoundEffects.m in Sources */,
+				E0175C63117C1C97003F5970 /* AllStarsViewController.m in Sources */,
+				E02B294C1184A13F0037F359 /* TwitterAction.m in Sources */,
+				E01864EE1184C0240021995D /* TwitterFavoriteAction.m in Sources */,
+				E01865491184C8980021995D /* TwitterUpdateStatusAction.m in Sources */,
+				E018656E1184CC680021995D /* TwitterRetweetAction.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
+				INFOPLIST_FILE = "HelTweetica-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = HelTweetica;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/OAuthConsumer\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
+				INFOPLIST_FILE = "HelTweetica-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/OAuthConsumer\"",
+				);
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = HelTweetica;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				PREBINDING = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		E03570B31174E6BE004B9A0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Felt Tip Inc.";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
+				INFOPLIST_FILE = "AppStore-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = HelTweetica;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BA4BEA78-07F3-4A23-BDE6-582E9AF2562D";
+				RUN_CLANG_STATIC_ANALYZER = NO;
+			};
+			name = Debug;
+		};
+		E03570B41174E6BE004B9A0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Felt Tip Inc.";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
+				INFOPLIST_FILE = "AppStore-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = HelTweetica;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BA4BEA78-07F3-4A23-BDE6-582E9AF2562D";
+				RUN_CLANG_STATIC_ANALYZER = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Dev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "HelTweetica" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E03570B21174E6BE004B9A0F /* Build configuration list for PBXNativeTarget "AppStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E03570B31174E6BE004B9A0F /* Debug */,
+				E03570B41174E6BE004B9A0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

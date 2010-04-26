@@ -1,0 +1,98 @@
+﻿body { 
+	margin: 0px; 
+	padding: 0px; 
+	font-size: 17px; 
+	font-family: Helvetica, Arial, sans-serif; 
+	line-height: 20px; 
+	background-color: #888; 
+	color: #333; 
+	width: auto;
+	overflow: hidden;
+}
+a {color: #448; text-decoration: none; }
+p { margin: 0px 0px 20px 0px; }
+
+.artboard { padding: 44px 0px 0px 0px; width: auto; overflow: hidden; }
+
+.login { 
+	padding: 0px; 
+	margin: 10px;
+	font-size: 40px; 
+	font-weight: bold;
+	line-height: 50px; 
+	color: #DDD;
+}
+
+.title { color: #DDD; padding: 5px 5px 4px 5px; }
+.title a { color: #DDD; }
+.my_username { font-size: 30px; line-height: 30px; font-weight: bold; }
+
+.tabs { background-image:url('tab-bkgnd.png'); padding: 0px 5px 0px 5px; }
+.tab { 
+	margin: 0;
+	padding: 6px 0px 0px 0px;
+	width: 72px;
+	height: 22px;
+	text-align: center;
+	font-size: 13px; 
+	font-weight: bold;
+	display: inline-block; 
+}
+
+.status { text-align: center; }
+
+.selected { background-image:url('tab.png'); color: #444; }
+.deselected { background-image:url('tab-off.png'); color: #666; }
+
+.tweet_area { 
+	padding: 10px 5px 40px 5px; margin: 0px;
+	background-color: #ffffff; 
+	-webkit-box-shadow: 0px 8px 8px #666; 
+}
+
+.tweet_table { 
+	display: table;
+	padding: 0px; margin: 0px;
+}
+
+.tweet_row { 
+	display: table-row; 
+	margin: 0px; padding: 0px;
+	overflow: hidden; 
+}
+
+.tweet_avatar { 
+	display: table-cell; 
+	width: 50px;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+}
+.avatar_img { 
+	width: 48px; height: 48px; 
+	padding: 1px; 
+	-webkit-border-radius: 10px; 
+}
+.tweet_content { 
+	display: table-cell; 
+	overflow: hidden;
+	vertical-align: top;
+	padding: 5px 5px 4px 5px; 
+	border-bottom: 1px solid #ccc;
+}
+.screen_name { font-weight: bold; color: #000; }
+.time { color: #888; font-size: 13px; font-style: italic; }
+.time a { color: #889; }
+
+.tweet_actions {
+	display: table-cell; 
+	width: 60px;
+	min-width: 60px;
+	padding: 0px 5px 0px 5px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+}
+
+.action_button {
+	
+}
