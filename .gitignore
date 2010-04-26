@@ -15,6 +15,7 @@ build/
 
 # hg (Mercurial) files
 .hg/
+.hgignore
 *.orig
 *.rej
 
