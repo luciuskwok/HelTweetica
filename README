@@ -1,0 +1,35 @@
+﻿HelTweetica
+by
+Lucius Kwok (project manager, lead developer, UI designer)
+Thomas Alvarez (developer)
+Jeff Soto (developer)
+
+The official repository for HelTweetica is at github: http://github.com/luciuskwok/HelTweetica
+
+----------
+About HelTweetica
+
+HelTweetica is an iPad app that uses xAuth (OAuth variant) and JSON to read, star, retweet, and post tweets from multiple Twitter accounts.
+
+----------
+
+How to build HelTweetica
+
+Before you can build this project, you need to have your own OAuth Consumer Key and Consumer Secret, which you can get from Twitter:
+
+http://twitter.com/oauth_clients/new
+
+You will also want to use the xAuth authentication method (which bypasses the usual OAuth practice of requiring users to auth through a web browser), which requires sending an email to Twitter making the request:
+
+http://apiwiki.twitter.com/Twitter-REST-API-Method:-oauth-access_token-for-xAuth
+
+Then in Twitter.m, put your key and secret in:
+
+#define kConsumerKey @"xxxxxxxxxxxxxxxx"
+#define kConsumerSecret @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+----------
+
+-Lucius Kwok <lucius.kwok@gmail.com>
+April 26, 2010
+
