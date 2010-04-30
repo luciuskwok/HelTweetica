@@ -10,23 +10,24 @@
 	<style type="text/css">
 		body {
   		margin-top: 1.0em;
-  		background-color: #aa0000;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #55ffff; margin-bottom: 3px; }
+  		background-color: #fff;
+		  font-family: 'Helvetica Neue',Helvetica,Arial,FreeSans;
+  		color: #333;
+		}
+		b { font-weight: bold; color: #000; }
+		#container {
+		  margin: 0 auto;
+		  width: 700px;
+		}
+		h1 { font-size: 3.8em; color: #000; margin-bottom: 3px; }
 		h1 .small { font-size: 0.4em; }
 		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #55ffff; }
-    h3 { text-align: center; color: #55ffff; }
-    a { color: #55ffff; }
+		h2 { font-size: 1.5em; color: #000; }
+    h3 { text-align: center; color: #000; }
+    a { color: #026; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
+	pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
 	</style>
@@ -53,35 +54,60 @@
     </div>
 
     <p>HelTweetica is an iPad app that uses xAuth (OAuth variant) and JSON to read, star, retweet, and post tweets from multiple Twitter accounts.
+
 </p><h2>Install</h2>
 <p>How to build HelTweetica
 
-Before you can build this project, you need to have your own OAuth Consumer Key and Consumer Secret, which you can get from Twitter:
 
-http://twitter.com/oauth_clients/new
 
-You will also want to use the xAuth authentication method (which bypasses the usual OAuth practice of requiring users to auth through a web browser), which requires sending an email to Twitter making the request:
+Before you can build this project, you need to have your own OAuth Consumer Key and Consumer Secret, which you can get from Twitter:<p>
 
-http://apiwiki.twitter.com/Twitter-REST-API-Method:-oauth-access_token-for-xAuth
 
-Then in Twitter.m, put your key and secret in:
 
-#define kConsumerKey @"xxxxxxxxxxxxxxxx"
-#define kConsumerSecret @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+http://twitter.com/oauth_clients/new<p>
+
+
+
+You will also want to use the xAuth authentication method (which bypasses the usual OAuth practice of requiring users to auth through a web browser), which requires sending an email to Twitter making the request:<p>
+
+
+
+http://apiwiki.twitter.com/Twitter-REST-API-Method:-oauth-access_token-for-xAuth<p>
+
+
+
+Then in Twitter.m, put your key and secret in:<p>
+
+
+
+#define kConsumerKey @"xxxxxxxxxxxxxxxx"<p>
+
+#define kConsumerSecret @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"<p>
+
 </p>
 <h2>License</h2>
 <p> Copyright (c) 2010, Felt Tip Inc. All rights reserved.
+
  
- Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:  
- 1.  Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- 2.  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- 3.  Neither the name of the copyright holder(s) nor the names of any contributors may be used to endorse or promote products derived from this software without specific prior written permission.
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:  <p>
+
+ 1.  Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.<p>
+
+ 2.  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.<p>
+
+ 3.  Neither the name of the copyright holder(s) nor the names of any contributors may be used to endorse or promote products derived from this software without specific prior written permission.<p>
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.<p>
+
 </p>
 <h2>Authors</h2>
-<p>Lucius Kwok (lucius.kwok@gmail.com)<br/>Thomas Alvarez<br/>Jeff Soto</p>
+<p>Lucius Kwok (lucius.kwok@gmail.com)
+<br/>Thomas Alvarez
+<br/>Jeff Soto</p>
 <h2>Contact</h2>
-<p>Lucius Kwok (lucius.kwok@gmail.com)<br/>      </p>
+<p>Lucius Kwok (lucius.kwok@gmail.com)
+<br/>      </p>
 
 
     <h2>Download</h2>
