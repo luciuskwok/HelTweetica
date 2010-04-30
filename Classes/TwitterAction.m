@@ -26,7 +26,7 @@ static NSString *sConsumerSecret = @"rZQXiibBhp0vFFG19kV2fn3onn8ApA2StYdHkqdKE";
 	[consumerSecret release];
 	[twitterMethod release];
 	[parameters release];
-	[connection release];
+	[connection release]; // Note that connection retains its delegate (which is self) until it is cancelled or completes.
 	[receivedData release];
 	[super dealloc];
 }
@@ -89,6 +89,9 @@ static NSString *sConsumerSecret = @"rZQXiibBhp0vFFG19kV2fn3onn8ApA2StYdHkqdKE";
 	// Create the download connection
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];
 	isLoading = YES;
+	
+	// Retain delegate until the NSURLConnection returns with a finished or error callback
+	[delegate retain];
 }
 
 - (void) startPostRequest {
@@ -159,6 +162,7 @@ static NSString *sConsumerSecret = @"rZQXiibBhp0vFFG19kV2fn3onn8ApA2StYdHkqdKE";
 	if ([delegate respondsToSelector:@selector(twitterActionDidFinishLoading:)])
 		[delegate twitterActionDidFinishLoading:self];
 	
+	[delegate release];
 	self.connection = nil;
 }	
 
@@ -168,6 +172,7 @@ static NSString *sConsumerSecret = @"rZQXiibBhp0vFFG19kV2fn3onn8ApA2StYdHkqdKE";
 	if ([delegate respondsToSelector:@selector(twitterAction:didFailWithError:)])
 		[delegate twitterAction:self didFailWithError:error];
 
+	[delegate release];
 	self.connection = nil;
 }
 

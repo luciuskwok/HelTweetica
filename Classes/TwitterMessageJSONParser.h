@@ -34,8 +34,6 @@
 @property (assign) BOOL directMessage;
 @property (nonatomic, retain) NSDate *receivedTimestamp;
 
-+ (void) runTest;
-
 - (NSArray*) messagesWithJSONData:(NSData*)jsonData;
 - (TwitterMessage*) currentRetweetedMessage;
 

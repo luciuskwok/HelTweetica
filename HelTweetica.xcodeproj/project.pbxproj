@@ -261,6 +261,10 @@
 		E0DF13AE11646FB7004FE7B9 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = reload.png; path = Resources/reload.png; sourceTree = "<group>"; };
 		E0DF13D611647B0B004FE7B9 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		E0DF13E711647FAD004FE7B9 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
+		E0E489DC11868EEB00EB658C /* ParserTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParserTests.h; path = Classes/ParserTests.h; sourceTree = "<group>"; };
+		E0E489DD11868EEB00EB658C /* ParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ParserTests.m; path = Classes/ParserTests.m; sourceTree = "<group>"; };
+		E0E48ABE1186950E00EB658C /* HelTweeticaAppTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HelTweeticaAppTests.h; path = Classes/HelTweeticaAppTests.h; sourceTree = "<group>"; };
+		E0E48ABF1186950E00EB658C /* HelTweeticaAppTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HelTweeticaAppTests.m; path = Classes/HelTweeticaAppTests.m; sourceTree = "<group>"; };
 		E0EC7243116AAE5F001078B7 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		E0F04C7511723DBF00AAA38E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		E0F04C7611723DBF00AAA38E /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
@@ -330,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
+				E0E489BB11868ADA00EB658C /* Unit Tests */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -505,6 +510,17 @@
 				E0FC9A231163CA7A0027C422 /* OAuthClient.m */,
 			);
 			name = OAuthClient;
+			sourceTree = "<group>";
+		};
+		E0E489BB11868ADA00EB658C /* Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E0E489DC11868EEB00EB658C /* ParserTests.h */,
+				E0E489DD11868EEB00EB658C /* ParserTests.m */,
+				E0E48ABE1186950E00EB658C /* HelTweeticaAppTests.h */,
+				E0E48ABF1186950E00EB658C /* HelTweeticaAppTests.m */,
+			);
+			name = "Unit Tests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -747,7 +763,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -767,17 +783,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/OAuthConsumer\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
 				INFOPLIST_FILE = "HelTweetica-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/OAuthConsumer\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",

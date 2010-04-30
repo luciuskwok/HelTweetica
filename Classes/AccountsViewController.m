@@ -99,6 +99,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[self setContentSize]; 
+	[super viewWillAppear:animated];
 }
 
 /*

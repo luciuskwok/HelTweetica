@@ -115,7 +115,6 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[self.navigationController setNavigationBarHidden: YES animated: NO];
-	[self refreshTweetArea];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -123,6 +122,9 @@
 	TwitterAccount *currentAccount = [twitter currentAccount];
 	if (currentAccount == nil) {
 		[self login: accountsButton];
+	} else {
+		[refreshTimer invalidate];
+		refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
 	}
 }
 

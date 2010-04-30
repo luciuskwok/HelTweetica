@@ -148,8 +148,8 @@
 }
 
 - (void) updateCharacterCountWithText:(NSString *)text {
-	NSData *unitext = [text dataUsingEncoding:NSUTF8StringEncoding];
-	int remaining = kTwitterCharacterMax - [unitext length];
+	NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
+	int remaining = kTwitterCharacterMax - [normalizationFormC length];
 	charactersRemaining.text = [NSString stringWithFormat:@"%d", remaining];
 	if (remaining < 0) {
 		charactersRemaining.textColor = [UIColor redColor];
@@ -158,7 +158,7 @@
 	}
 	
 	// Verify message length and account for Send button
-	self.navigationItem.rightBarButtonItem.enabled = (([unitext length] != 0) && (remaining >= 0) && (twitter.currentAccount != nil));
+	self.navigationItem.rightBarButtonItem.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (twitter.currentAccount != nil));
 }
 
 @end

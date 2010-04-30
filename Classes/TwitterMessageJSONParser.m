@@ -27,15 +27,6 @@
 @implementation TwitterMessageJSONParser
 @synthesize messages, currentMessage, keyPath, directMessage, receivedTimestamp;
 
-+ (void) runTest {
-	NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"json"];
-	NSError *error = nil;
-	NSData *testJSON = [NSData dataWithContentsOfFile:path options:0 error:&error];
-	TwitterMessageJSONParser *parser = [[TwitterMessageJSONParser alloc] init];
-	[parser messagesWithJSONData:testJSON];
-	[parser release];
-}
-
 - (id) init {
 	if (self = [super init]) {
 		messages = [[NSMutableArray alloc] init];
