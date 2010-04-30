@@ -1,0 +1,24 @@
+# Mac OS X files
+.DS_Store
+*.swp
+
+# Xcode build files
+build/
+
+# Xcode project files
+*.mode1 
+*.mode2
+*.mode1v3
+
+# Interface Builder backups
+*~.nib
+
+# hg (Mercurial) files
+.hg/
+.hgignore
+*.orig
+*.rej
+
+# Files or folder that begin with parenthesis. -Lucius Kwok
+\(*
+
