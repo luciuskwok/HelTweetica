@@ -51,7 +51,6 @@
 			1D6058900D05DD3D006BFB54 /* Dev */,
 		);
 		breakpoints = (
-			E0B54FB4118C0A2A00FFED10 /* Twitter.m:367 */,
 		);
 		codeSenseManager = E00C261F1162D60F00F62B70 /* Code sense */;
 		executables = (
@@ -452,6 +451,12 @@
 			E0B54FBD118C0A6F00FFED10 /* PBXTextBookmark */ = E0B54FBD118C0A6F00FFED10 /* PBXTextBookmark */;
 			E0B54FBE118C0A6F00FFED10 /* PBXTextBookmark */ = E0B54FBE118C0A6F00FFED10 /* PBXTextBookmark */;
 			E0B54FBF118C0A6F00FFED10 /* PBXTextBookmark */ = E0B54FBF118C0A6F00FFED10 /* PBXTextBookmark */;
+			E0B54FC3118C0A9E00FFED10 /* PBXTextBookmark */ = E0B54FC3118C0A9E00FFED10 /* PBXTextBookmark */;
+			E0B54FC4118C0A9E00FFED10 /* PBXTextBookmark */ = E0B54FC4118C0A9E00FFED10 /* PBXTextBookmark */;
+			E0B54FC8118C0B7B00FFED10 /* PBXTextBookmark */ = E0B54FC8118C0B7B00FFED10 /* PBXTextBookmark */;
+			E0B54FC9118C0B7B00FFED10 /* PBXTextBookmark */ = E0B54FC9118C0B7B00FFED10 /* PBXTextBookmark */;
+			E0B54FCA118C0B7B00FFED10 /* PBXTextBookmark */ = E0B54FCA118C0B7B00FFED10 /* PBXTextBookmark */;
+			E0B54FCB118C0B7B00FFED10 /* PBXTextBookmark */ = E0B54FCB118C0B7B00FFED10 /* PBXTextBookmark */;
 			E0C172FE1185DEED008D4585 = E0C172FE1185DEED008D4585 /* PBXTextBookmark */;
 			E0CBCC52116DDF060000C281 = E0CBCC52116DDF060000C281 /* PBXBookmark */;
 			E0DF0FF91163F324004FE7B9 = E0DF0FF91163F324004FE7B9 /* PBXTextBookmark */;
@@ -563,9 +568,9 @@
 	};
 	E00C26331162D91C00F62B70 /* Twitter.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1096, 9760}}";
-			sepNavSelRange = "{14741, 0}";
-			sepNavVisRange = "{14488, 1289}";
+			sepNavIntBoundsRect = "{{0, 0}, {1096, 10144}}";
+			sepNavSelRange = "{4618, 0}";
+			sepNavVisRange = "{4222, 874}";
 			sepNavWindowFrame = "{{22, 47}, {913, 981}}";
 		};
 	};
@@ -1289,9 +1294,9 @@
 	};
 	E06A348C116E8B7D0098CF12 /* TwitterAccount.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {966, 1712}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1096, 1504}}";
 			sepNavSelRange = "{2880, 0}";
-			sepNavVisRange = "{1585, 2505}";
+			sepNavVisRange = "{1969, 1958}";
 		};
 	};
 	E06A34C4116E96C60098CF12 /* AccountsViewController.h */ = {
@@ -1569,7 +1574,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 292";
 		rLen = 61;
-		rLoc = 15018;
+		rLoc = 15147;
 		rType = 0;
 		vrLen = 1532;
 		vrLoc = 10556;
@@ -1769,7 +1774,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 291";
 		rLen = 0;
-		rLoc = 9571;
+		rLoc = 9700;
 		rType = 0;
 		vrLen = 1235;
 		vrLoc = 11421;
@@ -1818,7 +1823,7 @@
 		isa = PBXTextBookmark;
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		rLen = 0;
-		rLoc = 217;
+		rLoc = 218;
 		rType = 1;
 	};
 	E0B54E60118BEEF400FFED10 /* PBXTextBookmark */ = {
@@ -1826,7 +1831,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 289";
 		rLen = 17;
-		rLoc = 9512;
+		rLoc = 9641;
 		rType = 0;
 		vrLen = 1423;
 		vrLoc = 11182;
@@ -1836,7 +1841,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 289";
 		rLen = 17;
-		rLoc = 9512;
+		rLoc = 9641;
 		rType = 0;
 		vrLen = 1284;
 		vrLoc = 11321;
@@ -1886,7 +1891,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 289";
 		rLen = 17;
-		rLoc = 9512;
+		rLoc = 9641;
 		rType = 0;
 		vrLen = 1423;
 		vrLoc = 11182;
@@ -2025,7 +2030,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 136";
 		rLen = 0;
-		rLoc = 4633;
+		rLoc = 4657;
 		rType = 0;
 		vrLen = 2192;
 		vrLoc = 4792;
@@ -2169,7 +2174,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 671";
 		rLen = 261;
-		rLoc = 23001;
+		rLoc = 23130;
 		rType = 0;
 		vrLen = 1587;
 		vrLoc = 25960;
@@ -2249,7 +2254,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 261";
 		rLen = 0;
-		rLoc = 7205;
+		rLoc = 7334;
 		rType = 0;
 		vrLen = 2314;
 		vrLoc = 8189;
@@ -2269,7 +2274,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 213";
 		rLen = 0;
-		rLoc = 6203;
+		rLoc = 6227;
 		rType = 0;
 		vrLen = 2394;
 		vrLoc = 7795;
@@ -2289,7 +2294,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 222";
 		rLen = 0;
-		rLoc = 6454;
+		rLoc = 6478;
 		rType = 0;
 		vrLen = 2333;
 		vrLoc = 7766;
@@ -2349,7 +2354,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 222";
 		rLen = 0;
-		rLoc = 6454;
+		rLoc = 6478;
 		rType = 0;
 		vrLen = 2419;
 		vrLoc = 8868;
@@ -2359,7 +2364,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 222";
 		rLen = 0;
-		rLoc = 6454;
+		rLoc = 6478;
 		rType = 0;
 		vrLen = 2335;
 		vrLoc = 7814;
@@ -2406,7 +2411,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 258";
 		rLen = 0;
-		rLoc = 7198;
+		rLoc = 7327;
 		rType = 0;
 		vrLen = 2336;
 		vrLoc = 8933;
@@ -2426,7 +2431,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 258";
 		rLen = 0;
-		rLoc = 7198;
+		rLoc = 7327;
 		rType = 0;
 		vrLen = 1481;
 		vrLoc = 9679;
@@ -2446,7 +2451,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 262";
 		rLen = 0;
-		rLoc = 7199;
+		rLoc = 7328;
 		rType = 0;
 		vrLen = 2271;
 		vrLoc = 8474;
@@ -2506,7 +2511,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 218";
 		rLen = 0;
-		rLoc = 6326;
+		rLoc = 6350;
 		rType = 0;
 		vrLen = 2347;
 		vrLoc = 8091;
@@ -2543,7 +2548,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 266";
 		rLen = 0;
-		rLoc = 7199;
+		rLoc = 7328;
 		rType = 0;
 		vrLen = 1597;
 		vrLoc = 9546;
@@ -2623,7 +2628,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 181";
 		rLen = 18;
-		rLoc = 4918;
+		rLoc = 4942;
 		rType = 0;
 		vrLen = 2055;
 		vrLoc = 6378;
@@ -2677,7 +2682,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 253";
 		rLen = 0;
-		rLoc = 6507;
+		rLoc = 6531;
 		rType = 0;
 		vrLen = 1603;
 		vrLoc = 9612;
@@ -2697,7 +2702,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 260";
 		rLen = 0;
-		rLoc = 6959;
+		rLoc = 7088;
 		rType = 0;
 		vrLen = 2299;
 		vrLoc = 9612;
@@ -2707,7 +2712,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 181";
 		rLen = 18;
-		rLoc = 4918;
+		rLoc = 4942;
 		rType = 0;
 		vrLen = 2361;
 		vrLoc = 8122;
@@ -2717,7 +2722,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 216";
 		rLen = 0;
-		rLoc = 6326;
+		rLoc = 6350;
 		rType = 0;
 		vrLen = 2213;
 		vrLoc = 8214;
@@ -2727,7 +2732,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 181";
 		rLen = 18;
-		rLoc = 4918;
+		rLoc = 4942;
 		rType = 0;
 		vrLen = 2407;
 		vrLoc = 8122;
@@ -2737,7 +2742,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 216";
 		rLen = 0;
-		rLoc = 6326;
+		rLoc = 6350;
 		rType = 0;
 		vrLen = 2213;
 		vrLoc = 8214;
@@ -2774,7 +2779,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 181";
 		rLen = 18;
-		rLoc = 4918;
+		rLoc = 4942;
 		rType = 0;
 		vrLen = 2407;
 		vrLoc = 8122;
@@ -2801,7 +2806,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 251";
 		rLen = 0;
-		rLoc = 6507;
+		rLoc = 6531;
 		rType = 0;
 		vrLen = 1603;
 		vrLoc = 9533;
@@ -2821,7 +2826,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 223";
 		rLen = 0;
-		rLoc = 6576;
+		rLoc = 6600;
 		rType = 0;
 		vrLen = 2468;
 		vrLoc = 7894;
@@ -2851,7 +2856,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 114";
 		rLen = 0;
-		rLoc = 4633;
+		rLoc = 4657;
 		rType = 0;
 		vrLen = 1146;
 		vrLoc = 4402;
@@ -2959,7 +2964,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 326";
 		rLen = 0;
-		rLoc = 16666;
+		rLoc = 16795;
 		rType = 0;
 		vrLen = 2326;
 		vrLoc = 12184;
@@ -3063,7 +3068,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 326";
 		rLen = 0;
-		rLoc = 16666;
+		rLoc = 16795;
 		rType = 0;
 		vrLen = 2227;
 		vrLoc = 11698;
@@ -3073,7 +3078,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 326";
 		rLen = 0;
-		rLoc = 16666;
+		rLoc = 16795;
 		rType = 0;
 		vrLen = 2428;
 		vrLoc = 13069;
@@ -3143,7 +3148,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 457";
 		rLen = 0;
-		rLoc = 18624;
+		rLoc = 18753;
 		rType = 0;
 		vrLen = 2222;
 		vrLoc = 17125;
@@ -3153,7 +3158,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 340";
 		rLen = 0;
-		rLoc = 16666;
+		rLoc = 16795;
 		rType = 0;
 		vrLen = 2370;
 		vrLoc = 12103;
@@ -3243,7 +3248,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 260";
 		rLen = 0;
-		rLoc = 10424;
+		rLoc = 10553;
 		rType = 0;
 		vrLen = 1961;
 		vrLoc = 9769;
@@ -3253,7 +3258,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 267";
 		rLen = 0;
-		rLoc = 10880;
+		rLoc = 11009;
 		rType = 0;
 		vrLen = 1975;
 		vrLoc = 9771;
@@ -3290,7 +3295,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 267";
 		rLen = 0;
-		rLoc = 10880;
+		rLoc = 11009;
 		rType = 0;
 		vrLen = 2032;
 		vrLoc = 9771;
@@ -3300,7 +3305,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 267";
 		rLen = 0;
-		rLoc = 10880;
+		rLoc = 11009;
 		rType = 0;
 		vrLen = 1567;
 		vrLoc = 9771;
@@ -3310,7 +3315,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 267";
 		rLen = 0;
-		rLoc = 10880;
+		rLoc = 11009;
 		rType = 0;
 		vrLen = 1933;
 		vrLoc = 9552;
@@ -3380,7 +3385,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 257";
 		rLen = 745;
-		rLoc = 10356;
+		rLoc = 10485;
 		rType = 0;
 		vrLen = 1782;
 		vrLoc = 11086;
@@ -3390,7 +3395,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 323";
 		rLen = 67;
-		rLoc = 13300;
+		rLoc = 13429;
 		rType = 0;
 		vrLen = 1877;
 		vrLoc = 13740;
@@ -3420,7 +3425,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 691";
 		rLen = 0;
-		rLoc = 23884;
+		rLoc = 24013;
 		rType = 0;
 		vrLen = 1552;
 		vrLoc = 2616;
@@ -3430,7 +3435,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 691";
 		rLen = 0;
-		rLoc = 23884;
+		rLoc = 24013;
 		rType = 0;
 		vrLen = 1943;
 		vrLoc = 2618;
@@ -3470,7 +3475,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 344";
 		rLen = 0;
-		rLoc = 14367;
+		rLoc = 14496;
 		rType = 0;
 		vrLen = 1313;
 		vrLoc = 13717;
@@ -3480,7 +3485,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14255;
+		rLoc = 14384;
 		rType = 0;
 		vrLen = 1585;
 		vrLoc = 13853;
@@ -3500,7 +3505,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14255;
+		rLoc = 14384;
 		rType = 0;
 		vrLen = 1534;
 		vrLoc = 13907;
@@ -3510,7 +3515,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14255;
+		rLoc = 14384;
 		rType = 0;
 		vrLen = 1627;
 		vrLoc = 13850;
@@ -3551,7 +3556,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14255;
+		rLoc = 14384;
 		rType = 0;
 		vrLen = 1534;
 		vrLoc = 13907;
@@ -3561,7 +3566,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14255;
+		rLoc = 14384;
 		rType = 0;
 		vrLen = 1534;
 		vrLoc = 13907;
@@ -3581,7 +3586,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14255;
+		rLoc = 14384;
 		rType = 0;
 		vrLen = 1534;
 		vrLoc = 13907;
@@ -3615,7 +3620,7 @@
 		isa = PBXTextBookmark;
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		rLen = 0;
-		rLoc = 341;
+		rLoc = 342;
 		rType = 1;
 	};
 	E0B54FA6118C096400FFED10 /* PBXTextBookmark */ = {
@@ -3623,7 +3628,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14100;
+		rLoc = 14229;
 		rType = 0;
 		vrLen = 1631;
 		vrLoc = 13846;
@@ -3633,7 +3638,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14100;
+		rLoc = 14229;
 		rType = 0;
 		vrLen = 1534;
 		vrLoc = 13907;
@@ -3702,7 +3707,7 @@
 		isa = PBXTextBookmark;
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		rLen = 0;
-		rLoc = 341;
+		rLoc = 342;
 		rType = 1;
 	};
 	E0B54FB1118C09DD00FFED10 /* PBXTextBookmark */ = {
@@ -3710,7 +3715,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 342";
 		rLen = 0;
-		rLoc = 14100;
+		rLoc = 14229;
 		rType = 0;
 		vrLen = 1360;
 		vrLoc = 13846;
@@ -3724,24 +3729,6 @@
 		rType = 0;
 		vrLen = 963;
 		vrLoc = 0;
-	};
-	E0B54FB4118C0A2A00FFED10 /* Twitter.m:367 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = E00C26331162D91C00F62B70 /* Twitter.m */;
-		functionName = "-twitterConnection:didFailWithError:";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 367;
-		location = HelTweetica;
-		modificationTime = 294390332.415891;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
 	};
 	E0B54FB6118C0A2C00FFED10 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -3758,7 +3745,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 366";
 		rLen = 78;
-		rLoc = 15121;
+		rLoc = 15250;
 		rType = 0;
 		vrLen = 1293;
 		vrLoc = 14488;
@@ -3768,7 +3755,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 366";
 		rLen = 78;
-		rLoc = 15121;
+		rLoc = 15250;
 		rType = 0;
 		vrLen = 1293;
 		vrLoc = 14488;
@@ -3798,7 +3785,7 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 366";
 		rLen = 78;
-		rLoc = 15121;
+		rLoc = 15250;
 		rType = 0;
 		vrLen = 1293;
 		vrLoc = 14488;
@@ -3808,12 +3795,72 @@
 		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
 		name = "Twitter.m: 352";
 		rLen = 0;
-		rLoc = 14741;
+		rLoc = 14870;
 		rType = 0;
 		vrLen = 1289;
 		vrLoc = 14488;
 	};
 	E0B54FBF118C0A6F00FFED10 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0B54F18118BFC9E00FFED10 /* TwitterLoadTimelineAction.m */;
+		name = "TwitterLoadTimelineAction.m: 17";
+		rLen = 15;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 963;
+		vrLoc = 0;
+	};
+	E0B54FC3118C0A9E00FFED10 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
+		name = "Twitter.m: 352";
+		rLen = 0;
+		rLoc = 14870;
+		rType = 0;
+		vrLen = 1336;
+		vrLoc = 15017;
+	};
+	E0B54FC4118C0A9E00FFED10 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0B54F18118BFC9E00FFED10 /* TwitterLoadTimelineAction.m */;
+		name = "TwitterLoadTimelineAction.m: 17";
+		rLen = 15;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 963;
+		vrLoc = 0;
+	};
+	E0B54FC8118C0B7B00FFED10 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E06A348C116E8B7D0098CF12 /* TwitterAccount.m */;
+		name = "TwitterAccount.m: 41";
+		rLen = 0;
+		rLoc = 2880;
+		rType = 0;
+		vrLen = 1958;
+		vrLoc = 1969;
+	};
+	E0B54FC9118C0B7B00FFED10 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
+		name = "Twitter.m: 352";
+		rLen = 0;
+		rLoc = 14870;
+		rType = 0;
+		vrLen = 1308;
+		vrLoc = 14973;
+	};
+	E0B54FCA118C0B7B00FFED10 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E00C26331162D91C00F62B70 /* Twitter.m */;
+		name = "Twitter.m: 107";
+		rLen = 0;
+		rLoc = 4618;
+		rType = 0;
+		vrLen = 874;
+		vrLoc = 4222;
+	};
+	E0B54FCB118C0B7B00FFED10 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = E0B54F18118BFC9E00FFED10 /* TwitterLoadTimelineAction.m */;
 		name = "TwitterLoadTimelineAction.m: 17";

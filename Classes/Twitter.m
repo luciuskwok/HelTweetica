@@ -104,7 +104,7 @@
 
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName {
 	for (TwitterAccount *account in accounts) {
-		if ([account.screenName isEqualToString: screenName])
+		if ([account.screenName caseInsensitiveCompare: screenName] == NSOrderedSame)
 			return account;
 	}
 	return nil;
@@ -167,6 +167,7 @@
 		TwitterAccount *account = [self accountWithScreenName: action.username];
 		[account setXAuthToken: action.token];
 		[account setXAuthSecret: action.secret];
+		[account setScreenName: action.username]; // To make sure the uppercase/lowercase letters are correct.
 		[self setCurrentAccount: account];
 		[self saveAccounts];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"currentAccountDidChange" object:self];
