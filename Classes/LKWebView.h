@@ -15,5 +15,6 @@
 
 - (NSString*) setDocumentElement:(NSString*)element visibility:(BOOL)visibility;
 - (NSString*) setDocumentElement:(NSString*)element innerHTML:(NSString*)html;
+- (void) scrollToTop;
 
 @end

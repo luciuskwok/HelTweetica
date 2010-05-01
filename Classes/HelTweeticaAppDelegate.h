@@ -23,11 +23,16 @@
     UIWindow *window;
     UINavigationController *navigationController;
 	Twitter *twitter;
+	
+	int networkActionCount;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) Twitter *twitter;
+
+- (void) incrementNetworkActionCount;
+- (void) decrementNetworkActionCount;
 
 @end
 

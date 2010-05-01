@@ -1,5 +1,5 @@
 //
-//  TwitterConnection.m
+//  TwitterAction.m
 //  HelTweetica
 //
 //  Created by Lucius Kwok on 4/25/10.
@@ -8,6 +8,7 @@
 
 #import "TwitterAction.h"
 #import "OAuthClient.h"
+#import "HelTweeticaAppDelegate.h"
 
 
 // You will need to supply your own credentials in the file imported here:
@@ -22,6 +23,14 @@
 @synthesize completionTarget, completionAction, delegate;
 
 #pragma mark -
+
+- (id) init {
+	self = [super init];
+	if (self) {
+		appDelegate = [[UIApplication sharedApplication] delegate];
+	}
+	return self;
+}
 
 - (void) dealloc {
 	[consumerToken release];
@@ -90,6 +99,7 @@
 	
 	// Retain delegate until the NSURLConnection returns with a finished or error callback
 	[delegate retain];
+	[appDelegate incrementNetworkActionCount];
 }
 
 - (void) startPostRequest {
@@ -118,6 +128,7 @@
 - (void) cancel {
 	[self.connection cancel];
 	isLoading = NO;
+	[appDelegate decrementNetworkActionCount];
 }
 
 #pragma mark -
@@ -167,6 +178,7 @@
 	
 	[delegate release];
 	self.connection = nil;
+	[appDelegate decrementNetworkActionCount];
 }	
 
 - (void)connection:(NSURLConnection *)aConnection didFailWithError:(NSError *)error {
@@ -177,6 +189,7 @@
 
 	[delegate release];
 	self.connection = nil;
+	[appDelegate decrementNetworkActionCount];
 }
 
 - (void) parseReceivedData:(NSData*)data {

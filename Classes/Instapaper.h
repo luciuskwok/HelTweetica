@@ -16,12 +16,15 @@
 
 
 #import <Foundation/Foundation.h>
+#import "HelTweeticaAppDelegate.h"
 
 
 @interface Instapaper : NSObject {
 	NSURLConnection *downloadConnection;
 	NSInteger downloadStatusCode;
 	BOOL isLoading;
+	
+	HelTweeticaAppDelegate *appDelegate;
 }
 @property (retain) NSURLConnection *downloadConnection;
 

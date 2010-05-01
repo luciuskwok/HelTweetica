@@ -132,6 +132,7 @@
 #pragma mark Popovers
 
 - (BOOL)closeAllPopovers {
+	// Returns YES if any popovers were visible and closed.
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		// Close any action sheets
 		if (currentActionSheet != nil) {
@@ -171,11 +172,9 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController: contentViewController] autorelease];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if ([self closeAllPopovers] == NO) {
-			UIPopoverController *popover = [self presentPopoverFromItem:item viewController:navController];
-			if ([contentViewController respondsToSelector:@selector (setPopover:)])
-				[(id) contentViewController setPopover: popover];
-		}
+		UIPopoverController *popover = [self presentPopoverFromItem:item viewController:navController];
+		if ([contentViewController respondsToSelector:@selector (setPopover:)])
+			[(id) contentViewController setPopover: popover];
 	} else { // iPhone
 		navController.navigationBar.barStyle = UIBarStyleBlack;
 		[self presentModalViewController:navController animated:YES];
@@ -183,6 +182,8 @@
 }
 
 - (AccountsViewController*) showAccounts:(id)sender {
+	if ([self closeAllPopovers]) 
+		return nil;
 	AccountsViewController *accountsController = [[[AccountsViewController alloc] initWithTwitter:twitter] autorelease];
 	[self presentContent: accountsController inNavControllerInPopoverFromItem: sender];
 	return accountsController;
@@ -201,28 +202,33 @@
 }
 
 - (IBAction) lists: (id) sender {
-	ListsViewController *lists = [[[ListsViewController alloc] initWithTwitter:twitter] autorelease];
-	[self presentContent: lists inNavControllerInPopoverFromItem: sender];
+	if ([self closeAllPopovers] == NO) {
+		ListsViewController *lists = [[[ListsViewController alloc] initWithTwitter:twitter] autorelease];
+		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
+	}
 }
 
 - (IBAction) search: (id) sender {
-	SearchViewController *search = [[[SearchViewController alloc] initWithTwitter:twitter] autorelease];
-	[self presentContent: search inNavControllerInPopoverFromItem: sender];
+	if ([self closeAllPopovers] == NO) {
+		SearchViewController *search = [[[SearchViewController alloc] initWithTwitter:twitter] autorelease];
+		[self presentContent: search inNavControllerInPopoverFromItem: sender];
+	}
 }
 
 - (IBAction) reloadData: (id) sender {
+	// TODO: if (self.customPageTitle != nil) reload the list or saved search.
 	if (selectedTabName == nil) 
 		self.selectedTabName = kTimelineIdentifier;
 	[self selectTimeline: selectedTabName reload:YES];
 }
 
 - (IBAction) allstars: (id) sender {
-	[self closeAllPopovers];
-	
-	TwitterAccount *account = [twitter currentAccount];
-	AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:account.timeline] autorelease];
-	[self presentModalViewController:controller animated:YES];
-	[controller startDelayedShuffleModeAfterInterval:kDelayBeforeEnteringShuffleMode];
+	if ([self closeAllPopovers] == NO) {
+		TwitterAccount *account = [twitter currentAccount];
+		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:account.timeline] autorelease];
+		[self presentModalViewController:controller animated:YES];
+		[controller startDelayedShuffleModeAfterInterval:kDelayBeforeEnteringShuffleMode];
+	}
 }
 
 - (IBAction) analyze: (id) sender {
@@ -239,13 +245,14 @@
 }
 
 - (IBAction) compose: (id) sender {
-	ComposeViewController *compose = [[[ComposeViewController alloc] initWithTwitter:twitter] autorelease];
-	[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+	if ([self closeAllPopovers] == NO) { 
+		ComposeViewController *compose = [[[ComposeViewController alloc] initWithTwitter:twitter] autorelease];
+		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+	}
 }
 
 #pragma mark -
 #pragma mark WebView updating
-
 
 - (NSString*) timeStringSinceNow: (NSDate*) date {
 	if (date == nil) return nil;
@@ -279,7 +286,7 @@
 	TwitterAccount *account = [twitter currentAccount];
 	NSString *result;
 	if (customPageTitle)
-		result = customPageTitle;
+		result =customPageTitle;
 	else 
 		result = [NSString stringWithFormat:@"<a href='http://mobile.twitter.com/%@'>%@</a>", account.screenName, account.screenName];
 	return result;
@@ -532,7 +539,8 @@
 	TwitterAccount *account = [twitter currentAccount];
 	BOOL willBeLoading = NO;
 	
-	// TODO: add code to handle lists statuses and search results, which show up in a custom tab.
+	// Reset the custom page title if selecting one of the standard timelines
+	self.customPageTitle = nil;
 	
 	if (account.xAuthToken != nil) {
 		self.selectedTabName = timelineIdentifier;
@@ -586,6 +594,7 @@
 	}
 	compose.inReplyTo = identifier;
 	
+	[self closeAllPopovers];
 	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
@@ -604,6 +613,7 @@
 	}
 	compose.inReplyTo = identifier;
 	
+	[self closeAllPopovers];
 	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
@@ -644,6 +654,9 @@
 	[self rewriteTabArea];
 	[self rewriteTweetArea];	
 	[self setLoadingSpinnerVisibility:NO];
+	
+	// Scroll to top of web view
+	[self.webView scrollToTop];
 }
 
 - (void)twitter:(Twitter*)aTwitter favoriteDidChange:(TwitterMessage*)aMessage {
@@ -739,7 +752,6 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-	//[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {

@@ -19,6 +19,8 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMailComposeViewController.h>
 
+@class HelTweeticaAppDelegate;
+
 
 @interface WebBrowserViewController : UIViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
 	IBOutlet UIWebView *webView;
@@ -32,6 +34,8 @@
 	NSURLRequest *request;
 	
 	BOOL addURLToInstapaperWhenUsernameChanges;
+
+	HelTweeticaAppDelegate *appDelegate;
 }
 @property (nonatomic, retain) UIWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *backButton;

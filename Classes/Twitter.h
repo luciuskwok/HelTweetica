@@ -48,12 +48,13 @@
 - (void) reloadMentions;
 - (void) reloadDirectMessages;
 - (void) reloadFavorites;
-- (void) loadTimelineOfList:(TwitterList*)list;
 
 - (void) loadListsOfUser:(NSString*)userOrNil;
 - (void) loadListSubscriptionsOfUser:(NSString*)userOrNil;
+- (void) loadTimelineOfList:(TwitterList*)list;
 
 - (void) loadSavedSearches;
+- (void)searchWithQuery:(NSString*)query;
 
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier;
 

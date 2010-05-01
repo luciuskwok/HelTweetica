@@ -24,6 +24,7 @@
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterLoadListsAction.h"
 #import "TwitterLoadSavedSearchesAction.h"
+#import "TwitterSearchAction.h"
 
 
 
@@ -117,7 +118,6 @@
 - (void) startTwitterAction:(TwitterAction*)action withToken:(BOOL)useToken {
 	// Add the action to the array of actions, and updates the network activity spinner
 	[actions addObject: action];
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
 	// Set up Twitter action
 	action.delegate = self;
@@ -133,8 +133,6 @@
 - (void) removeTwitterAction:(TwitterAction*)action {
 	// Removes the action from the array of actions, and updates the network activity spinner
 	[actions removeObject: action];
-	if (actions.count == 0)
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 - (void) loginScreenName:(NSString*)aScreenName password:(NSString*)aPassword {
@@ -351,25 +349,6 @@
 		[delegate twitter:self didFinishLoadingTimeline:currentAccount.favorites];
 }
 
-- (void) loadTimelineOfList:(TwitterList*)list {
-	NSNumber *count = [NSNumber numberWithInt:200];
-	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
-	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method sinceIdentifier:nil maxIdentifier:nil perPage:count page:nil] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didLoadTimelineOfList:);
-	action.timelineName = list.fullName;
-	[self startTwitterAction:action withToken:YES];
-}
-
-- (void) didLoadTimelineOfList:(TwitterLoadTimelineAction *)action {
-	NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-	[self synchronizeStatusesWithArray: newMessages];
-
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didSelectTimeline:withName:tabName:)])
-		[delegate twitter:self didSelectTimeline:newMessages withName:action.timelineName tabName:@"List"];
-}
-
 #pragma mark -
 #pragma mark TwitterAction - Lists
 
@@ -397,6 +376,25 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"listSubscriptionsDidChange" object:self];
 }
 
+- (void) loadTimelineOfList:(TwitterList*)list {
+	NSNumber *count = [NSNumber numberWithInt:200];
+	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
+	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method sinceIdentifier:nil maxIdentifier:nil perPage:count page:nil] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didLoadTimelineOfList:);
+	action.timelineName = list.fullName;
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (void) didLoadTimelineOfList:(TwitterLoadTimelineAction *)action {
+	NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
+	[self synchronizeStatusesWithArray: newMessages];
+	
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didSelectTimeline:withName:tabName:)])
+		[delegate twitter:self didSelectTimeline:newMessages withName:action.timelineName tabName:@"List"];
+}
+
 #pragma mark -
 #pragma mark TwitterAction - Search
 
@@ -412,6 +410,33 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"savedSearchesDidChange" object:self];
 }
 
+- (void)searchWithQuery:(NSString*)query {
+	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didSearch:);
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (NSString *)htmlSafeString:(NSString *)string {
+	NSMutableString *result = [NSMutableString stringWithString:string];
+	[result replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:0 range:NSMakeRange(0, result.length)];
+	return result;
+}
+
+- (void) didSearch:(TwitterSearchAction *)action {
+	NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
+	[self synchronizeStatusesWithArray: newMessages];
+	
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didSelectTimeline:withName:tabName:)]) {
+		NSString *pageName = [NSString stringWithFormat: @"Search for &ldquo;%@&rdquo;", [self htmlSafeString:action.query]];
+		[delegate twitter:self didSelectTimeline:newMessages withName:pageName tabName:@"Results"];
+	}
+}
+
 
 #pragma mark -
 #pragma mark TwitterAction delegate methods
@@ -422,7 +447,9 @@
 
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
 	if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
-		NSError *error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
+		if (action.statusCode != 0) {
+			error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
+		}
 		[delegate twitter:self didFailWithNetworkError:error];
 	}
 	[actions removeObject: action];

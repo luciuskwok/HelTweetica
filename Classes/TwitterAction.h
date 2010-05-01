@@ -1,5 +1,5 @@
 //
-//  TwitterConnection.h
+//  TwitterAction.h
 //  HelTweetica
 //
 //  Created by Lucius Kwok on 4/25/10.
@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
 @protocol TwitterActionDelegate;
+@class HelTweeticaAppDelegate;
 
 @interface TwitterAction : NSObject {
 	NSString *consumerToken;
@@ -24,6 +26,8 @@
 	id completionTarget;
 	SEL completionAction;
 	id <TwitterActionDelegate> delegate;
+	
+	HelTweeticaAppDelegate *appDelegate;
 }
 
 @property (nonatomic, retain) NSString *consumerToken;
@@ -38,7 +42,7 @@
 
 @property (assign) id completionTarget;
 @property (assign) SEL completionAction;
-@property (assign) id delegate;
+@property (assign) id delegate; // delegate is retained while a NSURLConnection is active, and released if it finished loading or failed with an error.
 
 - (void) start;
 	// Subclasses should override -start to call the appropriate post or get request method.

@@ -19,14 +19,11 @@
 #import "Twitter.h"
 
 
-@interface SearchViewController : UITableViewController {
-	IBOutlet UIView *searchView;
-	
+@interface SearchViewController : UITableViewController <UISearchBarDelegate> {
 	Twitter *twitter;
 	UIPopoverController *popover;
 	BOOL loading;
 }
-@property (nonatomic, retain) UIView *searchView;
 @property (assign) UIPopoverController *popover;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;

@@ -18,6 +18,7 @@
 #import "WebBrowserViewController.h"
 #import "InstapaperSettingsViewController.h"
 #import "Instapaper.h"
+#import "HelTweeticaAppDelegate.h"
 
 
 @interface WebBrowserViewController (PrivateMethods)
@@ -38,6 +39,7 @@
 		[nc addObserver:self selector:@selector(networkError:) name:@"instapaperNetworkError" object:nil];
 		[nc addObserver:self selector:@selector(authenticationFailed:) name:@"instapaperAuthenticationFailed" object:nil];
 		[nc addObserver:self selector:@selector(instapaperSuccess:) name:@"instapaperSuccess" object:nil];
+		appDelegate = [[UIApplication sharedApplication] delegate];
 	}
 	return self;
 }
@@ -62,6 +64,7 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+	webView.delegate = nil;
 	self.webView = nil;
 }
 
@@ -73,6 +76,7 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 	[webView stopLoading];
+	webView.delegate = nil;
 	[super viewWillDisappear:animated];
 }
 
@@ -84,17 +88,17 @@
 #pragma mark -
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	[appDelegate incrementNetworkActionCount];
 	[self updateButtons];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	[appDelegate decrementNetworkActionCount];
 	[self updateButtons];
 }
 
 - (void)webView:(UIWebView *)aWebView didFailLoadWithError:(NSError *)error {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	[appDelegate decrementNetworkActionCount];
 	[self updateButtons];
 	
 	if ([error code] != -999) {

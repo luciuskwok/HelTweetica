@@ -20,16 +20,15 @@
 
 
 @implementation SearchViewController
-@synthesize searchView, popover;
+@synthesize popover;
 
 - (void) setContentSize {
 	// Set the content size
 	if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
 		
-		TwitterAccount *account = [twitter currentAccount];
-		int count = account.savedSearches.count;
+		int count = twitter.currentAccount.savedSearches.count;
 		if (count < 3) count = 3;
-		[self setContentSizeForViewInPopover: CGSizeMake(320, 44 * count + 22)];
+		[self setContentSizeForViewInPopover: CGSizeMake(320, 44 * count + 66)];
 	}
 }
 
@@ -37,20 +36,33 @@
 #pragma mark Memory management
 
 - (id)initWithTwitter:(Twitter*)aTwitter {
-	if (self = [super initWithNibName:@"Lists" bundle:nil]) {
+	if (self = [super initWithNibName:@"Search" bundle:nil]) {
 		twitter = [aTwitter retain];
 		
 		[self setContentSize];
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
-		//[nc addObserver:self selector:@selector(listSubscriptionsDidChange:) name:@"listSubscriptionsDidChange" object:nil];
-		[nc addObserver:self selector:@selector(networkError:) name:@"twitterNetworkError" object:nil];
 		
+		// TODO: fix obsolete network handling. 
+		// [nc addObserver:self selector:@selector(networkError:) name:@"twitterNetworkError" object:nil];
+
 		// Request a fresh list of list subscriptions.
 		loading = YES;
 		[twitter loadSavedSearches];
 	}
 	return self;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+ }
+
+- (void)viewDidUnload {
+}
+
+- (void)dealloc {
+	[twitter release];
+    [super dealloc];
 }
 
 #pragma mark -
@@ -67,15 +79,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-	self.tableView.tableHeaderView = self.searchView;
-	//[[self tableView] setTableHeaderView: self.searchBar];
 	
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	// Set table header view
+	CGRect frame = self.view.bounds;
+	frame.size.height = 44;
+	UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:frame] autorelease];
+	searchBar.delegate = self;
+	searchBar.tintColor = [UIColor blackColor];
+	searchBar.placeholder = NSLocalizedString (@"Twitter", @"search bar placeholder");
+	self.tableView.tableHeaderView = searchBar;
+
+	// Title
+	self.navigationItem.title = NSLocalizedString (@"Search", @"Nav bar");
+	
+   // Display an Edit button in the navigation bar for this view controller.
+    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -110,39 +128,30 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	int count = 0;
-	TwitterAccount *account = [twitter currentAccount];
-	count = account.savedSearches.count;
-	if (count == 0) 
-		count = 1;
+	int count = twitter.currentAccount.savedSearches.count;
+	if (count == 0) count = 1;
 	return count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	NSString *result = nil;
-	result = NSLocalizedString (@"Saved Searches", @"");
-	return result;
+	return NSLocalizedString (@"Saved Searches", @"");
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
-    
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SavedSearchCell"];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SavedSearchCell"] autorelease];
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
 	}
 
 	TwitterAccount *account = [twitter currentAccount];
 	NSString *query;
-	if (indexPath.row < account.lists.count) {
+	if (indexPath.row < account.savedSearches.count) {
 		query = [account.savedSearches objectAtIndex: indexPath.row];
 		cell.textLabel.text = query;
 		cell.textLabel.textColor = [UIColor blackColor];
@@ -158,11 +167,8 @@
     return cell;
 }
 
-
 /*
-// Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
     return YES;
 }
 */
@@ -208,33 +214,30 @@
 	[alert release];
 }
 
+- (void)searchFor:(NSString*)query {
+	if ([query length] == 0) return;
+	
+	[twitter searchWithQuery:query];
+	if (popover) {
+		[popover dismissPopoverAnimated:YES];
+		[popover.delegate popoverControllerDidDismissPopover:popover]; // Make sure delegate knows popover has been removed
+	}
+}	
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self showAlertWithTitle:@"Under Construction" message:@"Sorry, this feature isn't implemented yet!"];
+	if (indexPath.row < twitter.currentAccount.savedSearches.count) {
+		NSString *query = [twitter.currentAccount.savedSearches objectAtIndex: indexPath.row];
+		[self searchFor:query];
+	}
 }
 
 #pragma mark -
-#pragma mark Memory management
+#pragma mark Search bar delegate
 
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+	NSString *query = searchBar.text;
+	[self searchFor:query];
 }
-
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
-	
-	[searchView release];
-	[twitter release];
-    [super dealloc];
-}
-
 
 @end
 

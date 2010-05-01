@@ -16,6 +16,6 @@
 	NSString *key;
 }
 @property (nonatomic, retain) NSMutableArray *queries;
-@property (nonatomic, retain) NSString *key;
+@property (nonatomic, copy) NSString *key;
 
 @end

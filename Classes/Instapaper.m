@@ -34,6 +34,14 @@
 	return _sharedInstapaper;
 }
 
+- (id)init {
+	self = [super init];
+	if (self) {
+		appDelegate = [[UIApplication sharedApplication] delegate];
+	}
+	return self;
+}	
+
 - (void) cancel {
 	[self.downloadConnection cancel];
 	isLoading = NO;
@@ -49,7 +57,7 @@
 	[request setHTTPMethod:@"GET"];
 	
 	// Create the download connection
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	[appDelegate incrementNetworkActionCount];
 	self.downloadConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];
 	isLoading = YES;
 	
@@ -128,7 +136,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	if (connection != downloadConnection) return;
 	
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	[appDelegate decrementNetworkActionCount];
 	isLoading = NO;
 	self.downloadConnection = nil;
 	
@@ -139,7 +147,7 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	if (connection != downloadConnection) return;
 	
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	[appDelegate decrementNetworkActionCount];
 	self.downloadConnection = nil;
 	isLoading = NO;
 	

@@ -44,8 +44,13 @@
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(listsDidChange:) name:@"listsDidChange" object:nil];
 		[nc addObserver:self selector:@selector(listSubscriptionsDidChange:) name:@"listSubscriptionsDidChange" object:nil];
-		[nc addObserver:self selector:@selector(networkError:) name:@"twitterNetworkError" object:nil];
 		
+		// TODO: fix obsolete network handling. 
+		// [nc addObserver:self selector:@selector(networkError:) name:@"twitterNetworkError" object:nil];
+		
+		// Title
+		self.navigationItem.title = NSLocalizedString (@"Lists", @"Nav bar");
+
 		// Request a fresh list of list subscriptions.
 		loading = YES;
 		[twitter loadListsOfUser:nil];
@@ -250,8 +255,7 @@
 		[twitter loadTimelineOfList: list];
 		if (popover) {
 			[popover dismissPopoverAnimated:YES];
-			// Make sure delegate knows popover has been removed
-			[popover.delegate popoverControllerDidDismissPopover:popover];
+			[popover.delegate popoverControllerDidDismissPopover:popover]; // Make sure delegate knows popover has been removed
 		}
 	}
 }

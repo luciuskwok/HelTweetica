@@ -44,6 +44,18 @@
 	[twitter saveAccounts];
 }
 
+- (void) incrementNetworkActionCount {
+	networkActionCount++;
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
+- (void) decrementNetworkActionCount {
+	networkActionCount--;
+	if (networkActionCount <= 0) {
+		networkActionCount = 0;
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	}
+}
 
 #pragma mark -
 #pragma mark Memory management

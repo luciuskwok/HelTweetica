@@ -15,7 +15,7 @@
 	NSString *timelineName;
 }
 @property (nonatomic, retain) NSArray *messages;
-@property (nonatomic, retain) NSString *timelineName;
+@property (nonatomic, copy) NSString *timelineName;
 
 - (id)initWithTwitterMethod:(NSString*)method sinceIdentifier:(NSNumber*)sinceId maxIdentifier:(NSNumber*)maxId perPage:(NSNumber*)count page:(NSNumber*)page ;
 - (id)initWithTwitterMethod:(NSString*)method sinceIdentifier:(NSNumber*)sinceId maxIdentifier:(NSNumber*)maxId count:(NSNumber*)count page:(NSNumber*)page ;

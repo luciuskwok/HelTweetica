@@ -78,16 +78,19 @@
 								<int key="IBUISystemItemIdentifier">6</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="426956390">
-								<string key="IBUITitle">Lists</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">toolbar-lists.png</string>
+								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="366679980"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="1034175628">
-								<string key="IBUITitle">Search</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="366679980"/>
+								<int key="IBUISystemItemIdentifier">12</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="920750772">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -718,6 +721,10 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../HelTweetica.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">toolbar-lists.png</string>
+			<string key="NS.object.0">{24, 21}</string>
+		</object>
 		<string key="IBCocoaTouchPluginVersion">87</string>
 	</data>
 </archive>

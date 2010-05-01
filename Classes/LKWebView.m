@@ -30,6 +30,10 @@
 	return [self stringByEvaluatingJavaScriptFromString:js];
 }
 
+- (void) scrollToTop {
+	NSString *js = [NSString stringWithFormat: @"scroll(0,0);"];
+	[self stringByEvaluatingJavaScriptFromString:js];
+}
 
 
 @end
