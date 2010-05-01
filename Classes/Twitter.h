@@ -57,8 +57,8 @@
 - (void) reloadDirectMessages;
 - (void) reloadFavorites;
 
-- (void) loadListsWithUser:(NSString*)user;
-- (void) loadListSubscriptionsWithUser:(NSString*)user;
+- (void) loadListsOfUser:(NSString*)userOrNil;
+- (void) loadListSubscriptionsOfUser:(NSString*)userOrNil;
 
 - (void) loadSavedSearches;
 

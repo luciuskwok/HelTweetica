@@ -16,8 +16,8 @@
 
 
 #import "Twitter.h"
-#import "TwitterMessageJSONParser.h"
-#import "TwitterListsJSONParser.h"
+//#import "TwitterMessageJSONParser.h"
+//#import "TwitterListsJSONParser.h"
 #import "TwitterSavedSearchJSONParser.h"
 #import "OAuthClient.h"
 
@@ -26,6 +26,8 @@
 #import "TwitterRetweetAction.h"
 #import "TwitterUpdateStatusAction.h"
 #import "TwitterLoadTimelineAction.h"
+#import "TwitterLoadListsAction.h"
+
 
 
 #define kMaxMessageStaleness (20 * 60) 
@@ -237,7 +239,7 @@
 }
 
 #pragma mark -
-#pragma mark Timeline TwitterActions
+#pragma mark TwitterActions - Timeline
 
 - (void)reloadHomeTimeline {
 	NSNumber *newerThan = nil;
@@ -358,6 +360,49 @@
 }
 
 #pragma mark -
+#pragma mark TwitterAction - Lists
+
+- (void) loadListsOfUser:(NSString*)userOrNil {
+	TwitterLoadListsAction *action = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didLoadLists:);
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (void)didLoadLists:(TwitterLoadListsAction *)action {
+	currentAccount.lists = action.lists;
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"listsDidChange" object:self];
+}
+
+- (void) loadListSubscriptionsOfUser:(NSString*)userOrNil {
+	TwitterLoadListsAction *action = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didLoadListSubscriptions:);
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
+	currentAccount.listSubscriptions = action.lists;
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"listSubscriptionsDidChange" object:self];
+}
+
+#pragma mark -
+#pragma mark TwitterAction - Search
+
+- (void)loadSavedSearches {
+	downloadCompleteAction = @selector(savedSearchesReceived:);
+	[self callMethod:@"saved_searches" withParameters: nil];
+}
+
+- (void)savedSearchesReceived:(NSData*)receivedData {
+	TwitterSavedSearchJSONParser *parser = [[TwitterSavedSearchJSONParser alloc] init];
+	currentAccount.savedSearches = [parser queriesWithJSONData:receivedData];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"savedSearchesDidChange" object:self];
+	[parser release];
+}
+
+
+#pragma mark -
 #pragma mark TwitterAction delegate methods
 
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
@@ -408,23 +453,6 @@
 #pragma mark -
 
 
-- (void) loadListsWithUser:(NSString*)user {
-	downloadCompleteAction = @selector(listsReceived:);
-	NSString *method = (user != nil) ? [NSString stringWithFormat:@"%@/lists", user] : @"lists";
-	[self callMethod:method withParameters: nil];
-}
-
-- (void) loadListSubscriptionsWithUser:(NSString*)user {
-	downloadCompleteAction = @selector(listSubscriptionsReceived:);
-	NSString *method = (user != nil) ? [NSString stringWithFormat:@"%@/lists/subscriptions", user] : @"lists/subscriptions";
-	[self callMethod:method withParameters: nil];
-}
-
-- (void)loadSavedSearches {
-	downloadCompleteAction = @selector(savedSearchesReceived:);
-	[self callMethod:@"saved_searches" withParameters: nil];
-}
-
 - (void) callMethod: (NSString*) method withParameters: (NSDictionary*) parameters {
 	// Cancel any pending requests.
 	[self cancel];
@@ -456,27 +484,6 @@
 	[oauth release];
 }
 
-
-- (void)listsReceived:(NSData*)receivedData {
-	TwitterListsJSONParser *parser = [[TwitterListsJSONParser alloc] init];
-	currentAccount.lists = [parser listsWithJSONData:receivedData];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"listsDidChange" object:self];
-	[parser release];
-}
-
-- (void)listSubscriptionsReceived:(NSData*)receivedData {
-	TwitterListsJSONParser *parser = [[TwitterListsJSONParser alloc] init];
-	currentAccount.listSubscriptions = [parser listsWithJSONData:receivedData];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"listSubscriptionsDidChange" object:self];
-	[parser release];
-}
-
-- (void)savedSearchesReceived:(NSData*)receivedData {
-	TwitterSavedSearchJSONParser *parser = [[TwitterSavedSearchJSONParser alloc] init];
-	currentAccount.savedSearches = [parser queriesWithJSONData:receivedData];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"savedSearchesDidChange" object:self];
-	[parser release];
-}
 
 - (void) cancel {
 	[self.downloadConnection cancel];

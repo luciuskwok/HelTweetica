@@ -71,6 +71,7 @@
 #pragma mark -
 
 - (void) start {
+	NSLog (@"Subclasses should override the -[TwitterAction start] method.");
 }
 
 - (void) startURLRequest:(NSMutableURLRequest*)request {

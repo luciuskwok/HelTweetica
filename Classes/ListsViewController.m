@@ -48,7 +48,7 @@
 		
 		// Request a fresh list of list subscriptions.
 		loading = YES;
-		[twitter loadListsWithUser:nil];
+		[twitter loadListsOfUser:nil];
 	}
 	return self;
 }
@@ -77,7 +77,7 @@
 
 - (void) listsDidChange: (NSNotification*) aNotification {
 	// Chain load subscriptions
-	[twitter loadListSubscriptionsWithUser:nil];
+	[twitter loadListSubscriptionsOfUser:nil];
 }
 
 - (void) listSubscriptionsDidChange: (NSNotification*) aNotification {
