@@ -19,6 +19,7 @@
 #import "TwitterMessage.h"
 #import "TwitterAccount.h"
 
+@protocol TwitterDelegate;
 
 @interface Twitter : NSObject {
 	NSArray *accounts;
@@ -32,6 +33,8 @@
 	NSMutableData *downloadData;
 	SEL downloadCompleteAction;
 	BOOL isLoading;
+	
+	id <TwitterDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSArray *accounts;
@@ -40,6 +43,7 @@
 @property (nonatomic, retain) NSURLConnection *downloadConnection;
 @property (nonatomic, retain) NSMutableData *downloadData;
 @property (assign) BOOL isLoading;
+@property (assign) id <TwitterDelegate> delegate;
 
 - (void) loginAccountWithScreenName:(NSString*)aScreenName password:(NSString*)aPassword;
 - (void) addAccount: (TwitterAccount*) anAccount;
@@ -70,4 +74,12 @@
 
 - (void) saveAccounts;
 
+@end
+
+@protocol TwitterDelegate <NSObject>
+- (void)twitter:(Twitter*)aTwitter didFinishLoadingTimeline:(NSArray*)aTimeline;
+- (void)twitter:(Twitter*)aTwitter favoriteDidChange:(TwitterMessage*)aMessage;
+- (void)twitterDidRetweet:(Twitter*)aTwitter;
+
+- (void)twitter:(Twitter*)aTwitter didFailWithNetworkError:(NSError*)anError;
 @end

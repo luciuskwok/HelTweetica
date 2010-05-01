@@ -17,10 +17,11 @@
 
 #import <UIKit/UIKit.h>
 #import "Twitter.h"
+#import "LKWebView.h"
 
 
-@interface RootViewController : UIViewController <UIPopoverControllerDelegate> {
-	IBOutlet UIWebView *webView;
+@interface RootViewController : UIViewController <UIPopoverControllerDelegate, TwitterDelegate> {
+	IBOutlet LKWebView *webView;
 	IBOutlet UIBarButtonItem *accountsButton;
 	IBOutlet UIBarButtonItem *composeButton;
 	
@@ -37,7 +38,7 @@
 	UIAlertView *currentAlert;
 }
 
-@property (nonatomic, retain) UIWebView *webView;
+@property (nonatomic, retain) LKWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *accountsButton;
 @property (nonatomic, retain) UIBarButtonItem *composeButton;
 @property (nonatomic, retain) NSString *selectedTabName;

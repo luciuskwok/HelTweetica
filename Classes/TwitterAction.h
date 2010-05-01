@@ -21,6 +21,8 @@
 	NSInteger statusCode;
 	BOOL isLoading;
 	
+	id completionTarget;
+	SEL completionAction;
 	id <TwitterConnectionDelegate> delegate;
 }
 
@@ -34,6 +36,8 @@
 @property (assign) NSInteger statusCode;
 @property (assign) BOOL isLoading;
 
+@property (assign) id completionTarget;
+@property (assign) SEL completionAction;
 @property (assign) id delegate;
 
 - (void) start;

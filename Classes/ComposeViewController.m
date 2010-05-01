@@ -122,19 +122,13 @@
 - (IBAction) send: (id) sender {
 	// Check length
 	NSString *text = messageField.text;
-	NSData *unitext = [text dataUsingEncoding:NSUTF8StringEncoding];
-	if (([unitext length] == 0) || ([unitext length] > kTwitterCharacterMax)) {
+	// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
+	NSString *normalizedText = [text precomposedStringWithCanonicalMapping];
+	if ((normalizedText.length == 0) || (normalizedText.length > kTwitterCharacterMax)) {
 		return;
 	}
 	
-	// Remove sent message from user defaults only after confirmation is received
-	/*
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults removeObjectForKey:@"messageContent"];
-	[defaults removeObjectForKey:@"inReplyTo"];
-	*/
-	
-	[twitter updateStatus:text inReplyTo:inReplyTo];
+	[twitter updateStatus:normalizedText inReplyTo:inReplyTo];
 	
 	self.messageContent = nil;
 	self.inReplyTo = 0;
@@ -148,6 +142,7 @@
 }
 
 - (void) updateCharacterCountWithText:(NSString *)text {
+	// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
 	NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
 	int remaining = kTwitterCharacterMax - [normalizationFormC length];
 	charactersRemaining.text = [NSString stringWithFormat:@"%d", remaining];

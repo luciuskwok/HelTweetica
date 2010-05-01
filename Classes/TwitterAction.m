@@ -17,7 +17,8 @@ static NSString *sConsumerSecret = @"rZQXiibBhp0vFFG19kV2fn3onn8ApA2StYdHkqdKE";
 
 
 @implementation TwitterAction
-@synthesize consumerToken, consumerSecret, twitterMethod, parameters, connection, receivedData, statusCode, isLoading, delegate;
+@synthesize consumerToken, consumerSecret, twitterMethod, parameters, connection, receivedData, statusCode, isLoading;
+@synthesize completionTarget, completionAction, delegate;
 
 #pragma mark -
 
@@ -158,6 +159,11 @@ static NSString *sConsumerSecret = @"rZQXiibBhp0vFFG19kV2fn3onn8ApA2StYdHkqdKE";
 	
 	// Parse the received data
 	[self parseReceivedData:receivedData];
+	
+	// Call the completion action on the target
+	if ([completionTarget respondsToSelector:completionAction]) {
+		[completionTarget performSelector:completionAction withObject:self];
+	}
 	
 	if ([delegate respondsToSelector:@selector(twitterActionDidFinishLoading:)])
 		[delegate twitterActionDidFinishLoading:self];

@@ -59,7 +59,7 @@
 @end
 
 @implementation Twitter
-@synthesize accounts, currentAccount, statuses, downloadConnection, downloadData, isLoading;
+@synthesize accounts, currentAccount, statuses, downloadConnection, downloadData, isLoading, delegate;
 
 
 - (id) init {
@@ -236,22 +236,24 @@
 
 - (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier {
 	TwitterUpdateStatusAction *action = [[[TwitterUpdateStatusAction alloc] initWithText:text inReplyTo:messageIdentifier] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didUpdateStatus:);
 	[self startTwitterAction:action];
 }
 
-- (void)didUpdateStatus:(TwitterAction *)action {
+- (void)didUpdateStatus:(TwitterUpdateStatusAction *)action {
 	if ((action.statusCode < 400) || (action.statusCode == 403)) { // Twitter returns 403 if user tries to post duplicate status updates.
 		// Remove message text from compose screen.
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		[defaults setObject:@"" forKey:@"messageContent"];
 		[defaults removeObjectForKey:@"inReplyTo"];
 	} else {
-		// Report error
-		NSError *error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"twitterNetworkError" object:error];
+		// Report error to delegate
+		if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
+			NSError *error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
+			[delegate twitter:self didFailWithNetworkError:error];
+		}
 	}
-	
-	// Reload home timeline
 }
 
 - (void) fave: (NSNumber*) messageIdentifier {
@@ -262,26 +264,30 @@
 	}
 	
 	TwitterFavoriteAction *action = [[[TwitterFavoriteAction alloc] initWithMessage:message destroy:message.favorite] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didFave:);
 	[self startTwitterAction:action];
 }
 
-- (void)didFave:(TwitterAction *)action {
-	TwitterMessage *message = [(TwitterFavoriteAction*) action message];
+- (void)didFave:(TwitterFavoriteAction *)action {
+	TwitterMessage *message = [action message];
 	
 	// Change the display of the star next to tweet in root view
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	[parameters setObject:[NSNumber numberWithBool: message.favorite] forKey: @"isFavorite"];
-	[parameters setObject:message.identifier forKey: @"identifier"];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"markAsFavorite" object:self userInfo:parameters];
+	if ([delegate respondsToSelector:@selector(twitter:favoriteDidChange:)])
+		[delegate twitter:self favoriteDidChange:message];
 }
 
 - (void)retweet:(NSNumber*)messageIdentifier {
 	TwitterRetweetAction *action = [[[TwitterRetweetAction alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didRetweet:);
 	[self startTwitterAction:action];
 }
 
-- (void)didRetweet:(TwitterAction *)action {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"didRetweet" object:self];
+- (void)didRetweet:(TwitterRetweetAction *)action {
+	// Change the display of the star next to tweet in root view
+	if ([delegate respondsToSelector:@selector(twitterDidRetweet:)])
+		[delegate twitterDidRetweet:self];
 }
 
 
@@ -290,18 +296,14 @@
 #pragma mark TwitterAction delegate methods
 
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
-	if ([action isKindOfClass: [TwitterFavoriteAction class]]) {
-		[self didFave:action];
-	} else if ([action isKindOfClass: [TwitterUpdateStatusAction class]]) {
-		[self didUpdateStatus:action];
-	} else if ([action isKindOfClass: [TwitterRetweetAction class]]) {
-		[self didRetweet:action];
-	}
 	[self removeTwitterAction:action];
 }
 
 - (void) twitterConnection:(TwitterAction*)action didFailWithError:(NSError*)error {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"twitterNetworkError" object:error];
+	if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
+		NSError *error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
+		[delegate twitter:self didFailWithNetworkError:error];
+	}
 	[actions removeObject: action];
 }
 
@@ -475,10 +477,10 @@
 		} else { // Show only new messaages and discard old ones when we get a lot
 			currentAccount.timeline = newMessages;
 		}
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"timelineDidChange" object:self];
-	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"finishedLoading" object:self];
 	}
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentAccount.timeline];
 }
 
 - (void)mentionsReceived:(NSData*)receivedData {
@@ -496,10 +498,12 @@
 		} else { // Show only new messaages and discard old ones when we get a lot
 			currentAccount.mentions = newMessages;
 		}
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"mentionsDidChange" object:self];
-	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"finishedLoading" object:self];
+		
 	}
+	
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentAccount.mentions];
 }
 
 - (void)directMessagesReceived:(NSData*)receivedData {
@@ -515,10 +519,11 @@
 		} else { // Show only new messaages and discard old ones when we get a lot
 			currentAccount.directMessages = newMessages;
 		}
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"directMessagesDidChange" object:self];
-	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"finishedLoading" object:self];
 	}
+
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentAccount.directMessages];
 }
 
 - (void)favoritesReceived:(NSData*)receivedData {
@@ -530,12 +535,11 @@
 	if ([newMessages count] > 0) {
 		// Add messages to statuses set
 		self.statuses = [statuses setByAddingObjectsFromArray: newMessages];
-
 		currentAccount.favorites = [self mergeNewMessages:newMessages withOldMessages:currentAccount.favorites];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"favoritesDidChange" object:self];
-	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"finishedLoading" object:self];
 	}
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentAccount.favorites];
 }
 
 - (void)listsReceived:(NSData*)receivedData {
@@ -606,11 +610,12 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		downloadStatusCode = [(NSHTTPURLResponse*) response statusCode];
 		if (downloadStatusCode >= 400) {
-			NSError *error = [NSError errorWithDomain:@"Network" code:downloadStatusCode userInfo:nil];
-			[nc postNotificationName:@"twitterNetworkError" object:error];
+			if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
+				NSError *error = [NSError errorWithDomain:@"Network" code:downloadStatusCode userInfo:nil];
+				[delegate twitter:self didFailWithNetworkError:error];
+			}
 		}
 	}
 	if (downloadData == nil) {
@@ -648,7 +653,9 @@
 	//[statusLabel setText:[error localizedDescription]];
 	//NSLog (@"Error: %@", error);
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"twitterNetworkError" object:error];
+	if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
+		[delegate twitter:self didFailWithNetworkError:error];
+	}
 }
 
 #pragma mark -

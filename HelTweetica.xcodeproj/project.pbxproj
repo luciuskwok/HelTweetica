@@ -144,6 +144,7 @@
 		E0A41185116C6D430052BAE7 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41184116C6D430052BAE7 /* lock.png */; };
 		E0A8F16E116D799900DF2BDB /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = E0A8F16D116D799900DF2BDB /* test.json */; };
 		E0A8F1E0116D902B00DF2BDB /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */; };
+		E0B2088D118BDC1F00843A89 /* LKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B2088C118BDC1F00843A89 /* LKWebView.m */; };
 		E0CB31A0116691400086CEFE /* Analyze.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CB319E116691400086CEFE /* Analyze.m */; };
 		E0CB31A1116691400086CEFE /* Analyze.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0CB319F116691400086CEFE /* Analyze.xib */; };
 		E0CBCC42116DDBC80000C281 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0CBCC41116DDBC80000C281 /* action-4-on.png */; };
@@ -251,6 +252,8 @@
 		E0A8F16D116D799900DF2BDB /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = test.json; path = Resources/test.json; sourceTree = "<group>"; };
 		E0A8F1DE116D902B00DF2BDB /* LKJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKJSONParser.h; sourceTree = "<group>"; };
 		E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKJSONParser.m; sourceTree = "<group>"; };
+		E0B2088B118BDC1F00843A89 /* LKWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKWebView.h; sourceTree = "<group>"; };
+		E0B2088C118BDC1F00843A89 /* LKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKWebView.m; sourceTree = "<group>"; };
 		E0B8B5FA11863778005BCA07 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
 		E0CB319D116691400086CEFE /* Analyze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analyze.h; sourceTree = "<group>"; };
 		E0CB319E116691400086CEFE /* Analyze.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analyze.m; sourceTree = "<group>"; };
@@ -449,6 +452,8 @@
 				28C286DF0D94DF7D0034E888 /* RootViewController.h */,
 				28C286E00D94DF7D0034E888 /* RootViewController.m */,
 				28F335F01007B36200424DE2 /* RootViewController.xib */,
+				E0B2088B118BDC1F00843A89 /* LKWebView.h */,
+				E0B2088C118BDC1F00843A89 /* LKWebView.m */,
 				E06A34C4116E96C60098CF12 /* AccountsViewController.h */,
 				E06A34C5116E96C60098CF12 /* AccountsViewController.m */,
 				E06A34C6116E96C60098CF12 /* Accounts.xib */,
@@ -716,6 +721,7 @@
 				E01864EF1184C0240021995D /* TwitterFavoriteAction.m in Sources */,
 				E018654A1184C8980021995D /* TwitterUpdateStatusAction.m in Sources */,
 				E018656F1184CC680021995D /* TwitterRetweetAction.m in Sources */,
+				E0B2088D118BDC1F00843A89 /* LKWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
