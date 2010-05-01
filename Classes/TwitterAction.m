@@ -10,10 +10,11 @@
 #import "OAuthClient.h"
 
 
-// HelTweetica twitter consumer/client credentials.
-// Please use your own application credentials, which you can request from Twitter.
-static NSString *sConsumerKey = @"q06GcFITXrfPciNFN8nzw";
-static NSString *sConsumerSecret = @"rZQXiibBhp0vFFG19kV2fn3onn8ApA2StYdHkqdKE";
+// You will need to supply your own credentials in the file imported here:
+#import "(HelTweeticaConsumerToken).h"
+// The file shoud contain the following two lines:
+// #define kConsumerKey @"xxxxxxxxxxxxxxxx"
+// #define kConsumerSecret @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 
 @implementation TwitterAction
@@ -76,13 +77,8 @@ static NSString *sConsumerSecret = @"rZQXiibBhp0vFFG19kV2fn3onn8ApA2StYdHkqdKE";
 	// Cancel any pending requests.
 	[self cancel];
 	
-	if ((consumerToken == nil) || (consumerSecret == nil)) {
-		NSLog (@"Not logged in.");
-		return;
-	}
-	
 	// OAuth Authorization
-	OAuthClient *oauth = [[[OAuthClient alloc] initWithClientKey:sConsumerKey clientSecret:sConsumerSecret] autorelease];
+	OAuthClient *oauth = [[[OAuthClient alloc] initWithClientKey:kConsumerKey clientSecret:kConsumerSecret] autorelease];
 	[oauth setUserKey:consumerToken userSecret: consumerSecret];
 	NSString *authorization = [oauth authorizationHeaderWithURLRequest: request];
 	[request setValue: authorization forHTTPHeaderField:@"Authorization"];

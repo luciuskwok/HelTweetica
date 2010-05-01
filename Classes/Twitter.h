@@ -22,7 +22,7 @@
 @protocol TwitterDelegate;
 
 @interface Twitter : NSObject {
-	NSArray *accounts;
+	NSMutableArray *accounts;
 	TwitterAccount *currentAccount;
 	
 	NSSet *statuses;
@@ -37,7 +37,7 @@
 	id <TwitterDelegate> delegate;
 }
 
-@property (nonatomic, retain) NSArray *accounts;
+@property (nonatomic, retain) NSMutableArray *accounts;
 @property (nonatomic, retain) TwitterAccount *currentAccount;
 @property (nonatomic, retain) NSSet *statuses;
 @property (nonatomic, retain) NSURLConnection *downloadConnection;
@@ -45,9 +45,7 @@
 @property (assign) BOOL isLoading;
 @property (assign) id <TwitterDelegate> delegate;
 
-- (void) loginAccountWithScreenName:(NSString*)aScreenName password:(NSString*)aPassword;
-- (void) addAccount: (TwitterAccount*) anAccount;
-- (void) removeAccountAtIndex:(int)index;
+- (void) loginScreenName:(NSString*)aScreenName password:(NSString*)aPassword;
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
 
 - (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
@@ -58,9 +56,6 @@
 - (void) reloadMentions;
 - (void) reloadDirectMessages;
 
-- (void) loadHomeTimelineWithCount: (int) aCount olderThan:(NSNumber*) aMaxID newerThan:(NSNumber*) aSinceID;
-- (void) loadMentionsWithCount: (int) aCount olderThan:(NSNumber*) aMaxID newerThan:(NSNumber*) aSinceID;
-- (void) loadDirectMessagesWithCount: (int) aCount olderThan:(NSNumber*) aMaxID newerThan:(NSNumber*) aSinceID;
 - (void) loadFavoritesWithUser:(NSString*)userOrNil page:(int)page;
 
 - (void) loadListsWithUser:(NSString*)user;

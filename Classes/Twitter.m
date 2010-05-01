@@ -22,8 +22,11 @@
 #import "OAuthClient.h"
 
 #import "TwitterFavoriteAction.h"
-#import "TwitterUpdateStatusAction.h"
+#import "TwitterLoginAction.h"
 #import "TwitterRetweetAction.h"
+#import "TwitterUpdateStatusAction.h"
+#import "TwitterLoadTimelineAction.h"
+
 
 #define kMaxMessageStaleness (20 * 60) 
 	// When reloading a timeline, when the newest message in the app is older than this, the app reloads the entire timeline instead of requesting only status updates newer than the newest in the app. This is set to 20 minutes. The number is in seconds.
@@ -32,10 +35,9 @@
 // HelTweetica twitter consumer/client credentials.
 // Please use your own application credentials, which you can request from Twitter.
 
-// Comment out the following line if using your own credentials.
+// You will need to supply your own credentials in the file imported here:
 #import "(HelTweeticaConsumerToken).h"
-
-// Uncomment the following two lines and insert your own consumer key and secret:
+// The file shoud contain the following two lines:
 // #define kConsumerKey @"xxxxxxxxxxxxxxxx"
 // #define kConsumerSecret @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
@@ -44,8 +46,6 @@
 @interface Twitter (PrivateMethods)
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 
-- (void) loginSuccess:(NSData*)receivedData;
-- (void) tweetSent:(NSData*)receivedData;
 - (void) postRequestWithURL: (NSURL*) aURL body: (NSString*) aBody;
 - (void) loadTimeline: (NSString*) aTimeline withCount: (int) aCount olderThan:(NSNumber*) max_id newerThan:(NSNumber*) since_id;
 - (void) callMethod: (NSString*) method withParameters: (NSDictionary*) parameters;
@@ -71,7 +71,7 @@
 		NSData *accountsData = [defaults objectForKey: @"twitterAccounts"];
 		
 		if (accountsData != nil) {
-			self.accounts = [NSKeyedUnarchiver unarchiveObjectWithData:accountsData];
+			self.accounts = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:accountsData]];
 			
 			// Add all status to set
 			for (TwitterAccount *account in accounts) {
@@ -104,12 +104,6 @@
 
 #pragma mark -
 
-- (void) addAccount: (TwitterAccount*) anAccount {
-	NSMutableArray *newArray = [NSMutableArray arrayWithArray:self.accounts];
-	[newArray addObject: anAccount];
-	self.accounts = newArray;
-}
-
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName {
 	for (TwitterAccount *account in accounts) {
 		if ([account.screenName isEqualToString: screenName])
@@ -118,110 +112,27 @@
 	return nil;
 }
 
-- (void) loginAccountWithScreenName:(NSString*)aScreenName password:(NSString*)aPassword {
-	//[statusLabel setText:@"Logging in..."];
-	
-	// Create an account for this username if one doesn't already exist
-	TwitterAccount *account = [self accountWithScreenName: aScreenName];
-	if (account == nil) {
-		account = [[[TwitterAccount alloc] init] autorelease];
-		account.screenName = aScreenName;
-		[self addAccount: account];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"twitterAccountsDidChange" object:self];
-	}
-	
-	// Cancel any pending requests.
-	[self cancel];
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"]];
-	[request setHTTPMethod:@"POST"];
-	
-	NSString *encodedUsername = [self URLEncodeString: aScreenName];
-	NSString *encodedPassword = [self URLEncodeString: aPassword];
-	NSString *postBody = [NSString stringWithFormat:@"x_auth_username=%@&x_auth_password=%@&x_auth_mode=client_auth", encodedUsername, encodedPassword];
-	[request setHTTPBody: [postBody dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	// OAuth Authorization
-	OAuthClient *oauth = [[OAuthClient alloc] initWithClientKey:kConsumerKey clientSecret:kConsumerSecret];
-	NSString *authorization = [oauth authorizationHeaderWithURLRequest: request];
-	[request setValue: authorization forHTTPHeaderField:@"Authorization"];
-	
-	// Create the download connection
-	downloadCompleteAction = @selector(loginSuccess:);
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	downloadConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES];
-	isLoading = YES;
-	
-	// Clean up
-	[oauth release];
-	[request release];
-}
-
-- (void)loginSuccess:(NSData*)receivedData {
-	NSString *resultString = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
-	NSString *token = nil, *tokenSecret = nil, *screenName = nil;
-	if (resultString != nil) {
-		// Store tokens
-		NSCharacterSet *delimiters = [NSCharacterSet characterSetWithCharactersInString:@"=&"];
-		NSArray *components = [resultString componentsSeparatedByCharactersInSet:delimiters];
-		if (components.count >= 4) {
-			NSString *key;
-			for (int index = 0; index < components.count - 1; index+=2) {
-				key = [components objectAtIndex:index];
-				if ([key isEqualToString: @"oauth_token"]) {
-					token = [[components objectAtIndex: index + 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-				} else if ([key isEqualToString: @"oauth_token_secret"]) {
-					tokenSecret = [[components objectAtIndex: index + 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-				} else if ([key isEqualToString: @"screen_name"]) {
-					screenName = [[components objectAtIndex: index + 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-				}
-			}
-			
-		}
-		[resultString release];
-	}
-	
-	if ((token != nil) && (tokenSecret != nil) && (screenName != nil)) {
-		TwitterAccount *account = [self accountWithScreenName: screenName];
-		
-		[account setXAuthToken: token];
-		[account setXAuthSecret: tokenSecret];
-		[self setCurrentAccount: account];
-		[self saveAccounts];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"currentAccountDidChange" object:self];
-	}
-}
-
-- (void) removeAccountAtIndex:(int)index {
-	NSMutableArray *newArray = [NSMutableArray arrayWithArray:self.accounts];
-	if ((0 <= index) && (index < newArray.count)) {
-		[newArray removeObjectAtIndex: index];
-	}
-	self.accounts = newArray;
-	//[[NSNotificationCenter defaultCenter] postNotificationName:@"twitterAccountsDidChange" object:nil];
-}
-
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex {
-	NSMutableArray *newArray = [NSMutableArray arrayWithArray:self.accounts];
-	id item = [[newArray objectAtIndex:fromIndex] retain];
-	[newArray removeObjectAtIndex:fromIndex];
-	[newArray insertObject:item atIndex:toIndex];
-	self.accounts = newArray;
+	id item = [[accounts objectAtIndex:fromIndex] retain];
+	[accounts removeObjectAtIndex:fromIndex];
+	[accounts insertObject:item atIndex:toIndex];
 	[item release];
 }
 
 #pragma mark -
 #pragma mark TwitterAction
 
-- (void) startTwitterAction:(TwitterAction*)action {
+- (void) startTwitterAction:(TwitterAction*)action withToken:(BOOL)useToken {
 	// Add the action to the array of actions, and updates the network activity spinner
 	[actions addObject: action];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
 	// Set up Twitter action
 	action.delegate = self;
-	action.consumerToken = currentAccount.xAuthToken;
-	action.consumerSecret= currentAccount.xAuthSecret;
+	if (useToken) {
+		action.consumerToken = currentAccount.xAuthToken;
+		action.consumerSecret= currentAccount.xAuthSecret;
+	}
 	
 	// Start the URL connection
 	[action start];
@@ -234,11 +145,47 @@
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
+- (void) loginScreenName:(NSString*)aScreenName password:(NSString*)aPassword {
+	// Create an account for this username if one doesn't already exist
+	TwitterAccount *account = [self accountWithScreenName: aScreenName];
+	if (account == nil) {
+		account = [[[TwitterAccount alloc] init] autorelease];
+		account.screenName = aScreenName;
+		[accounts addObject: account];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"twitterAccountsDidChange" object:self];
+	}
+
+	// Create and send the login action.
+	TwitterLoginAction *action = [[[TwitterLoginAction alloc] initWithUsername:aScreenName password:aPassword] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didLogin:);
+	[self startTwitterAction:action withToken:NO];
+}
+
+- (void) didLogin:(TwitterLoginAction *)action {
+	if (action.token) {
+		// Save the login information for the account.
+		TwitterAccount *account = [self accountWithScreenName: action.username];
+		[account setXAuthToken: action.token];
+		[account setXAuthSecret: action.secret];
+		[self setCurrentAccount: account];
+		[self saveAccounts];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"currentAccountDidChange" object:self];
+	} else {
+		// Login was not successful, so report the error.
+		if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
+			NSError *error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
+			[delegate twitter:self didFailWithNetworkError:error];
+		}
+	}
+}
+
 - (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier {
 	TwitterUpdateStatusAction *action = [[[TwitterUpdateStatusAction alloc] initWithText:text inReplyTo:messageIdentifier] autorelease];
 	action.completionTarget= self;
 	action.completionAction = @selector(didUpdateStatus:);
-	[self startTwitterAction:action];
+	[self startTwitterAction:action withToken:YES];
 }
 
 - (void)didUpdateStatus:(TwitterUpdateStatusAction *)action {
@@ -266,7 +213,7 @@
 	TwitterFavoriteAction *action = [[[TwitterFavoriteAction alloc] initWithMessage:message destroy:message.favorite] autorelease];
 	action.completionTarget= self;
 	action.completionAction = @selector(didFave:);
-	[self startTwitterAction:action];
+	[self startTwitterAction:action withToken:YES];
 }
 
 - (void)didFave:(TwitterFavoriteAction *)action {
@@ -281,7 +228,7 @@
 	TwitterRetweetAction *action = [[[TwitterRetweetAction alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
 	action.completionTarget= self;
 	action.completionAction = @selector(didRetweet:);
-	[self startTwitterAction:action];
+	[self startTwitterAction:action withToken:YES];
 }
 
 - (void)didRetweet:(TwitterRetweetAction *)action {
@@ -290,7 +237,105 @@
 		[delegate twitterDidRetweet:self];
 }
 
+- (void)reloadHomeTimeline {
+	NSNumber *newerThan = nil;
+	if ([currentAccount.timeline count] > 3) {
+		TwitterMessage *message = [currentAccount.timeline objectAtIndex: 0];
+		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
+		if (staleness < kMaxMessageStaleness) {
+			newerThan = message.identifier;
+		}
+	}
 
+	NSNumber *count = [NSNumber numberWithInt:200];
+	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline" sinceIdentifier:newerThan maxIdentifier:nil count:count page:nil] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didReloadHomeTimeline:);
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (void)didReloadHomeTimeline:(TwitterLoadTimelineAction *)action {
+	if (action.messages.count > 0) {
+		// Add messages to statuses set
+		self.statuses = [statuses setByAddingObjectsFromArray: action.messages];
+		
+		if (action.messages.count < 120) { // Merge when only a few messages came in
+			currentAccount.timeline = [self mergeNewMessages:action.messages withOldMessages:currentAccount.timeline];
+		} else { // Show only new messaages and discard old ones when we get a lot
+			currentAccount.timeline = action.messages;
+		}
+	}
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentAccount.timeline];
+}
+
+- (void) reloadMentions {
+	NSNumber *newerThan = nil;
+	if ([currentAccount.mentions count] > 3) {
+		TwitterMessage *message = [currentAccount.mentions objectAtIndex: 0];
+		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
+		if (staleness < kMaxMessageStaleness) {
+			newerThan = message.identifier;
+		}
+	}
+	
+	NSNumber *count = [NSNumber numberWithInt:200];
+	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions" sinceIdentifier:newerThan maxIdentifier:nil count:count page:nil] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didReloadMentions:);
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (void)didReloadMentions:(TwitterLoadTimelineAction *)action {
+	if (action.messages.count > 0) {
+		// Add messages to statuses set
+		self.statuses = [statuses setByAddingObjectsFromArray: action.messages];
+		
+		if (action.messages.count < 120) { // Merge when only a few messages came in
+			currentAccount.mentions = [self mergeNewMessages:action.messages withOldMessages:currentAccount.mentions];
+		} else { // Show only new messaages and discard old ones when we get a lot
+			currentAccount.mentions = action.messages;
+		}
+	}
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentAccount.mentions];
+}
+
+- (void) reloadDirectMessages {
+	NSNumber *newerThan = nil;
+	if ([currentAccount.directMessages count] > 3) {
+		TwitterMessage *message = [currentAccount.directMessages objectAtIndex: 0];
+		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
+		if (staleness < kMaxMessageStaleness) {
+			newerThan = message.identifier;
+		}
+	}
+	
+	NSNumber *count = [NSNumber numberWithInt:200];
+	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages" sinceIdentifier:newerThan maxIdentifier:nil count:count page:nil] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didReloadDirectMessages:);
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (void)didReloadDirectMessages:(TwitterLoadTimelineAction *)action {
+	if (action.messages.count > 0) {
+		// Add messages to statuses set
+		self.statuses = [statuses setByAddingObjectsFromArray: action.messages];
+		
+		if (action.messages.count < 120) { // Merge when only a few messages came in
+			currentAccount.directMessages = [self mergeNewMessages:action.messages withOldMessages:currentAccount.directMessages];
+		} else { // Show only new messaages and discard old ones when we get a lot
+			currentAccount.directMessages = action.messages;
+		}
+	}
+	
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentAccount.directMessages];
+}
 
 #pragma mark -
 #pragma mark TwitterAction delegate methods
@@ -342,57 +387,6 @@
 
 #pragma mark -
 
-- (void) reloadHomeTimeline {
-	NSNumber *newerThan = nil;
-	if ([currentAccount.timeline count] > 3) {
-		TwitterMessage *message = [currentAccount.timeline objectAtIndex: 0];
-		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
-		if (staleness < kMaxMessageStaleness) {
-			newerThan = message.identifier;
-		}
-	}
-	[self loadHomeTimelineWithCount:200 olderThan:nil newerThan:newerThan];
-}
-
-- (void) reloadMentions {
-	NSNumber *newerThan = nil;
-	if ([currentAccount.mentions count] > 3) {
-		TwitterMessage *message = [currentAccount.mentions objectAtIndex: 0];
-		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
-		if (staleness < kMaxMessageStaleness) {
-			newerThan = message.identifier;
-		}
-	}
-	[self loadMentionsWithCount:200 olderThan:nil newerThan:newerThan];
-}
-
-- (void) reloadDirectMessages {
-	NSNumber *newerThan = nil;
-	if ([currentAccount.directMessages count] > 3) {
-		TwitterMessage *message = [currentAccount.directMessages objectAtIndex: 0];
-		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
-		if (staleness < kMaxMessageStaleness) {
-			newerThan = message.identifier;
-		}
-	}
-	[self loadDirectMessagesWithCount:200 olderThan:nil newerThan:newerThan];
-}
-
-- (void) loadHomeTimelineWithCount: (int) aCount olderThan:(NSNumber*) aMaxID newerThan:(NSNumber*) aSinceID {
-	downloadCompleteAction = @selector(homeTimelineReceived:);
-	[self loadTimeline:@"statuses/home_timeline" withCount: aCount olderThan: aMaxID newerThan: aSinceID];
-}
-
-- (void) loadMentionsWithCount: (int) aCount olderThan:(NSNumber*) aMaxID newerThan:(NSNumber*) aSinceID {
-	downloadCompleteAction = @selector(mentionsReceived:);
-	[self loadTimeline:@"statuses/mentions" withCount: aCount olderThan: aMaxID newerThan: aSinceID];
-}
-
-- (void) loadDirectMessagesWithCount: (int) aCount olderThan:(NSNumber*) aMaxID newerThan:(NSNumber*) aSinceID {
-	downloadCompleteAction = @selector(directMessagesReceived:);
-	[self loadTimeline:@"direct_messages" withCount: aCount olderThan: aMaxID newerThan: aSinceID];
-}
-
 - (void) loadFavoritesWithUser:(NSString*)userOrNil page:(int)page {
 	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 	if (page > 0) [parameters setObject:[NSString stringWithFormat:@"%d", page] forKey:@"page"];
@@ -412,9 +406,6 @@
 	downloadCompleteAction = @selector(listSubscriptionsReceived:);
 	NSString *method = (user != nil) ? [NSString stringWithFormat:@"%@/lists/subscriptions", user] : @"lists/subscriptions";
 	[self callMethod:method withParameters: nil];
-	
-	// Testing
-	//[TwitterListsJSONParser runTest];
 }
 
 - (void)loadSavedSearches {
@@ -460,70 +451,6 @@
 	// Clean up
 	[request release];
 	[oauth release];
-}
-
-- (void)homeTimelineReceived:(NSData*)receivedData {
-	TwitterMessageJSONParser *parser = [[TwitterMessageJSONParser alloc] init];
-	parser.receivedTimestamp = [NSDate date];
-	NSArray *newMessages = [parser messagesWithJSONData:receivedData];
-	[parser release];
-	
-	if ([newMessages count] > 0) {
-		// Add messages to statuses set
-		self.statuses = [statuses setByAddingObjectsFromArray: newMessages];
-		
-		if ([newMessages count] < 120) { // Merge when only a few messages came in
-			currentAccount.timeline = [self mergeNewMessages:newMessages withOldMessages:currentAccount.timeline];
-		} else { // Show only new messaages and discard old ones when we get a lot
-			currentAccount.timeline = newMessages;
-		}
-	}
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
-		[delegate twitter:self didFinishLoadingTimeline:currentAccount.timeline];
-}
-
-- (void)mentionsReceived:(NSData*)receivedData {
-	TwitterMessageJSONParser *parser = [[TwitterMessageJSONParser alloc] init];
-	parser.receivedTimestamp = [NSDate date];
-	NSArray *newMessages = [parser messagesWithJSONData:receivedData];
-	[parser release];
-
-	if ([newMessages count] > 0) {
-		// Add messages to statuses set
-		self.statuses = [statuses setByAddingObjectsFromArray: newMessages];
-
-		if ([newMessages count] < 120) { // Merge when only a few messages came in
-			currentAccount.mentions = [self mergeNewMessages:newMessages withOldMessages:currentAccount.mentions];
-		} else { // Show only new messaages and discard old ones when we get a lot
-			currentAccount.mentions = newMessages;
-		}
-		
-	}
-	
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
-		[delegate twitter:self didFinishLoadingTimeline:currentAccount.mentions];
-}
-
-- (void)directMessagesReceived:(NSData*)receivedData {
-	TwitterMessageJSONParser *parser = [[TwitterMessageJSONParser alloc] init];
-	parser.receivedTimestamp = [NSDate date];
-	parser.directMessage = YES;
-	NSArray *newMessages = [parser messagesWithJSONData:receivedData];
-	[parser release];
-
-	if ([newMessages count] > 0) {
-		if ([newMessages count] < 120) { // Merge when only a few messages came in
-			currentAccount.directMessages = [self mergeNewMessages:newMessages withOldMessages:currentAccount.directMessages];
-		} else { // Show only new messaages and discard old ones when we get a lot
-			currentAccount.directMessages = newMessages;
-		}
-	}
-
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
-		[delegate twitter:self didFinishLoadingTimeline:currentAccount.directMessages];
 }
 
 - (void)favoritesReceived:(NSData*)receivedData {

@@ -42,6 +42,7 @@
 
 - (void) start;
 	// Subclasses should override -start to call the appropriate post or get request method.
+- (void) startURLRequest:(NSMutableURLRequest*)request;
 - (void) startPostRequest;
 - (void) startGetRequest;
 - (void) cancel;
@@ -49,6 +50,7 @@
 // Subclasses should override these methods:
 - (void) parseReceivedData:(NSData*)data;
 
++ (NSString*) URLEncodeString: (NSString*) aString;
 + (NSURL*) URLWithBase: (NSString*) baseString query: (NSDictionary*) inParameters;
 
 @end

@@ -17,11 +17,16 @@
 	if (self = [super init]) {
 		self.message = aMessage;
 		destroy = flag;
-		self.twitterMethod = [NSString stringWithFormat:@"favorites/%@/%@",  destroy ?@"destroy" : @"create", message.identifier];
+		self.twitterMethod = [NSString stringWithFormat:@"favorites/%@/%@",  destroy? @"destroy" : @"create", message.identifier];
 	}
 	return self;
 }
 
+- (void) dealloc {
+	[message release];
+	[super dealloc];
+}
+	
 - (void) start {
 	[self startPostRequest];
 }

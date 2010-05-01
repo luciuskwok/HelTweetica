@@ -86,7 +86,7 @@
 	
 	if (([user length] == 0) || ([pass length] == 0)) return;
 	
-	[twitter loginAccountWithScreenName: user password: pass];
+	[twitter loginScreenName: user password: pass];
 	
 	[self.navigationController popViewControllerAnimated: YES];
 }
