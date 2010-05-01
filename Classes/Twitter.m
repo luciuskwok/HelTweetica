@@ -46,8 +46,6 @@
 @interface Twitter (PrivateMethods)
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 
-- (void) postRequestWithURL: (NSURL*) aURL body: (NSString*) aBody;
-- (void) loadTimeline: (NSString*) aTimeline withCount: (int) aCount olderThan:(NSNumber*) max_id newerThan:(NSNumber*) since_id;
 - (void) callMethod: (NSString*) method withParameters: (NSDictionary*) parameters;
 
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier;
@@ -237,6 +235,9 @@
 		[delegate twitterDidRetweet:self];
 }
 
+#pragma mark -
+#pragma mark Timeline TwitterActions
+
 - (void)reloadHomeTimeline {
 	NSNumber *newerThan = nil;
 	if ([currentAccount.timeline count] > 3) {
@@ -337,6 +338,24 @@
 		[delegate twitter:self didFinishLoadingTimeline:currentAccount.directMessages];
 }
 
+- (void) reloadFavorites {
+	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites" sinceIdentifier:nil maxIdentifier:nil count:nil page:nil] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didReloadFavorites:);
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (void)didReloadFavorites:(TwitterLoadTimelineAction *)action {
+	if (action.messages.count > 0) {
+		// Add messages to statuses set
+		self.statuses = [statuses setByAddingObjectsFromArray: action.messages];
+		currentAccount.favorites = [self mergeNewMessages:action.messages withOldMessages:currentAccount.favorites];
+	}
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentAccount.favorites];
+}
+
 #pragma mark -
 #pragma mark TwitterAction delegate methods
 
@@ -344,7 +363,7 @@
 	[self removeTwitterAction:action];
 }
 
-- (void) twitterConnection:(TwitterAction*)action didFailWithError:(NSError*)error {
+- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
 	if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
 		NSError *error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
 		[delegate twitter:self didFailWithNetworkError:error];
@@ -387,14 +406,6 @@
 
 #pragma mark -
 
-- (void) loadFavoritesWithUser:(NSString*)userOrNil page:(int)page {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (page > 0) [parameters setObject:[NSString stringWithFormat:@"%d", page] forKey:@"page"];
-	if (userOrNil != nil) [parameters setObject:userOrNil forKey:@"id"];
-	
-	downloadCompleteAction = @selector(favoritesReceived:);
-	[self callMethod:@"favorites" withParameters: parameters];
-}
 
 - (void) loadListsWithUser:(NSString*)user {
 	downloadCompleteAction = @selector(listsReceived:);
@@ -411,15 +422,6 @@
 - (void)loadSavedSearches {
 	downloadCompleteAction = @selector(savedSearchesReceived:);
 	[self callMethod:@"saved_searches" withParameters: nil];
-}
-
-- (void) loadTimeline: (NSString*) timeline withCount: (int) aCount olderThan:(NSNumber*) aMaxID newerThan:(NSNumber*) aSinceID {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (aCount > 0) [parameters setObject:[NSString stringWithFormat:@"%d", aCount] forKey:@"count"];
-	if (aMaxID != nil) [parameters setObject:[aMaxID stringValue] forKey:@"max_id"];
-	if (aSinceID != nil) [parameters setObject:[aSinceID stringValue] forKey:@"since_id"];
-	
-	[self callMethod:timeline withParameters:parameters];
 }
 
 - (void) callMethod: (NSString*) method withParameters: (NSDictionary*) parameters {
@@ -453,21 +455,6 @@
 	[oauth release];
 }
 
-- (void)favoritesReceived:(NSData*)receivedData {
-	TwitterMessageJSONParser *parser = [[TwitterMessageJSONParser alloc] init];
-	parser.receivedTimestamp = [NSDate date];
-	NSArray *newMessages = [parser messagesWithJSONData:receivedData];
-	[parser release];
-	
-	if ([newMessages count] > 0) {
-		// Add messages to statuses set
-		self.statuses = [statuses setByAddingObjectsFromArray: newMessages];
-		currentAccount.favorites = [self mergeNewMessages:newMessages withOldMessages:currentAccount.favorites];
-	}
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
-		[delegate twitter:self didFinishLoadingTimeline:currentAccount.favorites];
-}
 
 - (void)listsReceived:(NSData*)receivedData {
 	TwitterListsJSONParser *parser = [[TwitterListsJSONParser alloc] init];

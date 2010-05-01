@@ -55,8 +55,7 @@
 - (void) reloadHomeTimeline;
 - (void) reloadMentions;
 - (void) reloadDirectMessages;
-
-- (void) loadFavoritesWithUser:(NSString*)userOrNil page:(int)page;
+- (void) reloadFavorites;
 
 - (void) loadListsWithUser:(NSString*)user;
 - (void) loadListSubscriptionsWithUser:(NSString*)user;

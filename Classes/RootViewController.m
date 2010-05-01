@@ -512,7 +512,7 @@
 		} else if ([timelineIdentifier isEqualToString: kFavoritesIdentifier]) { // Favorites
 			self.selectedTimeline = account.favorites;
 			if (reload) 
-				[twitter loadFavoritesWithUser:nil page:0];
+				[twitter reloadFavorites];
 		}
 	}
 	

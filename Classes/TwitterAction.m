@@ -181,5 +181,9 @@
 - (void) parseReceivedData:(NSData*)data {
 }
 
+// For the debugger, descrption prints out some info about the object instance.
+- (NSString*) description {
+	return [NSString stringWithFormat: @"method: %@", twitterMethod];
+}
 
 @end
