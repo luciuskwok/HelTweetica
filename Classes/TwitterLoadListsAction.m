@@ -7,7 +7,6 @@
 //
 
 #import "TwitterLoadListsAction.h"
-#import "TwitterListsJSONParser.h"
 
 
 @implementation TwitterLoadListsAction
@@ -111,6 +110,8 @@
 		currentList.fullName = value;
 	} else if ([keyPath isEqualToString:@"/lists/slug"]) {
 		currentList.slug = value;
+	} else if ([keyPath isEqualToString:@"/lists/user/screen_name"]) {
+		currentList.username = value;
 	}
 	
 	//NSLog (@"%@ = %@", keyPath, value);

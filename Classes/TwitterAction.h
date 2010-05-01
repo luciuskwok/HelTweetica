@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol TwitterConnectionDelegate;
+@protocol TwitterActionDelegate;
 
 @interface TwitterAction : NSObject {
 	NSString *consumerToken;
@@ -23,7 +23,7 @@
 	
 	id completionTarget;
 	SEL completionAction;
-	id <TwitterConnectionDelegate> delegate;
+	id <TwitterActionDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSString *consumerToken;
@@ -55,7 +55,7 @@
 
 @end
 
-@protocol TwitterConnectionDelegate <NSObject>
+@protocol TwitterActionDelegate <NSObject>
 - (void) twitterActionDidFinishLoading:(TwitterAction*)aConnection;
 - (void) twitterAction:(TwitterAction*)aConnection didFailWithError:(NSError*)error;
 @end

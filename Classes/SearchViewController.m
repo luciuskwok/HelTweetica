@@ -119,7 +119,7 @@
 	int count = 0;
 	TwitterAccount *account = [twitter currentAccount];
 	count = account.savedSearches.count;
-	if ((count == 0) && loading) 
+	if (count == 0) 
 		count = 1;
 	return count;
 }
@@ -135,8 +135,10 @@
     static NSString *CellIdentifier = @"Cell";
     
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	if (cell == nil)
+	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+	}
 
 	TwitterAccount *account = [twitter currentAccount];
 	NSString *query;
@@ -144,8 +146,12 @@
 		query = [account.savedSearches objectAtIndex: indexPath.row];
 		cell.textLabel.text = query;
 		cell.textLabel.textColor = [UIColor blackColor];
-	} else {
-		cell.textLabel.text = NSLocalizedString (@"Loading...", @"");
+	} else if (indexPath.row == 0) {
+		if (loading) {
+			cell.textLabel.text = NSLocalizedString (@"Loading...", @"");
+		} else {
+			cell.textLabel.text = NSLocalizedString (@"No saved searches.", @"");
+		}
 		cell.textLabel.textColor = [UIColor grayColor];
 	}
 	

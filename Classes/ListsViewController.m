@@ -148,7 +148,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	TwitterAccount *account = [twitter currentAccount];
 	int count = account.lists.count + account.listSubscriptions.count;
-	if ((count == 0) && loading) {
+	if (count == 0) {
 		return 1;
 	}
     return count;
@@ -163,7 +163,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
     }
     
     // Configure the cell
@@ -171,14 +171,17 @@
 	TwitterList *list;
 	if (indexPath.row < account.lists.count) {
 		list = [account.lists objectAtIndex: indexPath.row];
-		cell.textLabel.text = list.fullName;
+		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
 		cell.textLabel.textColor = [UIColor blackColor];
 	} else if (indexPath.row < account.lists.count + account.listSubscriptions.count) {
 		list = [account.listSubscriptions objectAtIndex: indexPath.row - account.lists.count];
-		cell.textLabel.text = list.fullName;
+		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
 		cell.textLabel.textColor = [UIColor blackColor];
 	} else {
-		cell.textLabel.text = NSLocalizedString (@"Loading...", @"");
+		if (loading) 
+			cell.textLabel.text = NSLocalizedString (@"Loading...", @"");
+		else
+			cell.textLabel.text = NSLocalizedString (@"No lists.", @"");
 		cell.textLabel.textColor = [UIColor grayColor];
 	}
 	
@@ -236,7 +239,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self showAlertWithTitle:@"Under Construction" message:@"Sorry, this feature isn't implemented yet!"];
+	TwitterAccount *account = [twitter currentAccount];
+	TwitterList *list = nil;
+	if (indexPath.row < account.lists.count) {
+		list = [account.lists objectAtIndex: indexPath.row];
+	} else if (indexPath.row < account.lists.count + account.listSubscriptions.count) {
+		list = [account.listSubscriptions objectAtIndex: indexPath.row - account.lists.count];
+	} 
+	if (list != nil) {
+		[twitter loadTimelineOfList: list];
+		if (popover) {
+			[popover dismissPopoverAnimated:YES];
+			// Make sure delegate knows popover has been removed
+			[popover.delegate popoverControllerDidDismissPopover:popover];
+		}
+	}
 }
 
 

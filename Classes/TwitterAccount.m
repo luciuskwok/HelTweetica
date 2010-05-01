@@ -74,14 +74,6 @@
 
 #pragma mark -
 
-- (NSSet*) setByAddingAllStatusesToSet: (NSSet*) set {
-	NSMutableSet *newSet = [NSMutableSet setWithSet:set];
-	[newSet addObjectsFromArray: timeline];
-	[newSet addObjectsFromArray: mentions];
-	[newSet addObjectsFromArray: favorites];
-	return newSet;
-}
-
 - (void) removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier {
 	// Removes all instances with matching identifier from favorites timeline
 	NSMutableArray *newFavorites = [NSMutableArray arrayWithCapacity: favorites.count];

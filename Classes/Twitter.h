@@ -18,31 +18,23 @@
 #import <Foundation/Foundation.h>
 #import "TwitterMessage.h"
 #import "TwitterAccount.h"
+#import "TwitterList.h"
+#import "TwitterAction.h"
 
 @protocol TwitterDelegate;
 
-@interface Twitter : NSObject {
+@interface Twitter : NSObject <TwitterActionDelegate> {
 	NSMutableArray *accounts;
 	TwitterAccount *currentAccount;
 	
-	NSSet *statuses;
+	NSMutableSet *statuses;
 	NSMutableArray *actions;
-	
-	NSURLConnection *downloadConnection;
-	NSInteger downloadStatusCode;
-	NSMutableData *downloadData;
-	SEL downloadCompleteAction;
-	BOOL isLoading;
 	
 	id <TwitterDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSMutableArray *accounts;
 @property (nonatomic, retain) TwitterAccount *currentAccount;
-@property (nonatomic, retain) NSSet *statuses;
-@property (nonatomic, retain) NSURLConnection *downloadConnection;
-@property (nonatomic, retain) NSMutableData *downloadData;
-@property (assign) BOOL isLoading;
 @property (assign) id <TwitterDelegate> delegate;
 
 - (void) loginScreenName:(NSString*)aScreenName password:(NSString*)aPassword;
@@ -56,13 +48,12 @@
 - (void) reloadMentions;
 - (void) reloadDirectMessages;
 - (void) reloadFavorites;
+- (void) loadTimelineOfList:(TwitterList*)list;
 
 - (void) loadListsOfUser:(NSString*)userOrNil;
 - (void) loadListSubscriptionsOfUser:(NSString*)userOrNil;
 
 - (void) loadSavedSearches;
-
-- (void) cancel;
 
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier;
 
@@ -72,6 +63,7 @@
 
 @protocol TwitterDelegate <NSObject>
 - (void)twitter:(Twitter*)aTwitter didFinishLoadingTimeline:(NSArray*)aTimeline;
+- (void)twitter:(Twitter*)aTwitter didSelectTimeline:(NSArray*)aTimeline withName:(NSString*)name tabName:(NSString*)tabName;
 - (void)twitter:(Twitter*)aTwitter favoriteDidChange:(TwitterMessage*)aMessage;
 - (void)twitterDidRetweet:(Twitter*)aTwitter;
 

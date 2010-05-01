@@ -47,7 +47,7 @@
 @end
 
 @implementation RootViewController
-@synthesize webView, accountsButton, composeButton, selectedTabName, selectedTimeline;
+@synthesize webView, accountsButton, composeButton, customPageTitle, selectedTabName, selectedTimeline;
 @synthesize currentPopover, currentActionSheet, currentAlert;
 
 
@@ -61,8 +61,11 @@
 	[twitter release];
 	[webView release];
 	[accountsButton release];
+	
+	[customPageTitle release];
 	[selectedTabName release];
 	[selectedTimeline release];
+	
 	[currentPopover release];
 	[currentActionSheet release];
     [super dealloc];
@@ -126,6 +129,34 @@
 
 
 #pragma mark -
+#pragma mark Popovers
+
+- (BOOL)closeAllPopovers {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		// Close any action sheets
+		if (currentActionSheet != nil) {
+			[currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
+			self.currentActionSheet = nil;
+			return YES;
+		}
+		
+		// If a popover is already shown, close it. 
+		if (currentPopover != nil) {
+			[currentPopover dismissPopoverAnimated:YES];
+			self.currentPopover = nil;
+			return YES;
+		}
+	}
+	return NO;
+}
+
+- (void)popoverControllerDidDismissPopover: (UIPopoverController *) popoverController {
+	self.currentPopover = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	return YES;
+}
 
 - (UIPopoverController*) presentPopoverFromItem:(UIBarButtonItem*)item viewController:(UIViewController*)vc {
 	// Present popover
@@ -156,6 +187,9 @@
 	[self presentContent: accountsController inNavControllerInPopoverFromItem: sender];
 	return accountsController;
 }
+
+#pragma mark -
+#pragma mark IBActions
 
 - (IBAction) login: (id) sender {
 	AccountsViewController *accountsController = [self showAccounts: sender];
@@ -243,7 +277,12 @@
 
 - (NSString*) myUsernameHTML {
 	TwitterAccount *account = [twitter currentAccount];
-	return [NSString stringWithFormat:@"<a href='http://mobile.twitter.com/%@'>%@</a>", account.screenName, account.screenName];
+	NSString *result;
+	if (customPageTitle)
+		result = customPageTitle;
+	else 
+		result = [NSString stringWithFormat:@"<a href='http://mobile.twitter.com/%@'>%@</a>", account.screenName, account.screenName];
+	return result;
 }
 
 - (NSString*) tabAreaHTML {
@@ -491,34 +530,44 @@
 
 - (void) selectTimeline:(NSString*)timelineIdentifier reload:(BOOL)reload {
 	TwitterAccount *account = [twitter currentAccount];
+	BOOL willBeLoading = NO;
+	
+	// TODO: add code to handle lists statuses and search results, which show up in a custom tab.
 	
 	if (account.xAuthToken != nil) {
-		if (reload) [self setLoadingSpinnerVisibility: YES];
-		
 		self.selectedTabName = timelineIdentifier;
 		if ([timelineIdentifier isEqualToString: kTimelineIdentifier]) { // Home timeline
 			self.selectedTimeline = account.timeline;
 			if (reload) {
 				[twitter reloadHomeTimeline];
+				willBeLoading = YES;
 			}
 		} else if ([timelineIdentifier isEqualToString: kMentionsIdentifier]) { // Mentions
 			self.selectedTimeline = account.mentions;
-			if (reload) 
+			if (reload) {
 				[twitter reloadMentions];
+				willBeLoading = YES;
+			}
 		} else if ([timelineIdentifier isEqualToString: kDirectMessagesIdentifier]) { // Direct Messages
 			self.selectedTimeline = account.directMessages;
-			if (reload) 
+			if (reload) {
 				[twitter reloadDirectMessages];
+				willBeLoading = YES;
+			}
 		} else if ([timelineIdentifier isEqualToString: kFavoritesIdentifier]) { // Favorites
 			self.selectedTimeline = account.favorites;
-			if (reload) 
+			if (reload) {
 				[twitter reloadFavorites];
+				willBeLoading = YES;
+			}
 		}
 	}
 	
-	if (reload) {
+	if (willBeLoading) {
+		[self.webView setDocumentElement:@"my_username" innerHTML:[self myUsernameHTML]];
 		[self rewriteTabArea];
-		[self rewriteTweetArea];	
+		[self rewriteTweetArea];
+		[self setLoadingSpinnerVisibility: YES];
 	}
 }
 
@@ -562,98 +611,6 @@
 	[self showAlertWithTitle:@"Under Construction." message:@"The tweet info feature isn't quite ready."];
 }
 
-/*
-- (IBAction) loadOlderMessages: (id) sender {
-	[self closeAllPopovers];
-	
-	TwitterAccount *account = [twitter currentAccount];
-	if (account.xAuthToken != nil) {
-		
-		// Assuming that tweets are in reverse chronological order, use the last item in the array
-		TwitterMessage *message = nil;
-		NSNumber *oldestIdentifier = nil;
-		
-		if (selectedTab == 0) { // Home timeline
-			if (account.timeline.count == 0) return;
-			message = [account.timeline lastObject];
-			oldestIdentifier = message.identifier;
-			[twitter loadHomeTimelineWithCount:200 olderThan:oldestIdentifier newerThan:nil];
-		} else if (selectedTab == 1) { // Mentions
-			if (account.mentions.count == 0) return;
-			message = [account.mentions lastObject];
-			oldestIdentifier = message.identifier;
-			[twitter loadMentionsWithCount:200 olderThan:oldestIdentifier newerThan:nil];
-		} else if (selectedTab == 2) { // Direct Messages
-			if (account.directMessages.count == 0) return;
-			message = [account.directMessages lastObject];
-			oldestIdentifier = message.identifier;
-			[twitter loadDirectMessagesWithCount:200 olderThan:oldestIdentifier newerThan:nil];
-		} else if (selectedTab == 3) { // Favorites
-			// Favorites uses pages with 20 messages per page. There's no way to track them in this app.
-		}
-	}
-}
-
-
-- (IBAction) loadNewerMessages: (id) sender {
-	[self closeAllPopovers];
-	// Caution: if there are more than 200 tweets newer than the most recent message, they won't be shown unless you keep making more requests to fill the gap.
-	
-	TwitterAccount *account = [twitter currentAccount];
-	if (account.xAuthToken != nil) {
-		
-		// Assuming that tweets are in reverse chronological order, use the last item in the array
-		TwitterMessage *message = nil;
-		
-		if (selectedTab == 0) { // Home timeline
-			if ([account.timeline count] == 0) return;
-			message = [account.timeline objectAtIndex:0];
-			[twitter loadHomeTimelineWithCount:200 olderThan:nil newerThan:message.identifier];
-		} else if (selectedTab == 1) { // Mentions
-			if ([account.mentions count] == 0) return;
-			message = [account.mentions objectAtIndex:0];
-			[twitter loadMentionsWithCount:200 olderThan:nil newerThan:message.identifier];
-		} else if (selectedTab == 2) { // Mentions
-			if ([account.directMessages count] == 0) return;
-			message = [account.directMessages objectAtIndex:0];
-			[twitter loadDirectMessagesWithCount:200 olderThan:nil newerThan:message.identifier];
-		} else if (selectedTab == 3) { // Favorites
-			// Just load all favorites on default page
-			[twitter loadFavoritesWithUser:nil page:0];
-		}
-	}	
-}
- */
-
-#pragma mark -
-
-- (BOOL)closeAllPopovers {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		// Close any action sheets
-		if (currentActionSheet != nil) {
-			[currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
-			self.currentActionSheet = nil;
-			return YES;
-		}
-		
-		// If a popover is already shown, close it. 
-		if (currentPopover != nil) {
-			[currentPopover dismissPopoverAnimated:YES];
-			self.currentPopover = nil;
-			return YES;
-		}
-	}
-	return NO;
-}
-
-- (void)popoverControllerDidDismissPopover: (UIPopoverController *) popoverController {
-	self.currentPopover = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
-}
-
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 }
 
@@ -672,6 +629,18 @@
 
 - (void)twitter:(Twitter *)aTwitter didFinishLoadingTimeline:(NSArray *)aTimeline {
 	[self selectTimeline:self.selectedTabName reload:NO];
+	[self.webView setDocumentElement:@"my_username" innerHTML:[self myUsernameHTML]];
+	[self rewriteTabArea];
+	[self rewriteTweetArea];	
+	[self setLoadingSpinnerVisibility:NO];
+}
+
+- (void)twitter:(Twitter*)aTwitter didSelectTimeline:(NSArray*)aTimeline withName:(NSString*)name tabName:(NSString*)tabName {
+	// Switch the web view to display a non-standard timeline
+	self.selectedTimeline = aTimeline;
+	self.customPageTitle = name;
+	self.selectedTabName = tabName;
+	[self.webView setDocumentElement:@"my_username" innerHTML:[self myUsernameHTML]];
 	[self rewriteTabArea];
 	[self rewriteTweetArea];	
 	[self setLoadingSpinnerVisibility:NO];

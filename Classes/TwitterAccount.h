@@ -50,7 +50,6 @@
 
 @property (nonatomic, retain) NSArray *savedSearches;
 
-- (NSSet*) setByAddingAllStatusesToSet: (NSSet*) set;
 - (void) removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier;
 
 @end

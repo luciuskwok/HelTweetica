@@ -165,6 +165,7 @@
 	return s;
 }
 
+// description: for the debugger po command.
 - (NSString*) description {
 	NSMutableString *result = [NSMutableString string];
 	if (screenName != nil) 
@@ -174,6 +175,7 @@
 	return result;
 }
 
+// hash and isEqual: are used by NSSet to determine if an object is unique.
 - (NSUInteger) hash {
 	return [identifier hash];
 }

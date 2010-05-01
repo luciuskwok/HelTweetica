@@ -16,10 +16,6 @@
 
 
 #import "Twitter.h"
-//#import "TwitterMessageJSONParser.h"
-//#import "TwitterListsJSONParser.h"
-#import "TwitterSavedSearchJSONParser.h"
-#import "OAuthClient.h"
 
 #import "TwitterFavoriteAction.h"
 #import "TwitterLoginAction.h"
@@ -27,6 +23,7 @@
 #import "TwitterUpdateStatusAction.h"
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterLoadListsAction.h"
+#import "TwitterLoadSavedSearchesAction.h"
 
 
 
@@ -48,23 +45,19 @@
 @interface Twitter (PrivateMethods)
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 
-- (void) callMethod: (NSString*) method withParameters: (NSDictionary*) parameters;
-
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier;
 - (NSArray*) mergeNewMessages:(NSArray*) newMessages withOldMessages:(NSArray*) oldMessages;
 - (TwitterMessage*) messageWithIdentifier: (NSNumber*) identifier existsInArray: (NSArray*) array;
-
-- (NSString*) URLEncodeString: (NSString*) aString;
-- (NSURL*) URLWithBase: (NSString*) baseString query: (NSDictionary*) parameters;
+- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses;
 @end
 
 @implementation Twitter
-@synthesize accounts, currentAccount, statuses, downloadConnection, downloadData, isLoading, delegate;
+@synthesize accounts, currentAccount, delegate;
 
 
 - (id) init {
 	if (self = [super init]) {
-		self.statuses = [NSSet set];
+		statuses = [[NSMutableSet alloc] init];
 		actions = [[NSMutableArray alloc] init];
 
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -73,9 +66,11 @@
 		if (accountsData != nil) {
 			self.accounts = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:accountsData]];
 			
-			// Add all status to set
+			// Add all statuses to set
 			for (TwitterAccount *account in accounts) {
-				self.statuses = [account setByAddingAllStatusesToSet: statuses];
+				[statuses addObjectsFromArray: account.timeline]; // TODO: Unique each array element
+				[statuses addObjectsFromArray: account.mentions];
+				[statuses addObjectsFromArray: account.favorites];
 			}
 			
 			NSString *currentAccountScreenName = [defaults objectForKey: @"currentAccount"];
@@ -95,9 +90,6 @@
 	[currentAccount release];
 	[statuses release];
 	[actions release];
-	
-	[downloadConnection release];
-	[downloadData release];
 	
 	[super dealloc];
 }
@@ -131,7 +123,7 @@
 	action.delegate = self;
 	if (useToken) {
 		action.consumerToken = currentAccount.xAuthToken;
-		action.consumerSecret= currentAccount.xAuthSecret;
+		action.consumerSecret = currentAccount.xAuthSecret;
 	}
 	
 	// Start the URL connection
@@ -260,13 +252,13 @@
 
 - (void)didReloadHomeTimeline:(TwitterLoadTimelineAction *)action {
 	if (action.messages.count > 0) {
-		// Add messages to statuses set
-		self.statuses = [statuses setByAddingObjectsFromArray: action.messages];
+		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
+		[self synchronizeStatusesWithArray: newMessages];
 		
-		if (action.messages.count < 120) { // Merge when only a few messages came in
-			currentAccount.timeline = [self mergeNewMessages:action.messages withOldMessages:currentAccount.timeline];
+		if (newMessages.count < 120) { // Merge when only a few messages came in
+			currentAccount.timeline = [self mergeNewMessages:newMessages withOldMessages:currentAccount.timeline];
 		} else { // Show only new messaages and discard old ones when we get a lot
-			currentAccount.timeline = action.messages;
+			currentAccount.timeline = newMessages;
 		}
 	}
 	// Call delegate to tell it we're finished loading
@@ -293,13 +285,13 @@
 
 - (void)didReloadMentions:(TwitterLoadTimelineAction *)action {
 	if (action.messages.count > 0) {
-		// Add messages to statuses set
-		self.statuses = [statuses setByAddingObjectsFromArray: action.messages];
+		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
+		[self synchronizeStatusesWithArray: newMessages];
 		
-		if (action.messages.count < 120) { // Merge when only a few messages came in
-			currentAccount.mentions = [self mergeNewMessages:action.messages withOldMessages:currentAccount.mentions];
+		if (newMessages.count < 120) { // Merge when only a few messages came in
+			currentAccount.mentions = [self mergeNewMessages:newMessages withOldMessages:currentAccount.mentions];
 		} else { // Show only new messaages and discard old ones when we get a lot
-			currentAccount.mentions = action.messages;
+			currentAccount.mentions = newMessages;
 		}
 	}
 	// Call delegate to tell it we're finished loading
@@ -326,8 +318,7 @@
 
 - (void)didReloadDirectMessages:(TwitterLoadTimelineAction *)action {
 	if (action.messages.count > 0) {
-		// Add messages to statuses set
-		self.statuses = [statuses setByAddingObjectsFromArray: action.messages];
+		// Do not include direct messages in the statuses set because their message IDs can conflict with those of public status updates.
 		
 		if (action.messages.count < 120) { // Merge when only a few messages came in
 			currentAccount.directMessages = [self mergeNewMessages:action.messages withOldMessages:currentAccount.directMessages];
@@ -350,13 +341,33 @@
 
 - (void)didReloadFavorites:(TwitterLoadTimelineAction *)action {
 	if (action.messages.count > 0) {
-		// Add messages to statuses set
-		self.statuses = [statuses setByAddingObjectsFromArray: action.messages];
-		currentAccount.favorites = [self mergeNewMessages:action.messages withOldMessages:currentAccount.favorites];
+		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
+		[self synchronizeStatusesWithArray: newMessages];
+		
+		currentAccount.favorites = [self mergeNewMessages:newMessages withOldMessages:currentAccount.favorites];
 	}
 	// Call delegate to tell it we're finished loading
 	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
 		[delegate twitter:self didFinishLoadingTimeline:currentAccount.favorites];
+}
+
+- (void) loadTimelineOfList:(TwitterList*)list {
+	NSNumber *count = [NSNumber numberWithInt:200];
+	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
+	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method sinceIdentifier:nil maxIdentifier:nil perPage:count page:nil] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didLoadTimelineOfList:);
+	action.timelineName = list.fullName;
+	[self startTwitterAction:action withToken:YES];
+}
+
+- (void) didLoadTimelineOfList:(TwitterLoadTimelineAction *)action {
+	NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
+	[self synchronizeStatusesWithArray: newMessages];
+
+	// Call delegate to tell it we're finished loading
+	if ([delegate respondsToSelector:@selector(twitter:didSelectTimeline:withName:tabName:)])
+		[delegate twitter:self didSelectTimeline:newMessages withName:action.timelineName tabName:@"List"];
 }
 
 #pragma mark -
@@ -390,15 +401,15 @@
 #pragma mark TwitterAction - Search
 
 - (void)loadSavedSearches {
-	downloadCompleteAction = @selector(savedSearchesReceived:);
-	[self callMethod:@"saved_searches" withParameters: nil];
+	TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didLoadSavedSearches:);
+	[self startTwitterAction:action withToken:YES];
 }
 
-- (void)savedSearchesReceived:(NSData*)receivedData {
-	TwitterSavedSearchJSONParser *parser = [[TwitterSavedSearchJSONParser alloc] init];
-	currentAccount.savedSearches = [parser queriesWithJSONData:receivedData];
+- (void)didLoadSavedSearches:(TwitterLoadSavedSearchesAction *)action {
+	currentAccount.savedSearches = action.queries;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"savedSearchesDidChange" object:self];
-	[parser release];
 }
 
 
@@ -419,78 +430,24 @@
 
 #pragma mark -
 
-- (void) postRequestWithURL: (NSURL*) aURL body: (NSString*) aBody {
-	[self cancel]; // Cancel any pending requests.
-	
-	if ((currentAccount.xAuthToken == nil) || (currentAccount.xAuthSecret == nil)) {
-		//[statusLabel setText:@"Not logged in."];
-		NSLog (@"Not logged in.");
-		return;
+- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses {
+	// For matching statuses already in the set, replace the ones in the array with those from the set, so that messages that are equal always have only one representation in memory. 
+	TwitterMessage *existingMessage, *newMessage;
+	int index;
+	for (index = 0; index < newStatuses.count; index++) {
+		newMessage = [newStatuses objectAtIndex: index];
+		existingMessage = [statuses member:newMessage];
+		if (existingMessage) {
+			// Message already exists, but still need to update the favorite status and timestamp of the message.
+			existingMessage.favorite = newMessage.favorite;
+			existingMessage.receivedDate = newMessage.receivedDate;
+			[newStatuses replaceObjectAtIndex:index withObject:existingMessage];
+		} else {
+			// Add the message to the set.
+			[statuses addObject:newMessage];
+		}
 	}
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:aURL];
-	[request setHTTPMethod:@"POST"];
-	if (aBody != nil)
-		[request setHTTPBody: [aBody dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	// OAuth Authorization
-	OAuthClient *oauth = [[OAuthClient alloc] initWithClientKey:kConsumerKey clientSecret:kConsumerSecret];
-	[oauth setUserKey:currentAccount.xAuthToken userSecret: currentAccount.xAuthSecret];
-	NSString *authorization = [oauth authorizationHeaderWithURLRequest: request];
-	[request setValue: authorization forHTTPHeaderField:@"Authorization"];
-	
-	// Create the download connection
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	downloadConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES];
-	isLoading = YES;
-
-	// Clean up
-	[request release];
-	[oauth release];
 }
-
-
-#pragma mark -
-
-
-- (void) callMethod: (NSString*) method withParameters: (NSDictionary*) parameters {
-	// Cancel any pending requests.
-	[self cancel];
-	
-	if (([currentAccount xAuthToken] == nil) || ([currentAccount xAuthSecret] == nil)) {
-		//[statusLabel setText:@"Not logged in."];
-		NSLog (@"Not logged in.");
-		return;
-	}
-	
-	NSString *base = [NSString stringWithFormat:@"http://api.twitter.com/1/%@.json", method]; // version 1 only
-	NSURL *url = [self URLWithBase:base query:parameters];
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-	[request setHTTPMethod:@"GET"];
-	
-	// OAuth Authorization
-	OAuthClient *oauth = [[OAuthClient alloc] initWithClientKey:kConsumerKey clientSecret:kConsumerSecret];
-	[oauth setUserKey:currentAccount.xAuthToken userSecret: currentAccount.xAuthSecret];
-	NSString *authorization = [oauth authorizationHeaderWithURLRequest: request];
-	[request setValue: authorization forHTTPHeaderField:@"Authorization"];
-	
-	// Create the download connection
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	self.downloadConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];
-	isLoading = YES;
-	
-	// Clean up
-	[request release];
-	[oauth release];
-}
-
-
-- (void) cancel {
-	[self.downloadConnection cancel];
-	isLoading = NO;
-}
-
-#pragma mark -
 
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
@@ -526,97 +483,12 @@
 	return nil;
 }
 
-
-#pragma mark -
-#pragma mark NSURLConnection delegate methods
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
-		downloadStatusCode = [(NSHTTPURLResponse*) response statusCode];
-		if (downloadStatusCode >= 400) {
-			if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
-				NSError *error = [NSError errorWithDomain:@"Network" code:downloadStatusCode userInfo:nil];
-				[delegate twitter:self didFailWithNetworkError:error];
-			}
-		}
-	}
-	if (downloadData == nil) {
-		downloadData = [[NSMutableData alloc] init];
-	} else {
-		NSMutableData *theData = self.downloadData;
-		[theData setLength:0];
-	}
-	//downloadLength = [response expectedContentLength];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[self.downloadData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	if (connection != downloadConnection) return;
-	
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	isLoading = NO;
-	self.downloadConnection = nil;
-	
-	if (downloadCompleteAction != nil)
-		[self performSelector: downloadCompleteAction withObject: downloadData];
-	self.downloadData = nil;
-}	
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	if (connection != downloadConnection) return;
-	
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	self.downloadConnection = nil;
-	self.downloadData = nil;
-	isLoading = NO;
-	//[statusLabel setText:[error localizedDescription]];
-	//NSLog (@"Error: %@", error);
-	
-	if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
-		[delegate twitter:self didFailWithNetworkError:error];
-	}
-}
-
 #pragma mark -
 
 - (void) saveAccounts {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: [NSKeyedArchiver archivedDataWithRootObject:accounts] forKey: @"twitterAccounts"];
 	[defaults setObject: self.currentAccount.screenName forKey: @"currentAccount"];
-}
-
-#pragma mark -
-
-- (NSString*) URLEncodeString: (NSString*) aString {
-	NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)aString, NULL, CFSTR("!*'();:@&=+$,/?%#[]"), kCFStringEncodingUTF8);
- 	return [result autorelease];
-}
-
-- (NSURL*) URLWithBase: (NSString*) baseString query: (NSDictionary*) parameters {
-	NSMutableString *s = [[NSMutableString alloc] initWithString: baseString];
-	BOOL firstParameter = YES;
-	
-	if ([parameters count] > 0) {
-		NSArray *allKeys = [parameters allKeys];
-		NSString *key, *value;
-		for (key in allKeys) {
-			if (firstParameter) {
-				[s appendString:@"?"];
-				firstParameter = NO;
-			} else {
-				[s appendString:@"&"];
-			}
-			value = [self URLEncodeString: [parameters objectForKey:key]];
-			[s appendFormat: @"%@=%@", key, value];
-		}
-	}
-	
-	NSURL *url = [NSURL URLWithString:s];
-	[s release];
-	return url;
 }
 
 @end
