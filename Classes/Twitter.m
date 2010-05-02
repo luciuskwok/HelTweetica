@@ -17,6 +17,8 @@
 
 #import "Twitter.h"
 
+
+
 #import "TwitterFavoriteAction.h"
 #import "TwitterLoginAction.h"
 #import "TwitterRetweetAction.h"
@@ -47,14 +49,13 @@
 @interface Twitter (PrivateMethods)
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 
-- (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier;
 - (NSArray*) mergeNewMessages:(NSArray*) newMessages withOldMessages:(NSArray*) oldMessages;
 - (TwitterMessage*) messageWithIdentifier: (NSNumber*) identifier existsInArray: (NSArray*) array;
 - (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses updateFavorites:(BOOL)updateFaves;
 @end
 
 @implementation Twitter
-@synthesize accounts, currentAccount, currentTimeline, currentTimelineAction, delegate;
+@synthesize accounts, users, currentAccount, currentTimeline, currentTimelineAction, delegate;
 
 
 - (id) init {
@@ -64,14 +65,15 @@
 		defaultCount = [@"100" retain];
 		
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		NSData *accountsData = [defaults objectForKey: @"twitterAccounts"];
 		
+		// Twitter Accounts
+		NSData *accountsData = [defaults objectForKey: @"twitterAccounts"];
 		if (accountsData != nil) {
 			self.accounts = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:accountsData]];
 			
 			// Add all statuses to set
 			for (TwitterAccount *account in accounts) {
-				[self synchronizeStatusesWithArray: account.timeline updateFavorites:YES]; // TODO: Unique each array element
+				[self synchronizeStatusesWithArray: account.timeline updateFavorites:YES];
 				[self synchronizeStatusesWithArray: account.mentions updateFavorites:YES];
 				[self synchronizeStatusesWithArray: account.favorites updateFavorites:YES];
 			}
@@ -84,16 +86,30 @@
 					self.currentAccount = [self.accounts objectAtIndex: 0];
 			}
 		}
+		
+		// Twitter Users
+		NSData *usersData = [defaults objectForKey: @"twitterUsers"];
+		if (usersData != nil) {
+			self.users = [NSKeyedUnarchiver unarchiveObjectWithData:usersData];
+		} else {
+			self.users = [NSMutableSet alloc];
+		}
+
+
 	}
 	return self;
 }
 
 - (void) dealloc {
 	[accounts release];
+	[users release];
+	
 	[currentAccount release];
 	[currentTimeline release];
+	
 	[statuses release];
 	[actions release];
+	
 	[defaultCount release];
 	
 	[super dealloc];
@@ -165,7 +181,7 @@
 		[account setXAuthSecret: action.secret];
 		[account setScreenName: action.username]; // To make sure the uppercase/lowercase letters are correct.
 		[self setCurrentAccount: account];
-		[self saveAccounts];
+		[self save];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"currentAccountDidChange" object:self];
 	} else {
 		// Login was not successful, so report the error.
@@ -274,6 +290,17 @@
 		for (TwitterMessage *message in newMessages) {
 			if ([currentTimeline containsObject:message] == NO)
 				[currentTimeline addObject: message];
+		}
+		
+		// Update set of users.
+		NSSet *newUsers = action.users;
+		TwitterUser *member;
+		for (TwitterUser *user in newUsers) {
+			member = [users member:user];
+			if (member) {
+				[users removeObject:member];
+			}
+			[users addObject: user];
 		}
 		
 		// Sort by identifier, descending.
@@ -392,16 +419,6 @@
 	}
 }
 
-- (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
-	//NSLog (@"predicate: %@", predicate);
-	NSSet *filteredSet = [statuses filteredSetUsingPredicate:predicate];
-	if (filteredSet.count > 1) {
-		NSLog (@"More than one status update found matching predicate.");
-	}
-	return [filteredSet anyObject];
-}
-
 - (NSArray*) mergeNewMessages:(NSArray*) newMessages withOldMessages:(NSArray*) oldMessages {
 	// If there are no messages in one of the arrays, just return the other.
 	if ([oldMessages count] == 0) return newMessages;
@@ -428,10 +445,25 @@
 
 #pragma mark -
 
-- (void) saveAccounts {
+- (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
+	NSSet *filteredSet = [statuses filteredSetUsingPredicate:predicate];
+	return [filteredSet anyObject];
+}
+
+
+- (TwitterUser *)userWithScreenName:(NSString *)screenName {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"screenName == %@", screenName];
+	NSSet *filteredSet = [users filteredSetUsingPredicate:predicate];
+	return [filteredSet anyObject];
+}
+
+- (void) save {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: [NSKeyedArchiver archivedDataWithRootObject:accounts] forKey: @"twitterAccounts"];
 	[defaults setObject: self.currentAccount.screenName forKey: @"currentAccount"];
+
+	[defaults setObject: [NSKeyedArchiver archivedDataWithRootObject:users] forKey: @"twitterUsers"];
 }
 
 @end

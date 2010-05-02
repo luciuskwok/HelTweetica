@@ -46,7 +46,7 @@
 @end
 
 @implementation RootViewController
-@synthesize webView, accountsButton, composeButton, customPageTitle, selectedTabName;
+@synthesize webView, accountsButton, composeButton, customPageHeader, customPageTitle, selectedTabName;
 @synthesize currentPopover, currentActionSheet, currentAlert;
 
 
@@ -493,6 +493,19 @@
 
 - (void) showUserPage:(NSString*)screenName {
 	// Use a custom timeline showing the user's tweets, but with a big header showing the user's info.
+	TwitterUser *user = [twitter userWithScreenName:screenName];
+	if (user == nil) {
+		// Need to load user first.
+		NSLog (@"User not found!");
+	} else {
+		// Create custom page header with user info and set timeline to user's tweeets
+		NSMutableString *html = [NSMutableString string];
+		
+		
+		
+		self.customPageHeader = html;
+		[self rewriteTweetArea];
+	}
 }
 
 #pragma mark -
@@ -509,24 +522,28 @@
 	self.selectedTabName = kTimelineIdentifier;
 	[twitter selectHomeTimeline];
 	self.customPageTitle = nil; // Reset the custom page title.
+	self.customPageHeader = nil;
 }
 
 - (void) selectMentionsTimeline {
 	self.selectedTabName = kMentionsIdentifier;
 	[twitter selectMentions];
 	self.customPageTitle = nil; // Reset the custom page title.
+	self.customPageHeader = nil;
 }
 
 - (void) selectDirectMessageTimeline {
 	self.selectedTabName = kDirectMessagesIdentifier;
 	[twitter selectDirectMessages];
 	self.customPageTitle = nil; // Reset the custom page title.
+	self.customPageHeader = nil;
 }
 
 - (void) selectFavoritesTimeline {
 	self.selectedTabName = kFavoritesIdentifier;
 	[twitter selectFavorites];
 	self.customPageTitle = nil; // Reset the custom page title.
+	self.customPageHeader = nil;
 }
 
 #pragma mark -
@@ -536,6 +553,7 @@
 	// Switch the web view to display a non-standard timeline
 	self.customPageTitle = name;
 	self.selectedTabName = tabName;
+	self.customPageHeader = nil;
 	
 	// Rewrite HTML in web view 
 	[self rewriteTabArea];

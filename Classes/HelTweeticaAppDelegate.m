@@ -41,7 +41,7 @@
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-	[twitter saveAccounts];
+	[twitter save];
 }
 
 - (void) incrementNetworkActionCount {

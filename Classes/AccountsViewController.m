@@ -184,7 +184,7 @@
 		if (account.xAuthToken != nil) {
 			// Make this account the current one.
 			[twitter setCurrentAccount: account];
-			[twitter saveAccounts];
+			[twitter save];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"currentAccountDidChange" object:self];
 			if (popover == nil) 
 				[self dismissModalViewControllerAnimated:YES];

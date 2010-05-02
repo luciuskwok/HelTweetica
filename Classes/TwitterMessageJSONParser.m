@@ -17,32 +17,37 @@
 
 #import "TwitterMessageJSONParser.h"
 #import "TwitterMessage.h"
+#import "TwitterUser.h"
 
 
 @implementation TwitterMessageJSONParser
-@synthesize messages, currentMessage, keyPath, directMessage, receivedTimestamp;
+@synthesize messages, users, currentMessage, currentUser, keyPath, directMessage, receivedTimestamp;
 
 - (id) init {
 	if (self = [super init]) {
 		messages = [[NSMutableArray alloc] init];
+		users = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
 
 - (void) dealloc {
 	[messages release];
+	[users release];
+	
 	[currentMessage release];
+	[currentUser release];
+	
 	[keyPath release];
 	[receivedTimestamp release];
 	[super dealloc];
 }
 
-- (NSArray*) messagesWithJSONData:(NSData*)jsonData {
+- (void) parseJSONData:(NSData*)jsonData {
 	LKJSONParser *parser = [[LKJSONParser alloc] initWithData:jsonData];
 	parser.delegate = self;
 	[parser parse];
 	[parser release];
-	return [[messages retain] autorelease];
 }
 
 - (TwitterMessage*) currentRetweetedMessage {
@@ -67,6 +72,8 @@
 		self.currentMessage = [[[TwitterMessage alloc] init] autorelease];
 		currentMessage.direct = directMessage;
 		currentMessage.receivedDate = receivedTimestamp;
+	} else if ([keyPath isEqualToString:@"/user/"] || [keyPath isEqualToString:@"/retweeted_status/user/"]) {
+		self.currentUser = [[[TwitterUser alloc] init] autorelease];
 	}
 }
 
@@ -81,6 +88,13 @@
 		if (currentMessage != nil) {
 			[messages addObject: currentMessage];
 			self.currentMessage = nil;
+		} else {
+			NSLog (@"Error while parsing JSON.");
+		}
+	} else if ([keyPath isEqualToString:@"/user"] || [keyPath isEqualToString:@"/retweeted_status/user"]) {
+		if (currentUser != nil) {
+			[users addObject: currentUser];
+			self.currentUser = nil;
 		} else {
 			NSLog (@"Error while parsing JSON.");
 		}
@@ -102,8 +116,18 @@
 - (void) setBool:(BOOL) value forKeyPath:(NSString*)aKeyPath withMessage:(TwitterMessage*)message {
 	if ([aKeyPath isEqualToString:@"/favorited"]) {
 		message.favorite = value;
-	} else if ([aKeyPath isEqualToString:@"/user/protected"] || [keyPath isEqualToString:@"/sender/protected"]) {
-		[message setLocked: value];
+	} 
+	
+	// User or Sender fields
+	if ([aKeyPath hasPrefix:@"/user/"] || [aKeyPath hasPrefix:@"/sender/"]) {
+		NSString *userKey = [aKeyPath lastPathComponent];
+		
+		if ([userKey isEqualToString:@"protected"]) {
+			[message setLocked: value];
+			currentUser.protectedUser = value;
+		} else if ([userKey isEqualToString:@"verified"]) {
+			currentUser.verifiedUser = value;
+		}
 	}
 }
 
@@ -125,6 +149,24 @@
 	} else if ([aKeyPath isEqualToString:@"/in_reply_to_user_id"]) {
 		message.inReplyToUserIdentifier = number;
 	}
+	
+	// User or Sender fields
+	if ([aKeyPath hasPrefix:@"/user/"] || [aKeyPath hasPrefix:@"/sender/"]) {
+		NSString *userKey = [aKeyPath lastPathComponent];
+		
+		if ([userKey isEqualToString:@"id"]) {
+			currentUser.identifier = number;
+		} else if ([userKey isEqualToString:@"friends_count"]) {
+			currentUser.friendsCount = number;
+		} else if ([userKey isEqualToString:@"followers_count"]) {
+			currentUser.followersCount = number;
+		} else if ([userKey isEqualToString:@"statuses_count"]) {
+			currentUser.statusesCount = number;
+		} else if ([userKey isEqualToString:@"favourites_count"]) {
+			currentUser.favoritesCount = number;
+		}
+	}
+	
 }
 
 - (void) parser:(LKJSONParser*)parser foundNumberValue:(NSString*)value {
@@ -158,10 +200,27 @@
 		message.createdDate = [self dateWithTwitterStatusString:value];
 	} else if ([aKeyPath isEqualToString:@"/text"]) {
 		message.content = value;
-	} else if ([aKeyPath isEqualToString:@"/user/screen_name"] || [keyPath isEqualToString:@"/sender/screen_name"]) { 
-		message.screenName = value;
-	} else if ([aKeyPath isEqualToString:@"/user/profile_image_url"] || [keyPath isEqualToString:@"/sender/profile_image_url"]) { 
-		message.avatar = value;
+	}
+	
+	// User or Sender fields
+	if ([aKeyPath hasPrefix:@"/user/"] || [aKeyPath hasPrefix:@"/sender/"]) {
+		NSString *userKey = [aKeyPath lastPathComponent];
+		
+		if ([userKey isEqualToString:@"screen_name"]) {
+			message.screenName = value;
+			currentUser.screenName = value;
+		} else if ([userKey isEqualToString:@"description"]) {
+			currentUser.description = value;
+		} else if ([userKey isEqualToString:@"location"]) {
+			currentUser.location = value;
+		} else if ([userKey isEqualToString:@"profile_image_url"]) {
+			message.avatar = value;
+			currentUser.profileImageURL = value;
+		} else if ([userKey isEqualToString:@"url"]) {
+			currentUser.webURL = value;
+		} else if ([userKey isEqualToString:@"created_at"]) {
+			currentUser.createdAt = [self dateWithTwitterStatusString:value];
+		}
 	}
 }
 

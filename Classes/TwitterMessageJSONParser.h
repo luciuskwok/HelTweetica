@@ -18,23 +18,32 @@
 #import <Foundation/Foundation.h>
 #import "LKJSONParser.h"
 @class TwitterMessage;
+@class TwitterUser;
 
 
 @interface TwitterMessageJSONParser : NSObject <LKJSONParserDelegate> {
 	NSMutableArray *messages;
+	NSMutableSet *users;
+	
 	TwitterMessage *currentMessage;
+	TwitterUser *currentUser;
+	
 	NSString *keyPath;
 	BOOL directMessage;
 	NSDate *receivedTimestamp;
 }
 
 @property (nonatomic, retain) NSMutableArray *messages;
+@property (nonatomic, retain) NSMutableSet *users;
+
 @property (nonatomic, retain) TwitterMessage *currentMessage;
+@property (nonatomic, retain) TwitterUser *currentUser;
+
 @property (nonatomic, retain) NSString *keyPath;
 @property (assign) BOOL directMessage;
 @property (nonatomic, retain) NSDate *receivedTimestamp;
 
-- (NSArray*) messagesWithJSONData:(NSData*)jsonData;
+- (void) parseJSONData:(NSData*)jsonData;
 - (TwitterMessage*) currentRetweetedMessage;
 
 @end

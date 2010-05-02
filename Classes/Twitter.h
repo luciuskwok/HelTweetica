@@ -16,16 +16,20 @@
 
 
 #import <Foundation/Foundation.h>
-#import "TwitterMessage.h"
-#import "TwitterAccount.h"
-#import "TwitterList.h"
 #import "TwitterAction.h"
+
+#import "TwitterAccount.h"
+#import "TwitterUser.h"
+#import "TwitterMessage.h"
+#import "TwitterList.h"
 
 @class TwitterLoadTimelineAction;
 @protocol TwitterDelegate;
 
 @interface Twitter : NSObject <TwitterActionDelegate> {
 	NSMutableArray *accounts;
+	NSMutableSet *users;
+	
 	TwitterAccount *currentAccount;
 	NSMutableArray *currentTimeline;
 	TwitterAction *currentTimelineAction;
@@ -39,6 +43,8 @@
 }
 
 @property (nonatomic, retain) NSMutableArray *accounts;
+@property (nonatomic, retain) NSMutableSet *users;
+
 @property (nonatomic, retain) TwitterAccount *currentAccount;
 @property (nonatomic, retain) NSMutableArray *currentTimeline;
 @property (nonatomic, retain) TwitterAction *currentTimelineAction;
@@ -61,9 +67,10 @@
 - (void) selectSearchTimelineWithQuery:(NSString*)query;
 - (BOOL) isLoading;
 
-- (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier;
+- (TwitterMessage *)statusWithIdentifier:(NSNumber *)identifier;
+- (TwitterUser *)userWithScreenName:(NSString *)screenName;
 
-- (void) saveAccounts;
+- (void) save;
 
 @end
 
