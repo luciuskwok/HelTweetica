@@ -56,8 +56,9 @@
 - (void) selectMentions;
 - (void) selectDirectMessages;
 - (void) selectFavorites;
+- (BOOL) isLoading;
 
-- (void) loadTimelineOfList:(TwitterList*)list;
+- (void) selectTimelineOfList:(TwitterList*)list;
 
 - (void) searchWithQuery:(NSString*)query;
 
@@ -68,8 +69,8 @@
 @end
 
 @protocol TwitterDelegate <NSObject>
+- (void)twitter:(Twitter*)aTwitter willLoadTimelineWithName:(NSString*)name tabName:(NSString*)tabName;
 - (void)twitter:(Twitter*)aTwitter didFinishLoadingTimeline:(NSArray*)aTimeline;
-- (void)twitter:(Twitter*)aTwitter didSelectTimeline:(NSArray*)aTimeline withName:(NSString*)name tabName:(NSString*)tabName;
 - (void)twitter:(Twitter*)aTwitter favoriteDidChange:(TwitterMessage*)aMessage;
 - (void)twitterDidRetweet:(Twitter*)aTwitter;
 

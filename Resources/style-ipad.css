@@ -115,6 +115,14 @@ p { margin: 0px 0px 20px 0px; }
 	border-bottom: 1px solid #ccc;
 }
 
+.status {
+	text-align: center;
+	margin: 40px;
+	font-size: 40px; 
+	font-weight: bold;
+	color: #BBB;
+}
+
 .hidden_stars {
 	width: 1px; height: 1px; overflow: hidden; display: none;
 }

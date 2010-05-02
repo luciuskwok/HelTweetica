@@ -28,7 +28,7 @@
 	NSNumber *identifier;
 	NSNumber *memberCount;
 	
-	NSArray *statuses;
+	NSMutableArray *statuses;
 	
 	BOOL privateList;
 }
@@ -41,7 +41,7 @@
 @property (nonatomic, retain) NSNumber *identifier;
 @property (nonatomic, retain) NSNumber *memberCount;
 
-@property (nonatomic, retain) NSArray *statuses;
+@property (nonatomic, retain) NSMutableArray *statuses;
 
 @property (assign) BOOL privateList;
 

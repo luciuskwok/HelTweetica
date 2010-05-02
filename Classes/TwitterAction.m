@@ -168,13 +168,14 @@
 	// Parse the received data
 	[self parseReceivedData:receivedData];
 	
+	// Call the did finish loading on delegate
+	if ([delegate respondsToSelector:@selector(twitterActionDidFinishLoading:)])
+		[delegate twitterActionDidFinishLoading:self];
+	
 	// Call the completion action on the target
 	if ([completionTarget respondsToSelector:completionAction]) {
 		[completionTarget performSelector:completionAction withObject:self];
 	}
-	
-	if ([delegate respondsToSelector:@selector(twitterActionDidFinishLoading:)])
-		[delegate twitterActionDidFinishLoading:self];
 	
 	[delegate release];
 	self.connection = nil;
@@ -184,6 +185,8 @@
 - (void)connection:(NSURLConnection *)aConnection didFailWithError:(NSError *)error {
 	if (aConnection != connection) return;
 	isLoading = NO;
+	
+	// Call the did fail on delegate
 	if ([delegate respondsToSelector:@selector(twitterAction:didFailWithError:)])
 		[delegate twitterAction:self didFailWithError:error];
 

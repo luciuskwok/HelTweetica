@@ -350,8 +350,11 @@
 		 if ((displayedCount == totalMessages) && (selectedTab >= 0) && (selectedTab < 3))
 		 [html appendString:@"<div class='time' style='text-align:center;'><a href='action:loadOlder'>Load older messages</a></div>\n"];*/
 		
-	} else { // No tweets
-		[html appendString: @"<div class='status'>No messages!</div>"];
+	} else { // No tweets or Loading
+		if ([twitter isLoading])
+			[html appendString: @"<div class='status'>Loading...</div>"];
+		else
+			[html appendString: @"<div class='status'>No messages.</div>"];
 	}
 	
 	return html;
@@ -523,12 +526,7 @@
 #pragma mark -
 #pragma mark Twitter delegate methods
 
-- (void)twitter:(Twitter *)aTwitter didFinishLoadingTimeline:(NSArray *)aTimeline {
-	[self rewriteTweetArea];	
-	[self setLoadingSpinnerVisibility:NO];
-}
-
-- (void)twitter:(Twitter*)aTwitter didSelectTimeline:(NSArray*)aTimeline withName:(NSString*)name tabName:(NSString*)tabName {
+- (void)twitter:(Twitter*)aTwitter willLoadTimelineWithName:(NSString*)name tabName:(NSString*)tabName {
 	// Switch the web view to display a non-standard timeline
 	self.customPageTitle = name;
 	self.selectedTabName = tabName;
@@ -537,10 +535,15 @@
 	[self.webView setDocumentElement:@"page_title" innerHTML:[self pageTitleHTML]];
 	[self rewriteTabArea];
 	[self rewriteTweetArea];	
-	[self setLoadingSpinnerVisibility:NO];
+	[self setLoadingSpinnerVisibility:YES];
 	
 	// Scroll to top of web view
 	[self.webView scrollToTop];
+}
+
+- (void)twitter:(Twitter *)aTwitter didFinishLoadingTimeline:(NSArray *)aTimeline {
+	[self rewriteTweetArea];	
+	[self setLoadingSpinnerVisibility:NO];
 }
 
 - (void)twitter:(Twitter*)aTwitter favoriteDidChange:(TwitterMessage*)aMessage {
@@ -556,6 +559,11 @@
 }
 
 - (void)twitter:(Twitter*)aTwitter didFailWithNetworkError:(NSError*)anError {
+	// Remove any Loading messages.
+	[self rewriteTweetArea];	
+	[self setLoadingSpinnerVisibility:NO];
+
+	// Show alert with error code and message.
 	int statusCode = [anError code];
 	NSString *title, *message;
 	

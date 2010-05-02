@@ -62,8 +62,23 @@
 	[encoder encodeBool:privateList forKey:@"privateList"];
 }
 
+#pragma mark -
+
 - (NSString*) description {
 	return [NSString stringWithFormat: @"\"%@\" (%@): %@", name, slug, description];
+}
+
+// hash and isEqual: are used by NSSet to determine if an object is unique.
+- (NSUInteger) hash {
+	return [identifier hash];
+}
+
+- (BOOL) isEqual:(id)object {
+	BOOL result = NO;
+	if ([object respondsToSelector:@selector(identifier)]) {
+		result = [self.identifier isEqual: [object identifier]];
+	}
+	return result;
 }
 
 

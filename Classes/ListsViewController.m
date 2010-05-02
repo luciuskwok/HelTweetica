@@ -112,12 +112,26 @@
 	[self startTwitterAction:subscriptionsAction];
 }
 
+- (void)synchronize:(NSMutableArray*)newLists withLists:(NSArray*)oldLists {
+	NSSet *oldSet = [NSSet setWithArray: oldLists];
+	int index;
+	id oldList, newList;
+	for (index = 0; index < newLists.count; index++) {
+		newList = [newLists objectAtIndex: index];
+		oldList = [oldSet member:newList]; // If the set of old lists includes an identical member from the new lists, replace the entry in the new lists with the old one.
+		if (oldList) {
+			[newLists replaceObjectAtIndex:index withObject:oldList];
+		}
+	}
+}
+
 - (void)didLoadLists:(TwitterLoadListsAction *)action {
-	twitter.currentAccount.lists = action.lists;
+	// Keep the old list objects that match new ones because it caches the status updates
+	[self synchronize:action.lists withLists:twitter.currentAccount.lists ];
 }
 
 - (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
-	twitter.currentAccount.listSubscriptions = action.lists;
+	[self synchronize:action.lists withLists:twitter.currentAccount.listSubscriptions ];
 }
 
 #pragma mark -
@@ -206,7 +220,13 @@
 		list = [account.listSubscriptions objectAtIndex: indexPath.row - account.lists.count];
 	} 
 	if (list != nil) {
-		[twitter loadTimelineOfList: list];
+		[twitter selectTimelineOfList: list];
+		[twitter reloadCurrentTimeline];
+		
+		// Call delegate to tell it we're starting to load timeline
+		if ([twitter.delegate respondsToSelector:@selector(twitter:willLoadTimelineWithName:tabName:)])
+			[twitter.delegate twitter:twitter willLoadTimelineWithName:list.fullName tabName:@"List"];
+
 		if (popover) {
 			[popover dismissPopoverAnimated:YES];
 			[popover.delegate popoverControllerDidDismissPopover:popover]; // Make sure delegate knows popover has been removed

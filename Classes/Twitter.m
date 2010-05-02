@@ -27,7 +27,7 @@
 #import "TwitterSearchAction.h"
 
 
-#define kMaxNumberOfMessagesInATimeline 300
+#define kMaxNumberOfMessagesInATimeline 600
 	// When reloading a timeline, newly downloaded messages are merged with existing ones, sorted by identifier, and the oldest ones past this limit are trimmed off.
 #define kMaxMessageStaleness (20 * 60) 
 	// When reloading a timeline, when the newest message in the app is older than this, the app reloads the entire timeline instead of requesting only status updates newer than the newest in the app. This is set to 20 minutes. The number is in seconds.
@@ -236,7 +236,7 @@
 
 - (void)reloadCurrentTimeline {
 	NSNumber *newerThan = nil;
-	if ([currentTimeline count] > 3) {
+	if ([currentTimeline count] > 10) {
 		TwitterMessage *message = [currentTimeline objectAtIndex: 0];
 		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
 		if (staleness < kMaxMessageStaleness) {
@@ -307,40 +307,19 @@
 	self.currentTimelineTwitterMethod = @"favorites";
 }
 
-#pragma mark -
-#pragma mark TwitterAction - Lists
-
-- (void) loadTimelineOfList:(TwitterList*)list {
-	NSNumber *count = [NSNumber numberWithInt:defaultTimelineLoadCount];
-	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
-	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method sinceIdentifier:nil maxIdentifier:nil perPage:count page:nil] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didLoadTimelineOfList:);
-	action.timelineName = list.fullName;
-	[self startTwitterAction:action withToken:YES];
+- (void) selectTimelineOfList:(TwitterList*)list {
+	if (list.statuses == nil)
+		list.statuses = [NSMutableArray array];
+	self.currentTimeline = list.statuses;
+	self.currentTimelineTwitterMethod = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
 }
 
-- (void) didLoadTimelineOfList:(TwitterLoadTimelineAction *)action {
-	NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-	[self synchronizeStatusesWithArray: newMessages updateFavorites:YES];
-	
-	// Change the current timeline to the latest downloaded messages
-	self.currentTimeline = newMessages;
-	
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didSelectTimeline:withName:tabName:)])
-		[delegate twitter:self didSelectTimeline:newMessages withName:action.timelineName tabName:@"List"];
+- (BOOL) isLoading {
+	return actions.count > 0;
 }
 
 #pragma mark -
 #pragma mark TwitterAction - Search
-
-- (void)searchWithQuery:(NSString*)query {
-	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didSearch:);
-	[self startTwitterAction:action withToken:YES];
-}
 
 - (NSString *)htmlSafeString:(NSString *)string {
 	NSMutableString *result = [NSMutableString stringWithString:string];
@@ -351,6 +330,20 @@
 	return result;
 }
 
+- (void)searchWithQuery:(NSString*)query {
+	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didSearch:);
+	[self startTwitterAction:action withToken:YES];
+	
+	// Call delegate to tell it we're about to load a new timeline
+	if ([delegate respondsToSelector:@selector(twitter:willLoadTimelineWithName:tabName:)]) {
+		NSString *pageName = [NSString stringWithFormat: @"Search for &ldquo;%@&rdquo;", [self htmlSafeString:action.query]];
+		[delegate twitter:self willLoadTimelineWithName:pageName tabName:@"Results"];
+	}
+	
+}
+
 - (void) didSearch:(TwitterSearchAction *)action {
 	NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
 	[self synchronizeStatusesWithArray: newMessages updateFavorites:NO];
@@ -359,10 +352,8 @@
 	self.currentTimeline = newMessages;
 
 	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didSelectTimeline:withName:tabName:)]) {
-		NSString *pageName = [NSString stringWithFormat: @"Search for &ldquo;%@&rdquo;", [self htmlSafeString:action.query]];
-		[delegate twitter:self didSelectTimeline:newMessages withName:pageName tabName:@"Results"];
-	}
+	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
+		[delegate twitter:self didFinishLoadingTimeline:currentTimeline];
 }
 
 
