@@ -21,7 +21,8 @@
 	NSNumber *identifier; // User ID
 	
 	NSString *screenName;
-	NSString *description; // Bio
+	NSString *fullName;
+	NSString *bio; // Bio
 	NSString *location; // Location
 	NSString *profileImageURL; // 48 x 48 avatar
 	NSString *webURL; // User-entered Web URL
@@ -41,7 +42,8 @@
 @property (nonatomic, retain) NSNumber *identifier;
 
 @property (nonatomic, retain) NSString *screenName;
-@property (nonatomic, retain) NSString *description;
+@property (nonatomic, retain) NSString *fullName;
+@property (nonatomic, retain) NSString *bio;
 @property (nonatomic, retain) NSString *location;
 @property (nonatomic, retain) NSString *profileImageURL;
 @property (nonatomic, retain) NSString *webURL;

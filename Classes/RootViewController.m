@@ -26,6 +26,7 @@
 #import "ListsViewController.h"
 #import "SearchViewController.h"
 #import "AllStarsViewController.h"
+#import "UserPageViewController.h"
 
 
 #define kMaxNumberOfMessagesShown 800
@@ -42,11 +43,11 @@
 
 - (void) setLoadingSpinnerVisibility:(BOOL)isVisible;
 
-- (void) refreshWebView;
+- (void) reloadWebView;
 @end
 
 @implementation RootViewController
-@synthesize webView, accountsButton, composeButton, customPageHeader, customPageTitle, selectedTabName;
+@synthesize webView, accountsButton, composeButton, customPageTitle, selectedTabName;
 @synthesize currentPopover, currentActionSheet, currentAlert;
 
 
@@ -243,11 +244,6 @@
 		 [html appendString:@"</div>\n"];
 		 */
 		
-		// Custom header (for user page)
-		if (customPageHeader) {
-			[html appendFormat:@"<div class='page_header'>%@</div>", customPageHeader];
-		}
-		
 		[html appendString:@"<div class='tweet_table'> "];
 
 		// Page title for Lists and Search
@@ -369,10 +365,24 @@
 	return html;
 }
 
-- (void) refreshWebView {
+- (void) reloadWebView {
 	TwitterAccount *account = [twitter currentAccount];
-	NSMutableString *html = [[NSMutableString alloc] init];
+	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
+	NSURL *baseURL = [NSURL fileURLWithPath:mainBundle];
+	NSError *error = nil;
+	
+	// Header
+	NSString *headerHTML = [NSString stringWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"header.html"] encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil) {
+		NSLog (@"Error loading header.html: %@", [error localizedDescription]);
+	}
+	NSMutableString *html = [[NSMutableString alloc] initWithString:headerHTML];
+
+	// Artboard div with padding for transparent toolbar
+	[html appendString:@"<div class='artboard toolbar_padding'>"];
+
 	// Open html and head tags
+	/*
 	[html appendString:@"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"];
 	[html appendString:@"<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n"];
 	[html appendString:@"<head>\n"];
@@ -386,6 +396,7 @@
 	
 	// Body
 	[html appendString:@"</head><body><div class='artboard'>"];
+	*/
 	
 	// User name
 	if (account.screenName == nil) {
@@ -411,16 +422,20 @@
 		[html appendString:@"</div>\n"];
 		
 	}
-	// Hidden star icons to make sure they're loaded
-	[html appendString:@"<div class='hidden_stars'><img src='action-4.png'><img src='action-4-on.png'></div>"];
 	
-	// Close artboard div, body. and html tags
-	[html appendString:@"</div></body></html>\n"];
+	// Footer
+	error = nil;
+	NSString *footerHTML = [NSString stringWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"footer.html"] encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil) {
+		NSLog (@"Error loading footer.html: %@", [error localizedDescription]);
+	}
+	[html appendString:footerHTML];
 	
-	NSURL *baseURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] bundlePath]];
 	[self.webView loadHTMLString:html baseURL:baseURL];
 	[html release];
 }
+
+#pragma mark HTML rewriting
 
 - (void) setLoadingSpinnerVisibility: (BOOL) isVisible {
 	[self.webView setDocumentElement:@"spinner" visibility:isVisible];
@@ -435,7 +450,7 @@
 	NSString *result = [self.webView setDocumentElement:@"tweet_area" innerHTML:[self tweetAreaHTML]];
 	if ([result length] == 0) { // If the result of the JavaScript call is empty, there was an error.
 		NSLog (@"JavaScript error in refreshing tweet area. Reloading entire web view.");
-		[self refreshWebView];
+		[self reloadWebView];
 		[self setLoadingSpinnerVisibility: NO];
 	}
 	
@@ -498,13 +513,9 @@
 		// Need to load user first.
 		NSLog (@"User not found!");
 	} else {
-		// Create custom page header with user info and set timeline to user's tweeets
-		NSMutableString *html = [NSMutableString string];
-		
-		
-		
-		self.customPageHeader = html;
-		[self rewriteTweetArea];
+		// Load user's timeline
+		UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitter:twitter user:user] autorelease];
+		[self.navigationController pushViewController: vc animated: YES];
 	}
 }
 
@@ -522,28 +533,24 @@
 	self.selectedTabName = kTimelineIdentifier;
 	[twitter selectHomeTimeline];
 	self.customPageTitle = nil; // Reset the custom page title.
-	self.customPageHeader = nil;
 }
 
 - (void) selectMentionsTimeline {
 	self.selectedTabName = kMentionsIdentifier;
 	[twitter selectMentions];
 	self.customPageTitle = nil; // Reset the custom page title.
-	self.customPageHeader = nil;
 }
 
 - (void) selectDirectMessageTimeline {
 	self.selectedTabName = kDirectMessagesIdentifier;
 	[twitter selectDirectMessages];
 	self.customPageTitle = nil; // Reset the custom page title.
-	self.customPageHeader = nil;
 }
 
 - (void) selectFavoritesTimeline {
 	self.selectedTabName = kFavoritesIdentifier;
 	[twitter selectFavorites];
 	self.customPageTitle = nil; // Reset the custom page title.
-	self.customPageHeader = nil;
 }
 
 #pragma mark -
@@ -553,7 +560,6 @@
 	// Switch the web view to display a non-standard timeline
 	self.customPageTitle = name;
 	self.selectedTabName = tabName;
-	self.customPageHeader = nil;
 	
 	// Rewrite HTML in web view 
 	[self rewriteTabArea];
@@ -700,7 +706,7 @@
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	[self selectHomeTimeline];	
-	[self refreshWebView];
+	[self reloadWebView];
 	
 	// Automatically reload after web view is done rendering.
 	automaticReload = YES;

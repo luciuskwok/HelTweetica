@@ -17,14 +17,15 @@
 
 
 @implementation TwitterUser
-@synthesize identifier, screenName, description, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdAt, protectedUser, verifiedUser;
+@synthesize identifier, screenName, fullName, bio, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdAt, protectedUser, verifiedUser;
 
 - (id) initWithCoder: (NSCoder*) decoder {
 	if (self = [super init]) {
 		self.identifier = [decoder decodeObjectForKey:@"identifier"];
 		
 		self.screenName = [decoder decodeObjectForKey:@"screenName"];
-		self.description = [decoder decodeObjectForKey:@"description"];
+		self.fullName = [decoder decodeObjectForKey:@"fullName"];
+		self.bio = [decoder decodeObjectForKey:@"bio"];
 		self.location = [decoder decodeObjectForKey:@"location"];
 		self.profileImageURL = [decoder decodeObjectForKey:@"profileImageURL"];
 		self.webURL = [decoder decodeObjectForKey:@"webURL"];
@@ -46,7 +47,8 @@
 	[encoder encodeObject: identifier forKey:@"identifier"];
 	
 	[encoder encodeObject:screenName forKey:@"screenName"];
-	[encoder encodeObject:description forKey:@"description"];
+	[encoder encodeObject:fullName forKey:@"fullName"];
+	[encoder encodeObject:bio forKey:@"bio"];
 	[encoder encodeObject:location forKey:@"location"];
 	[encoder encodeObject:profileImageURL forKey:@"profileImageURL"];
 	[encoder encodeObject:webURL forKey:@"webURL"];
@@ -66,7 +68,8 @@
 	[identifier release];
 	
 	[screenName release];
-	[description release];
+	[fullName release];
+	[bio release];
 	[location release];
 	[profileImageURL release];
 	[webURL release];

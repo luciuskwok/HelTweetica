@@ -12,7 +12,8 @@
 a {color: #448; text-decoration: none; }
 p { margin: 0px 0px 20px 0px; }
 
-.artboard { padding: 44px 0px 0px 0px; width: auto; overflow: hidden; }
+.artboard { padding: 0px; width: auto; overflow: hidden; }
+.toolbar_padding { padding: 44px 0px 0px 0px; }
 
 .login { 
 	padding: 0px; 

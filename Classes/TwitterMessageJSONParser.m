@@ -209,8 +209,10 @@
 		if ([userKey isEqualToString:@"screen_name"]) {
 			message.screenName = value;
 			currentUser.screenName = value;
+		} else if ([userKey isEqualToString:@"name"]) {
+			currentUser.fullName = value;
 		} else if ([userKey isEqualToString:@"description"]) {
-			currentUser.description = value;
+			currentUser.bio = value;
 		} else if ([userKey isEqualToString:@"location"]) {
 			currentUser.location = value;
 		} else if ([userKey isEqualToString:@"profile_image_url"]) {

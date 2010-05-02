@@ -92,7 +92,7 @@
 		if (usersData != nil) {
 			self.users = [NSKeyedUnarchiver unarchiveObjectWithData:usersData];
 		} else {
-			self.users = [NSMutableSet alloc];
+			self.users = [NSMutableSet set];
 		}
 
 
