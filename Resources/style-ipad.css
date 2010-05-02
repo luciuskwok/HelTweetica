@@ -27,7 +27,7 @@ p { margin: 0px 0px 20px 0px; }
 .title a { color: #DDD; }
 
 .current_account { 
-	font-size: 30px; font-weight: bold; line-height: 30px; 
+	font-size: 32px; font-weight: bold; line-height: 30px; 
 }
 
 .tabs { 
@@ -67,8 +67,8 @@ p { margin: 0px 0px 20px 0px; }
 .deselected { background-image:url('tab-off.png'); color: #666; }
 
 .page_title {
-	margin: 0px 0px 10px 0px;
-	font-size: 25px; 
+	margin: 10px 0px 25px 0px;
+	font-size: 28px; 
 	color: #888;
 }
 .page_title b {

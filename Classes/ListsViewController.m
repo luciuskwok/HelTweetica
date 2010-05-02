@@ -112,26 +112,38 @@
 	[self startTwitterAction:subscriptionsAction];
 }
 
-- (void)synchronize:(NSMutableArray*)newLists withLists:(NSArray*)oldLists {
-	NSSet *oldSet = [NSSet setWithArray: oldLists];
+- (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {
+	NSSet *oldSet = [NSSet setWithArray: existingLists];
+	
+	// Remove all old objects and insert new objects, reusing old ones if they match.
+	[existingLists removeAllObjects];
 	int index;
 	id oldList, newList;
 	for (index = 0; index < newLists.count; index++) {
 		newList = [newLists objectAtIndex: index];
 		oldList = [oldSet member:newList]; // If the set of old lists includes an identical member from the new lists, replace the entry in the new lists with the old one.
-		if (oldList) {
-			[newLists replaceObjectAtIndex:index withObject:oldList];
-		}
+		[existingLists addObject: oldList ? oldList: newList];
 	}
 }
 
 - (void)didLoadLists:(TwitterLoadListsAction *)action {
+	if (twitter.currentAccount.lists == nil)
+		twitter.currentAccount.lists = [NSMutableArray array];
+	
 	// Keep the old list objects that match new ones because it caches the status updates
-	[self synchronize:action.lists withLists:twitter.currentAccount.lists ];
+	[self synchronizeExisting:twitter.currentAccount.lists withNew:action.lists];
+	[self setContentSize];
+	[self.tableView reloadData];
+	//[self.tableView flashScrollIndicators];
 }
 
 - (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
-	[self synchronize:action.lists withLists:twitter.currentAccount.listSubscriptions ];
+	if (twitter.currentAccount.listSubscriptions == nil)
+		twitter.currentAccount.listSubscriptions = [NSMutableArray array];
+	[self synchronizeExisting:twitter.currentAccount.listSubscriptions withNew:action.lists];
+	[self setContentSize];
+	[self.tableView reloadData];
+	//[self.tableView flashScrollIndicators];
 }
 
 #pragma mark -
@@ -140,8 +152,6 @@
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
 	// Remove from array of active network connections and update table view.
 	[actions removeObject: action];
-	[self setContentSize];
-	[self.tableView reloadData];
 	
 	// Set the default status message after last action is done.
 	if (actions.count == 0) {

@@ -27,6 +27,7 @@
 	
 	Twitter *twitter;
 	
+	NSString *customPageHeader;
 	NSString *customPageTitle;
 	NSString *selectedTabName;
 	
@@ -41,6 +42,7 @@
 @property (nonatomic, retain) LKWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *accountsButton;
 @property (nonatomic, retain) UIBarButtonItem *composeButton;
+@property (nonatomic, retain) NSString *customPageHeader;
 @property (nonatomic, retain) NSString *customPageTitle;
 @property (nonatomic, retain) NSString *selectedTabName;
 @property (nonatomic, retain) UIPopoverController *currentPopover;

@@ -15,7 +15,7 @@
 @synthesize query, messages;
 
 
-- (id)initWithQuery:(NSString *)aQuery count:(NSNumber*)count {
+- (id)initWithQuery:(NSString *)aQuery count:(NSString*)count {
 	self = [super init];
 	if (self) {
 		self.query = aQuery;
@@ -23,7 +23,7 @@
 		NSMutableDictionary *theParameters = [NSMutableDictionary dictionary];
 		[theParameters setObject:aQuery forKey:@"q"];
 		if (count) 
-			[theParameters setObject:[count stringValue] forKey:@"rpp"]; // Results per page.
+			[theParameters setObject:count forKey:@"rpp"]; // Results per page.
 		
 		self.parameters = theParameters;
 	}

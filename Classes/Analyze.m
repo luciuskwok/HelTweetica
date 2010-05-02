@@ -105,7 +105,7 @@
 
 	// Body
 	[html appendString:@"</head><body>"];
-	[html appendFormat:@"<div class='tweet_area'><b>Most frequent tweeters</b><br> out of %d tweets:<br><br>", [timeline count]];
+	[html appendFormat:@"<div class='tweet_area'><b>Most frequent tweeters</b><br> out of %d tweets in your home timeline:<br><br>", [timeline count]];
 	
 	if ((timeline == nil) || ([timeline count] == 0)) {
 		[html appendString:@"No tweets to analyze!"];

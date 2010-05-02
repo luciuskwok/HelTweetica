@@ -17,6 +17,6 @@
 @property (nonatomic, copy) NSString *query;
 @property (nonatomic, retain) NSArray *messages;
 
-- (id)initWithQuery:(NSString *)aQuery count:(NSNumber*)count;
+- (id)initWithQuery:(NSString *)aQuery count:(NSString*)count;
 
 @end

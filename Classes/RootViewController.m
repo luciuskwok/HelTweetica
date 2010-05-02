@@ -243,6 +243,11 @@
 		 [html appendString:@"</div>\n"];
 		 */
 		
+		// Custom header (for user page)
+		if (customPageHeader) {
+			[html appendFormat:@"<div class='page_header'>%@</div>", customPageHeader];
+		}
+		
 		[html appendString:@"<div class='tweet_table'> "];
 
 		// Page title for Lists and Search
@@ -398,15 +403,11 @@
 		// Tabs for Timeline, Mentions, Direct Messages
 		[html appendString:@"<div id='tab_area' class='tabs'> "];
 		[html appendString:[self tabAreaHTML]];
-		
 		[html appendString:@"</div>\n"]; // Close tabs
 		
 		// Tweet area
 		[html appendString:@"<div id='tweet_area' class='tweet_area'> "];
-		//[html appendString: @"<div class='status'><img src='spinner.gif'><br>Loading...</div>"];
 		[html appendString: [self tweetAreaHTML]];
-		
-		// Close tweet area div
 		[html appendString:@"</div>\n"];
 		
 	}
@@ -491,18 +492,17 @@
 }
 
 - (void) showUserPage:(NSString*)screenName {
-	// TODO: show user page
-	[self showAlertWithTitle:@"Under Construction." message:@"The user page feature isn't quite ready."];
+	// Use a custom timeline showing the user's tweets, but with a big header showing the user's info.
 }
 
 #pragma mark -
 #pragma mark Twitter timeline selection
 
 - (void) reloadTimeline {
+	[twitter reloadCurrentTimeline];
 	[self rewriteTabArea];
 	[self rewriteTweetArea];
 	[self setLoadingSpinnerVisibility: YES];
-	[twitter reloadCurrentTimeline];
 }
 
 - (void) selectHomeTimeline {

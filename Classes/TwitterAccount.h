@@ -30,8 +30,8 @@
 	NSMutableArray *directMessages;
 	NSMutableArray *favorites;
 	
-	NSArray *lists;
-	NSArray *listSubscriptions;
+	NSMutableArray *lists;
+	NSMutableArray *listSubscriptions;
 	
 	NSArray *savedSearches;
 }
@@ -45,8 +45,8 @@
 @property (nonatomic, retain) NSMutableArray *directMessages;
 @property (nonatomic, retain) NSMutableArray *favorites;
 
-@property (nonatomic, retain) NSArray *lists;
-@property (nonatomic, retain) NSArray *listSubscriptions;
+@property (nonatomic, retain) NSMutableArray *lists;
+@property (nonatomic, retain) NSMutableArray *listSubscriptions;
 
 @property (nonatomic, retain) NSArray *savedSearches;
 

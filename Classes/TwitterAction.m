@@ -28,6 +28,7 @@
 	self = [super init];
 	if (self) {
 		appDelegate = [[UIApplication sharedApplication] delegate];
+		parameters = [[NSMutableDictionary alloc] init];
 	}
 	return self;
 }
@@ -163,7 +164,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
 	if (aConnection != connection) return;
-	isLoading = NO;
+	isLoading = NO; // TODO: check status code and deal with error if necessary.
 	
 	// Parse the received data
 	[self parseReceivedData:receivedData];
@@ -186,6 +187,7 @@
 - (void)connection:(NSURLConnection *)aConnection didFailWithError:(NSError *)error {
 	if (aConnection != connection) return;
 	isLoading = NO;
+	statusCode = 0; // Status code is not valid with this kind of error, which is typically a timeout or no network error.
 	
 	// Call the did fail on delegate
 	if ([delegate respondsToSelector:@selector(twitterAction:didFailWithError:)])

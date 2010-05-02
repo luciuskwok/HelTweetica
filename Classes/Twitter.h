@@ -33,7 +33,7 @@
 	NSMutableSet *statuses;
 	NSMutableArray *actions;
 	
-	int defaultTimelineLoadCount;
+	NSString *defaultCount;
 	
 	id <TwitterDelegate> delegate;
 }

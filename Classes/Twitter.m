@@ -61,7 +61,7 @@
 	if (self = [super init]) {
 		statuses = [[NSMutableSet alloc] init];
 		actions = [[NSMutableArray alloc] init];
-		defaultTimelineLoadCount = 100;
+		defaultCount = [@"100" retain];
 		
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		NSData *accountsData = [defaults objectForKey: @"twitterAccounts"];
@@ -71,9 +71,9 @@
 			
 			// Add all statuses to set
 			for (TwitterAccount *account in accounts) {
-				[statuses addObjectsFromArray: account.timeline]; // TODO: Unique each array element
-				[statuses addObjectsFromArray: account.mentions];
-				[statuses addObjectsFromArray: account.favorites];
+				[self synchronizeStatusesWithArray: account.timeline updateFavorites:YES]; // TODO: Unique each array element
+				[self synchronizeStatusesWithArray: account.mentions updateFavorites:YES];
+				[self synchronizeStatusesWithArray: account.favorites updateFavorites:YES];
 			}
 			
 			NSString *currentAccountScreenName = [defaults objectForKey: @"currentAccount"];
@@ -94,6 +94,7 @@
 	[currentTimeline release];
 	[statuses release];
 	[actions release];
+	[defaultCount release];
 	
 	[super dealloc];
 }
@@ -237,6 +238,9 @@
 #pragma mark -
 #pragma mark TwitterActions - Timeline
 
+// TODO: add own RTs to home timeline
+// See http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_by_me
+
 - (void)reloadCurrentTimeline {
 	// Set the since_id parameter if there already are messages in the current timeline
 	NSNumber *newerThan = nil;
@@ -289,27 +293,35 @@
 
 
 - (void)selectHomeTimeline {
+	if (currentAccount.timeline == nil) 
+		currentAccount.timeline = [NSMutableArray array];
 	self.currentTimeline = currentAccount.timeline;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
-	[currentTimelineAction.parameters setObject:[NSNumber numberWithInt:defaultTimelineLoadCount] forKey:@"count"];
+	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
 }
 
 - (void)selectMentions {
+	if (currentAccount.mentions == nil) 
+		currentAccount.mentions = [NSMutableArray array];
 	self.currentTimeline = currentAccount.mentions;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
-	[currentTimelineAction.parameters setObject:[NSNumber numberWithInt:defaultTimelineLoadCount] forKey:@"count"];
+	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
 }
 
 - (void)selectDirectMessages {
+	if (currentAccount.directMessages == nil) 
+		currentAccount.directMessages = [NSMutableArray array];
 	self.currentTimeline = currentAccount.directMessages;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
-	[currentTimelineAction.parameters setObject:[NSNumber numberWithInt:defaultTimelineLoadCount] forKey:@"count"];
+	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
 }
 
 - (void)selectFavorites {
+	if (currentAccount.favorites == nil) 
+		currentAccount.favorites = [NSMutableArray array];
 	self.currentTimeline = currentAccount.favorites;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
-	[currentTimelineAction.parameters setObject:[NSNumber numberWithInt:defaultTimelineLoadCount] forKey:@"per_page"];
+	// Favorites always loads 20 per page. Cannot change the count.
 }
 
 - (void) selectTimelineOfList:(TwitterList*)list {
@@ -319,14 +331,13 @@
 
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
-	[currentTimelineAction.parameters setObject:[NSNumber numberWithInt:defaultTimelineLoadCount] forKey:@"per_page"];
+	[currentTimelineAction.parameters setObject:defaultCount forKey:@"per_page"];
 }
 
 - (void) selectSearchTimelineWithQuery:(NSString*)query {
 	self.currentTimeline = [NSMutableArray array]; // Always start with an empty array of messages for Search.
 	
-	NSNumber *count = [NSNumber numberWithInt: defaultTimelineLoadCount];
-	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query count:count] autorelease];
+	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultCount] autorelease];
 	self.currentTimelineAction = action;
 }
 
@@ -339,13 +350,18 @@
 
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
 	[self removeTwitterAction:action];
+	
+	// Deal with status codes 400 to 402 and 404 and up.
+	if ((action.statusCode >= 400) && (action.statusCode != 403)) {
+		if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
+			NSError *error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
+			[delegate twitter:self didFailWithNetworkError:error];
+		}
+	}
 }
 
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
 	if ([delegate respondsToSelector:@selector(twitter:didFailWithNetworkError:)]) {
-		if (action.statusCode != 0) {
-			error = [NSError errorWithDomain:@"Network" code:action.statusCode userInfo:nil];
-		}
 		[delegate twitter:self didFailWithNetworkError:error];
 	}
 	[actions removeObject: action];

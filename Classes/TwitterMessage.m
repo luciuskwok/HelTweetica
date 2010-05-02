@@ -78,7 +78,7 @@
 	[encoder encodeObject: inReplyToUserIdentifier forKey:@"inReplyToUserIdentifier"];
 
 	[encoder encodeObject:screenName forKey:@"username"];
-	[encoder encodeObject:screenName forKey:@"inReplyToScreenName"];
+	[encoder encodeObject:inReplyToScreenName forKey:@"inReplyToScreenName"];
 	[encoder encodeObject:avatar forKey:@"avatar"];
 	[encoder encodeObject:content forKey:@"content"];
 	[encoder encodeObject:source forKey:@"source"];
