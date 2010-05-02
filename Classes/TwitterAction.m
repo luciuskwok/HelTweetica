@@ -179,6 +179,7 @@
 	
 	[delegate release];
 	self.connection = nil;
+	self.receivedData = nil;
 	[appDelegate decrementNetworkActionCount];
 }	
 
@@ -192,6 +193,7 @@
 
 	[delegate release];
 	self.connection = nil;
+	self.receivedData = nil;
 	[appDelegate decrementNetworkActionCount];
 }
 
