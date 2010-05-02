@@ -26,20 +26,20 @@ p { margin: 0px 0px 20px 0px; }
 .title { color: #DDD; padding: 10px 5px 10px 5px; }
 .title a { color: #DDD; }
 
-.page_title { 
+.current_account { 
 	font-size: 30px; font-weight: bold; line-height: 30px; 
 }
 
 .tabs { 
 	background-image:url('tab-bkgnd.png'); 
-	padding: 0px 5px 0px 5px; 
+	padding: 0px 1px 0px 1px; 
 }
 
 .tab { 
-	margin: 0;
-	padding: 6px 0px 0px 0px;
-	width: 84px;
-	height: 22px;
+	margin: 0px 0px 0px 1px;
+	padding: 9px 0px 0px 0px;
+	width: 88px;
+	height: 23px;
 	text-align: center;
 	font-size: 13px; 
 	font-weight: bold;
@@ -65,6 +65,16 @@ p { margin: 0px 0px 20px 0px; }
 
 .selected { background-image:url('tab.png'); color: #444; }
 .deselected { background-image:url('tab-off.png'); color: #666; }
+
+.page_title {
+	margin: 0px 0px 10px 0px;
+	font-size: 25px; 
+	color: #888;
+}
+.page_title b {
+	font-weight: bold;
+	color: #444;
+}
 
 .tweet_area { 
 	padding: 10px 10px 40px 10px; margin: 0px;

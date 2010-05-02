@@ -365,6 +365,7 @@
 				// Message already exists, but still need to update the favorite status and timestamp of the message.
 				if (updateFaves)
 					existingMessage.favorite = newMessage.favorite;
+				existingMessage.inReplyToScreenName = newMessage.inReplyToScreenName;
 				existingMessage.receivedDate = newMessage.receivedDate;
 				[newStatuses replaceObjectAtIndex:index withObject:existingMessage];
 			} else {

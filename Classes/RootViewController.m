@@ -187,14 +187,9 @@
 	return result;
 }
 
-- (NSString*) pageTitleHTML {
+- (NSString*) currentAccountHTML {
 	TwitterAccount *account = [twitter currentAccount];
-	NSString *result;
-	if (customPageTitle)
-		result =customPageTitle;
-	else 
-		result = [NSString stringWithFormat:@"<a href='http://mobile.twitter.com/%@'>%@</a>", account.screenName, account.screenName];
-	return result;
+	return [NSString stringWithFormat:@"<a href='action:user/%@'>%@</a>", account.screenName, account.screenName];
 }
 
 - (NSString*) tabAreaHTML {
@@ -213,12 +208,12 @@
 		selectedTab = 5;
 	}
 	
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Timeline';\">Timeline</div> ", (selectedTab == 1)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Mentions';\">Mentions</div> ", (selectedTab == 2)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Direct';\">Direct</div> ", (selectedTab == 3)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Favorites';\">Favorites</div> ", (selectedTab == 4)? @"" : @"de"];
+	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Timeline';\">Timeline</div>", (selectedTab == 1)? @"" : @"de"];
+	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Mentions';\">Mentions</div>", (selectedTab == 2)? @"" : @"de"];
+	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Direct';\">Direct</div>", (selectedTab == 3)? @"" : @"de"];
+	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Favorites';\">Favorites</div>", (selectedTab == 4)? @"" : @"de"];
 	if (selectedTab == 5)
-		[html appendFormat:@"<div class='tab selected'>%@</div> ", selectedTabName];
+		[html appendFormat:@"<div class='tab selected'>%@</div>", selectedTabName];
 	
 	return html;
 }
@@ -249,6 +244,15 @@
 		 */
 		
 		[html appendString:@"<div class='tweet_table'> "];
+
+		// Page title for Lists and Search
+		if (customPageTitle) {
+			// Put the title inside a regular tweet table row.
+			[html appendString:@"<div class='tweet_row'><div class='tweet_avatar'></div><div class='tweet_content'>"];
+			[html appendFormat:@"<div class='page_title'>%@</div>", customPageTitle];
+			[html appendString:@"</div><div class='tweet_actions'> </div></div>"];
+		}
+		
 		NSAutoreleasePool *pool;
 		BOOL isFavorite;
 		int index;
@@ -286,7 +290,7 @@
 					if (retweeterMessage != nil)
 						[html appendString:@"<img src='retweet.png' /> "]; // Retweet icon.
 					if (message.screenName != nil)
-						[html appendFormat:@"<a href='http://mobile.twitter.com/%@'>%@</a>", message.screenName, message.screenName];
+						[html appendFormat:@"<a href='action:user/%@'>%@</a>", message.screenName, message.screenName];
 					[html appendString:@"</span> "]; // Close screen_name
 					
 					// Lock for protected tweets
@@ -301,7 +305,7 @@
 					
 					// Time
 					[html appendString:@" <span class='time'><nobr>"];
-					[html appendFormat:@"<a href='http://mobile.twitter.com/%@/status/%@'>", message.screenName, [message.identifier stringValue]];
+					[html appendFormat:@"<a href='action:conversation/%@'>", [message.identifier stringValue]]; 
 					if (message.createdDate != nil) 
 						[html appendString: [self timeStringSinceNow: message.createdDate]];
 					[html appendString:@"</a></nobr>"];
@@ -312,13 +316,13 @@
 					
 					// In reply to 
 					if ((message.inReplyToScreenName != nil) && (message.inReplyToStatusIdentifier != nil)) {
-						[html appendFormat:@" <a href='http://mobile.twitter.com/%@/status/%@'>in reply to %@</a>", message.inReplyToScreenName, [message.inReplyToStatusIdentifier stringValue], message.inReplyToScreenName];
-					}
+						[html appendFormat:@" <a href='action:conversation/%@'>in reply to %@</a>", [message.identifier stringValue], message.inReplyToScreenName]; 
+					} 
 					
 					// Retweeted by
 					if (retweeterMessage != nil) {
 						if (retweeterMessage.screenName != nil) {
-							[html appendFormat:@"<span class='time'>. Retweeted by <a href='http://mobile.twitter.com/%@'>%@</a>", retweeterMessage.screenName, retweeterMessage.screenName];
+							[html appendFormat:@"<span class='time'>. Retweeted by <a href='action:user/%@'>%@</a>", retweeterMessage.screenName, retweeterMessage.screenName];
 						}
 					}
 					[html appendString:@"</span> "]; // Close time
@@ -387,8 +391,8 @@
 		[html appendString: @"<div id='spinner' class='spinner'>Loading... <img class='spinner_image' src='spinner.gif'></div>"];
 		
 		// Current account's screen name
-		[html appendString:@"<div id='page_title' class='title page_title'>"];
-		[html appendString:[self pageTitleHTML]];
+		[html appendString:@"<div id='current_account' class='title current_account'>"];
+		[html appendString:[self currentAccountHTML]];
 		[html appendString:@"</div>\n"];
 		
 		// Tabs for Timeline, Mentions, Direct Messages
@@ -481,18 +485,20 @@
 	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
-- (void) showTweet:(NSNumber*)identifier {
+- (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
+	// TODO: show conversation page
 	[self showAlertWithTitle:@"Under Construction." message:@"The tweet info feature isn't quite ready."];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+- (void) showUserPage:(NSString*)screenName {
+	// TODO: show user page
+	[self showAlertWithTitle:@"Under Construction." message:@"The user page feature isn't quite ready."];
 }
 
 #pragma mark -
 #pragma mark Twitter timeline selection
 
 - (void) reloadTimeline {
-	[self.webView setDocumentElement:@"page_title" innerHTML:[self pageTitleHTML]];
 	[self rewriteTabArea];
 	[self rewriteTweetArea];
 	[self setLoadingSpinnerVisibility: YES];
@@ -532,7 +538,6 @@
 	self.selectedTabName = tabName;
 	
 	// Rewrite HTML in web view 
-	[self.webView setDocumentElement:@"page_title" innerHTML:[self pageTitleHTML]];
 	[self rewriteTabArea];
 	[self rewriteTweetArea];	
 	[self setLoadingSpinnerVisibility:YES];
@@ -627,10 +632,12 @@
 			[self replyToMessage:messageIdentifier];
 		} else if ([actionName hasPrefix:@"dm"]) { // Direct message the sender
 			[self directMessageWithTweet:messageIdentifier];
-		} else if ([actionName hasPrefix:@"info"]) { // Show more info on the tweet
-			[self showTweet:messageIdentifier];
 		} else if ([actionName hasPrefix:@"login"]) { // Log in
 			[self login:accountsButton];
+		} else if ([actionName hasPrefix:@"user"]) { // Show user page
+			[self showUserPage:[actionName lastPathComponent]];
+		} else if ([actionName hasPrefix:@"conversation"]) { // Show more info on the tweet
+			[self showConversationWithMessageIdentifier:messageIdentifier];
 		} else if ([actionName hasPrefix:@"loadOlder"]) { // Load older
 			//[self loadOlderMessages:nil];
 		}
@@ -662,6 +669,8 @@
 
 - (void) currentAccountDidChange: (NSNotification*) aNotification {
 	[self closeAllPopovers];
+	
+	[self.webView setDocumentElement:@"current_account" innerHTML:[self currentAccountHTML]];
 	
 	[self selectHomeTimeline];
 	[self reloadTimeline];

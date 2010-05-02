@@ -256,7 +256,7 @@
 	
 	// Call delegate to tell it we're about to load a new timeline
 	if ([twitter.delegate respondsToSelector:@selector(twitter:willLoadTimelineWithName:tabName:)]) {
-		NSString *pageName = [NSString stringWithFormat: @"Search for &ldquo;%@&rdquo;", [self htmlSafeString:query]];
+		NSString *pageName = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
 		[twitter.delegate twitter:twitter willLoadTimelineWithName:pageName tabName:@"Results"];
 	}
 	

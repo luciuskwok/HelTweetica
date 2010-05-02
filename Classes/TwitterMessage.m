@@ -134,7 +134,7 @@
 		if (foundRange.location == NSNotFound) break;
 
 		usernameText = [s substringWithRange: NSMakeRange (foundRange.location + 1, foundRange.length - 1)];
-		insertText = [NSString stringWithFormat: @"@<a href='http://twitter.com/%@'>%@</a>", usernameText, usernameText];
+		insertText = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", usernameText, usernameText];
 		[s replaceCharactersInRange: foundRange withString: insertText];
 		
 		unprocessed.location = foundRange.location + [insertText length];

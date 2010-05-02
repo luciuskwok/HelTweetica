@@ -223,9 +223,16 @@
 		[twitter selectTimelineOfList: list];
 		[twitter reloadCurrentTimeline];
 		
+		// Style the page title
+		NSString *pageTitle = list.fullName;
+		NSArray *nameParts = [list.fullName componentsSeparatedByString:@"/"];
+		if (nameParts.count == 2) {
+			pageTitle = [NSString stringWithFormat:@"%@/<b>%@</b>", [nameParts objectAtIndex:0], [nameParts objectAtIndex:1]];
+		}
+		
 		// Call delegate to tell it we're starting to load timeline
 		if ([twitter.delegate respondsToSelector:@selector(twitter:willLoadTimelineWithName:tabName:)])
-			[twitter.delegate twitter:twitter willLoadTimelineWithName:list.fullName tabName:@"List"];
+			[twitter.delegate twitter:twitter willLoadTimelineWithName:pageTitle tabName:@"List"];
 
 		if (popover) {
 			[popover dismissPopoverAnimated:YES];
