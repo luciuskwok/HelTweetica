@@ -17,10 +17,14 @@
 
 #import "SearchViewController.h"
 #import "TwitterAccount.h"
+#import "TwitterLoadSavedSearchesAction.h"
 
+@interface SearchViewController (PrivateMethods)
+- (void)loadSavedSearches;
+@end
 
 @implementation SearchViewController
-@synthesize popover;
+@synthesize popover, statusMessage;
 
 - (void) setContentSize {
 	// Set the content size
@@ -40,15 +44,11 @@
 		twitter = [aTwitter retain];
 		
 		[self setContentSize];
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
-		
-		// TODO: fix obsolete network handling. 
-		// [nc addObserver:self selector:@selector(networkError:) name:@"twitterNetworkError" object:nil];
 
 		// Request a fresh list of list subscriptions.
 		loading = YES;
-		[twitter loadSavedSearches];
+		self.statusMessage = NSLocalizedString (@"Loading...", @"status message");
+		[self loadSavedSearches];
 	}
 	return self;
 }
@@ -62,17 +62,46 @@
 
 - (void)dealloc {
 	[twitter release];
+	[statusMessage release];
     [super dealloc];
 }
 
 #pragma mark -
+#pragma mark TwitterAction
 
-- (void) savedSearchesDidChange: (NSNotification*) aNotification {
+- (void)loadSavedSearches {
+	TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didLoadSavedSearches:);
+	action.delegate = self;
+	action.consumerToken = twitter.currentAccount.xAuthToken;
+	action.consumerSecret = twitter.currentAccount.xAuthSecret;
+	
+	// Start the URL connection
+	[action start];
+}
+
+- (void)didLoadSavedSearches:(TwitterLoadSavedSearchesAction *)action {
+	twitter.currentAccount.savedSearches = action.queries;
 	loading = NO;
 	[self setContentSize];
 	[self.tableView reloadData];
+	
+	// Set the default status message for an empty list of saved searches
+	self.statusMessage = NSLocalizedString (@"No saved searches.", @"");
 }
 
+#pragma mark -
+#pragma mark TwitterAction delegate methods
+
+- (void) twitterActionDidFinishLoading:(TwitterAction*)action {
+	// Do nothing. didLoadSavedSearches: will be called.
+}
+
+- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
+	loading = NO;
+	self.statusMessage = [error localizedDescription];
+}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -156,11 +185,7 @@
 		cell.textLabel.text = query;
 		cell.textLabel.textColor = [UIColor blackColor];
 	} else if (indexPath.row == 0) {
-		if (loading) {
-			cell.textLabel.text = NSLocalizedString (@"Loading...", @"");
-		} else {
-			cell.textLabel.text = NSLocalizedString (@"No saved searches.", @"");
-		}
+		cell.textLabel.text = self.statusMessage;
 		cell.textLabel.textColor = [UIColor grayColor];
 	}
 	

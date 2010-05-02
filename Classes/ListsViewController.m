@@ -17,11 +17,16 @@
 
 #import "ListsViewController.h"
 #import "TwitterList.h"
+#import "TwitterLoadListsAction.h"
 
 
+@interface ListsViewController (PrivateMethods)
+- (void) loadListsOfUser:(NSString*)userOrNil;
+@end
 
 @implementation ListsViewController
-@synthesize popover;
+@synthesize popover, statusMessage;
+
 
 - (void) setContentSize {
 	// Set the content size
@@ -41,111 +46,106 @@
 		twitter = [aTwitter retain];
 		
 		[self setContentSize];
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(listsDidChange:) name:@"listsDidChange" object:nil];
-		[nc addObserver:self selector:@selector(listSubscriptionsDidChange:) name:@"listSubscriptionsDidChange" object:nil];
 		
-		// TODO: fix obsolete network handling. 
-		// [nc addObserver:self selector:@selector(networkError:) name:@"twitterNetworkError" object:nil];
-		
-		// Title
-		self.navigationItem.title = NSLocalizedString (@"Lists", @"Nav bar");
-
 		// Request a fresh list of list subscriptions.
-		loading = YES;
-		[twitter loadListsOfUser:nil];
+		actions = [[NSMutableArray alloc] init];
+		[self loadListsOfUser:nil];
+		self.statusMessage = NSLocalizedString (@"Loading...", @"status message");
 	}
 	return self;
 }
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+	
+	// Title
+	self.navigationItem.title = NSLocalizedString (@"Lists", @"Nav bar");
+	
+	[self setContentSize];
+	[self.tableView reloadData];
+	
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[twitter release];
-	[nc removeObserver:self];
+	[actions release];
+	[statusMessage release];
     [super dealloc];
 }
 
 #pragma mark -
+#pragma mark TwitterAction
 
-- (void) listsDidChange: (NSNotification*) aNotification {
-	// Chain load subscriptions
-	[twitter loadListSubscriptionsOfUser:nil];
+- (void) startTwitterAction:(TwitterAction*)action  {
+	[actions addObject: action];
+	
+	// Set up Twitter action
+	action.delegate = self;
+	action.consumerToken = twitter.currentAccount.xAuthToken;
+	action.consumerSecret = twitter.currentAccount.xAuthSecret;
+	
+	// Start the URL connection
+	[action start];
 }
 
-- (void) listSubscriptionsDidChange: (NSNotification*) aNotification {
-	loading = NO;
+- (void) loadListsOfUser:(NSString*)userOrNil {
+	// Load user's own lists.
+	TwitterLoadListsAction *listsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
+	listsAction.completionTarget= self;
+	listsAction.completionAction = @selector(didLoadLists:);
+	[self startTwitterAction:listsAction];
+	
+	// Load lists that user subscribes to.
+	TwitterLoadListsAction *subscriptionsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
+	subscriptionsAction.completionTarget= self;
+	subscriptionsAction.completionAction = @selector(didLoadListSubscriptions:);
+	[self startTwitterAction:subscriptionsAction];
+}
+
+- (void)didLoadLists:(TwitterLoadListsAction *)action {
+	twitter.currentAccount.lists = action.lists;
+}
+
+- (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
+	twitter.currentAccount.listSubscriptions = action.lists;
+}
+
+#pragma mark -
+#pragma mark TwitterAction delegate methods
+
+- (void) twitterActionDidFinishLoading:(TwitterAction*)action {
+	// Remove from array of active network connections and update table view.
+	[actions removeObject: action];
+	[self setContentSize];
+	[self.tableView reloadData];
+	
+	// Set the default status message after last action is done.
+	if (actions.count == 0) {
+		self.statusMessage = NSLocalizedString (@"No lists.", @"");
+	}		
+}
+
+- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
+	[actions removeObject: action];
+	self.statusMessage = [error localizedDescription];
 	[self setContentSize];
 	[self.tableView reloadData];
 }
-
-- (void) networkError: (NSNotification*) aNotification {
-	loading = NO;
-	[self.tableView reloadData];
-}
-
-
-#pragma mark -
-#pragma mark View lifecycle
-
-/*
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-*/
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
@@ -153,12 +153,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	TwitterAccount *account = [twitter currentAccount];
 	int count = account.lists.count + account.listSubscriptions.count;
-	if (count == 0) {
+	if (count == 0)
 		return 1;
-	}
-    return count;
+   return count;
 }
-
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -182,57 +180,13 @@
 		list = [account.listSubscriptions objectAtIndex: indexPath.row - account.lists.count];
 		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
 		cell.textLabel.textColor = [UIColor blackColor];
-	} else {
-		if (loading) 
-			cell.textLabel.text = NSLocalizedString (@"Loading...", @"");
-		else
-			cell.textLabel.text = NSLocalizedString (@"No lists.", @"");
+	} else if (indexPath.row == 0) {
+		cell.textLabel.text = self.statusMessage;
 		cell.textLabel.textColor = [UIColor grayColor];
 	}
-	
+
     return cell;
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 #pragma mark -
 #pragma mark Table view delegate

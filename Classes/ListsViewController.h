@@ -22,9 +22,11 @@
 @interface ListsViewController : UITableViewController {
 	Twitter *twitter;
 	UIPopoverController *popover;
-	BOOL loading;
+	NSMutableArray *actions;
+	NSString *statusMessage;
 }
 @property (assign) UIPopoverController *popover;
+@property (nonatomic, retain) NSString *statusMessage;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;
 

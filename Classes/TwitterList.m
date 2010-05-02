@@ -37,6 +37,7 @@
 	if (self = [super init]) {
 		self.name = [decoder decodeObjectForKey:@"name"];
 		self.username = [decoder decodeObjectForKey:@"username"];
+		self.fullName = [decoder decodeObjectForKey:@"fullName"];
 		self.description = [decoder decodeObjectForKey:@"description"];
 		self.slug = [decoder decodeObjectForKey:@"slug"];
 
@@ -51,6 +52,7 @@
 - (void)encodeWithCoder:(NSCoder *)encoder {
 	[encoder encodeObject: name forKey:@"name"];
 	[encoder encodeObject: username forKey:@"username"];
+	[encoder encodeObject: fullName forKey:@"fullName"];
 	[encoder encodeObject: description forKey:@"description"];
 	[encoder encodeObject: slug forKey:@"slug"];
 	

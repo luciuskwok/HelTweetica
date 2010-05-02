@@ -352,30 +352,6 @@
 #pragma mark -
 #pragma mark TwitterAction - Lists
 
-- (void) loadListsOfUser:(NSString*)userOrNil {
-	TwitterLoadListsAction *action = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didLoadLists:);
-	[self startTwitterAction:action withToken:YES];
-}
-
-- (void)didLoadLists:(TwitterLoadListsAction *)action {
-	currentAccount.lists = action.lists;
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"listsDidChange" object:self];
-}
-
-- (void) loadListSubscriptionsOfUser:(NSString*)userOrNil {
-	TwitterLoadListsAction *action = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didLoadListSubscriptions:);
-	[self startTwitterAction:action withToken:YES];
-}
-
-- (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
-	currentAccount.listSubscriptions = action.lists;
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"listSubscriptionsDidChange" object:self];
-}
-
 - (void) loadTimelineOfList:(TwitterList*)list {
 	NSNumber *count = [NSNumber numberWithInt:200];
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
@@ -397,18 +373,6 @@
 
 #pragma mark -
 #pragma mark TwitterAction - Search
-
-- (void)loadSavedSearches {
-	TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didLoadSavedSearches:);
-	[self startTwitterAction:action withToken:YES];
-}
-
-- (void)didLoadSavedSearches:(TwitterLoadSavedSearchesAction *)action {
-	currentAccount.savedSearches = action.queries;
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"savedSearchesDidChange" object:self];
-}
 
 - (void)searchWithQuery:(NSString*)query {
 	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query] autorelease];
