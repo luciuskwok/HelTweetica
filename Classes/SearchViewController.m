@@ -239,10 +239,27 @@
 	[alert release];
 }
 
+- (NSString *)htmlSafeString:(NSString *)string {
+	NSMutableString *result = [NSMutableString stringWithString:string];
+	[result replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:0 range:NSMakeRange(0, result.length)];
+	return result;
+}
+
 - (void)searchFor:(NSString*)query {
 	if ([query length] == 0) return;
 	
-	[twitter searchWithQuery:query];
+	[twitter selectSearchTimelineWithQuery:query];
+	[twitter reloadCurrentTimeline];
+	
+	// Call delegate to tell it we're about to load a new timeline
+	if ([twitter.delegate respondsToSelector:@selector(twitter:willLoadTimelineWithName:tabName:)]) {
+		NSString *pageName = [NSString stringWithFormat: @"Search for &ldquo;%@&rdquo;", [self htmlSafeString:query]];
+		[twitter.delegate twitter:twitter willLoadTimelineWithName:pageName tabName:@"Results"];
+	}
+	
 	if (popover) {
 		[popover dismissPopoverAnimated:YES];
 		[popover.delegate popoverControllerDidDismissPopover:popover]; // Make sure delegate knows popover has been removed

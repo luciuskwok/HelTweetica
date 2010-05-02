@@ -16,13 +16,8 @@
 
 
 #import "TwitterMessageJSONParser.h"
+#import "TwitterMessage.h"
 
-
-@interface TwitterMessageJSONParser (PrivateMethods)
-- (void) parseJSONText:(NSString*)text startingAtOffset:(unsigned int)offset;
-- (unsigned int) parseValueWithJSONText:(NSString*)text startingAtOffset:(unsigned int)offset;
-- (unsigned int) parseKeyWithJSONText:(NSString*)text startingAtOffset:(unsigned int)offset;
-@end
 
 @implementation TwitterMessageJSONParser
 @synthesize messages, currentMessage, keyPath, directMessage, receivedTimestamp;

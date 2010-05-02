@@ -16,7 +16,7 @@
 	NSString *consumerToken;
 	NSString *consumerSecret;
 	NSString *twitterMethod;
-	NSDictionary *parameters;
+	NSMutableDictionary *parameters;
 
 	NSURLConnection *connection;
 	NSMutableData *receivedData;
@@ -33,7 +33,7 @@
 @property (nonatomic, retain) NSString *consumerToken;
 @property (nonatomic, retain) NSString *consumerSecret;
 @property (nonatomic, retain) NSString *twitterMethod;
-@property (nonatomic, retain) NSDictionary *parameters;
+@property (nonatomic, retain) NSMutableDictionary *parameters;
 
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSMutableData *receivedData;

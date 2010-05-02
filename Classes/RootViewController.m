@@ -728,6 +728,7 @@
 }
 
 - (IBAction) reloadData: (id) sender {
+	[self setLoadingSpinnerVisibility:YES];
 	[twitter reloadCurrentTimeline];
 }
 

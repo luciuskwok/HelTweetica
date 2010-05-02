@@ -11,44 +11,17 @@
 
 
 @implementation TwitterLoadTimelineAction
-@synthesize messages, timelineName;
+@synthesize messages;
 
-
-- (id)initWithTwitterMethod:(NSString*)method sinceIdentifier:(NSNumber*)sinceId maxIdentifier:(NSNumber*)maxId perPage:(NSNumber*)count page:(NSNumber*)page {
+- (id)initWithTwitterMethod:(NSString*)method {
 	self = [super init];
 	if (self) {
-		// Create parameters
-		NSMutableDictionary *theParameters = [NSMutableDictionary dictionary];
-		if (sinceId) [theParameters setObject:[sinceId stringValue] forKey:@"since_id"];
-		if (maxId) [theParameters setObject:[maxId stringValue] forKey:@"max_id"];
-		if (count) [theParameters setObject:[count stringValue] forKey:@"per_page"];
-		if (page) [theParameters setObject:[page stringValue] forKey:@"page"];
-		
 		self.twitterMethod = method;
-		self.parameters = theParameters;
 	}
 	return self;
 }
-
-- (id)initWithTwitterMethod:(NSString*)method sinceIdentifier:(NSNumber*)sinceId maxIdentifier:(NSNumber*)maxId count:(NSNumber*)count page:(NSNumber*)page {
-	self = [super init];
-	if (self) {
-		// Create parameters
-		NSMutableDictionary *theParameters = [NSMutableDictionary dictionary];
-		if (sinceId) [theParameters setObject:[sinceId stringValue] forKey:@"since_id"];
-		if (maxId) [theParameters setObject:[maxId stringValue] forKey:@"max_id"];
-		if (count) [theParameters setObject:[count stringValue] forKey:@"count"];
-		if (page) [theParameters setObject:[page stringValue] forKey:@"page"];
-		
-		self.twitterMethod = method;
-		self.parameters = theParameters;
-	}
-	return self;
-}
-
 - (void) dealloc {
 	[messages release];
-	[timelineName release];
 	[super dealloc];
 }
 

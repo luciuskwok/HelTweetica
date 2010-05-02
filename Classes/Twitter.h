@@ -21,13 +21,14 @@
 #import "TwitterList.h"
 #import "TwitterAction.h"
 
+@class TwitterLoadTimelineAction;
 @protocol TwitterDelegate;
 
 @interface Twitter : NSObject <TwitterActionDelegate> {
 	NSMutableArray *accounts;
 	TwitterAccount *currentAccount;
 	NSMutableArray *currentTimeline;
-	NSString *currentTimelineTwitterMethod;
+	TwitterAction *currentTimelineAction;
 	
 	NSMutableSet *statuses;
 	NSMutableArray *actions;
@@ -40,7 +41,7 @@
 @property (nonatomic, retain) NSMutableArray *accounts;
 @property (nonatomic, retain) TwitterAccount *currentAccount;
 @property (nonatomic, retain) NSMutableArray *currentTimeline;
-@property (nonatomic, retain) NSString *currentTimelineTwitterMethod;
+@property (nonatomic, retain) TwitterAction *currentTimelineAction;
 
 @property (assign) id <TwitterDelegate> delegate;
 
@@ -56,11 +57,9 @@
 - (void) selectMentions;
 - (void) selectDirectMessages;
 - (void) selectFavorites;
-- (BOOL) isLoading;
-
 - (void) selectTimelineOfList:(TwitterList*)list;
-
-- (void) searchWithQuery:(NSString*)query;
+- (void) selectSearchTimelineWithQuery:(NSString*)query;
+- (BOOL) isLoading;
 
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier;
 

@@ -16,8 +16,8 @@
 
 
 #import <Foundation/Foundation.h>
-#import "TwitterMessage.h"
 #import "LKJSONParser.h"
+@class TwitterMessage;
 
 
 @interface TwitterMessageJSONParser : NSObject <LKJSONParserDelegate> {

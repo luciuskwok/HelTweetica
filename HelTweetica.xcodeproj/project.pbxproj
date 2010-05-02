@@ -123,6 +123,8 @@
 		E08403A1118C93F600670BAB /* TwitterSearchAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E084039F118C93F600670BAB /* TwitterSearchAction.m */; };
 		E0840514118CE92400670BAB /* toolbar-lists.png in Resources */ = {isa = PBXBuildFile; fileRef = E0840513118CE92400670BAB /* toolbar-lists.png */; };
 		E0840515118CE92400670BAB /* toolbar-lists.png in Resources */ = {isa = PBXBuildFile; fileRef = E0840513118CE92400670BAB /* toolbar-lists.png */; };
+		E08406D6118D4B6C00670BAB /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E08406D5118D4B6C00670BAB /* TwitterSearchJSONParser.m */; };
+		E08406D7118D4B6C00670BAB /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E08406D5118D4B6C00670BAB /* TwitterSearchJSONParser.m */; };
 		E08646461166F6FB00844FCE /* spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = E08646451166F6FB00844FCE /* spinner.gif */; };
 		E0904273117A21BC00CE8CB9 /* AllStarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */; };
 		E0904274117A21BC00CE8CB9 /* AllStarsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0904272117A21BC00CE8CB9 /* AllStarsViewController.xib */; };
@@ -240,6 +242,8 @@
 		E084039E118C93F600670BAB /* TwitterSearchAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchAction.h; sourceTree = "<group>"; };
 		E084039F118C93F600670BAB /* TwitterSearchAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSearchAction.m; sourceTree = "<group>"; };
 		E0840513118CE92400670BAB /* toolbar-lists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-lists.png"; path = "Resources/toolbar-lists.png"; sourceTree = "<group>"; };
+		E08406D4118D4B6C00670BAB /* TwitterSearchJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchJSONParser.h; sourceTree = "<group>"; };
+		E08406D5118D4B6C00670BAB /* TwitterSearchJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSearchJSONParser.m; sourceTree = "<group>"; };
 		E08646451166F6FB00844FCE /* spinner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = spinner.gif; path = Resources/spinner.gif; sourceTree = "<group>"; };
 		E0904270117A21BC00CE8CB9 /* AllStarsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllStarsViewController.h; sourceTree = "<group>"; };
 		E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllStarsViewController.m; sourceTree = "<group>"; };
@@ -434,6 +438,8 @@
 				E0DF1272116453EB004FE7B9 /* TwitterMessage.m */,
 				E04BD347116C97C2004BFF3D /* TwitterMessageJSONParser.h */,
 				E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */,
+				E08406D4118D4B6C00670BAB /* TwitterSearchJSONParser.h */,
+				E08406D5118D4B6C00670BAB /* TwitterSearchJSONParser.m */,
 				E06DEF43116FD0FD00772680 /* TwitterList.h */,
 				E06DEF44116FD0FD00772680 /* TwitterList.m */,
 				E00C26341162D91C00F62B70 /* TwitterAtomParser.h */,
@@ -750,6 +756,7 @@
 				E0B54FD0118C0D3A00FFED10 /* TwitterLoadListsAction.m in Sources */,
 				E0B55027118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m in Sources */,
 				E08403A1118C93F600670BAB /* TwitterSearchAction.m in Sources */,
+				E08406D7118D4B6C00670BAB /* TwitterSearchJSONParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,6 +797,7 @@
 				E0B54FD1118C0D3A00FFED10 /* TwitterLoadListsAction.m in Sources */,
 				E0B55028118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m in Sources */,
 				E08403A0118C93F600670BAB /* TwitterSearchAction.m in Sources */,
+				E08406D6118D4B6C00670BAB /* TwitterSearchJSONParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

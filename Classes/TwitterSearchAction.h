@@ -8,23 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "TwitterAction.h"
-#import "TwitterMessage.h"
-#import "LKJSONParser.h"
 
 
-@interface TwitterSearchAction : TwitterAction <LKJSONParserDelegate> {
+@interface TwitterSearchAction : TwitterAction {
 	NSString *query;
-	NSMutableArray *messages;
-	TwitterMessage *currentMessage;
-	NSString *keyPath;
-	NSDate *receivedTimestamp;
+	NSArray *messages;
 }
 @property (nonatomic, copy) NSString *query;
-@property (nonatomic, retain) NSMutableArray *messages;
-@property (nonatomic, retain) TwitterMessage *currentMessage;
-@property (nonatomic, retain) NSString *keyPath;
-@property (nonatomic, retain) NSDate *receivedTimestamp;
+@property (nonatomic, retain) NSArray *messages;
 
-- (id)initWithQuery:(NSString *)aQuery;
+- (id)initWithQuery:(NSString *)aQuery count:(NSNumber*)count;
 
 @end
