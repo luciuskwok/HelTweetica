@@ -25,10 +25,10 @@
 	NSString *xAuthToken;
 	NSString *xAuthSecret;
 	
-	NSArray *timeline;
-	NSArray *mentions;
-	NSArray *directMessages;
-	NSArray *favorites;
+	NSMutableArray *timeline;
+	NSMutableArray *mentions;
+	NSMutableArray *directMessages;
+	NSMutableArray *favorites;
 	
 	NSArray *lists;
 	NSArray *listSubscriptions;
@@ -40,10 +40,10 @@
 @property (nonatomic, retain) NSString *xAuthToken;
 @property (nonatomic, retain) NSString *xAuthSecret;
 
-@property (nonatomic, retain) NSArray *timeline;
-@property (nonatomic, retain) NSArray *mentions;
-@property (nonatomic, retain) NSArray *directMessages;
-@property (nonatomic, retain) NSArray *favorites;
+@property (nonatomic, retain) NSMutableArray *timeline;
+@property (nonatomic, retain) NSMutableArray *mentions;
+@property (nonatomic, retain) NSMutableArray *directMessages;
+@property (nonatomic, retain) NSMutableArray *favorites;
 
 @property (nonatomic, retain) NSArray *lists;
 @property (nonatomic, retain) NSArray *listSubscriptions;

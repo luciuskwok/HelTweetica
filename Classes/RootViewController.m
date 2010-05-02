@@ -28,13 +28,12 @@
 #import "AllStarsViewController.h"
 
 
-#define kMaxNumberOfMessagesShown 300
+#define kMaxNumberOfMessagesShown 800
 #define kDelayBeforeEnteringShuffleMode 60.0
 
 
 @interface RootViewController (PrivateMethods)
 - (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage;
-- (void) selectTimeline:(NSString*)timelineIdentifier reload:(BOOL)reload;
 - (void) replyToMessage:(NSNumber*)identifier;
 - (void) directMessageWithTweet:(NSNumber*)identifier;
 - (void) showTweet:(NSNumber*)identifier;
@@ -47,7 +46,7 @@
 @end
 
 @implementation RootViewController
-@synthesize webView, accountsButton, composeButton, customPageTitle, selectedTabName, selectedTimeline;
+@synthesize webView, accountsButton, composeButton, customPageTitle, selectedTabName;
 @synthesize currentPopover, currentActionSheet, currentAlert;
 
 
@@ -64,7 +63,6 @@
 	
 	[customPageTitle release];
 	[selectedTabName release];
-	[selectedTimeline release];
 	
 	[currentPopover release];
 	[currentActionSheet release];
@@ -94,37 +92,6 @@
 	
 	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	//selectedTab = [defaults integerForKey:@"selectedTab"];
-}
-
-- (void) viewDidLoad {
-	[super viewDidLoad];
-	[self selectTimeline:kTimelineIdentifier reload:NO];	
-	[self refreshWebView];
-	
-	// Automatically reload after web view is done rendering.
-	automaticReload = YES;
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[self.navigationController setNavigationBarHidden: YES animated: NO];
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	TwitterAccount *currentAccount = [twitter currentAccount];
-	if (currentAccount == nil) {
-		[self login: accountsButton];
-	} else {
-		[refreshTimer invalidate];
-		refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
-	}
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	[refreshTimer invalidate];
-	refreshTimer = nil;
 }
 
 
@@ -190,68 +157,6 @@
 }
 
 #pragma mark -
-#pragma mark IBActions
-
-- (IBAction) login: (id) sender {
-	AccountsViewController *accountsController = [self showAccounts: sender];
-	[accountsController add: sender];
-}
-
-- (IBAction) accounts: (id) sender {
-	[self showAccounts: sender];	
-}
-
-- (IBAction) lists: (id) sender {
-	if ([self closeAllPopovers] == NO) {
-		ListsViewController *lists = [[[ListsViewController alloc] initWithTwitter:twitter] autorelease];
-		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
-	}
-}
-
-- (IBAction) search: (id) sender {
-	if ([self closeAllPopovers] == NO) {
-		SearchViewController *search = [[[SearchViewController alloc] initWithTwitter:twitter] autorelease];
-		[self presentContent: search inNavControllerInPopoverFromItem: sender];
-	}
-}
-
-- (IBAction) reloadData: (id) sender {
-	// TODO: if (self.customPageTitle != nil) reload the list or saved search.
-	if (selectedTabName == nil) 
-		self.selectedTabName = kTimelineIdentifier;
-	[self selectTimeline: selectedTabName reload:YES];
-}
-
-- (IBAction) allstars: (id) sender {
-	if ([self closeAllPopovers] == NO) {
-		TwitterAccount *account = [twitter currentAccount];
-		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:account.timeline] autorelease];
-		[self presentModalViewController:controller animated:YES];
-		[controller startDelayedShuffleModeAfterInterval:kDelayBeforeEnteringShuffleMode];
-	}
-}
-
-- (IBAction) analyze: (id) sender {
-	if ([self closeAllPopovers] == NO) {
-		TwitterAccount *account = [twitter currentAccount];
-		Analyze *c = [[[Analyze alloc] init] autorelease];
-		c.timeline = account.timeline;
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			c.popover = [self presentPopoverFromItem:sender viewController:c];
-		} else {
-			[self presentModalViewController:c animated:YES];
-		}
-	}
-}
-
-- (IBAction) compose: (id) sender {
-	if ([self closeAllPopovers] == NO) { 
-		ComposeViewController *compose = [[[ComposeViewController alloc] initWithTwitter:twitter] autorelease];
-		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
-	}
-}
-
-#pragma mark -
 #pragma mark WebView updating
 
 - (NSString*) timeStringSinceNow: (NSDate*) date {
@@ -282,7 +187,7 @@
 	return result;
 }
 
-- (NSString*) myUsernameHTML {
+- (NSString*) pageTitleHTML {
 	TwitterAccount *account = [twitter currentAccount];
 	NSString *result;
 	if (customPageTitle)
@@ -321,7 +226,7 @@
 - (NSString*) tweetAreaHTML {
 	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
 	
-	NSArray *timeline = self.selectedTimeline; 
+	NSArray *timeline = twitter.currentTimeline; 
 	
 	if ((timeline != nil) && ([timeline count] != 0)) {
 		int totalMessages = [timeline count];
@@ -479,8 +384,8 @@
 		[html appendString: @"<div id='spinner' class='spinner'>Loading... <img class='spinner_image' src='spinner.gif'></div>"];
 		
 		// Current account's screen name
-		[html appendString:@"<div id='my_username' class='title my_username'>"];
-		[html appendString:[self myUsernameHTML]];
+		[html appendString:@"<div id='page_title' class='title page_title'>"];
+		[html appendString:[self pageTitleHTML]];
 		[html appendString:@"</div>\n"];
 		
 		// Tabs for Timeline, Mentions, Direct Messages
@@ -535,50 +440,6 @@
 	[self rewriteTweetArea];
 }
 
-- (void) selectTimeline:(NSString*)timelineIdentifier reload:(BOOL)reload {
-	TwitterAccount *account = [twitter currentAccount];
-	BOOL willBeLoading = NO;
-	
-	// Reset the custom page title if selecting one of the standard timelines
-	self.customPageTitle = nil;
-	
-	if (account.xAuthToken != nil) {
-		self.selectedTabName = timelineIdentifier;
-		if ([timelineIdentifier isEqualToString: kTimelineIdentifier]) { // Home timeline
-			self.selectedTimeline = account.timeline;
-			if (reload) {
-				[twitter reloadHomeTimeline];
-				willBeLoading = YES;
-			}
-		} else if ([timelineIdentifier isEqualToString: kMentionsIdentifier]) { // Mentions
-			self.selectedTimeline = account.mentions;
-			if (reload) {
-				[twitter reloadMentions];
-				willBeLoading = YES;
-			}
-		} else if ([timelineIdentifier isEqualToString: kDirectMessagesIdentifier]) { // Direct Messages
-			self.selectedTimeline = account.directMessages;
-			if (reload) {
-				[twitter reloadDirectMessages];
-				willBeLoading = YES;
-			}
-		} else if ([timelineIdentifier isEqualToString: kFavoritesIdentifier]) { // Favorites
-			self.selectedTimeline = account.favorites;
-			if (reload) {
-				[twitter reloadFavorites];
-				willBeLoading = YES;
-			}
-		}
-	}
-	
-	if (willBeLoading) {
-		[self.webView setDocumentElement:@"my_username" innerHTML:[self myUsernameHTML]];
-		[self rewriteTabArea];
-		[self rewriteTweetArea];
-		[self setLoadingSpinnerVisibility: YES];
-	}
-}
-
 - (void) replyToMessage: (NSNumber*)identifier {
 	ComposeViewController *compose = [[[ComposeViewController alloc] initWithTwitter:twitter] autorelease];
 	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
@@ -625,32 +486,55 @@
 }
 
 #pragma mark -
-#pragma mark Notifications
+#pragma mark Twitter timeline selection
 
-- (void) currentAccountDidChange: (NSNotification*) aNotification {
-	[self closeAllPopovers];
-	[self selectTimeline: kTimelineIdentifier reload:NO];
-	[self refreshWebView];
-	[self reloadData:nil];
+- (void) reloadTimeline {
+	[self.webView setDocumentElement:@"page_title" innerHTML:[self pageTitleHTML]];
+	[self rewriteTabArea];
+	[self rewriteTweetArea];
+	[self setLoadingSpinnerVisibility: YES];
+	[twitter reloadCurrentTimeline];
+}
+
+- (void) selectHomeTimeline {
+	self.selectedTabName = kTimelineIdentifier;
+	[twitter selectHomeTimeline];
+	self.customPageTitle = nil; // Reset the custom page title.
+}
+
+- (void) selectMentionsTimeline {
+	self.selectedTabName = kMentionsIdentifier;
+	[twitter selectMentions];
+	self.customPageTitle = nil; // Reset the custom page title.
+}
+
+- (void) selectDirectMessageTimeline {
+	self.selectedTabName = kDirectMessagesIdentifier;
+	[twitter selectDirectMessages];
+	self.customPageTitle = nil; // Reset the custom page title.
+}
+
+- (void) selectFavoritesTimeline {
+	self.selectedTabName = kFavoritesIdentifier;
+	[twitter selectFavorites];
+	self.customPageTitle = nil; // Reset the custom page title.
 }
 
 #pragma mark -
 #pragma mark Twitter delegate methods
 
 - (void)twitter:(Twitter *)aTwitter didFinishLoadingTimeline:(NSArray *)aTimeline {
-	[self selectTimeline:self.selectedTabName reload:NO];
-	[self.webView setDocumentElement:@"my_username" innerHTML:[self myUsernameHTML]];
-	[self rewriteTabArea];
 	[self rewriteTweetArea];	
 	[self setLoadingSpinnerVisibility:NO];
 }
 
 - (void)twitter:(Twitter*)aTwitter didSelectTimeline:(NSArray*)aTimeline withName:(NSString*)name tabName:(NSString*)tabName {
 	// Switch the web view to display a non-standard timeline
-	self.selectedTimeline = aTimeline;
 	self.customPageTitle = name;
 	self.selectedTabName = tabName;
-	[self.webView setDocumentElement:@"my_username" innerHTML:[self myUsernameHTML]];
+	
+	// Rewrite HTML in web view 
+	[self.webView setDocumentElement:@"page_title" innerHTML:[self pageTitleHTML]];
 	[self rewriteTabArea];
 	[self rewriteTweetArea];	
 	[self setLoadingSpinnerVisibility:NO];
@@ -714,13 +598,17 @@
 		
 		// Tabs
 		if ([actionName isEqualToString:kTimelineIdentifier]) { // Home Timeline
-			[self selectTimeline:kTimelineIdentifier reload:YES];
+			[self selectHomeTimeline];
+			[self reloadTimeline];
 		} else if ([actionName isEqualToString:kMentionsIdentifier]) { // Mentions
-			[self selectTimeline:kMentionsIdentifier reload:YES];
+			[self selectMentionsTimeline];
+			[self reloadTimeline];
 		} else if ([actionName isEqualToString:kDirectMessagesIdentifier]) { // Direct Messages
-			[self selectTimeline:kDirectMessagesIdentifier reload:YES];
+			[self selectDirectMessageTimeline];
+			[self reloadTimeline];
 		} else if ([actionName isEqualToString:kFavoritesIdentifier]) { // Favorites
-			[self selectTimeline:kFavoritesIdentifier reload:YES];
+			[self selectFavoritesTimeline];
+			[self reloadTimeline];
 			
 		// Actions
 		} else if ([actionName hasPrefix:@"fave"]) { // Add message to favorites or remove from favorites
@@ -756,12 +644,116 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	if (automaticReload) {
-		[self reloadData: nil];
+		[twitter reloadCurrentTimeline];
 		automaticReload = NO;
 	}
 }
 
 #pragma mark -
+#pragma mark Notifications
+
+- (void) currentAccountDidChange: (NSNotification*) aNotification {
+	[self closeAllPopovers];
+	
+	[self selectHomeTimeline];
+	[self reloadTimeline];
+}
+
+#pragma mark -
+#pragma mark View lifecycle
+
+- (void) viewDidLoad {
+	[super viewDidLoad];
+	[self selectHomeTimeline];	
+	[self refreshWebView];
+	
+	// Automatically reload after web view is done rendering.
+	automaticReload = YES;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self.navigationController setNavigationBarHidden: YES animated: NO];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	TwitterAccount *currentAccount = [twitter currentAccount];
+	if (currentAccount == nil) {
+		[self login: accountsButton];
+	} else {
+		[refreshTimer invalidate];
+		refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
+	}
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	[refreshTimer invalidate];
+	refreshTimer = nil;
+}
+
+#pragma mark -
+#pragma mark IBActions
+
+- (IBAction) login: (id) sender {
+	AccountsViewController *accountsController = [self showAccounts: sender];
+	[accountsController add: sender];
+}
+
+- (IBAction) accounts: (id) sender {
+	[self showAccounts: sender];	
+}
+
+- (IBAction) lists: (id) sender {
+	if ([self closeAllPopovers] == NO) {
+		ListsViewController *lists = [[[ListsViewController alloc] initWithTwitter:twitter] autorelease];
+		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
+	}
+}
+
+- (IBAction) search: (id) sender {
+	if ([self closeAllPopovers] == NO) {
+		SearchViewController *search = [[[SearchViewController alloc] initWithTwitter:twitter] autorelease];
+		[self presentContent: search inNavControllerInPopoverFromItem: sender];
+	}
+}
+
+- (IBAction) reloadData: (id) sender {
+	[twitter reloadCurrentTimeline];
+}
+
+- (IBAction) allstars: (id) sender {
+	if ([self closeAllPopovers] == NO) {
+		TwitterAccount *account = [twitter currentAccount];
+		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:account.timeline] autorelease];
+		[self presentModalViewController:controller animated:YES];
+		[controller startDelayedShuffleModeAfterInterval:kDelayBeforeEnteringShuffleMode];
+	}
+}
+
+- (IBAction) analyze: (id) sender {
+	if ([self closeAllPopovers] == NO) {
+		TwitterAccount *account = [twitter currentAccount];
+		Analyze *c = [[[Analyze alloc] init] autorelease];
+		c.timeline = account.timeline;
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			c.popover = [self presentPopoverFromItem:sender viewController:c];
+		} else {
+			[self presentModalViewController:c animated:YES];
+		}
+	}
+}
+
+- (IBAction) compose: (id) sender {
+	if ([self closeAllPopovers] == NO) { 
+		ComposeViewController *compose = [[[ComposeViewController alloc] initWithTwitter:twitter] autorelease];
+		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+	}
+}
+
+#pragma mark -
+#pragma mark Alert view
 
 - (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage {
 	if (self.currentAlert == nil) { // Dont' another alert if one is already up.

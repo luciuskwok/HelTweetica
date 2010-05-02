@@ -27,7 +27,8 @@
 #import "TwitterSearchAction.h"
 
 
-
+#define kMaxNumberOfMessagesInATimeline 300
+	// When reloading a timeline, newly downloaded messages are merged with existing ones, sorted by identifier, and the oldest ones past this limit are trimmed off.
 #define kMaxMessageStaleness (20 * 60) 
 	// When reloading a timeline, when the newest message in the app is older than this, the app reloads the entire timeline instead of requesting only status updates newer than the newest in the app. This is set to 20 minutes. The number is in seconds.
 
@@ -49,18 +50,19 @@
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier;
 - (NSArray*) mergeNewMessages:(NSArray*) newMessages withOldMessages:(NSArray*) oldMessages;
 - (TwitterMessage*) messageWithIdentifier: (NSNumber*) identifier existsInArray: (NSArray*) array;
-- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses;
+- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses updateFavorites:(BOOL)updateFaves;
 @end
 
 @implementation Twitter
-@synthesize accounts, currentAccount, delegate;
+@synthesize accounts, currentAccount, currentTimeline, currentTimelineTwitterMethod, delegate;
 
 
 - (id) init {
 	if (self = [super init]) {
 		statuses = [[NSMutableSet alloc] init];
 		actions = [[NSMutableArray alloc] init];
-
+		defaultTimelineLoadCount = 100;
+		
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		NSData *accountsData = [defaults objectForKey: @"twitterAccounts"];
 		
@@ -89,6 +91,7 @@
 - (void) dealloc {
 	[accounts release];
 	[currentAccount release];
+	[currentTimeline release];
 	[statuses release];
 	[actions release];
 	
@@ -231,129 +234,84 @@
 #pragma mark -
 #pragma mark TwitterActions - Timeline
 
-- (void)reloadHomeTimeline {
+- (void)reloadCurrentTimeline {
 	NSNumber *newerThan = nil;
-	if ([currentAccount.timeline count] > 3) {
-		TwitterMessage *message = [currentAccount.timeline objectAtIndex: 0];
-		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
-		if (staleness < kMaxMessageStaleness) {
-			newerThan = message.identifier;
-		}
-	}
-
-	NSNumber *count = [NSNumber numberWithInt:200];
-	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline" sinceIdentifier:newerThan maxIdentifier:nil count:count page:nil] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didReloadHomeTimeline:);
-	[self startTwitterAction:action withToken:YES];
-}
-
-- (void)didReloadHomeTimeline:(TwitterLoadTimelineAction *)action {
-	if (action.messages.count > 0) {
-		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-		[self synchronizeStatusesWithArray: newMessages];
-		
-		if (newMessages.count < 120) { // Merge when only a few messages came in
-			currentAccount.timeline = [self mergeNewMessages:newMessages withOldMessages:currentAccount.timeline];
-		} else { // Show only new messaages and discard old ones when we get a lot
-			currentAccount.timeline = newMessages;
-		}
-	}
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
-		[delegate twitter:self didFinishLoadingTimeline:currentAccount.timeline];
-}
-
-- (void) reloadMentions {
-	NSNumber *newerThan = nil;
-	if ([currentAccount.mentions count] > 3) {
-		TwitterMessage *message = [currentAccount.mentions objectAtIndex: 0];
+	if ([currentTimeline count] > 3) {
+		TwitterMessage *message = [currentTimeline objectAtIndex: 0];
 		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
 		if (staleness < kMaxMessageStaleness) {
 			newerThan = message.identifier;
 		}
 	}
 	
-	NSNumber *count = [NSNumber numberWithInt:200];
-	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions" sinceIdentifier:newerThan maxIdentifier:nil count:count page:nil] autorelease];
+	NSNumber *count = [NSNumber numberWithInt:defaultTimelineLoadCount];
+	TwitterLoadTimelineAction *action;
+	// The newer lists API uses per_page instead of count for the number of statuses to get at a time.
+	// TODO: Search API uses a completely different action which needs to be accomodated.
+	
+	if ([currentTimelineTwitterMethod hasPrefix:@"statuses"] || [currentTimelineTwitterMethod hasPrefix:@"direct"]) {
+		action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:currentTimelineTwitterMethod sinceIdentifier:newerThan maxIdentifier:nil count:count page:nil] autorelease];
+	} else {
+		action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:currentTimelineTwitterMethod sinceIdentifier:newerThan maxIdentifier:nil perPage:count page:nil] autorelease];
+	}
+
 	action.completionTarget= self;
-	action.completionAction = @selector(didReloadMentions:);
+	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action withToken:YES];
 }
 
-- (void)didReloadMentions:(TwitterLoadTimelineAction *)action {
+- (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
 	if (action.messages.count > 0) {
 		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-		[self synchronizeStatusesWithArray: newMessages];
+		[self synchronizeStatusesWithArray: newMessages updateFavorites:YES];
 		
-		if (newMessages.count < 120) { // Merge when only a few messages came in
-			currentAccount.mentions = [self mergeNewMessages:newMessages withOldMessages:currentAccount.mentions];
-		} else { // Show only new messaages and discard old ones when we get a lot
-			currentAccount.mentions = newMessages;
+		// Merge downloaded messages with existing messages.
+		for (TwitterMessage *message in newMessages) {
+			if ([currentTimeline containsObject:message] == NO)
+				[currentTimeline addObject: message];
+		}
+		
+		// Sort by identifier, descending.
+		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
+		[currentTimeline sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
+		
+		// Keep timeline within size limits by removing old messages.
+		if (currentTimeline.count > kMaxNumberOfMessagesInATimeline) {
+			NSRange removalRange = NSMakeRange(kMaxNumberOfMessagesInATimeline, currentTimeline.count - kMaxNumberOfMessagesInATimeline);
+			[currentTimeline removeObjectsInRange:removalRange];
 		}
 	}
 	// Call delegate to tell it we're finished loading
 	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
-		[delegate twitter:self didFinishLoadingTimeline:currentAccount.mentions];
+		[delegate twitter:self didFinishLoadingTimeline:currentTimeline];
 }
 
-- (void) reloadDirectMessages {
-	NSNumber *newerThan = nil;
-	if ([currentAccount.directMessages count] > 3) {
-		TwitterMessage *message = [currentAccount.directMessages objectAtIndex: 0];
-		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
-		if (staleness < kMaxMessageStaleness) {
-			newerThan = message.identifier;
-		}
-	}
-	
-	NSNumber *count = [NSNumber numberWithInt:200];
-	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages" sinceIdentifier:newerThan maxIdentifier:nil count:count page:nil] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didReloadDirectMessages:);
-	[self startTwitterAction:action withToken:YES];
+
+- (void)selectHomeTimeline {
+	self.currentTimeline = currentAccount.timeline;
+	self.currentTimelineTwitterMethod = @"statuses/home_timeline";
 }
 
-- (void)didReloadDirectMessages:(TwitterLoadTimelineAction *)action {
-	if (action.messages.count > 0) {
-		// Do not include direct messages in the statuses set because their message IDs can conflict with those of public status updates.
-		
-		if (action.messages.count < 120) { // Merge when only a few messages came in
-			currentAccount.directMessages = [self mergeNewMessages:action.messages withOldMessages:currentAccount.directMessages];
-		} else { // Show only new messaages and discard old ones when we get a lot
-			currentAccount.directMessages = action.messages;
-		}
-	}
-	
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
-		[delegate twitter:self didFinishLoadingTimeline:currentAccount.directMessages];
+- (void)selectMentions {
+	self.currentTimeline = currentAccount.mentions;
+	self.currentTimelineTwitterMethod = @"statuses/mentions";
 }
 
-- (void) reloadFavorites {
-	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites" sinceIdentifier:nil maxIdentifier:nil count:nil page:nil] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didReloadFavorites:);
-	[self startTwitterAction:action withToken:YES];
+- (void)selectDirectMessages {
+	self.currentTimeline = currentAccount.directMessages;
+	self.currentTimelineTwitterMethod = @"direct_messages";
 }
 
-- (void)didReloadFavorites:(TwitterLoadTimelineAction *)action {
-	if (action.messages.count > 0) {
-		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-		[self synchronizeStatusesWithArray: newMessages];
-		
-		currentAccount.favorites = [self mergeNewMessages:newMessages withOldMessages:currentAccount.favorites];
-	}
-	// Call delegate to tell it we're finished loading
-	if ([delegate respondsToSelector:@selector(twitter:didFinishLoadingTimeline:)])
-		[delegate twitter:self didFinishLoadingTimeline:currentAccount.favorites];
+- (void)selectFavorites {
+	self.currentTimeline = currentAccount.favorites;
+	self.currentTimelineTwitterMethod = @"favorites";
 }
 
 #pragma mark -
 #pragma mark TwitterAction - Lists
 
 - (void) loadTimelineOfList:(TwitterList*)list {
-	NSNumber *count = [NSNumber numberWithInt:200];
+	NSNumber *count = [NSNumber numberWithInt:defaultTimelineLoadCount];
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
 	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method sinceIdentifier:nil maxIdentifier:nil perPage:count page:nil] autorelease];
 	action.completionTarget= self;
@@ -364,7 +322,10 @@
 
 - (void) didLoadTimelineOfList:(TwitterLoadTimelineAction *)action {
 	NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-	[self synchronizeStatusesWithArray: newMessages];
+	[self synchronizeStatusesWithArray: newMessages updateFavorites:YES];
+	
+	// Change the current timeline to the latest downloaded messages
+	self.currentTimeline = newMessages;
 	
 	// Call delegate to tell it we're finished loading
 	if ([delegate respondsToSelector:@selector(twitter:didSelectTimeline:withName:tabName:)])
@@ -392,8 +353,11 @@
 
 - (void) didSearch:(TwitterSearchAction *)action {
 	NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-	[self synchronizeStatusesWithArray: newMessages];
+	[self synchronizeStatusesWithArray: newMessages updateFavorites:NO];
 	
+	// Change the current timeline to the latest downloaded messages
+	self.currentTimeline = newMessages;
+
 	// Call delegate to tell it we're finished loading
 	if ([delegate respondsToSelector:@selector(twitter:didSelectTimeline:withName:tabName:)]) {
 		NSString *pageName = [NSString stringWithFormat: @"Search for &ldquo;%@&rdquo;", [self htmlSafeString:action.query]];
@@ -421,21 +385,24 @@
 
 #pragma mark -
 
-- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses {
+- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses updateFavorites:(BOOL)updateFaves {
 	// For matching statuses already in the set, replace the ones in the array with those from the set, so that messages that are equal always have only one representation in memory. 
 	TwitterMessage *existingMessage, *newMessage;
 	int index;
 	for (index = 0; index < newStatuses.count; index++) {
 		newMessage = [newStatuses objectAtIndex: index];
-		existingMessage = [statuses member:newMessage];
-		if (existingMessage) {
-			// Message already exists, but still need to update the favorite status and timestamp of the message.
-			existingMessage.favorite = newMessage.favorite;
-			existingMessage.receivedDate = newMessage.receivedDate;
-			[newStatuses replaceObjectAtIndex:index withObject:existingMessage];
-		} else {
-			// Add the message to the set.
-			[statuses addObject:newMessage];
+		if (newMessage.direct == NO) { // Only sync with public status updates, not direct messages.
+			existingMessage = [statuses member:newMessage];
+			if (existingMessage) {
+				// Message already exists, but still need to update the favorite status and timestamp of the message.
+				if (updateFaves)
+					existingMessage.favorite = newMessage.favorite;
+				existingMessage.receivedDate = newMessage.receivedDate;
+				[newStatuses replaceObjectAtIndex:index withObject:existingMessage];
+			} else {
+				// Add the message to the set.
+				[statuses addObject:newMessage];
+			}
 		}
 	}
 }

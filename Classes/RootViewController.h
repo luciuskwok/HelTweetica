@@ -29,7 +29,6 @@
 	
 	NSString *customPageTitle;
 	NSString *selectedTabName;
-	NSArray *selectedTimeline;
 	
 	NSTimer *refreshTimer;
 	BOOL automaticReload;
@@ -44,7 +43,6 @@
 @property (nonatomic, retain) UIBarButtonItem *composeButton;
 @property (nonatomic, retain) NSString *customPageTitle;
 @property (nonatomic, retain) NSString *selectedTabName;
-@property (nonatomic, retain) NSArray *selectedTimeline;
 @property (nonatomic, retain) UIPopoverController *currentPopover;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (nonatomic, retain) UIAlertView *currentAlert;

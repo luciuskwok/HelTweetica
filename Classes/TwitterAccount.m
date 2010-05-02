@@ -23,16 +23,20 @@
 @implementation TwitterAccount
 @synthesize screenName, xAuthToken, xAuthSecret, timeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
+- (NSMutableArray*) timelineFromDefaultsWithKey:(NSString *)key coder:(NSCoder *)decoder {
+	return [NSMutableArray arrayWithArray: [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey:key]]];
+}
+
 - (id) initWithCoder: (NSCoder*) decoder {
 	if (self = [super init]) {
 		self.screenName = [decoder decodeObjectForKey:@"screenName"];
 		self.xAuthToken = [decoder decodeObjectForKey:@"xAuthToken"];
 		self.xAuthSecret = [decoder decodeObjectForKey:@"xAuthSecret"];
 		
-		self.timeline = [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey: @"timeline"]];
-		self.mentions = [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey: @"mentions"]];
-		self.directMessages = [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey: @"directMessages"]];
-		self.favorites = [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey: @"favorites"]];
+		self.timeline = [self timelineFromDefaultsWithKey:@"timeline" coder:decoder];
+		self.mentions = [self timelineFromDefaultsWithKey:@"mentions" coder:decoder];
+		self.directMessages = [self timelineFromDefaultsWithKey:@"directMessages" coder:decoder];
+		self.favorites = [self timelineFromDefaultsWithKey:@"favorites" coder:decoder];
 
 		self.lists = [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey: @"lists"]];
 		self.listSubscriptions = [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey: @"listSubscriptions"]];

@@ -26,15 +26,22 @@
 @interface Twitter : NSObject <TwitterActionDelegate> {
 	NSMutableArray *accounts;
 	TwitterAccount *currentAccount;
+	NSMutableArray *currentTimeline;
+	NSString *currentTimelineTwitterMethod;
 	
 	NSMutableSet *statuses;
 	NSMutableArray *actions;
+	
+	int defaultTimelineLoadCount;
 	
 	id <TwitterDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSMutableArray *accounts;
 @property (nonatomic, retain) TwitterAccount *currentAccount;
+@property (nonatomic, retain) NSMutableArray *currentTimeline;
+@property (nonatomic, retain) NSString *currentTimelineTwitterMethod;
+
 @property (assign) id <TwitterDelegate> delegate;
 
 - (void) loginScreenName:(NSString*)aScreenName password:(NSString*)aPassword;
@@ -44,10 +51,11 @@
 - (void) fave:(NSNumber*)messageIdentifier;
 - (void) retweet:(NSNumber*)messageIdentifier;
 
-- (void) reloadHomeTimeline;
-- (void) reloadMentions;
-- (void) reloadDirectMessages;
-- (void) reloadFavorites;
+- (void) reloadCurrentTimeline;
+- (void) selectHomeTimeline;
+- (void) selectMentions;
+- (void) selectDirectMessages;
+- (void) selectFavorites;
 
 - (void) loadTimelineOfList:(TwitterList*)list;
 
