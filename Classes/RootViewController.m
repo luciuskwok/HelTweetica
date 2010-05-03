@@ -31,7 +31,6 @@
 #import "UserPageViewController.h"
 
 #import "TwitterFavoriteAction.h"
-#import "TwitterLoginAction.h"
 #import "TwitterRetweetAction.h"
 #import "TwitterUpdateStatusAction.h"
 #import "TwitterLoadTimelineAction.h"
@@ -52,9 +51,9 @@
 - (void) loadOlderMessages;
 - (BOOL)closeAllPopovers;
 
-- (void) setLoadingSpinnerVisibility:(BOOL)isVisible;
-
 - (void) reloadWebView;
+
+- (void) startLoadingCurrentTimeline;
 @end
 
 @implementation RootViewController
@@ -105,18 +104,13 @@
 	// Use Twitter instance from app delegate
 	HelTweeticaAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	twitter = [appDelegate.twitter retain];
-	twitter.delegate = self;
 	
 	// String to pass in the count, per_page, and rpp parameters.
 	defaultCount = [@"100" retain];
 	
 	actions = [[NSMutableArray alloc] init];
 	
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc addObserver:self selector:@selector(currentAccountDidChange:) name:@"currentAccountDidChange" object:nil];
-	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	//selectedTab = [defaults integerForKey:@"selectedTab"];
 	
 	NSString *currentAccountScreenName = [defaults objectForKey: @"currentAccount"];
 	if (currentAccountScreenName) {
@@ -125,6 +119,44 @@
 		if (twitter.accounts.count > 0) 
 			self.currentAccount = [twitter.accounts objectAtIndex: 0];
 	}
+}
+
+#pragma mark Twitter timeline selection
+
+- (void) selectHomeTimeline {
+	self.selectedTabName = kTimelineIdentifier;
+	self.customPageTitle = nil; // Reset the custom page title.
+	
+	self.currentTimeline = currentAccount.timeline;
+	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
+	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
+}
+
+- (void) selectMentionsTimeline {
+	self.selectedTabName = kMentionsIdentifier;
+	self.customPageTitle = nil; // Reset the custom page title.
+	
+	self.currentTimeline = currentAccount.mentions;
+	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
+	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
+}
+
+- (void) selectDirectMessageTimeline {
+	self.selectedTabName = kDirectMessagesIdentifier;
+	self.customPageTitle = nil; // Reset the custom page title.
+	
+	self.currentTimeline = currentAccount.directMessages;
+	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
+	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
+}
+
+- (void) selectFavoritesTimeline {
+	self.selectedTabName = kFavoritesIdentifier;
+	self.customPageTitle = nil; // Reset the custom page title.
+	
+	self.currentTimeline = currentAccount.favorites;
+	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
+	// Favorites always loads 20 per page. Cannot change the count.
 }
 
 #pragma mark Popovers
@@ -183,6 +215,7 @@
 	if ([self closeAllPopovers]) 
 		return nil;
 	AccountsViewController *accountsController = [[[AccountsViewController alloc] initWithTwitter:twitter] autorelease];
+	accountsController.delegate = self;
 	[self presentContent: accountsController inNavControllerInPopoverFromItem: sender];
 	return accountsController;
 }
@@ -462,7 +495,6 @@
 	if ([result length] == 0) { // If the result of the JavaScript call is empty, there was an error.
 		NSLog (@"JavaScript error in refreshing tweet area. Reloading entire web view.");
 		[self reloadWebView];
-		[self setLoadingSpinnerVisibility: NO];
 	}
 	
 	// Start refresh timer so that the timestamps are always accurate
@@ -475,7 +507,8 @@
 }
 
 - (void) replyToMessage: (NSNumber*)identifier {
-	ComposeViewController *compose = [[[ComposeViewController alloc] initWithTwitter:twitter] autorelease];
+	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+	compose.delegate = self;
 	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
 	
 	// Insert @username in beginnig of message. This preserves any other people being replied to.
@@ -494,7 +527,8 @@
 }
 
 - (void) directMessageWithTweet:(NSNumber*)identifier {
-	ComposeViewController *compose = [[[ComposeViewController alloc] initWithTwitter:twitter] autorelease];
+	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+	compose.delegate = self;
 	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
 	
 	// Insert d username in beginnig of message. This preserves any other people being replied to.
@@ -540,30 +574,33 @@
 	[self.navigationController pushViewController: vc animated: YES];
 }	
 
-#pragma mark -
 #pragma mark TwitterAction
 
-- (void) startTwitterAction:(TwitterAction*)action withToken:(BOOL)useToken {
+- (void) startTwitterAction:(TwitterAction*)action {
 	// Add the action to the array of actions, and updates the network activity spinner
 	[actions addObject: action];
 	
 	// Set up Twitter action
 	action.delegate = self;
-	if (useToken) {
-		action.consumerToken = currentAccount.xAuthToken;
-		action.consumerSecret = currentAccount.xAuthSecret;
-	}
+	action.consumerToken = currentAccount.xAuthToken;
+	action.consumerSecret = currentAccount.xAuthSecret;
 	
 	// Start the URL connection
 	[action start];
 	
 	// Show the Loading spinner
+	[self setLoadingSpinnerVisibility:YES];
 	
 }
 
 - (void) removeTwitterAction:(TwitterAction*)action {
 	// Removes the action from the array of actions, and updates the network activity spinner
 	[actions removeObject: action];
+	
+	if (actions.count == 0) {
+		[self rewriteTweetArea]; // Remove any Loading messages.
+		[self setLoadingSpinnerVisibility:NO];
+	}
 }
 
 #pragma mark TwitterAction delegate methods
@@ -612,15 +649,80 @@
 
 }
 
+#pragma mark TwitterAction - Misc
+
+- (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier {
+	TwitterUpdateStatusAction *action = [[[TwitterUpdateStatusAction alloc] initWithText:text inReplyTo:messageIdentifier] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didUpdateStatus:);
+	[self startTwitterAction:action];
+}
+
+- (void)didUpdateStatus:(TwitterUpdateStatusAction *)action {
+	if ((action.statusCode < 400) || (action.statusCode == 403)) { // Twitter returns 403 if user tries to post duplicate status updates.
+		// Remove message text from compose screen.
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		[defaults setObject:@"" forKey:@"messageContent"];
+		[defaults removeObjectForKey:@"inReplyTo"];
+		
+		// Reload timeline
+		[self startLoadingCurrentTimeline];
+	} else {
+		// Status update was not successful, so report the error.
+		[self showNetworkErrorAlertForStatusCode:action.statusCode];
+	}
+}
+
+- (void) fave: (NSNumber*) messageIdentifier {
+	TwitterMessage *message = [twitter statusWithIdentifier: messageIdentifier];
+	if (message == nil) {
+		NSLog (@"Cannot find the message to fave (or unfave). id == %@", messageIdentifier);
+		return;
+	}
+	
+	TwitterFavoriteAction *action = [[[TwitterFavoriteAction alloc] initWithMessage:message destroy:message.favorite] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didFave:);
+	[self startTwitterAction:action];
+}
+
+- (void)didFave:(TwitterFavoriteAction *)action {
+	TwitterMessage *message = [action message];
+	
+	// Change the display of the star next to tweet in root view
+	NSString *element = [NSString stringWithFormat:@"star-%@", [message.identifier stringValue]];
+	NSString *html = message.favorite ? @"<img src='action-4-on.png'>" : @"<img src='action-4.png'>";
+	[self.webView setDocumentElement:element innerHTML:html];
+	
+	// Remove from favorites timeline
+	[currentAccount.favorites removeObject: message];
+}
+
+- (void)retweet:(NSNumber*)messageIdentifier {
+	TwitterRetweetAction *action = [[[TwitterRetweetAction alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didRetweet:);
+	[self startTwitterAction:action];
+}
+
+- (void)didRetweet:(TwitterRetweetAction *)action {
+	NSString *title = NSLocalizedString (@"Retweeted!", @"");
+	NSString *message = NSLocalizedString (@"You just retweeted that message.", @"");
+	[self showAlertWithTitle:title message:message];
+}
+
 #pragma mark TwitterAction - Timeline
 
 // TODO: add own RTs to home timeline
 // See http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_by_me
 
 - (void)reloadCurrentTimeline {
-	// Set the since_id parameter if there already are messages in the current timeline
+	TwitterAction *action = self.currentTimelineAction;
+	BOOL isFavorites = [action.twitterMethod isEqualToString:@"favorites"];
+	
+	// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
 	NSNumber *newerThan = nil;
-	if ([currentTimeline count] > 10) {
+	if (([currentTimeline count] > 10) && (isFavorites == NO)) {
 		TwitterMessage *message = [currentTimeline objectAtIndex: 0];
 		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
 		if (staleness < kMaxMessageStaleness) {
@@ -628,14 +730,13 @@
 		}
 	}
 	
-	TwitterAction *action = self.currentTimelineAction;
 	if (newerThan)
 		[action.parameters setObject:[newerThan stringValue] forKey:@"since_id"];
 	
 	// Prepare action and start it. 
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
-	[self startTwitterAction:action withToken:YES];
+	[self startTwitterAction:action];
 }
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
@@ -679,8 +780,6 @@
 	[self setLoadingSpinnerVisibility:NO];
 }
 
-#pragma mark Twitter timeline selection
-
 - (void) startLoadingCurrentTimeline {
 	[self reloadCurrentTimeline];
 	[self rewriteTabArea];
@@ -688,76 +787,6 @@
 	[self setLoadingSpinnerVisibility: YES];
 }
 
-- (void) selectHomeTimeline {
-	self.selectedTabName = kTimelineIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-
-	self.currentTimeline = currentAccount.timeline;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
-}
-
-- (void) selectMentionsTimeline {
-	self.selectedTabName = kMentionsIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-
-	self.currentTimeline = currentAccount.mentions;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
-}
-
-- (void) selectDirectMessageTimeline {
-	self.selectedTabName = kDirectMessagesIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-
-	self.currentTimeline = currentAccount.directMessages;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
-}
-
-- (void) selectFavoritesTimeline {
-	self.selectedTabName = kFavoritesIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-
-	self.currentTimeline = currentAccount.favorites;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
-	// Favorites always loads 20 per page. Cannot change the count.
-}
-
-#pragma mark Twitter delegate methods
-
-- (void)twitter:(Twitter*)aTwitter willLoadTimelineWithName:(NSString*)name tabName:(NSString*)tabName {
-	// Switch the web view to display a non-standard timeline
-	self.customPageTitle = name;
-	self.selectedTabName = tabName;
-	
-	// Rewrite HTML in web view 
-	[self rewriteTabArea];
-	[self rewriteTweetArea];	
-	[self setLoadingSpinnerVisibility:YES];
-	
-	// Scroll to top of web view
-	[self.webView scrollToTop];
-}
-
-- (void)twitter:(Twitter*)aTwitter favoriteDidChange:(TwitterMessage*)aMessage {
-	NSString *element = [NSString stringWithFormat:@"star-%@", [aMessage.identifier stringValue]];
-	NSString *html = aMessage.favorite ? @"<img src='action-4-on.png'>" : @"<img src='action-4.png'>";
-	[self.webView setDocumentElement:element innerHTML:html];
-}
-
-- (void) twitterDidRetweet: (Twitter *)aTwitter {
-	NSString *title = NSLocalizedString (@"Retweeted!", @"");
-	NSString *message = NSLocalizedString (@"You just retweeted that message.", @"");
-	[self showAlertWithTitle:title message:message];
-}
-
-- (void)twitter:(Twitter*)aTwitter didFailWithNetworkError:(NSError*)anError {
-	// Remove any Loading messages.
-	[self rewriteTweetArea];	
-	[self setLoadingSpinnerVisibility:NO];
-
-}
 
 #pragma mark UIWebView delegate methods
 
@@ -788,9 +817,9 @@
 			
 		// Actions
 		} else if ([actionName hasPrefix:@"fave"]) { // Add message to favorites or remove from favorites
-			[twitter fave: messageIdentifier];
+			[self fave: messageIdentifier];
 		} else if ([actionName hasPrefix:@"retweet"]) { // Retweet message
-			[twitter retweet: messageIdentifier];
+			[self retweet: messageIdentifier];
 		} else if ([actionName hasPrefix:@"reply"]) { // Public reply to the sender
 			[self replyToMessage:messageIdentifier];
 		} else if ([actionName hasPrefix:@"dm"]) { // Direct message the sender
@@ -828,7 +857,7 @@
 #pragma mark Popover delegate methods
 
 - (void) sendStatusUpdate:(NSString*)text inReplyTo:(NSNumber*)inReplyTo {
-	[twitter updateStatus:text inReplyTo:inReplyTo];
+	[self updateStatus:text inReplyTo:inReplyTo];
 }
 
 - (void) lists:(ListsViewController*)lists didSelectList:(TwitterList*)list {
@@ -841,6 +870,7 @@
 		pageTitle = [NSString stringWithFormat:@"%@/<b>%@</b>", [nameParts objectAtIndex:0], [nameParts objectAtIndex:1]];
 	}
 	self.customPageTitle = pageTitle;
+	self.selectedTabName = NSLocalizedString (@"List", @"tab");
 	
 	// Create Twitter action to load list statuses into the timeline.
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
@@ -848,8 +878,10 @@
 	[currentTimelineAction.parameters setObject:defaultCount forKey:@"per_page"];
 	[self reloadCurrentTimeline];
 	
-	// TODO: rewrite HTML and show loading spinner?
-	// Do everything in willLoadTimelineWithName — test to see what needs to be done.
+	// Rewrite and scroll web view
+	[self rewriteTabArea];
+	[self rewriteTweetArea];	
+	[self.webView scrollToTop];
 }
 
 - (NSString *)htmlSafeString:(NSString *)string {
@@ -864,33 +896,29 @@
 - (void) search:(SearchViewController*)search didRequestQuery:(NSString*)query {
 	self.currentTimeline = [NSMutableArray array]; // Always start with an empty array of messages for Search.
 	self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
+	self.selectedTabName = NSLocalizedString (@"Results", @"tab");
 	
 	// Create Twitter action to load search results into the current timeline.
 	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultCount] autorelease];
 	self.currentTimelineAction = action;
 	[self reloadCurrentTimeline];
 	
-	// TODO: rewrite HTML and show loading spinner?
-	// Do everything in willLoadTimelineWithName — test to see what needs to be done.
+	// Rewrite and scroll web view
+	[self rewriteTabArea];
+	[self rewriteTweetArea];	
+	[self.webView scrollToTop];
 }
 
-#pragma mark -
-#pragma mark Notifications
-
-- (void) currentAccountDidChange: (NSNotification*) aNotification {
+- (void) didSelectAccount:(TwitterAccount*)anAccount {
+	self.currentAccount = anAccount;
 	[self closeAllPopovers];
-	
 	[self.webView setDocumentElement:@"current_account" innerHTML:[self currentAccountHTML]];
-	
 	[self selectHomeTimeline];
 	[self startLoadingCurrentTimeline];
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject: self.currentAccount.screenName forKey: @"currentAccount"];
 }
-
-// TODO: Remove this notification
-// Also need to save account when user switches it.
-// [defaults setObject: self.currentAccount.screenName forKey: @"currentAccount"];
-
-
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -939,6 +967,7 @@
 - (IBAction) lists: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		ListsViewController *lists = [[[ListsViewController alloc] initWithAccount:currentAccount] autorelease];
+		lists.delegate = self;
 		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
 	}
 }
@@ -946,13 +975,14 @@
 - (IBAction) search: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		SearchViewController *search = [[[SearchViewController alloc] initWithAccount:currentAccount] autorelease];
+		search.delegate = self;
 		[self presentContent: search inNavControllerInPopoverFromItem: sender];
 	}
 }
 
 - (IBAction) reloadData: (id) sender {
-	[self setLoadingSpinnerVisibility:YES];
 	[self reloadCurrentTimeline];
+	[self.webView scrollToTop];
 }
 
 - (IBAction) allstars: (id) sender {
@@ -977,7 +1007,8 @@
 
 - (IBAction) compose: (id) sender {
 	if ([self closeAllPopovers] == NO) { 
-		ComposeViewController *compose = [[[ComposeViewController alloc] initWithTwitter:twitter] autorelease];
+		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+		compose.delegate = self;
 		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
 	}
 }

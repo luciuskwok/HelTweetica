@@ -14,15 +14,13 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "TwitterAction.h"
+#import "TwitterLoadTimelineAction.h"
 
 
-@interface TwitterSearchAction : TwitterAction {
+@interface TwitterSearchAction : TwitterLoadTimelineAction {
 	NSString *query;
-	NSArray *messages;
 }
 @property (nonatomic, copy) NSString *query;
-@property (nonatomic, retain) NSArray *messages;
 
 - (id)initWithQuery:(NSString *)aQuery count:(NSString*)count;
 

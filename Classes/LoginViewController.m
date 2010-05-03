@@ -21,7 +21,7 @@
 
 
 @implementation LoginViewController
-@synthesize usernameField, passwordField, screenName;
+@synthesize usernameField, passwordField, screenName, delegate;
 
 - (id)initWithTwitter:(Twitter*)aTwitter {
 	if (self = [super initWithNibName:@"Login" bundle:nil]) {
@@ -86,7 +86,9 @@
 	
 	if (([user length] == 0) || ([pass length] == 0)) return;
 	
-	[twitter loginScreenName: user password: pass];
+	// Call delegate with login info
+	if ([delegate respondsToSelector:@selector(loginWithScreenName:password:)])
+		[delegate loginWithScreenName:user password:pass];
 	
 	[self.navigationController popViewControllerAnimated: YES];
 }

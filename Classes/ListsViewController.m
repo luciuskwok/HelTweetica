@@ -213,6 +213,13 @@
 	[alert release];
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	// Only allow selection of rows in the list
+	int count = account.lists.count + account.listSubscriptions.count;
+	if (indexPath.row >= count) return nil;
+	return indexPath;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	TwitterList *list = nil;
 	if (indexPath.row < account.lists.count) {

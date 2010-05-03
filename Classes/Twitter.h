@@ -16,38 +16,26 @@
 
 
 #import <Foundation/Foundation.h>
-#import "TwitterAction.h"
 
 #import "TwitterAccount.h"
 #import "TwitterUser.h"
 #import "TwitterMessage.h"
 #import "TwitterList.h"
 
-@class TwitterLoadTimelineAction;
 @protocol TwitterDelegate;
 
 @interface Twitter : NSObject {
 	NSMutableArray *accounts;
 	NSMutableSet *users;
-	
 	NSMutableSet *statuses;
-	
-	id <TwitterDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSMutableArray *accounts;
 @property (nonatomic, retain) NSMutableSet *users;
-
-@property (assign) id <TwitterDelegate> delegate;
+@property (nonatomic, retain) NSMutableSet *statuses;
 
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
-
-- (void) loginScreenName:(NSString*)aScreenName password:(NSString*)aPassword;
-
-- (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
-- (void) fave:(NSNumber*)messageIdentifier;
-- (void) retweet:(NSNumber*)messageIdentifier;
 
 - (TwitterMessage *)statusWithIdentifier:(NSNumber *)identifier;
 - (TwitterUser *)userWithScreenName:(NSString *)screenName;
@@ -58,9 +46,3 @@
 
 @end
 
-@protocol TwitterDelegate <NSObject>
-- (void)twitter:(Twitter*)aTwitter favoriteDidChange:(TwitterMessage*)aMessage;
-- (void)twitterDidRetweet:(Twitter*)aTwitter;
-
-- (void)twitter:(Twitter*)aTwitter didFailWithNetworkError:(NSError*)anError;
-@end

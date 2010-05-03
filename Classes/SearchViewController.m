@@ -178,6 +178,12 @@
 	}
 }	
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	// Only allow selection of rows in the array
+	if (indexPath.row >= account.savedSearches.count) return nil;
+	return indexPath;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row < account.savedSearches.count) {
 		NSString *query = [account.savedSearches objectAtIndex: indexPath.row];

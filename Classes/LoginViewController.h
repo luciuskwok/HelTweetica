@@ -18,6 +18,8 @@
 #import <UIKit/UIKit.h>
 #import "Twitter.h"
 
+@protocol LoginViewControllerDelegate;
+
 
 @interface LoginViewController : UIViewController {
 	IBOutlet UITextField *usernameField;
@@ -25,13 +27,21 @@
 	
 	Twitter *twitter;
 	NSString *screenName;
+	
+	id <LoginViewControllerDelegate> delegate;
 }
 @property (nonatomic, retain) UITextField *usernameField;
 @property (nonatomic, retain) UITextField *passwordField;
 @property (nonatomic, retain) NSString *screenName;
+@property (nonatomic, retain) id delegate;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;
 - (IBAction) cancel: (id) sender;
 - (IBAction) login: (id) sender;
 
 @end
+
+@protocol LoginViewControllerDelegate <NSObject>
+- (void) loginWithScreenName:(NSString*)screenName password:(NSString*)password;
+@end
+

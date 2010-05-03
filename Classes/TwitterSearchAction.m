@@ -19,7 +19,7 @@
 
 
 @implementation TwitterSearchAction
-@synthesize query, messages;
+@synthesize query;
 
 
 - (id)initWithQuery:(NSString *)aQuery count:(NSString*)count {
@@ -39,7 +39,6 @@
 
 - (void) dealloc {
 	[query release];
-	[messages release];
 	[super dealloc];
 }
 

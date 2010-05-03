@@ -17,15 +17,20 @@
 
 #import "AccountsViewController.h"
 #import "LoginViewController.h"
-
-
-@interface AccountsViewController (PrivateMethods)
-- (void) setContentSize;
-@end
+#import "TwitterLoginAction.h"
 
 
 @implementation AccountsViewController
-@synthesize popover;
+@synthesize popover, delegate;
+
+- (void) setContentSize {
+	// Set the size of the popover
+	if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
+		int count = twitter.accounts.count;
+		if (count < 3) count = 3;
+		[self setContentSizeForViewInPopover: CGSizeMake(320, 44 * count)];
+	}
+}
 
 - (id)initWithTwitter:(Twitter*)aTwitter {
 	if (self = [super initWithNibName:@"Accounts" bundle:nil]) {
@@ -38,24 +43,13 @@
 			[closeButton release];
 		}
 		[self setContentSize];
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(twitterAccountsDidChange:) name:@"twitterAccountsDidChange" object:nil];
-		[nc addObserver:self selector:@selector(twitterAccountsDidChange:) name:@"currentAccountDidChange" object:nil];
 	}
 	return self;
 }
 
-- (void) setContentSize {
-	// Set the content size
-	if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
-		int count = twitter.accounts.count;
-		if (count < 3) count = 3;
-		[self setContentSizeForViewInPopover: CGSizeMake(320, 44 * count)];
-	}
-}
-
 - (IBAction) add:(id)sender {
  	LoginViewController *c = [[[LoginViewController alloc] initWithTwitter:twitter] autorelease];
+	c.delegate = self;
 	[self.navigationController pushViewController: c animated: YES];
 }
 
@@ -74,12 +68,6 @@
 	[[self tableView] reloadData];
 }
 
-- (void) twitterAccountsDidChange:(NSNotification*)aNotification {
-	//[self performSelectorOnMainThread:@selector(reload) withObject:nil waitUntilDone:NO];
-	[self reload];
-}
-
-#pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
@@ -123,7 +111,6 @@
      return YES;
 }
 
-#pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -173,7 +160,6 @@
 	[twitter moveAccountAtIndex:fromIndexPath.row toIndex:toIndexPath.row];
 }
 
-#pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -182,12 +168,9 @@
 	if ((0 <= row) && (row < accounts.count)) {
 		TwitterAccount *account = [accounts objectAtIndex: row];
 		if (account.xAuthToken != nil) {
-			// Make this account the current one.
-			[twitter setCurrentAccount: account];
-			[twitter save];
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"currentAccountDidChange" object:self];
-			if (popover == nil) 
-				[self dismissModalViewControllerAnimated:YES];
+			// Call delegate to tell an account was selected
+			if ([delegate respondsToSelector:@selector(didSelectAccount:)])
+				[delegate didSelectAccount:account];
 		} else {
 			// if xauth token isn't there, maybe because login failed, allow user to re-login
 			LoginViewController *c = [[[LoginViewController alloc] initWithTwitter:twitter] autorelease];
@@ -197,29 +180,66 @@
 	}
 }
 
+#pragma mark Login view controller delegate
 
-#pragma mark -
+- (void) loginWithScreenName:(NSString*)screenName password:(NSString*)password {
+	// Create an account for this username if one doesn't already exist
+	TwitterAccount *account = [twitter accountWithScreenName: screenName];
+	if (account == nil) {
+		account = [[[TwitterAccount alloc] init] autorelease];
+		account.screenName = screenName;
+		[twitter.accounts addObject: account];
+		[self reload];
+	}
+	
+	// Create and send the login action.
+	TwitterLoginAction *action = [[[TwitterLoginAction alloc] initWithUsername:screenName password:password] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didLogin:);
+
+	// Set up Twitter action
+	action.delegate = self;
+	
+	// Start the URL connection
+	[action start];
+}
+
+- (void) didLogin:(TwitterLoginAction *)action {
+	if (action.token) {
+		// Save the login information for the account.
+		TwitterAccount *account = [twitter accountWithScreenName: action.username];
+		[account setXAuthToken: action.token];
+		[account setXAuthSecret: action.secret];
+		[account setScreenName: action.username]; // To make sure the uppercase/lowercase letters are correct.
+		
+		// Tell delegate we're done
+		if ([delegate respondsToSelector:@selector(didSelectAccount:)])
+			[delegate didSelectAccount:account];
+	} else {
+		// Login was not successful, so report the error.
+		NSString *title = NSLocalizedString (@"Login failed.", @"alert");
+		NSString *message = NSLocalizedString (@"Username or password was incorrect..", @"alert");
+		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+		[alert show];
+	}
+}
+
+
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
 }
-
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[twitter release];
 	[super dealloc];
 }
-
 
 @end
 

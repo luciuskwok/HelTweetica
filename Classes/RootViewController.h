@@ -21,9 +21,10 @@
 #import "ListsViewController.h"
 #import "SearchViewController.h"
 #import "ComposeViewController.h"
+#import "AccountsViewController.h"
 
 
-@interface RootViewController : UIViewController <UIPopoverControllerDelegate, TwitterDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate> {
+@interface RootViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, AccountsViewControllerDelegate> {
 	IBOutlet LKWebView *webView;
 	IBOutlet UIBarButtonItem *accountsButton;
 	IBOutlet UIBarButtonItem *composeButton;

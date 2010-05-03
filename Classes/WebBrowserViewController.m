@@ -75,8 +75,9 @@
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
+	//webView.delegate = nil;
 	[webView stopLoading];
-	webView.delegate = nil;
+	[appDelegate decrementNetworkActionCount];
 	[super viewWillDisappear:animated];
 }
 
