@@ -109,6 +109,8 @@
 		E0448953116F245C008603EB /* Lists.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0448951116F245C008603EB /* Lists.xib */; };
 		E04934B3118E74A800BCA128 /* profile-image-proxy.png in Resources */ = {isa = PBXBuildFile; fileRef = E04934B2118E74A800BCA128 /* profile-image-proxy.png */; };
 		E04934B4118E74A800BCA128 /* profile-image-proxy.png in Resources */ = {isa = PBXBuildFile; fileRef = E04934B2118E74A800BCA128 /* profile-image-proxy.png */; };
+		E0493617118EBE3900BCA128 /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */; };
+		E0493618118EBE3900BCA128 /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */; };
 		E04BD349116C97C2004BFF3D /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */; };
 		E06A3383116E4CCE0098CF12 /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3382116E4CCE0098CF12 /* retweet.png */; };
 		E06A348D116E8B7D0098CF12 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A348C116E8B7D0098CF12 /* TwitterAccount.m */; };
@@ -238,6 +240,8 @@
 		E0448950116F245C008603EB /* ListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListsViewController.m; sourceTree = "<group>"; };
 		E0448951116F245C008603EB /* Lists.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Lists.xib; sourceTree = "<group>"; };
 		E04934B2118E74A800BCA128 /* profile-image-proxy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "profile-image-proxy.png"; path = "Resources/profile-image-proxy.png"; sourceTree = "<group>"; };
+		E0493615118EBE3900BCA128 /* TimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineViewController.h; sourceTree = "<group>"; };
+		E0493616118EBE3900BCA128 /* TimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineViewController.m; sourceTree = "<group>"; };
 		E04BD347116C97C2004BFF3D /* TwitterMessageJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessageJSONParser.h; sourceTree = "<group>"; };
 		E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessageJSONParser.m; sourceTree = "<group>"; };
 		E06A3382116E4CCE0098CF12 /* retweet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = retweet.png; path = Resources/retweet.png; sourceTree = "<group>"; };
@@ -358,6 +362,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E0493615118EBE3900BCA128 /* TimelineViewController.h */,
+				E0493616118EBE3900BCA128 /* TimelineViewController.m */,
 				E0175BAB117BFAA1003F5970 /* RootView */,
 				E04935D9118EB2E300BCA128 /* User Page */,
 				E0175BAA117BFA7F003F5970 /* WebBrowser */,
@@ -839,6 +845,7 @@
 				E08406D7118D4B6C00670BAB /* TwitterSearchJSONParser.m in Sources */,
 				E084089B118DE04E00670BAB /* TwitterUser.m in Sources */,
 				E084099A118E246900670BAB /* UserPageViewController.m in Sources */,
+				E0493617118EBE3900BCA128 /* TimelineViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -882,6 +889,7 @@
 				E08406D6118D4B6C00670BAB /* TwitterSearchJSONParser.m in Sources */,
 				E084089A118DE04E00670BAB /* TwitterUser.m in Sources */,
 				E0840998118E246900670BAB /* UserPageViewController.m in Sources */,
+				E0493618118EBE3900BCA128 /* TimelineViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

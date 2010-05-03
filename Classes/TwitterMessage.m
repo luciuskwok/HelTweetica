@@ -252,7 +252,6 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
-		//NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		downloadStatusCode = [(NSHTTPURLResponse*) response statusCode];
 	}
 	
@@ -271,18 +270,13 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	if (connection != downloadConnection) return;
 	
-	//[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	self.downloadConnection = nil;
 	self.downloadData = nil;
 	isLoading = NO;
-	
-	//[[NSNotificationCenter defaultCenter] postNotificationName:@"twitterNetworkError" object:error];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	if (connection != downloadConnection) return;
-	
-	//[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	UIImage *avatarImage = [[[UIImage alloc] initWithData:downloadData] autorelease];

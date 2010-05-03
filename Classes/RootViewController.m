@@ -21,7 +21,6 @@
 // When reloading a timeline, when the newest message in the app is older than this, the app reloads the entire timeline instead of requesting only status updates newer than the newest in the app. This is set to 20 minutes. The number is in seconds.
 
 #import "RootViewController.h"
-#import "HelTweeticaAppDelegate.h"
 #import "TwitterAccount.h"
 #import "TwitterMessage.h"
 #import "Analyze.h"
@@ -44,22 +43,12 @@
 
 
 @interface RootViewController (PrivateMethods)
-- (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage;
-- (void) replyToMessage:(NSNumber*)identifier;
-- (void) directMessageWithTweet:(NSNumber*)identifier;
-- (void) showTweet:(NSNumber*)identifier;
-- (void) loadOlderMessages;
-- (BOOL)closeAllPopovers;
-
-- (void) reloadWebView;
-
 - (void) startLoadingCurrentTimeline;
 @end
 
 @implementation RootViewController
-@synthesize webView, accountsButton, composeButton, customPageTitle, selectedTabName;
-@synthesize twitter, currentAccount, currentTimeline, currentTimelineAction;
-@synthesize currentPopover, currentActionSheet, currentAlert;
+@synthesize accountsButton, composeButton, customPageTitle, selectedTabName;
+@synthesize currentAccount, currentTimeline, currentTimelineAction;
 
 
 #define kTimelineIdentifier @"Timeline"
@@ -68,17 +57,12 @@
 #define kFavoritesIdentifier @"Favorites"
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[twitter release];
-	[webView release];
 	[accountsButton release];
+	[composeButton release];
 	
-	[twitter release];
-	[actions release];
 	[currentAccount release];
 	[currentTimeline release];
 	[currentTimelineAction release];
-	[defaultCount release];
 	
 	[customPageTitle release];
 	[selectedTabName release];
@@ -94,24 +78,14 @@
 
 - (void)viewDidUnload {
 	[super viewDidUnload];
-	//	self.navItem = nil;
-	self.webView.delegate = nil;
-	self.webView = nil;
 	self.accountsButton = nil;
+	self.composeButton = nil;
 }
 
 - (void) awakeFromNib {
-	// Use Twitter instance from app delegate
-	HelTweeticaAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	twitter = [appDelegate.twitter retain];
-	
-	// String to pass in the count, per_page, and rpp parameters.
-	defaultCount = [@"100" retain];
-	
-	actions = [[NSMutableArray alloc] init];
-	
+	[super awakeFromNib];
+
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
 	NSString *currentAccountScreenName = [defaults objectForKey: @"currentAccount"];
 	if (currentAccountScreenName) {
 		self.currentAccount = [twitter accountWithScreenName:currentAccountScreenName];
@@ -546,11 +520,6 @@
 	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
-- (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
-	// TODO: show conversation page
-	[self showAlertWithTitle:@"Under Construction." message:@"The tweet info feature isn't quite ready."];
-}
-
 #pragma mark Pushing view controllers
 
 - (void) showUserPage:(NSString*)screenName {
@@ -566,6 +535,10 @@
 	// Show user page
 	UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitter:twitter user:user] autorelease];
 	[self.navigationController pushViewController: vc animated: YES];
+}
+
+- (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
+	// TODO: show conversation page
 }
 
 - (void) showWebBrowserWithURLRequest:(NSURLRequest*)request {
@@ -601,6 +574,21 @@
 		[self rewriteTweetArea]; // Remove any Loading messages.
 		[self setLoadingSpinnerVisibility:NO];
 	}
+}
+
+#pragma mark Alert view
+
+- (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage {
+	if (self.currentAlert == nil) { // Don't show another alert if one is already up.
+		self.currentAlert = [[[UIAlertView alloc] initWithTitle:aTitle message:aMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+		[currentAlert show];
+	}
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[self rewriteTweetArea];
+	[self setLoadingSpinnerVisibility:NO];
+	self.currentAlert = nil;
 }
 
 #pragma mark TwitterAction delegate methods
@@ -1011,22 +999,6 @@
 		compose.delegate = self;
 		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
 	}
-}
-
-#pragma mark -
-#pragma mark Alert view
-
-- (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage {
-	if (self.currentAlert == nil) { // Dont' another alert if one is already up.
-		self.currentAlert = [[[UIAlertView alloc] initWithTitle:aTitle message:aMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-		[currentAlert show];
-	}
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	[self rewriteTweetArea];
-	[self setLoadingSpinnerVisibility:NO];
-	self.currentAlert = nil;
 }
 
 @end

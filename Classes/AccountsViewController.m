@@ -236,7 +236,6 @@
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[twitter release];
 	[super dealloc];
 }

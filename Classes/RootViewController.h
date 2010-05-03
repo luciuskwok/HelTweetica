@@ -16,25 +16,21 @@
 
 
 #import <UIKit/UIKit.h>
+#import "TimelineViewController.h"
 #import "Twitter.h"
-#import "LKWebView.h"
 #import "ListsViewController.h"
 #import "SearchViewController.h"
 #import "ComposeViewController.h"
 #import "AccountsViewController.h"
 
 
-@interface RootViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, AccountsViewControllerDelegate> {
-	IBOutlet LKWebView *webView;
+@interface RootViewController : TimelineViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, AccountsViewControllerDelegate> {
 	IBOutlet UIBarButtonItem *accountsButton;
 	IBOutlet UIBarButtonItem *composeButton;
 	
-	Twitter *twitter;
-	NSMutableArray *actions;
 	TwitterAccount *currentAccount;
 	NSMutableArray *currentTimeline;
 	TwitterAction *currentTimelineAction;
-	NSString *defaultCount;
 	
 	NSString *customPageTitle;
 	NSString *selectedTabName;
@@ -42,16 +38,11 @@
 	NSTimer *refreshTimer;
 	BOOL automaticReload;
 
-	UIPopoverController *currentPopover;
-	UIActionSheet *currentActionSheet;
-	UIAlertView *currentAlert;
 }
 
-@property (nonatomic, retain) LKWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *accountsButton;
 @property (nonatomic, retain) UIBarButtonItem *composeButton;
 
-@property (nonatomic, retain) Twitter *twitter;
 @property (nonatomic, retain) TwitterAccount *currentAccount;
 @property (nonatomic, retain) NSMutableArray *currentTimeline;
 @property (nonatomic, retain) TwitterAction *currentTimelineAction;
@@ -59,9 +50,6 @@
 @property (nonatomic, retain) NSString *customPageTitle;
 @property (nonatomic, retain) NSString *selectedTabName;
 
-@property (nonatomic, retain) UIPopoverController *currentPopover;
-@property (nonatomic, retain) UIActionSheet *currentActionSheet;
-@property (nonatomic, retain) UIAlertView *currentAlert;
 
 
 - (IBAction) accounts: (id) sender;

@@ -174,7 +174,7 @@ p { margin: 0px 0px 20px 0px; }
 	display: table-cell;
 	width: 70px;
 	text-align: right;
-	font-size: 14px;
+	font-size: 15px;
 	color: #888;
 	padding: 0px 10px 0px 0px;
 }
@@ -196,6 +196,9 @@ p { margin: 0px 0px 20px 0px; }
 	font-weight: bold;
 	line-height: 30px; 
 	color: #444;
+}
+.user_web {
+	font-weight: bold;
 }
 .user_number_value {
 	padding: 0px 10px 0px 0px;
