@@ -30,7 +30,6 @@
 	self = [super initWithNibName:@"UserPage" bundle:nil];
 	if (self) {
 		self.user = aUser;
-		appDelegate = [[UIApplication sharedApplication] delegate];
 		
 		if ([aUser.identifier intValue] == -1) { // This means the user info needs to be loaded from Twitter
 			
@@ -94,7 +93,7 @@
 	
 	// Load
 	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"user-page-template.html"];
+	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"user-info-template.html"];
 	NSError *error = nil;
 	NSMutableString *html  = [NSMutableString stringWithContentsOfFile:templateFile encoding:NSUTF8StringEncoding error:&error];
 	
@@ -147,6 +146,20 @@
 	return html;
 }
 
+- (NSString*) webPageTemplate {
+	// Load main template
+	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
+	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"user-page-template.html"];
+	NSError *error = nil;
+	NSMutableString *html  = [NSMutableString stringWithContentsOfFile:templateFile encoding:NSUTF8StringEncoding error:&error];
+	
+	// Replace custom tags with HTML
+	NSString *userInfoAreaHTML = [self userInfoHTML];
+	[html replaceOccurrencesOfString:@"<userInfoAreaHTML/>" withString:userInfoAreaHTML options:0 range:NSMakeRange(0, html.length)];
+	
+	return html;
+}
+
 - (void)reloadWebView {
 	// Use boilerplate header.html and footer.html
 	
@@ -188,37 +201,6 @@
 	[self.navigationController pushViewController: vc animated: YES];
 }	
 
-#pragma mark WebView delegate methods
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-	NSURL *url = [request URL];
-	
-	if ([[url scheme] hasPrefix:@"http"]) {
-		[self showWebBrowserWithURLRequest:request];
-		return NO;
-	}
-	
-	return YES;
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)aWebView {
-	[appDelegate incrementNetworkActionCount];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)aWebView {
-	[appDelegate decrementNetworkActionCount];
-}
-
-- (void)webView:(UIWebView *)aWebView didFailLoadWithError:(NSError *)error {
-	[appDelegate decrementNetworkActionCount];
-	
-	if ([error code] != -999) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString localizedStringWithFormat:@"Error %d", [error code]] message:[NSString localizedStringWithFormat:@"The page could not be loaded: \"%@\"", [error localizedDescription]] delegate:nil cancelButtonTitle:[NSString localizedStringWithFormat:@"OK"] otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-	}
-}
-
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
@@ -234,12 +216,6 @@
 	self.followButton = nil;
 	self.directMessageButton = nil;
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Overriden to allow any orientation.
-    return YES;
-}
-
 
 
 #pragma mark IBActions

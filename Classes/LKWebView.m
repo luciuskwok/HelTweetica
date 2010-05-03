@@ -18,10 +18,12 @@
 
 @implementation LKWebView
 
-- (NSString*) stringByEscapingQuotes:(NSString*)string {
+- (NSString*) javascriptSafeString:(NSString*)string {
 	NSMutableString *result = [NSMutableString stringWithString: string];
 	[result replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:0 range:NSMakeRange(0, result.length)];
 	[result replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"\r" withString:@"" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"\n" withString:@"" options:0 range:NSMakeRange(0, result.length)];
 	return result;
 }
 
@@ -32,7 +34,7 @@
 }
 
 - (NSString*) setDocumentElement:(NSString*)element innerHTML:(NSString*)html {
-	NSString *escapedHtml = [self stringByEscapingQuotes: html];
+	NSString *escapedHtml = [self javascriptSafeString: html];
 	NSString *js = [NSString stringWithFormat: @"document.getElementById(\"%@\").innerHTML = \"%@\";", element, escapedHtml];
 	return [self stringByEvaluatingJavaScriptFromString:js];
 }
@@ -43,17 +45,21 @@
 }
 
 - (CGPoint) scrollPosition {
-	CGPoint position = CGPointZero;
+	CGPoint position = CGPointMake(-1, -1);
 	NSString *jsResult;
 	NSScanner *scanner;
 	
 	jsResult = [self stringByEvaluatingJavaScriptFromString:@"window.pageXOffset;"];
-	scanner = [NSScanner scannerWithString:jsResult];
-	[scanner scanFloat:&position.x];
+	if (jsResult.length > 0) {
+		scanner = [NSScanner scannerWithString:jsResult];
+		[scanner scanFloat:&position.x];
+	}
 
 	jsResult = [self stringByEvaluatingJavaScriptFromString:@"window.pageYOffset;"];
-	scanner = [NSScanner scannerWithString:jsResult];
-	[scanner scanFloat:&position.y];
+	if (jsResult.length > 0) {
+		scanner = [NSScanner scannerWithString:jsResult];
+		[scanner scanFloat:&position.y];
+	}
 	
 	return position;
 }

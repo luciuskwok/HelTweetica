@@ -169,6 +169,7 @@
 		} else {
 			// if xauth token isn't there, maybe because login failed, allow user to re-login
 			LoginViewController *c = [[[LoginViewController alloc] initWithTwitter:twitter] autorelease];
+			c.delegate = self;
 			c.screenName = account.screenName;
 			[self.navigationController pushViewController: c animated: YES];
 		}
@@ -213,7 +214,7 @@
 	} else {
 		// Login was not successful, so report the error.
 		NSString *title = NSLocalizedString (@"Login failed.", @"alert");
-		NSString *message = NSLocalizedString (@"Username or password was incorrect..", @"alert");
+		NSString *message = NSLocalizedString (@"Username or password was incorrect.", @"alert");
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		[alert show];
 	}

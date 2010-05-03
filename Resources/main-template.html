@@ -6,15 +6,22 @@
 <script language='JavaScript' src='functions.js'></script>
 </head>
 <body>
-	<div class='artboard'>
-		<div id='user_info_area' class='user_info_area'>
-			<userInfoAreaHTML/>
+	<div class='artboard toolbar_padding'>
+		
+		<div id='spinner' class='spinner'>Loading... <img class='spinner_image' src='spinner.gif'></div>
+		
+		<div id='current_account' class='title current_account'>
+			<currentAccountHTML/>
+		</div>
+		
+		<div id='tab_area' class='tabs'>
+			<tabAreaHTML/>
 		</div>
 		
 		<div id='tweet_area' class='tweet_area'>
 			<tweetAreaHTML/>
 		</div>
-
+		
 		<div class='hidden_stars'><img src='action-4.png'><img src='action-4-on.png'></div>
 	</div><!-- artboard -->
 </body>

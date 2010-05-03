@@ -18,39 +18,15 @@
 #import <UIKit/UIKit.h>
 #import "TimelineViewController.h"
 #import "Twitter.h"
-#import "ListsViewController.h"
-#import "SearchViewController.h"
-#import "ComposeViewController.h"
+
 #import "AccountsViewController.h"
 
 
-@interface RootViewController : TimelineViewController <ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, AccountsViewControllerDelegate> {
+@interface RootViewController : TimelineViewController <AccountsViewControllerDelegate> {
 	IBOutlet UIBarButtonItem *accountsButton;
-	IBOutlet UIBarButtonItem *composeButton;
-	
-	TwitterAccount *currentAccount;
-	NSMutableArray *currentTimeline;
-	TwitterAction *currentTimelineAction;
-	
-	NSString *customPageTitle;
-	NSString *selectedTabName;
-	
-	NSTimer *refreshTimer;
-	BOOL automaticReload;
-
 }
 
 @property (nonatomic, retain) UIBarButtonItem *accountsButton;
-@property (nonatomic, retain) UIBarButtonItem *composeButton;
-
-@property (nonatomic, retain) TwitterAccount *currentAccount;
-@property (nonatomic, retain) NSMutableArray *currentTimeline;
-@property (nonatomic, retain) TwitterAction *currentTimelineAction;
-
-@property (nonatomic, retain) NSString *customPageTitle;
-@property (nonatomic, retain) NSString *selectedTabName;
-
-
 
 - (IBAction) accounts: (id) sender;
 - (IBAction) lists: (id) sender;

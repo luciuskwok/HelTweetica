@@ -21,7 +21,7 @@ p { margin: 0px 0px 20px 0px; }
 	font-size: 40px; 
 	font-weight: bold;
 	line-height: 50px; 
-	color: #DDD;
+	color: #888;
 }
 
 .title { color: #DDD; padding: 10px 5px 10px 5px; }
@@ -138,7 +138,7 @@ p { margin: 0px 0px 20px 0px; }
 	width: 1px; height: 1px; overflow: hidden; display: none;
 }
 
-.user_area {
+.user_info_area {
 	display: table-row;
 	margin: 0px;
 	padding: 10px;
@@ -153,8 +153,8 @@ p { margin: 0px 0px 20px 0px; }
 	border-bottom: 1px solid #ccc;
 }
 .user_large_avatar img {
-	max-width: 250px;
-	max-height: 250px;
+	max-width: 250px; max-height: 250px;
+	min-width: 96px; min-height: 96px;
 	-webkit-border-radius: 20px; 
 }
 .user_info_block {

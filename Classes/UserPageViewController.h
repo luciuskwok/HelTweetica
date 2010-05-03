@@ -25,7 +25,6 @@
 	IBOutlet UIBarButtonItem *screenNameButton;
 	IBOutlet UIBarButtonItem *followButton;
 	IBOutlet UIBarButtonItem *directMessageButton;
-	HelTweeticaAppDelegate *appDelegate;
 
 	TwitterUser *user;
 }
