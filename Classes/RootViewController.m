@@ -133,58 +133,6 @@
 	// Favorites always loads 20 per page. Cannot change the count.
 }
 
-#pragma mark Popovers
-
-- (BOOL)closeAllPopovers {
-	// Returns YES if any popovers were visible and closed.
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		// Close any action sheets
-		if (currentActionSheet != nil) {
-			[currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
-			self.currentActionSheet = nil;
-			return YES;
-		}
-		
-		// If a popover is already shown, close it. 
-		if (currentPopover != nil) {
-			[currentPopover dismissPopoverAnimated:YES];
-			self.currentPopover = nil;
-			return YES;
-		}
-	}
-	return NO;
-}
-
-- (void)popoverControllerDidDismissPopover: (UIPopoverController *) popoverController {
-	self.currentPopover = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
-}
-
-- (UIPopoverController*) presentPopoverFromItem:(UIBarButtonItem*)item viewController:(UIViewController*)vc {
-	// Present popover
-	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:vc] autorelease];
-	popover.delegate = self;
-	[popover presentPopoverFromBarButtonItem:item permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	self.currentPopover = popover;
-	return popover;
-}	
-
-- (void) presentContent: (UIViewController*) contentViewController inNavControllerInPopoverFromItem: (UIBarButtonItem*) item {
-	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController: contentViewController] autorelease];
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		UIPopoverController *popover = [self presentPopoverFromItem:item viewController:navController];
-		if ([contentViewController respondsToSelector:@selector (setPopover:)])
-			[(id) contentViewController setPopover: popover];
-	} else { // iPhone
-		navController.navigationBar.barStyle = UIBarStyleBlack;
-		[self presentModalViewController:navController animated:YES];
-	}
-}
-
 - (AccountsViewController*) showAccounts:(id)sender {
 	if ([self closeAllPopovers]) 
 		return nil;
@@ -201,25 +149,29 @@
 	
 	NSString *result = nil;
 	NSTimeInterval timeSince = -[date timeIntervalSinceNow] / 60.0 ; // in minutes
-	int value;
-	NSString *units;
-	if (timeSince <= 1.5) { // report in seconds
-		value = floor (timeSince * 60.0);
-		units = @"second";
-	} else if (timeSince < 90.0) { // report in minutes
-		value = floor (timeSince);
-		units = @"minute";
-	} else if (timeSince < 48.0 * 60.0) { // report in hours
-		value = floor (timeSince / 60.0);
-		units = @"hour";
-	} else { // report in days
-		value = floor (timeSince / (24.0 * 60.0));
-		units = @"day";
-	}
-	if (value == 1) {
-		result = [NSString stringWithFormat:@"1 %@ ago", units];
-	} else {
-		result = [NSString stringWithFormat:@"%d %@s ago", value, units];
+	if (timeSince < 48.0 * 60.0) { // If under 48 hours, report relative time
+		int value;
+		NSString *units;
+		if (timeSince <= 1.5) { // report in seconds
+			value = floor (timeSince * 60.0);
+			units = @"second";
+		} else if (timeSince < 90.0) { // report in minutes
+			value = floor (timeSince);
+			units = @"minute";
+		} else { // report in hours
+			value = floor (timeSince / 60.0);
+			units = @"hour";
+		}
+		if (value == 1) {
+			result = [NSString stringWithFormat:@"1 %@ ago", units];
+		} else {
+			result = [NSString stringWithFormat:@"%d %@s ago", value, units];
+		}
+	} else { // 48 hours or more, display the date
+		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+		[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+		[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+		result = [dateFormatter stringFromDate:date];
 	}
 	return result;
 }
@@ -254,6 +206,25 @@
 	return html;
 }
 
+- (void) replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template {
+	// Find beginning and end of block tags
+	NSString *openTag = [NSString stringWithFormat:@"{Block:%@}", blockName];
+	NSString *closeTag = [NSString stringWithFormat:@"{/Block:%@}", blockName];
+	
+	if (display) {
+		// Just remove the tags if we're displaying the block
+		[template replaceOccurrencesOfString:openTag withString:@"" options:0 range:NSMakeRange(0, template.length)];
+		[template replaceOccurrencesOfString:closeTag withString:@"" options:0 range:NSMakeRange(0, template.length)];
+	} else {
+		// Remove the entire block if we're not displaying it
+		NSRange openRange = [template rangeOfString:openTag];
+		NSRange closeRange = [template rangeOfString:closeTag];
+		if (openRange.location == NSNotFound || closeRange.location == NSNotFound) return; // Can't find both tags
+		NSRange replaceRange = NSMakeRange(openRange.location, closeRange.location + closeRange.length - openRange.location);
+		[template replaceCharactersInRange:replaceRange withString:@""];
+	}
+}
+
 - (NSString*) tweetAreaHTML {
 	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
 	
@@ -265,20 +236,7 @@
 		
 		// Count and oldest
 		TwitterMessage *message, *retweeterMessage;
-		
-		/*
-		 if (displayedCount != totalMessages) {
-		 [html appendFormat:@"<div class='status time'>%d of %d messages shown", displayedCount, totalMessages];	
-		 } else {
-		 [html appendFormat:@"<div class='status time'>%d messages", timeline.count];	
-		 }
-		 message = [timeline lastObject];
-		 if (message.createdDate != nil) {
-		 [html appendFormat: @" (oldest %@)", [self timeStringSinceNow: message.createdDate]];
-		 }
-		 [html appendString:@"</div>\n"];
-		 */
-		
+			
 		[html appendString:@"<div class='tweet_table'> "];
 
 		// Page title for Lists and Search
@@ -289,6 +247,14 @@
 			[html appendString:@"</div><div class='tweet_actions'> </div></div>"];
 		}
 		
+		// Template for tweet_row
+		NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
+		NSError *error = nil;
+		NSString *tweetRowTemplate = [NSString stringWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-template.html"] encoding:NSUTF8StringEncoding error:&error];
+		if (error != nil)
+			NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
+		NSMutableString *tweetRowHTML;
+		
 		NSAutoreleasePool *pool;
 		BOOL isFavorite;
 		int index;
@@ -297,7 +263,6 @@
 			message = [timeline objectAtIndex:index];
 			//isFavorite = message.favorite; // Is the original tweet or the retweeter's tweet supposed to be the one that gets the star? If the latter, uncomment this.
 			retweeterMessage = nil;
-			NSString *identifier = [message.identifier stringValue];
 			
 			// Swap retweeted message with root message
 			if (message.retweetedMessage != nil) {
@@ -308,8 +273,46 @@
 			// Favorites
 			isFavorite = (message.favorite || retweeterMessage.favorite);
 			
+			// Create mutable copy of template
+			tweetRowHTML = [NSMutableString stringWithString:tweetRowTemplate];
+			
+			// Fields for replacement
+			NSString *screenName = message.screenName ? message.screenName : @"";
+			NSString *messageIdentifier = message.identifier ? [message.identifier stringValue] : @"";
+			NSString *profileImageURL = message.avatar ? message.avatar : @"";
+			NSString *retweetIcon = retweeterMessage ? @"<img src='retweet.png'>" : @"";
+			NSString *lockIcon = [message isLocked] ? @"<img src='lock.png'>" : @"";
+			NSString *content = message.content ? [message layoutSafeContent] : @"";
+			NSString *createdDate = message.createdDate ? [self timeStringSinceNow: message.createdDate] : @"";
+			NSString *via = message.source ? message.source : @"";
+			NSString *inReplyToScreenName = message.inReplyToScreenName ? message.inReplyToScreenName : @"";
+			NSString *retweetedBy = retweeterMessage.screenName ? retweeterMessage.screenName : @"";
+			NSString *faveImageSuffix = isFavorite ? @"-on" : @"";
+			
+			// Replace fields in template with actual data
+			[tweetRowHTML replaceOccurrencesOfString:@"{screenName}" withString:screenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{messageIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{profileImageURL}" withString:profileImageURL options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{retweetIcon}" withString:retweetIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{lockIcon}" withString:lockIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{content}" withString:content options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{createdDate}" withString:createdDate options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{via}" withString:via options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{inReplyToScreenName}" withString:inReplyToScreenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{retweetedBy}" withString:retweetedBy options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+			[tweetRowHTML replaceOccurrencesOfString:@"{faveImageSuffix}" withString:faveImageSuffix options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+
+			// Replace blocks in template
+			[self replaceBlock: @"InReplyTo" display: (message.inReplyToScreenName != nil) inTemplate:tweetRowHTML];
+			[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
+			[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
+			
+			// Append row to table
+			[html appendString:tweetRowHTML];
+			
+			/*
 			// Div for each tweet
-			[html appendFormat:@"<div class='tweet_row'>", identifier];			
+			[html appendFormat:@"<div class='tweet_row'>"];			
 			{
 				// Avatar column
 				[html appendString:@"<div class='tweet_avatar'>"];
@@ -382,6 +385,9 @@
 				}
 			}
 			[html appendString:@"</div> "]; // Close tweet_row.
+			*/
+			
+			
 			[pool release];
 		}
 		[html appendString:@"</div> "]; // Close tweet_table
@@ -474,10 +480,6 @@
 	// Start refresh timer so that the timestamps are always accurate
 	[refreshTimer invalidate];
 	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
-}
-
-- (void) fireRefreshTimer:(NSTimer*)timer {
-	[self rewriteTweetArea];
 }
 
 - (void) replyToMessage: (NSNumber*)identifier {
@@ -621,20 +623,17 @@
 }
 
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
-	[self removeTwitterAction:action];
-	
 	// Deal with status codes 400 to 402 and 404 and up.
 	if ((action.statusCode >= 400) && (action.statusCode != 403)) {
 		[self showNetworkErrorAlertForStatusCode:action.statusCode];
 	}
+	[self removeTwitterAction:action];
 }
 
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
-	[actions removeObject: action];
-	
 	NSString *title = NSLocalizedString (@"Network error", @"Alert");
 	[self showAlertWithTitle:title message:[error localizedDescription]];
-
+	[actions removeObject: action];
 }
 
 #pragma mark TwitterAction - Misc
@@ -775,6 +774,20 @@
 	[self setLoadingSpinnerVisibility: YES];
 }
 
+- (void) fireRefreshTimer:(NSTimer*)timer {
+	// Clear pointer to timer because this is a non-recurring timer.
+	refreshTimer = nil;
+	
+	CGPoint scrollPosition = [self.webView scrollPosition];
+	
+	if ((scrollPosition.y < 1.0f) && (automaticReload == NO)) {
+		// If scrolled to top, load new tweets
+		[self reloadCurrentTimeline];
+	} else {
+		// Don't load new statuses if scroll position is below top.
+		[self rewriteTweetArea];
+	}
+}
 
 #pragma mark UIWebView delegate methods
 
@@ -832,9 +845,6 @@
 	return YES;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-}
-
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	if (automaticReload) {
 		[self reloadCurrentTimeline];
@@ -845,10 +855,13 @@
 #pragma mark Popover delegate methods
 
 - (void) sendStatusUpdate:(NSString*)text inReplyTo:(NSNumber*)inReplyTo {
+	[self closeAllPopovers];
 	[self updateStatus:text inReplyTo:inReplyTo];
 }
 
 - (void) lists:(ListsViewController*)lists didSelectList:(TwitterList*)list {
+	[self closeAllPopovers];
+
 	self.currentTimeline = list.statuses;
 	
 	// Style the page title
@@ -882,6 +895,8 @@
 }
 
 - (void) search:(SearchViewController*)search didRequestQuery:(NSString*)query {
+	[self closeAllPopovers];
+
 	self.currentTimeline = [NSMutableArray array]; // Always start with an empty array of messages for Search.
 	self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
 	self.selectedTabName = NSLocalizedString (@"Results", @"tab");
@@ -986,7 +1001,7 @@
 		Analyze *c = [[[Analyze alloc] init] autorelease];
 		c.timeline = currentAccount.timeline;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			c.popover = [self presentPopoverFromItem:sender viewController:c];
+			[self presentPopoverFromItem:sender viewController:c];
 		} else {
 			[self presentModalViewController:c animated:YES];
 		}

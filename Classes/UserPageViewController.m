@@ -45,7 +45,6 @@
 	[screenNameButton release];
 	[followButton release];
 	[directMessageButton release];
-	[currentPopover release];
 	
 	[user release];
 
@@ -62,7 +61,7 @@
 - (NSString*)formattedDate:(NSDate*)date {
 	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	[dateFormatter setDateStyle:NSDateFormatterLongStyle];
 	return [dateFormatter stringFromDate:date];
 }
 

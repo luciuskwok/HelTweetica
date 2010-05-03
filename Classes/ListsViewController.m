@@ -25,7 +25,7 @@
 @end
 
 @implementation ListsViewController
-@synthesize popover, statusMessage, delegate;
+@synthesize statusMessage, delegate;
 
 
 - (void) setContentSize {
@@ -235,11 +235,6 @@
 		// Call delegate to tell a list was selected
 		if ([delegate respondsToSelector:@selector(lists:didSelectList:)])
 			[delegate lists:self didSelectList:list];
-
-		if (popover) {
-			[popover dismissPopoverAnimated:YES];
-			[popover.delegate popoverControllerDidDismissPopover:popover]; // Make sure delegate knows popover has been removed
-		}
 	}
 }
 

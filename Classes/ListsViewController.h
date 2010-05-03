@@ -23,13 +23,11 @@
 
 @interface ListsViewController : UITableViewController {
 	TwitterAccount *account;
-	UIPopoverController *popover;
 	NSMutableArray *actions;
 	NSString *statusMessage;
 	
 	id <ListsViewControllerDelegate> delegate;
 }
-@property (assign) UIPopoverController *popover;
 @property (nonatomic, retain) NSString *statusMessage;
 
 @property (assign) id delegate;

@@ -23,13 +23,11 @@
 
 @interface SearchViewController : UITableViewController <UISearchBarDelegate, TwitterActionDelegate> {
 	TwitterAccount *account;
-	UIPopoverController *popover;
 	BOOL loading;
 	NSString *statusMessage;
 	
 	id <SearchViewControllerDelegate> delegate;
 }
-@property (nonatomic, assign) UIPopoverController *popover;
 @property (nonatomic, retain) NSString *statusMessage;
 @property (nonatomic, assign) id delegate;
 

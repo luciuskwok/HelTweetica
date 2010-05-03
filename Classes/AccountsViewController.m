@@ -21,7 +21,7 @@
 
 
 @implementation AccountsViewController
-@synthesize popover, delegate;
+@synthesize delegate;
 
 - (void) setContentSize {
 	// Set the size of the popover
@@ -54,13 +54,8 @@
 }
 
 - (IBAction) close:(id)sender {
-	if (popover != nil) {
-		[popover dismissPopoverAnimated:YES];
-		// Make sure delegate knows popover has been removed
-		[popover.delegate popoverControllerDidDismissPopover:popover];
-	} else {
-		[self dismissModalViewControllerAnimated:YES];
-	}
+	// This is only called on the iPhone.
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (void) reload {

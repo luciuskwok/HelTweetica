@@ -28,7 +28,6 @@
 	NSString *messageContent;
 	NSNumber *inReplyTo;
 	
-	UIPopoverController *popover;
 	id <ComposeViewControllerDelegate> delegate;
 }
 @property (nonatomic, retain) UITextView *messageField;
@@ -38,7 +37,6 @@
 @property (nonatomic, retain) NSString *messageContent;
 @property (nonatomic, retain) NSNumber *inReplyTo;
 
-@property (assign) UIPopoverController *popover;
 @property (assign) id delegate;
 
 - (id)initWithAccount:(TwitterAccount*)anAccount;

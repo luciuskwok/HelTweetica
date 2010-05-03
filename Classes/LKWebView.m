@@ -42,5 +42,20 @@
 	[self stringByEvaluatingJavaScriptFromString:js];
 }
 
+- (CGPoint) scrollPosition {
+	CGPoint position = CGPointZero;
+	NSString *jsResult;
+	NSScanner *scanner;
+	
+	jsResult = [self stringByEvaluatingJavaScriptFromString:@"window.pageXOffset;"];
+	scanner = [NSScanner scannerWithString:jsResult];
+	[scanner scanFloat:&position.x];
+
+	jsResult = [self stringByEvaluatingJavaScriptFromString:@"window.pageYOffset;"];
+	scanner = [NSScanner scannerWithString:jsResult];
+	[scanner scanFloat:&position.y];
+	
+	return position;
+}
 
 @end

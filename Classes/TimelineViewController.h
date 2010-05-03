@@ -11,7 +11,7 @@
 #import "Twitter.h"
 
 
-@interface TimelineViewController : UIViewController {
+@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate> {
 	IBOutlet LKWebView *webView;
 
 	Twitter *twitter;
@@ -32,5 +32,9 @@
 @property (nonatomic, retain) UIPopoverController *currentPopover;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (nonatomic, retain) UIAlertView *currentAlert;
+
+- (BOOL)closeAllPopovers;
+- (UIPopoverController*) presentPopoverFromItem:(UIBarButtonItem*)item viewController:(UIViewController*)vc;
+- (void) presentContent: (UIViewController*) contentViewController inNavControllerInPopoverFromItem: (UIBarButtonItem*) item;
 
 @end

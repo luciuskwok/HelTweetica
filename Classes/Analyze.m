@@ -26,7 +26,7 @@
 @end
 
 @implementation Analyze
-@synthesize webView, timeline, popover;
+@synthesize webView, timeline;
 
 - (id)init {
 	if (self = [super initWithNibName:@"Analyze" bundle:nil]) {
@@ -143,13 +143,7 @@
 }
 
 - (IBAction) close: (id) sender {
-	if (popover != nil) {
-		[popover dismissPopoverAnimated:YES];
-		// Make sure delegate knows popover has been removed
-		[popover.delegate popoverControllerDidDismissPopover:popover];
-	} else {
-		[self dismissModalViewControllerAnimated:YES];
-	}
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

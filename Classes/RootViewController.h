@@ -24,7 +24,7 @@
 #import "AccountsViewController.h"
 
 
-@interface RootViewController : TimelineViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, AccountsViewControllerDelegate> {
+@interface RootViewController : TimelineViewController <ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, AccountsViewControllerDelegate> {
 	IBOutlet UIBarButtonItem *accountsButton;
 	IBOutlet UIBarButtonItem *composeButton;
 	

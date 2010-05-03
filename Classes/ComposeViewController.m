@@ -21,7 +21,7 @@
 
 
 @implementation ComposeViewController
-@synthesize messageField, charactersRemaining, account, messageContent, inReplyTo, popover, delegate;
+@synthesize messageField, charactersRemaining, account, messageContent, inReplyTo, delegate;
 
 - (id)initWithAccount:(TwitterAccount*)anAccount {
 	if (self = [super initWithNibName:@"Compose" bundle:nil]) {
@@ -119,13 +119,7 @@
 }
 
 - (IBAction) close: (id) sender {
-	if (popover != nil) {
-		[popover dismissPopoverAnimated:YES];
-		// Make sure delegate knows popover has been removed
-		[popover.delegate popoverControllerDidDismissPopover:popover];
-	} else {
-		[self dismissModalViewControllerAnimated:YES];
-	}
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction) send: (id) sender {

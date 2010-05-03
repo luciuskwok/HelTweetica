@@ -19,13 +19,9 @@
 @interface Analyze : UIViewController {
 	IBOutlet UIWebView *webView;
 	NSArray *timeline;
-	
-	UIPopoverController *popover;
-
 }
 @property (nonatomic, retain) UIWebView *webView;
 @property (nonatomic, retain) NSArray *timeline;
-@property (assign) UIPopoverController *popover;
 
 - (IBAction) close: (id) sender;
 @end

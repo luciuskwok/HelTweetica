@@ -21,7 +21,7 @@
 
 
 @implementation SearchViewController
-@synthesize popover, statusMessage, delegate;
+@synthesize statusMessage, delegate;
 
 - (void) setContentSize {
 	// Set the content size
@@ -170,11 +170,6 @@
 	// Call delegate to tell it we're about to load a new timeline
 	if ([delegate respondsToSelector:@selector(search:didRequestQuery:)]) {
 		[delegate search:self didRequestQuery:query];
-	}
-	
-	if (popover) {
-		[popover dismissPopoverAnimated:YES];
-		[popover.delegate popoverControllerDidDismissPopover:popover]; // Make sure delegate knows popover has been removed
 	}
 }	
 

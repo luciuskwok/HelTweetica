@@ -104,6 +104,8 @@
 		E036EF68117B859400D52BF6 /* selectMessageSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = E036EF66117B859400D52BF6 /* selectMessageSound.caf */; };
 		E036EF88117B874D00D52BF6 /* showMessageSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = E036EF87117B874D00D52BF6 /* showMessageSound.caf */; };
 		E036EF89117B874D00D52BF6 /* showMessageSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = E036EF87117B874D00D52BF6 /* showMessageSound.caf */; };
+		E03F90DF118F58DF00D3A76B /* tweet-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E03F90DE118F58DF00D3A76B /* tweet-row-template.html */; };
+		E03F90E0118F58DF00D3A76B /* tweet-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E03F90DE118F58DF00D3A76B /* tweet-row-template.html */; };
 		E0448844116EF16B008603EB /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E0448843116EF16B008603EB /* Icon-72.png */; };
 		E0448952116F245C008603EB /* ListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0448950116F245C008603EB /* ListsViewController.m */; };
 		E0448953116F245C008603EB /* Lists.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0448951116F245C008603EB /* Lists.xib */; };
@@ -235,6 +237,7 @@
 		E036EF53117B817600D52BF6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E036EF66117B859400D52BF6 /* selectMessageSound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = selectMessageSound.caf; path = Resources/selectMessageSound.caf; sourceTree = SOURCE_ROOT; };
 		E036EF87117B874D00D52BF6 /* showMessageSound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = showMessageSound.caf; path = Resources/showMessageSound.caf; sourceTree = SOURCE_ROOT; };
+		E03F90DE118F58DF00D3A76B /* tweet-row-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "tweet-row-template.html"; path = "Resources/tweet-row-template.html"; sourceTree = "<group>"; };
 		E0448843116EF16B008603EB /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 		E044894F116F245C008603EB /* ListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListsViewController.h; sourceTree = "<group>"; };
 		E0448950116F245C008603EB /* ListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListsViewController.m; sourceTree = "<group>"; };
@@ -362,8 +365,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E0493615118EBE3900BCA128 /* TimelineViewController.h */,
-				E0493616118EBE3900BCA128 /* TimelineViewController.m */,
 				E0175BAB117BFAA1003F5970 /* RootView */,
 				E04935D9118EB2E300BCA128 /* User Page */,
 				E0175BAA117BFA7F003F5970 /* WebBrowser */,
@@ -371,6 +372,8 @@
 				E0175BA9117BFA4D003F5970 /* Twitter */,
 				E01865461184C87F0021995D /* TwitterActions */,
 				E0DF0EA91163DC82004FE7B9 /* OAuthClient */,
+				E0493615118EBE3900BCA128 /* TimelineViewController.h */,
+				E0493616118EBE3900BCA128 /* TimelineViewController.m */,
 				1D3623240D0F684500981E51 /* HelTweeticaAppDelegate.h */,
 				1D3623250D0F684500981E51 /* HelTweeticaAppDelegate.m */,
 			);
@@ -582,6 +585,7 @@
 				E07E12141173D12D0083EC11 /* style-iphone.css */,
 				E0DD53C9118E2DDC0042CF49 /* header.html */,
 				E0DD53CC118E2EAF0042CF49 /* footer.html */,
+				E03F90DE118F58DF00D3A76B /* tweet-row-template.html */,
 				E0DD541C118E43070042CF49 /* user-page-template.html */,
 				E0A41034116C204C0052BAE7 /* action-1.png */,
 				E0A41035116C204C0052BAE7 /* action-2.png */,
@@ -746,6 +750,7 @@
 				E0DD53CE118E2EAF0042CF49 /* footer.html in Resources */,
 				E0DD541E118E43070042CF49 /* user-page-template.html in Resources */,
 				E04934B4118E74A800BCA128 /* profile-image-proxy.png in Resources */,
+				E03F90E0118F58DF00D3A76B /* tweet-row-template.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -799,6 +804,7 @@
 				E0DD53CD118E2EAF0042CF49 /* footer.html in Resources */,
 				E0DD541D118E43070042CF49 /* user-page-template.html in Resources */,
 				E04934B3118E74A800BCA128 /* profile-image-proxy.png in Resources */,
+				E03F90DF118F58DF00D3A76B /* tweet-row-template.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

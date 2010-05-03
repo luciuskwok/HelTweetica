@@ -24,10 +24,8 @@
 
 @interface AccountsViewController : UITableViewController <LoginViewControllerDelegate> {
 	Twitter *twitter;
-	UIPopoverController *popover;
 	id <AccountsViewControllerDelegate> delegate;
 }
-@property (assign) UIPopoverController *popover;
 @property (assign) id delegate;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;

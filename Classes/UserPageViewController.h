@@ -25,7 +25,6 @@
 	IBOutlet UIBarButtonItem *screenNameButton;
 	IBOutlet UIBarButtonItem *followButton;
 	IBOutlet UIBarButtonItem *directMessageButton;
-	UIPopoverController *currentPopover;
 	HelTweeticaAppDelegate *appDelegate;
 
 	TwitterUser *user;
@@ -33,7 +32,6 @@
 @property (nonatomic, retain) UIBarButtonItem *screenNameButton;
 @property (nonatomic, retain) UIBarButtonItem *followButton;
 @property (nonatomic, retain) UIBarButtonItem *directMessageButton;
-@property (nonatomic, retain) UIPopoverController *currentPopover;
 
 @property (nonatomic, retain) TwitterUser *user;
 
