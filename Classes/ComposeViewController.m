@@ -20,24 +20,19 @@
 #define kTwitterCharacterMax 140
 
 
-@interface ComposeViewController (PrivateMethods)
-- (void) updateCharacterCountWithText:(NSString *)text;
-@end
-
-
 @implementation ComposeViewController
-@synthesize messageField, charactersRemaining, messageContent, inReplyTo, popover;
+@synthesize messageField, charactersRemaining, account, messageContent, inReplyTo, popover, delegate;
 
-- (id)initWithTwitter:(Twitter*)aTwitter {
+- (id)initWithAccount:(TwitterAccount*)anAccount {
 	if (self = [super initWithNibName:@"Compose" bundle:nil]) {
 		// Twitter
-		twitter = [aTwitter retain];
+		self.account = anAccount;
 		
 		// Title
-		if (twitter.currentAccount.screenName == nil) {
+		if (account.screenName == nil) {
 			self.navigationItem.title = @"—";
 		} else {
-			self.navigationItem.title = twitter.currentAccount.screenName;
+			self.navigationItem.title = account.screenName;
 		}
 		
 		// Send button
@@ -63,11 +58,10 @@
 }
 
 - (void)dealloc {
-	[twitter release];
-	
 	[messageField release];
 	[charactersRemaining release];
 	
+	[account release];
 	[messageContent release];
 	[inReplyTo release];
 	[super dealloc];
@@ -75,6 +69,21 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void) updateCharacterCountWithText:(NSString *)text {
+	// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
+	NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
+	int remaining = kTwitterCharacterMax - [normalizationFormC length];
+	charactersRemaining.text = [NSString stringWithFormat:@"%d", remaining];
+	if (remaining < 0) {
+		charactersRemaining.textColor = [UIColor redColor];
+	} else {
+		charactersRemaining.textColor = [UIColor grayColor];
+	}
+	
+	// Verify message length and account for Send button
+	self.navigationItem.rightBarButtonItem.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (account != nil));
 }
 
 - (void)viewDidUnload {
@@ -128,32 +137,17 @@
 		return;
 	}
 	
-	[twitter updateStatus:normalizedText inReplyTo:inReplyTo];
+	[delegate sendStatusUpdate:normalizedText inReplyTo:inReplyTo];
 	
 	self.messageContent = nil;
-	self.inReplyTo = 0;
+	self.inReplyTo = nil;
 	[self close: nil];
 }
 
-#pragma mark -
+#pragma mark Text view delegate methods
 
 - (void)textViewDidChange:(UITextView *)textView {
 	[self updateCharacterCountWithText: textView.text];
-}
-
-- (void) updateCharacterCountWithText:(NSString *)text {
-	// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
-	NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
-	int remaining = kTwitterCharacterMax - [normalizationFormC length];
-	charactersRemaining.text = [NSString stringWithFormat:@"%d", remaining];
-	if (remaining < 0) {
-		charactersRemaining.textColor = [UIColor redColor];
-	} else {
-		charactersRemaining.textColor = [UIColor grayColor];
-	}
-	
-	// Verify message length and account for Send button
-	self.navigationItem.rightBarButtonItem.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (twitter.currentAccount != nil));
 }
 
 @end

@@ -26,18 +26,11 @@
 @class TwitterLoadTimelineAction;
 @protocol TwitterDelegate;
 
-@interface Twitter : NSObject <TwitterActionDelegate> {
+@interface Twitter : NSObject {
 	NSMutableArray *accounts;
 	NSMutableSet *users;
 	
-	TwitterAccount *currentAccount;
-	NSMutableArray *currentTimeline;
-	TwitterAction *currentTimelineAction;
-	
 	NSMutableSet *statuses;
-	NSMutableArray *actions;
-	
-	NSString *defaultCount;
 	
 	id <TwitterDelegate> delegate;
 }
@@ -45,38 +38,27 @@
 @property (nonatomic, retain) NSMutableArray *accounts;
 @property (nonatomic, retain) NSMutableSet *users;
 
-@property (nonatomic, retain) TwitterAccount *currentAccount;
-@property (nonatomic, retain) NSMutableArray *currentTimeline;
-@property (nonatomic, retain) TwitterAction *currentTimelineAction;
-
 @property (assign) id <TwitterDelegate> delegate;
 
-- (void) loginScreenName:(NSString*)aScreenName password:(NSString*)aPassword;
+- (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
+
+- (void) loginScreenName:(NSString*)aScreenName password:(NSString*)aPassword;
 
 - (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
 - (void) fave:(NSNumber*)messageIdentifier;
 - (void) retweet:(NSNumber*)messageIdentifier;
 
-- (void) reloadCurrentTimeline;
-- (void) selectHomeTimeline;
-- (void) selectMentions;
-- (void) selectDirectMessages;
-- (void) selectFavorites;
-- (void) selectTimelineOfList:(TwitterList*)list;
-- (void) selectSearchTimelineWithQuery:(NSString*)query;
-- (BOOL) isLoading;
-
 - (TwitterMessage *)statusWithIdentifier:(NSNumber *)identifier;
 - (TwitterUser *)userWithScreenName:(NSString *)screenName;
+
+- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses updateFavorites:(BOOL)updateFaves;
 
 - (void) save;
 
 @end
 
 @protocol TwitterDelegate <NSObject>
-- (void)twitter:(Twitter*)aTwitter willLoadTimelineWithName:(NSString*)name tabName:(NSString*)tabName;
-- (void)twitter:(Twitter*)aTwitter didFinishLoadingTimeline:(NSArray*)aTimeline;
 - (void)twitter:(Twitter*)aTwitter favoriteDidChange:(TwitterMessage*)aMessage;
 - (void)twitterDidRetweet:(Twitter*)aTwitter;
 

@@ -19,18 +19,15 @@
 #import "TwitterAccount.h"
 #import "TwitterLoadSavedSearchesAction.h"
 
-@interface SearchViewController (PrivateMethods)
-- (void)loadSavedSearches;
-@end
 
 @implementation SearchViewController
-@synthesize popover, statusMessage;
+@synthesize popover, statusMessage, delegate;
 
 - (void) setContentSize {
 	// Set the content size
 	if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
 		
-		int count = twitter.currentAccount.savedSearches.count;
+		int count = account.savedSearches.count;
 		if (count < 3) count = 3;
 		[self setContentSizeForViewInPopover: CGSizeMake(320, 44 * count + 66)];
 	}
@@ -39,16 +36,26 @@
 #pragma mark -
 #pragma mark Memory management
 
-- (id)initWithTwitter:(Twitter*)aTwitter {
+- (id)initWithAccount:(TwitterAccount*)anAccount {
 	if (self = [super initWithNibName:@"Search" bundle:nil]) {
-		twitter = [aTwitter retain];
+		account = [anAccount retain];
 		
 		[self setContentSize];
 
 		// Request a fresh list of list subscriptions.
 		loading = YES;
 		self.statusMessage = NSLocalizedString (@"Loading...", @"status message");
-		[self loadSavedSearches];
+		
+		// Load Saved Searches from Twitter
+		TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
+		action.completionTarget= self;
+		action.completionAction = @selector(didLoadSavedSearches:);
+		action.delegate = self;
+		action.consumerToken = account.xAuthToken;
+		action.consumerSecret = account.xAuthSecret;
+		
+		// Start the URL connection
+		[action start];
 	}
 	return self;
 }
@@ -61,28 +68,15 @@
 }
 
 - (void)dealloc {
-	[twitter release];
+	[account release];
 	[statusMessage release];
     [super dealloc];
 }
 
-#pragma mark -
 #pragma mark TwitterAction
 
-- (void)loadSavedSearches {
-	TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didLoadSavedSearches:);
-	action.delegate = self;
-	action.consumerToken = twitter.currentAccount.xAuthToken;
-	action.consumerSecret = twitter.currentAccount.xAuthSecret;
-	
-	// Start the URL connection
-	[action start];
-}
-
 - (void)didLoadSavedSearches:(TwitterLoadSavedSearchesAction *)action {
-	twitter.currentAccount.savedSearches = action.queries;
+	account.savedSearches = action.queries;
 	loading = NO;
 	[self setContentSize];
 	[self.tableView reloadData];
@@ -90,9 +84,6 @@
 	// Set the default status message for an empty list of saved searches
 	self.statusMessage = NSLocalizedString (@"No saved searches.", @"");
 }
-
-#pragma mark -
-#pragma mark TwitterAction delegate methods
 
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
 	// Do nothing. didLoadSavedSearches: will be called.
@@ -103,7 +94,6 @@
 	self.statusMessage = [error localizedDescription];
 }
 
-#pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
@@ -129,31 +119,6 @@
     [super viewWillAppear:animated];
 }
 
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-
-#pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -162,7 +127,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	int count = twitter.currentAccount.savedSearches.count;
+	int count = account.savedSearches.count;
 	if (count == 0) count = 1;
 	return count;
 }
@@ -178,7 +143,6 @@
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
 	}
 
-	TwitterAccount *account = [twitter currentAccount];
 	NSString *query;
 	if (indexPath.row < account.savedSearches.count) {
 		query = [account.savedSearches objectAtIndex: indexPath.row];
@@ -192,45 +156,6 @@
     return cell;
 }
 
-/*
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
-#pragma mark -
 #pragma mark Table view delegate
 
 - (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage {
@@ -239,25 +164,12 @@
 	[alert release];
 }
 
-- (NSString *)htmlSafeString:(NSString *)string {
-	NSMutableString *result = [NSMutableString stringWithString:string];
-	[result replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:0 range:NSMakeRange(0, result.length)];
-	return result;
-}
-
 - (void)searchFor:(NSString*)query {
 	if ([query length] == 0) return;
 	
-	[twitter selectSearchTimelineWithQuery:query];
-	[twitter reloadCurrentTimeline];
-	
 	// Call delegate to tell it we're about to load a new timeline
-	if ([twitter.delegate respondsToSelector:@selector(twitter:willLoadTimelineWithName:tabName:)]) {
-		NSString *pageName = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
-		[twitter.delegate twitter:twitter willLoadTimelineWithName:pageName tabName:@"Results"];
+	if ([delegate respondsToSelector:@selector(search:didRequestQuery:)]) {
+		[delegate search:self didRequestQuery:query];
 	}
 	
 	if (popover) {
@@ -267,8 +179,8 @@
 }	
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row < twitter.currentAccount.savedSearches.count) {
-		NSString *query = [twitter.currentAccount.savedSearches objectAtIndex: indexPath.row];
+	if (indexPath.row < account.savedSearches.count) {
+		NSString *query = [account.savedSearches objectAtIndex: indexPath.row];
 		[self searchFor:query];
 	}
 }

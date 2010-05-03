@@ -23,8 +23,30 @@
 @implementation TwitterAccount
 @synthesize screenName, xAuthToken, xAuthSecret, timeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
+- (id)init {
+	// Initialize a blank account
+	self = [super init];
+	if (self) {
+		self.timeline = [NSMutableArray array];
+		self.mentions = [NSMutableArray array];
+		self.directMessages = [NSMutableArray array];
+		self.favorites = [NSMutableArray array];
+		
+		self.lists = [NSMutableArray array];
+		self.listSubscriptions = [NSMutableArray array];
+	}
+	return self;
+}
+
 - (NSMutableArray*) mutableArrayForKey:(NSString *)key coder:(NSCoder *)decoder {
-	return [NSMutableArray arrayWithArray: [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey:key]]];
+	NSData *data = [decoder decodeObjectForKey:key];
+	NSMutableArray *array;
+	if (data != nil) {
+		array = [NSMutableArray arrayWithArray: [NSKeyedUnarchiver unarchiveObjectWithData:data]];
+	} else {
+		array = [NSMutableArray array];
+	}
+	return array;
 }
 
 - (id) initWithCoder: (NSCoder*) decoder {

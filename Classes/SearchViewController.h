@@ -16,18 +16,27 @@
 
 
 #import <UIKit/UIKit.h>
-#import "Twitter.h"
+#import "TwitterAccount.h"
+#import "TwitterAction.h"
 
+@protocol SearchViewControllerDelegate;
 
 @interface SearchViewController : UITableViewController <UISearchBarDelegate, TwitterActionDelegate> {
-	Twitter *twitter;
+	TwitterAccount *account;
 	UIPopoverController *popover;
 	BOOL loading;
 	NSString *statusMessage;
+	
+	id <SearchViewControllerDelegate> delegate;
 }
-@property (assign) UIPopoverController *popover;
+@property (nonatomic, assign) UIPopoverController *popover;
 @property (nonatomic, retain) NSString *statusMessage;
+@property (nonatomic, assign) id delegate;
 
-- (id)initWithTwitter:(Twitter*)aTwitter;
+- (id)initWithAccount:(TwitterAccount*)anAccount;
 
+@end
+
+@protocol SearchViewControllerDelegate <NSObject>
+- (void) search:(SearchViewController*)search didRequestQuery:(NSString*)query;
 @end

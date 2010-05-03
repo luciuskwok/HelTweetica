@@ -18,30 +18,36 @@
 #import <UIKit/UIKit.h>
 #import "Twitter.h"
 
+@protocol ComposeViewControllerDelegate;
 
 @interface ComposeViewController : UIViewController {
 	IBOutlet UITextView *messageField;
 	IBOutlet UILabel *charactersRemaining;
 	
-	Twitter *twitter;
-	
+	TwitterAccount *account;
 	NSString *messageContent;
 	NSNumber *inReplyTo;
 	
 	UIPopoverController *popover;
+	id <ComposeViewControllerDelegate> delegate;
 }
 @property (nonatomic, retain) UITextView *messageField;
 @property (nonatomic, retain) UILabel *charactersRemaining;
 
+@property (nonatomic, retain) TwitterAccount *account;
 @property (nonatomic, retain) NSString *messageContent;
 @property (nonatomic, retain) NSNumber *inReplyTo;
 
 @property (assign) UIPopoverController *popover;
+@property (assign) id delegate;
 
-- (id)initWithTwitter:(Twitter*)aTwitter;
-
+- (id)initWithAccount:(TwitterAccount*)anAccount;
 - (IBAction) close: (id) sender;
 - (IBAction) send: (id) sender;
 
-
 @end
+
+@protocol ComposeViewControllerDelegate <NSObject>
+- (void) sendStatusUpdate:(NSString*)text inReplyTo:(NSNumber*)inReplyTo;
+@end
+

@@ -25,13 +25,12 @@
 @end
 
 @implementation ListsViewController
-@synthesize popover, statusMessage;
+@synthesize popover, statusMessage, delegate;
 
 
 - (void) setContentSize {
 	// Set the content size
 	if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
-		TwitterAccount *account = [twitter currentAccount];
 		int count = account.lists.count + account.listSubscriptions.count;
 		if (count < 3) count = 3;
 		[self setContentSizeForViewInPopover: CGSizeMake(320, 44 * count)];
@@ -41,9 +40,9 @@
 #pragma mark -
 #pragma mark Memory management
 
-- (id)initWithTwitter:(Twitter*)aTwitter {
+- (id)initWithAccount:(TwitterAccount*)anAccount {
 	if (self = [super initWithNibName:@"Lists" bundle:nil]) {
-		twitter = [aTwitter retain];
+		account = [anAccount retain];
 		
 		[self setContentSize];
 		
@@ -77,7 +76,7 @@
 
 
 - (void)dealloc {
-	[twitter release];
+	[account release];
 	[actions release];
 	[statusMessage release];
     [super dealloc];
@@ -91,8 +90,8 @@
 	
 	// Set up Twitter action
 	action.delegate = self;
-	action.consumerToken = twitter.currentAccount.xAuthToken;
-	action.consumerSecret = twitter.currentAccount.xAuthSecret;
+	action.consumerToken = account.xAuthToken;
+	action.consumerSecret = account.xAuthSecret;
 	
 	// Start the URL connection
 	[action start];
@@ -127,20 +126,15 @@
 }
 
 - (void)didLoadLists:(TwitterLoadListsAction *)action {
-	if (twitter.currentAccount.lists == nil)
-		twitter.currentAccount.lists = [NSMutableArray array];
-	
 	// Keep the old list objects that match new ones because it caches the status updates
-	[self synchronizeExisting:twitter.currentAccount.lists withNew:action.lists];
+	[self synchronizeExisting:account.lists withNew:action.lists];
 	[self setContentSize];
 	[self.tableView reloadData];
 	//[self.tableView flashScrollIndicators];
 }
 
 - (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
-	if (twitter.currentAccount.listSubscriptions == nil)
-		twitter.currentAccount.listSubscriptions = [NSMutableArray array];
-	[self synchronizeExisting:twitter.currentAccount.listSubscriptions withNew:action.lists];
+	[self synchronizeExisting:account.listSubscriptions withNew:action.lists];
 	[self setContentSize];
 	[self.tableView reloadData];
 	//[self.tableView flashScrollIndicators];
@@ -175,7 +169,6 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	TwitterAccount *account = [twitter currentAccount];
 	int count = account.lists.count + account.listSubscriptions.count;
 	if (count == 0)
 		return 1;
@@ -194,7 +187,6 @@
     }
     
     // Configure the cell
-	TwitterAccount *account = [twitter currentAccount];
 	TwitterList *list;
 	if (indexPath.row < account.lists.count) {
 		list = [account.lists objectAtIndex: indexPath.row];
@@ -222,7 +214,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	TwitterAccount *account = [twitter currentAccount];
 	TwitterList *list = nil;
 	if (indexPath.row < account.lists.count) {
 		list = [account.lists objectAtIndex: indexPath.row];
@@ -230,19 +221,13 @@
 		list = [account.listSubscriptions objectAtIndex: indexPath.row - account.lists.count];
 	} 
 	if (list != nil) {
-		[twitter selectTimelineOfList: list];
-		[twitter reloadCurrentTimeline];
+		// Create array to hold statuses if it doesn't exist.
+		if (list.statuses == nil)
+			list.statuses = [NSMutableArray array];
 		
-		// Style the page title
-		NSString *pageTitle = list.fullName;
-		NSArray *nameParts = [list.fullName componentsSeparatedByString:@"/"];
-		if (nameParts.count == 2) {
-			pageTitle = [NSString stringWithFormat:@"%@/<b>%@</b>", [nameParts objectAtIndex:0], [nameParts objectAtIndex:1]];
-		}
-		
-		// Call delegate to tell it we're starting to load timeline
-		if ([twitter.delegate respondsToSelector:@selector(twitter:willLoadTimelineWithName:tabName:)])
-			[twitter.delegate twitter:twitter willLoadTimelineWithName:pageTitle tabName:@"List"];
+		// Call delegate to tell a list was selected
+		if ([delegate respondsToSelector:@selector(lists:didSelectList:)])
+			[delegate lists:self didSelectList:list];
 
 		if (popover) {
 			[popover dismissPopoverAnimated:YES];

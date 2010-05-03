@@ -26,7 +26,7 @@
 		self.user = aUser;
 		appDelegate = [[UIApplication sharedApplication] delegate];
 		
-		if (aUser.identifier == -1) { // This means the user info needs to be loaded from Twitter
+		if ([aUser.identifier intValue] == -1) { // This means the user info needs to be loaded from Twitter
 			
 		}
 		

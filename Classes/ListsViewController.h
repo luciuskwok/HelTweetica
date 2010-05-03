@@ -16,18 +16,29 @@
 
 
 #import <UIKit/UIKit.h>
-#import "Twitter.h"
+#import "TwitterAccount.h"
 
+@protocol ListsViewControllerDelegate;
+@class TwitterList;
 
 @interface ListsViewController : UITableViewController {
-	Twitter *twitter;
+	TwitterAccount *account;
 	UIPopoverController *popover;
 	NSMutableArray *actions;
 	NSString *statusMessage;
+	
+	id <ListsViewControllerDelegate> delegate;
 }
 @property (assign) UIPopoverController *popover;
 @property (nonatomic, retain) NSString *statusMessage;
 
-- (id)initWithTwitter:(Twitter*)aTwitter;
+@property (assign) id delegate;
 
+- (id)initWithAccount:(TwitterAccount*)anAccount;
+
+@end
+
+
+@protocol ListsViewControllerDelegate <NSObject>
+- (void) lists:(ListsViewController*)lists didSelectList:(TwitterList*)list;
 @end
