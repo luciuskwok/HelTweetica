@@ -506,18 +506,28 @@
 	[self showAlertWithTitle:@"Under Construction." message:@"The tweet info feature isn't quite ready."];
 }
 
+#pragma mark Pushing view controllers
+
 - (void) showUserPage:(NSString*)screenName {
 	// Use a custom timeline showing the user's tweets, but with a big header showing the user's info.
 	TwitterUser *user = [twitter userWithScreenName:screenName];
 	if (user == nil) {
-		// Need to load user first.
-		NSLog (@"User not found!");
-	} else {
-		// Load user's timeline
-		UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitter:twitter user:user] autorelease];
-		[self.navigationController pushViewController: vc animated: YES];
+		// Create an empty user and add it to the Twitter set
+		user = [[[TwitterUser alloc] init] autorelease];
+		user.screenName = screenName;
+		user.identifier = [NSNumber numberWithInt: -1]; // -1 signifies that user info has not been loaded
 	}
+	
+	// Show user page
+	UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitter:twitter user:user] autorelease];
+	[self.navigationController pushViewController: vc animated: YES];
 }
+
+- (void) showWebBrowserWithURLRequest:(NSURLRequest*)request {
+	// Push a separate web browser for links
+	WebBrowserViewController *vc = [[[WebBrowserViewController alloc] initWithURLRequest:request] autorelease];
+	[self.navigationController pushViewController: vc animated: YES];
+}	
 
 #pragma mark -
 #pragma mark Twitter timeline selection
@@ -667,11 +677,9 @@
 		}
 		
 		return NO;
-	} else if ([[url scheme] isEqualToString:@"http"]) {
+	} else if ([[url scheme] hasPrefix:@"http"]) {
 		// Push a separate web browser for links
-		WebBrowserViewController *vc = [[WebBrowserViewController alloc] initWithURLRequest:request];
-		[self.navigationController pushViewController: vc animated: YES];
-		[vc release];
+		[self showWebBrowserWithURLRequest:request];
 		return NO;
 	}
 	

@@ -107,6 +107,8 @@
 		E0448844116EF16B008603EB /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E0448843116EF16B008603EB /* Icon-72.png */; };
 		E0448952116F245C008603EB /* ListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0448950116F245C008603EB /* ListsViewController.m */; };
 		E0448953116F245C008603EB /* Lists.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0448951116F245C008603EB /* Lists.xib */; };
+		E04934B3118E74A800BCA128 /* profile-image-proxy.png in Resources */ = {isa = PBXBuildFile; fileRef = E04934B2118E74A800BCA128 /* profile-image-proxy.png */; };
+		E04934B4118E74A800BCA128 /* profile-image-proxy.png in Resources */ = {isa = PBXBuildFile; fileRef = E04934B2118E74A800BCA128 /* profile-image-proxy.png */; };
 		E04BD349116C97C2004BFF3D /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */; };
 		E06A3383116E4CCE0098CF12 /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3382116E4CCE0098CF12 /* retweet.png */; };
 		E06A348D116E8B7D0098CF12 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A348C116E8B7D0098CF12 /* TwitterAccount.m */; };
@@ -172,6 +174,8 @@
 		E0DD53CB118E2DDC0042CF49 /* header.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD53C9118E2DDC0042CF49 /* header.html */; };
 		E0DD53CD118E2EAF0042CF49 /* footer.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD53CC118E2EAF0042CF49 /* footer.html */; };
 		E0DD53CE118E2EAF0042CF49 /* footer.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD53CC118E2EAF0042CF49 /* footer.html */; };
+		E0DD541D118E43070042CF49 /* user-page-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD541C118E43070042CF49 /* user-page-template.html */; };
+		E0DD541E118E43070042CF49 /* user-page-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD541C118E43070042CF49 /* user-page-template.html */; };
 		E0DF1273116453EB004FE7B9 /* TwitterMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0DF1272116453EB004FE7B9 /* TwitterMessage.m */; };
 		E0DF13AF11646FB7004FE7B9 /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13AE11646FB7004FE7B9 /* reload.png */; };
 		E0DF13D711647B0B004FE7B9 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13D611647B0B004FE7B9 /* Icon.png */; };
@@ -233,6 +237,7 @@
 		E044894F116F245C008603EB /* ListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListsViewController.h; sourceTree = "<group>"; };
 		E0448950116F245C008603EB /* ListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListsViewController.m; sourceTree = "<group>"; };
 		E0448951116F245C008603EB /* Lists.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Lists.xib; sourceTree = "<group>"; };
+		E04934B2118E74A800BCA128 /* profile-image-proxy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "profile-image-proxy.png"; path = "Resources/profile-image-proxy.png"; sourceTree = "<group>"; };
 		E04BD347116C97C2004BFF3D /* TwitterMessageJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessageJSONParser.h; sourceTree = "<group>"; };
 		E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessageJSONParser.m; sourceTree = "<group>"; };
 		E06A3382116E4CCE0098CF12 /* retweet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = retweet.png; path = Resources/retweet.png; sourceTree = "<group>"; };
@@ -301,6 +306,7 @@
 		E0CBCC41116DDBC80000C281 /* action-4-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-4-on.png"; path = "Resources/action-4-on.png"; sourceTree = "<group>"; };
 		E0DD53C9118E2DDC0042CF49 /* header.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = header.html; path = Resources/header.html; sourceTree = "<group>"; };
 		E0DD53CC118E2EAF0042CF49 /* footer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = footer.html; path = Resources/footer.html; sourceTree = "<group>"; };
+		E0DD541C118E43070042CF49 /* user-page-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "user-page-template.html"; path = "Resources/user-page-template.html"; sourceTree = "<group>"; };
 		E0DF1271116453EB004FE7B9 /* TwitterMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessage.h; sourceTree = "<group>"; };
 		E0DF1272116453EB004FE7B9 /* TwitterMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessage.m; sourceTree = "<group>"; };
 		E0DF13AE11646FB7004FE7B9 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = reload.png; path = Resources/reload.png; sourceTree = "<group>"; };
@@ -562,12 +568,14 @@
 				E07E12141173D12D0083EC11 /* style-iphone.css */,
 				E0DD53C9118E2DDC0042CF49 /* header.html */,
 				E0DD53CC118E2EAF0042CF49 /* footer.html */,
+				E0DD541C118E43070042CF49 /* user-page-template.html */,
 				E0A41034116C204C0052BAE7 /* action-1.png */,
 				E0A41035116C204C0052BAE7 /* action-2.png */,
 				E0A41036116C204C0052BAE7 /* action-3.png */,
 				E0A41037116C204C0052BAE7 /* action-4.png */,
 				E0CBCC41116DDBC80000C281 /* action-4-on.png */,
 				E0A41184116C6D430052BAE7 /* lock.png */,
+				E04934B2118E74A800BCA128 /* profile-image-proxy.png */,
 				E0DF13AE11646FB7004FE7B9 /* reload.png */,
 				E06A3382116E4CCE0098CF12 /* retweet.png */,
 				E08646451166F6FB00844FCE /* spinner.gif */,
@@ -722,6 +730,8 @@
 				E084099B118E246900670BAB /* UserPage.xib in Resources */,
 				E0DD53CB118E2DDC0042CF49 /* header.html in Resources */,
 				E0DD53CE118E2EAF0042CF49 /* footer.html in Resources */,
+				E0DD541E118E43070042CF49 /* user-page-template.html in Resources */,
+				E04934B4118E74A800BCA128 /* profile-image-proxy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -773,6 +783,8 @@
 				E0840999118E246900670BAB /* UserPage.xib in Resources */,
 				E0DD53CA118E2DDC0042CF49 /* header.html in Resources */,
 				E0DD53CD118E2EAF0042CF49 /* footer.html in Resources */,
+				E0DD541D118E43070042CF49 /* user-page-template.html in Resources */,
+				E04934B3118E74A800BCA128 /* profile-image-proxy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,19 +10,23 @@
 @class LKWebView;
 @class Twitter;
 @class TwitterUser;
+@class HelTweeticaAppDelegate;
 
 
 @interface UserPageViewController : UIViewController {
 	IBOutlet LKWebView *webView;
+	IBOutlet UIBarButtonItem *screenNameButton;
 	IBOutlet UIBarButtonItem *followButton;
 	IBOutlet UIBarButtonItem *directMessageButton;
 
 	UIPopoverController *currentPopover;
+	HelTweeticaAppDelegate *appDelegate;
 
 	Twitter *twitter;
 	TwitterUser *user;
 }
 @property (nonatomic, retain) LKWebView *webView;
+@property (nonatomic, retain) UIBarButtonItem *screenNameButton;
 @property (nonatomic, retain) UIBarButtonItem *followButton;
 @property (nonatomic, retain) UIBarButtonItem *directMessageButton;
 
