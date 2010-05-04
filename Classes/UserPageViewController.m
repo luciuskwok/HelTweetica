@@ -245,8 +245,8 @@
 	}
 	
 	// Only add button if the friend status is valid
-	if (action.valid) {
-		index = toolbarItems.count - 1; // Position one item from end
+	if (action.valid && !	[currentAccount.screenName isEqualToString:user.screenName]) {
+		index = toolbarItems.count - 2; // Position two from end
 		UIBarButtonItem *followButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered target:self action:buttonAction] autorelease];
 		followButton.tag = kFollowButtonTag;
 		[toolbarItems insertObject:followButton atIndex:index];
@@ -349,9 +349,15 @@
 		NSString *actionName = [url resourceSpecifier];
 		
 		// Tabs
-		if ([actionName isEqualToString:@"user"]) { // Home Timeline
-			[self selectUserTimeline:user.screenName];
-			[self reloadCurrentTimeline];
+		if ([actionName hasPrefix:@"user"]) { // Home Timeline
+			NSString *screenName = [actionName lastPathComponent];
+			if ([screenName caseInsensitiveCompare:user.screenName] == NSOrderedSame) {
+				[self.webView scrollToTop];
+				[self selectUserTimeline:user.screenName];
+				[self reloadCurrentTimeline];
+			} else {
+				[self showUserPage:screenName];
+			}
 			return NO;
 		} else if ([actionName isEqualToString:@"favorites"]) { // Favorites
 			[self selectFavoritesTimeline:user.screenName];
@@ -374,8 +380,9 @@
 	[self selectUserTimeline:user.screenName];
 	[self reloadCurrentTimeline];
 	
-	// Get the following/follower status
-	[self loadFriendStatus: user.screenName];
+	// Get the following/follower status, but only if it's a different user from the account.
+	if ([currentAccount.screenName isEqualToString:user.screenName] == NO) 
+		[self loadFriendStatus: user.screenName];
 	
 	[super viewDidLoad];
 	//screenNameButton.title = user.screenName;
