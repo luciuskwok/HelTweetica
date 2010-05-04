@@ -30,6 +30,7 @@
 #import "ComposeViewController.h"
 
 @class TwitterAction;
+@class TwitterLoadTimelineAction;
 
 
 @interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate> {
@@ -43,7 +44,8 @@
 	NSString *defaultCount;
 
 	NSTimer *refreshTimer;
-	BOOL automaticReload;
+	BOOL networkIsReachable;
+	BOOL shouldReloadAfterWebViewFinishesRendering;
 
 	TwitterAccount *currentAccount;
 	NSMutableArray *currentTimeline;
@@ -73,8 +75,13 @@
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (nonatomic, retain) UIAlertView *currentAlert;
 
+// IBActions
+- (IBAction) compose: (id) sender;
+- (IBAction) reloadData: (id) sender;
+
 // Twitter actions
 - (void)reloadCurrentTimeline;
+- (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action;
 - (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
 - (void)fave: (NSNumber*) messageIdentifier;
 - (void)retweet:(NSNumber*)messageIdentifier;

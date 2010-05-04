@@ -25,13 +25,14 @@
 @end
 
 @implementation ListsViewController
+@synthesize screenName, currentLists, currentSubscriptions;
 @synthesize statusMessage, delegate;
 
 
 - (void) setContentSize {
 	// Set the content size
 	if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
-		int count = account.lists.count + account.listSubscriptions.count;
+		int count = currentLists.count + currentSubscriptions.count;
 		if (count < 3) count = 3;
 		[self setContentSizeForViewInPopover: CGSizeMake(320, 44 * count)];
 	}
@@ -43,13 +44,7 @@
 - (id)initWithAccount:(TwitterAccount*)anAccount {
 	if (self = [super initWithNibName:@"Lists" bundle:nil]) {
 		account = [anAccount retain];
-		
 		[self setContentSize];
-		
-		// Request a fresh list of list subscriptions.
-		actions = [[NSMutableArray alloc] init];
-		[self loadListsOfUser:nil];
-		self.statusMessage = NSLocalizedString (@"Loading...", @"status message");
 	}
 	return self;
 }
@@ -59,6 +54,11 @@
 }
 
 - (void)viewDidLoad {
+	// Request a fresh list of list subscriptions.
+	actions = [[NSMutableArray alloc] init];
+	[self loadListsOfUser:screenName];
+	self.statusMessage = NSLocalizedString (@"Loading...", @"status message");
+
     [super viewDidLoad];
 	
 	// Title
@@ -79,6 +79,11 @@
 	[account release];
 	[actions release];
 	[statusMessage release];
+	
+	[screenName release];
+	[currentLists release];
+	[currentSubscriptions release];
+	
     [super dealloc];
 }
 
@@ -127,14 +132,14 @@
 
 - (void)didLoadLists:(TwitterLoadListsAction *)action {
 	// Keep the old list objects that match new ones because it caches the status updates
-	[self synchronizeExisting:account.lists withNew:action.lists];
+	[self synchronizeExisting: currentLists withNew:action.lists];
 	[self setContentSize];
 	[self.tableView reloadData];
 	//[self.tableView flashScrollIndicators];
 }
 
 - (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
-	[self synchronizeExisting:account.listSubscriptions withNew:action.lists];
+	[self synchronizeExisting: currentSubscriptions withNew:action.lists];
 	[self setContentSize];
 	[self.tableView reloadData];
 	//[self.tableView flashScrollIndicators];
@@ -169,7 +174,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	int count = account.lists.count + account.listSubscriptions.count;
+	int count = currentLists.count + currentSubscriptions.count;
 	if (count == 0)
 		return 1;
    return count;
@@ -188,12 +193,12 @@
     
     // Configure the cell
 	TwitterList *list;
-	if (indexPath.row < account.lists.count) {
-		list = [account.lists objectAtIndex: indexPath.row];
+	if (indexPath.row < currentLists.count) {
+		list = [currentLists objectAtIndex: indexPath.row];
 		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
 		cell.textLabel.textColor = [UIColor blackColor];
-	} else if (indexPath.row < account.lists.count + account.listSubscriptions.count) {
-		list = [account.listSubscriptions objectAtIndex: indexPath.row - account.lists.count];
+	} else if (indexPath.row < currentLists.count + currentSubscriptions.count) {
+		list = [currentSubscriptions objectAtIndex: indexPath.row - currentLists.count];
 		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
 		cell.textLabel.textColor = [UIColor blackColor];
 	} else if (indexPath.row == 0) {
@@ -215,17 +220,17 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	// Only allow selection of rows in the list
-	int count = account.lists.count + account.listSubscriptions.count;
+	int count = currentLists.count + currentSubscriptions.count;
 	if (indexPath.row >= count) return nil;
 	return indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	TwitterList *list = nil;
-	if (indexPath.row < account.lists.count) {
-		list = [account.lists objectAtIndex: indexPath.row];
-	} else if (indexPath.row < account.lists.count + account.listSubscriptions.count) {
-		list = [account.listSubscriptions objectAtIndex: indexPath.row - account.lists.count];
+	if (indexPath.row < currentLists.count) {
+		list = [currentLists objectAtIndex: indexPath.row];
+	} else if (indexPath.row < currentLists.count + currentSubscriptions.count) {
+		list = [currentSubscriptions objectAtIndex: indexPath.row - currentLists.count];
 	} 
 	if (list != nil) {
 		// Create array to hold statuses if it doesn't exist.

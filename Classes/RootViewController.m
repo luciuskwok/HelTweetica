@@ -33,7 +33,7 @@
 @end
 
 @implementation RootViewController
-@synthesize accountsButton, composeButton;
+@synthesize accountsButton;
 
 
 #define kTimelineIdentifier @"Timeline"
@@ -43,7 +43,6 @@
 
 - (void)dealloc {
 	[accountsButton release];
-	[composeButton release];
 	
 	[currentPopover release];
 	[currentActionSheet release];
@@ -57,7 +56,6 @@
 - (void)viewDidUnload {
 	[super viewDidUnload];
 	self.accountsButton = nil;
-	self.composeButton = nil;
 }
 
 - (void) awakeFromNib {
@@ -229,6 +227,7 @@
 	self.currentAccount = anAccount;
 	[self closeAllPopovers];
 	[self.webView setDocumentElement:@"current_account" innerHTML:[self currentAccountHTML]];
+	[self.webView scrollToTop];
 	[self selectHomeTimeline];
 	[self startLoadingCurrentTimeline];
 	
@@ -274,6 +273,8 @@
 - (IBAction) lists: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		ListsViewController *lists = [[[ListsViewController alloc] initWithAccount:currentAccount] autorelease];
+		lists.currentLists = currentAccount.lists;
+		lists.currentSubscriptions = currentAccount.listSubscriptions;
 		lists.delegate = self;
 		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
 	}
@@ -285,11 +286,6 @@
 		search.delegate = self;
 		[self presentContent: search inNavControllerInPopoverFromItem: sender];
 	}
-}
-
-- (IBAction) reloadData: (id) sender {
-	[self reloadCurrentTimeline];
-	[self.webView scrollToTop];
 }
 
 - (IBAction) allstars: (id) sender {
@@ -309,14 +305,6 @@
 		} else {
 			[self presentModalViewController:c animated:YES];
 		}
-	}
-}
-
-- (IBAction) compose: (id) sender {
-	if ([self closeAllPopovers] == NO) { 
-		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
-		compose.delegate = self;
-		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
 	}
 }
 

@@ -20,10 +20,12 @@
 #import "HelTweeticaAppDelegate.h"
 #import "WebBrowserViewController.h"
 
+#import "TwitterLoadTimelineAction.h"
+
 
 
 @implementation UserPageViewController
-@synthesize screenNameButton, followButton, directMessageButton, currentPopover, user;
+@synthesize followButton, user;
 
 
 - (id)initWithTwitter:(Twitter*)aTwitter user:(TwitterUser*)aUser {
@@ -31,19 +33,15 @@
 	if (self) {
 		self.user = aUser;
 		
-		if ([aUser.identifier intValue] == -1) { // This means the user info needs to be loaded from Twitter
-			
-		}
+		// Limit number of tweets to request for user or list.
+		self.defaultCount = @"50";
 		
-		// Also download the latest tweets from this user.
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[screenNameButton release];
 	[followButton release];
-	[directMessageButton release];
 	
 	[user release];
 
@@ -137,15 +135,6 @@
 	return html;
 }
 
-- (NSString*)tweetAreaHTML {
-	NSMutableString *html = [NSMutableString string];
-	
-	// User info
-	[html appendString: [self userInfoHTML]];
-	
-	return html;
-}
-
 - (NSString*) webPageTemplate {
 	// Load main template
 	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
@@ -160,75 +149,80 @@
 	return html;
 }
 
-- (void)reloadWebView {
-	// Use boilerplate header.html and footer.html
-	
-	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSURL *baseURL = [NSURL fileURLWithPath:mainBundle];
-	
-	// Header
-	NSError *error = nil;
-	NSString *headerHTML = [NSString stringWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"header.html"] encoding:NSUTF8StringEncoding error:&error];
-	if (error != nil) {
-		NSLog (@"Error loading header.html: %@", [error localizedDescription]);
-	}
-	NSMutableString *html = [[NSMutableString alloc] initWithString:headerHTML];
-
-	// Artboard and tweet area divs
-	[html appendString:@"<div class='artboard'><div id='tweet_area' class='tweet_area'>"];
-	
-	// User info
-	[html appendString: [self tweetAreaHTML]];
-	
-	// Close tweet area div.
-	[html appendString:@"</div>"];
-
-	// Footer (which closes artboard div)
-	error = nil;
-	NSString *footerHTML = [NSString stringWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"footer.html"] encoding:NSUTF8StringEncoding error:&error];
-	if (error != nil) {
-		NSLog (@"Error loading footer.html: %@", [error localizedDescription]);
-	}
-	[html appendString:footerHTML];
-	
-	[self.webView loadHTMLString:html baseURL:baseURL];
-	[html release];
-}
-
-- (void) showWebBrowserWithURLRequest:(NSURLRequest*)request {
-	// Push a separate web browser for links
-	WebBrowserViewController *vc = [[[WebBrowserViewController alloc] initWithURLRequest:request] autorelease];
-	[self.navigationController pushViewController: vc animated: YES];
-}	
-
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-	
-	screenNameButton.title = user.screenName;
-	
-	[self reloadWebView];
+ 	// Download the latest tweets from this user.
+	[self selectUserTimeline:user.screenName];
+	[self reloadCurrentTimeline];
+
+	[super viewDidLoad];
+	//screenNameButton.title = user.screenName;
+
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];
 	self.followButton = nil;
-	self.directMessageButton = nil;
+	//self.directMessageButton = nil;
 }
 
 
 #pragma mark IBActions
 
 - (IBAction)close:(id)sender {
-	//[self closeAllPopovers];
+	[self closeAllPopovers];
 	[self.navigationController popViewControllerAnimated: YES];
+}
+
+- (IBAction) lists: (id) sender {
+	if ([self closeAllPopovers] == NO) {
+		ListsViewController *lists = [[[ListsViewController alloc] initWithAccount:currentAccount] autorelease];
+		lists.screenName = self.user.screenName;
+		lists.currentLists = self.user.lists;
+		lists.currentSubscriptions = self.user.listSubscriptions;
+		lists.delegate = self;
+		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
+	}
 }
 
 - (IBAction)follow:(id)sender {
 }
 
 - (IBAction)directMessage:(id)sender {
+}
+
+#pragma mark User timeline
+// TODO: needs to fold in RTs
+
+- (void)selectUserTimeline:(NSString*)screenName {
+	if (screenName == nil) {
+		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
+		return;
+	}
+	
+	self.currentTimeline = self.user.statuses;
+	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
+	[currentTimelineAction.parameters setObject:screenName forKey:@"id"];
+	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
+}
+
+- (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
+	[super didReloadCurrentTimeline:action];
+	
+	// Intercept loading of the current timeline to replace the user object with one that has more info.
+	TwitterUser *aUser = self.user;
+	if ([aUser.identifier intValue] == -1) { // This means the user info needs to be loaded from Twitter
+		aUser = [twitter userWithScreenName:aUser.screenName];
+		if (aUser != nil) {
+			// Switch to instance of TwitterUser from the shared twitter instance.
+			self.user = aUser;
+			self.user.statuses = self.currentTimeline;
+			
+			// Rewrite user_area div
+			[self.webView setDocumentElement:@"user_info_area" innerHTML:[self userInfoHTML]];
+		}
+	}
 }
 
 

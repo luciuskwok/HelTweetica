@@ -15,7 +15,7 @@
  */
 
 // Constants
-#define kMaxNumberOfMessagesShown 800
+#define kMaxNumberOfMessagesShown 200
 
 // Imports
 #import "TimelineViewController.h"
@@ -62,6 +62,7 @@
 	
 	// List of currently active network connections
 	self.actions = [NSMutableArray array];
+	networkIsReachable = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,10 +76,13 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 	self.webView = nil;
+	self.composeButton = nil;
 }
 
 - (void)dealloc {
 	[webView release];
+	[composeButton release];
+	
 	[twitter release];
 	[actions release];
 	[defaultCount release];
@@ -97,7 +101,7 @@
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	[self reloadWebView];
-	automaticReload = YES; // Automatically reload after web view is done rendering.
+	shouldReloadAfterWebViewFinishesRendering = YES; // Automatically reload after web view is done rendering.
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -108,6 +112,22 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
+}
+
+
+#pragma mark IBActions
+
+- (IBAction) compose: (id) sender {
+	if ([self closeAllPopovers] == NO) { 
+		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+		compose.delegate = self;
+		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+	}
+}
+
+- (IBAction) reloadData: (id) sender {
+	[self reloadCurrentTimeline];
+	[self.webView scrollToTop];
 }
 
 
@@ -175,18 +195,20 @@
 		[self showNetworkErrorAlertForStatusCode:action.statusCode];
 	}
 	[self removeTwitterAction:action];
+	networkIsReachable = YES;
 }
 
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
 	NSString *title = NSLocalizedString (@"Network error", @"Alert");
 	[self showAlertWithTitle:title message:[error localizedDescription]];
 	[actions removeObject: action];
+	networkIsReachable = NO;
 }
 
 
 #pragma mark TwitterAction - Timeline
 
-// TODO: add own RTs to home timeline
+// TODO: need to fold in own RTs to home timeline
 // See http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_by_me
 
 - (void)reloadCurrentTimeline {
@@ -272,7 +294,7 @@
 	// If there are actions already pending, reschedule refresh 
 	if ([actions count] == 0) {
 		CGPoint scrollPosition = [self.webView scrollPosition];
-		if (scrollPosition.y == 0.0f && automaticReload == NO) {
+		if (scrollPosition.y == 0.0f && shouldReloadAfterWebViewFinishesRendering == NO && networkIsReachable) {
 			// If scrolled to top, load new tweets
 			[self reloadCurrentTimeline];
 		} else {
@@ -454,6 +476,7 @@
 	
 	// Show user page
 	UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitter:twitter user:user] autorelease];
+	vc.currentAccount = self.currentAccount;
 	[self.navigationController pushViewController: vc animated: YES];
 }
 
@@ -717,9 +740,9 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
 	[appDelegate decrementNetworkActionCount];
-	if (automaticReload) {
+	if (shouldReloadAfterWebViewFinishesRendering) {
 		[self reloadCurrentTimeline];
-		automaticReload = NO;
+		shouldReloadAfterWebViewFinishesRendering = NO;
 	}
 }
 
@@ -730,6 +753,7 @@
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString localizedStringWithFormat:@"Error %d", [error code]] message:[NSString localizedStringWithFormat:@"The page could not be loaded: \"%@\"", [error localizedDescription]] delegate:nil cancelButtonTitle:[NSString localizedStringWithFormat:@"OK"] otherButtonTitles:nil];
 		[alert show];
 		[alert release];
+		networkIsReachable = NO;
 	}
 }
 

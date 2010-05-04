@@ -23,13 +23,21 @@
 
 @interface ListsViewController : UITableViewController {
 	TwitterAccount *account;
+
+	NSString *screenName;
+	NSMutableArray *currentLists;
+	NSMutableArray *currentSubscriptions;
+	
 	NSMutableArray *actions;
 	NSString *statusMessage;
 	
 	id <ListsViewControllerDelegate> delegate;
 }
-@property (nonatomic, retain) NSString *statusMessage;
+@property (nonatomic, retain) NSString *screenName;
+@property (nonatomic, retain) NSMutableArray *currentLists;
+@property (nonatomic, retain) NSMutableArray *currentSubscriptions;
 
+@property (nonatomic, retain) NSString *statusMessage;
 @property (assign) id delegate;
 
 - (id)initWithAccount:(TwitterAccount*)anAccount;

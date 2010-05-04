@@ -18,6 +18,18 @@
 
 @implementation TwitterUser
 @synthesize identifier, screenName, fullName, bio, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdAt, protectedUser, verifiedUser;
+@synthesize statuses, lists, listSubscriptions;
+
+
+- (id)init {
+	self = [super init];
+	if (self) {
+		self.statuses = [NSMutableArray array];
+		self.lists = [NSMutableArray array];
+		self.listSubscriptions = [NSMutableArray array];
+	}
+	return self;
+}
 
 - (id) initWithCoder: (NSCoder*) decoder {
 	if (self = [super init]) {
@@ -39,6 +51,10 @@
 		
 		protectedUser = [decoder decodeBoolForKey:@"protectedUser"];
 		verifiedUser = [decoder decodeBoolForKey:@"verifiedUser"];
+		
+		self.statuses = [NSMutableArray array];
+		self.lists = [NSMutableArray array];
+		self.listSubscriptions = [NSMutableArray array];
 	}
 	return self;
 }
@@ -80,6 +96,10 @@
 	[favoritesCount release];
 	
 	[createdAt release];
+	
+	[statuses release];
+	[lists release];
+	[listSubscriptions release];
 
 	[super dealloc];
 }

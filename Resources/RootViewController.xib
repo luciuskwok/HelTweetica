@@ -290,9 +290,9 @@
 							<reference ref="389477305"/>
 							<reference ref="763721385"/>
 							<reference ref="264968087"/>
-							<reference ref="817435938"/>
 							<reference ref="426956390"/>
 							<reference ref="1034175628"/>
+							<reference ref="817435938"/>
 						</object>
 						<reference key="parent" ref="982731024"/>
 					</object>
@@ -342,11 +342,6 @@
 						<reference key="parent" ref="366679980"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">66</int>
-						<reference key="object" ref="817435938"/>
-						<reference key="parent" ref="366679980"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">67</int>
 						<reference key="object" ref="426956390"/>
 						<reference key="parent" ref="366679980"/>
@@ -354,6 +349,11 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">68</int>
 						<reference key="object" ref="1034175628"/>
+						<reference key="parent" ref="366679980"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">66</int>
+						<reference key="object" ref="817435938"/>
 						<reference key="parent" ref="366679980"/>
 					</object>
 				</object>
@@ -434,7 +434,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">RootViewController</string>
-					<string key="superclassName">UIViewController</string>
+					<string key="superclassName">TimelineViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -442,10 +442,8 @@
 							<string>accounts:</string>
 							<string>allstars:</string>
 							<string>analyze:</string>
-							<string>compose:</string>
 							<string>lists:</string>
 							<string>login:</string>
-							<string>reloadData:</string>
 							<string>search:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -456,6 +454,29 @@
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">accountsButton</string>
+						<string key="NS.object.0">UIBarButtonItem</string>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/RootViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TimelineViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>compose:</string>
+							<string>reloadData:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -464,20 +485,18 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>accountsButton</string>
 							<string>composeButton</string>
 							<string>webView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
-							<string>UIBarButtonItem</string>
 							<string>LKWebView</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/RootViewController.h</string>
+						<string key="minorKey">Classes/TimelineViewController.h</string>
 					</object>
 				</object>
 			</object>

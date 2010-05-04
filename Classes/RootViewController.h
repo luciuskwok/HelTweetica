@@ -32,10 +32,8 @@
 - (IBAction) lists: (id) sender;
 - (IBAction) search: (id) sender;
 - (IBAction) login: (id) sender;
-- (IBAction) reloadData: (id) sender;
 - (IBAction) allstars: (id) sender;
 - (IBAction) analyze: (id) sender;
-- (IBAction) compose: (id) sender;
 //- (IBAction) loadOlderMessages: (id) sender;
 //- (IBAction) loadNewerMessages: (id) sender;
 

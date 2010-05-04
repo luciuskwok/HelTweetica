@@ -22,21 +22,19 @@
 
 
 @interface UserPageViewController : TimelineViewController {
-	IBOutlet UIBarButtonItem *screenNameButton;
 	IBOutlet UIBarButtonItem *followButton;
-	IBOutlet UIBarButtonItem *directMessageButton;
 
 	TwitterUser *user;
 }
-@property (nonatomic, retain) UIBarButtonItem *screenNameButton;
 @property (nonatomic, retain) UIBarButtonItem *followButton;
-@property (nonatomic, retain) UIBarButtonItem *directMessageButton;
 
 @property (nonatomic, retain) TwitterUser *user;
 
 - (id)initWithTwitter:(Twitter*)aTwitter user:(TwitterUser*)aUser;
+- (void)selectUserTimeline:(NSString*)screenName;
 
 - (IBAction)close:(id)sender;
+- (IBAction) lists: (id) sender;
 - (IBAction)follow:(id)sender;
 - (IBAction)directMessage:(id)sender;
 
