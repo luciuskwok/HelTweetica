@@ -72,6 +72,7 @@
 	NSMutableString *s = [NSMutableString stringWithString:string];
 
 	// Replace newlines and carriage returns with <br>
+	[s replaceOccurrencesOfString:@"\r\n" withString:@"<br>" options:0 range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"\r" withString:@"<br>" options:0 range:NSMakeRange(0, [s length])];
 	
