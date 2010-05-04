@@ -12,7 +12,7 @@
 a {color: #448; text-decoration: none; }
 p { margin: 0px 0px 20px 0px; }
 
-.artboard { padding: 0px; width: auto; overflow: hidden; }
+.artboard { padding: 0px; width: 100%; overflow: hidden; }
 .toolbar_padding { padding: 44px 0px 0px 0px; }
 
 .login { 
@@ -78,20 +78,23 @@ p { margin: 0px 0px 20px 0px; }
 }
 
 .tweet_area { 
-	padding: 10px 10px 40px 10px; margin: 0px;
+	padding: 10px 10px 20px 10px; margin: 0px;
 	background-color: #ffffff; 
 	-webkit-box-shadow: 0px 8px 8px #666; 
+	width: auto; 
 }
 
 .tweet_table { 
 	display: table;
 	padding: 0px; margin: 0px;
+	width: 100%; 
 }
 
 .tweet_row { 
 	display: table-row; 
 	margin: 0px; padding: 0px;
 	overflow: hidden; 
+	width: 100%; 
 }
 
 .tweet_avatar { 

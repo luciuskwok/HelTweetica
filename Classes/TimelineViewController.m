@@ -22,6 +22,7 @@
 #import "LKWebView.h"
 #import "HelTweeticaAppDelegate.h"
 
+#import "ConversationViewController.h"
 #import "UserPageViewController.h"
 #import "WebBrowserViewController.h"
 
@@ -94,7 +95,7 @@
 	[super dealloc];
 }
 
-#pragma mark UIView lifecycle
+#pragma mark View lifecycle
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
@@ -115,11 +116,16 @@
 
 #pragma mark IBActions
 
-- (IBAction) compose: (id) sender {
+- (IBAction)close:(id)sender {
+	[self closeAllPopovers];
+	[self.navigationController popViewControllerAnimated: YES];
+}
+
+- (IBAction) goToUser:(id)sender {
 	if ([self closeAllPopovers] == NO) { 
-		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
-		compose.delegate = self;
-		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+		GoToUserViewController *vc = [[[GoToUserViewController alloc] initWithTwitter:twitter] autorelease];
+		vc.delegate = self;
+		[self presentContent:vc inNavControllerInPopoverFromItem:sender];
 	}
 }
 
@@ -128,10 +134,19 @@
 	[self.webView scrollToTop];
 }
 
+- (IBAction) compose: (id) sender {
+	if ([self closeAllPopovers] == NO) { 
+		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+		compose.delegate = self;
+		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+	}
+}
+
+
 
 #pragma mark TwitterAction
 
-- (void) startTwitterAction:(TwitterAction*)action {
+- (void)startTwitterAction:(TwitterAction*)action {
 	// Add the action to the array of actions, and updates the network activity spinner
 	[actions addObject: action];
 	
@@ -187,11 +202,15 @@
 	[self showAlertWithTitle:title message:message];
 }
 
+- (void)handleTwitterStatusCode:(int)code {
+	if ((code >= 400) && (code != 403)) {
+		[self showNetworkErrorAlertForStatusCode:code];
+	}
+}
+
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
 	// Deal with status codes 400 to 402 and 404 and up.
-	if ((action.statusCode >= 400) && (action.statusCode != 403)) {
-		[self showNetworkErrorAlertForStatusCode:action.statusCode];
-	}
+	[self handleTwitterStatusCode:action.statusCode];
 	[self removeTwitterAction:action];
 	networkIsReachable = YES;
 }
@@ -500,13 +519,16 @@
 	}
 	
 	// Show user page
-	UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitter:twitter user:user] autorelease];
+	UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitterUser:user] autorelease];
 	vc.currentAccount = self.currentAccount;
 	[self.navigationController pushViewController: vc animated: YES];
 }
 
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
-	// TODO: show conversation page
+	// Show conversation page
+	ConversationViewController *vc = [[[ConversationViewController alloc] initWithMessageIdentifier:identifier] autorelease];
+	vc.currentAccount = self.currentAccount;
+	[self.navigationController pushViewController: vc animated: YES];
 }
 
 - (void) showWebBrowserWithURLRequest:(NSURLRequest*)request {
@@ -650,22 +672,29 @@
 			[pool release];
 		}
 		[html appendString:@"</div> "]; // Close tweet_table
-		
-		// Action to Load older messages 
-		
-		if (totalMessages < maxTweetsShown)
-			[html appendString:@"<div class='load_older'><a href='action:loadOlder'>Load older messages</a></div> "];
-		
-	} else { // No tweets or Loading or Not logged in
-		if (currentAccount.xAuthToken == nil) {
-			[html appendString: @"<div class='status'>Not logged in.</div>"];
-		} else if (actions.count > 0)
-			[html appendString: @"<div class='status'>Loading...</div>"];
-		else
-			[html appendString: @"<div class='status'>No messages.</div>"];
 	}
 	
+	// Footer
+	[html appendString:[self tweetAreaFooterHTML]];
+	
 	return html;
+}
+
+- (NSString*) tweetAreaFooterHTML {
+	NSString *result = @"";
+	
+	if (currentAccount.xAuthToken == nil) {
+		result = @"<div class='status'>Not logged in.</div>";
+	} else if (actions.count > 0) {
+		result = @"<div class='status'>Loading...</div>";
+	} else if ([currentTimeline count] == 0) {
+		result = @"<div class='status'>No messages.</div>";
+	} else if ([currentTimeline count] < maxTweetsShown) {
+		// Action to Load older messages 
+		result = @"<div class='load_older'><a href='action:loadOlder'>Load older messages</a></div> ";
+	}
+	
+	return result;
 }
 
 - (NSString*) timeStringSinceNow: (NSDate*) date {

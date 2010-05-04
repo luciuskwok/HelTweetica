@@ -1,8 +1,8 @@
 //
-//  UserPageViewController.h
+//  ConversationViewController.h
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/2/10.
+//  Created by Lucius Kwok on 5/4/10.
 
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
@@ -17,20 +17,13 @@
 #import <UIKit/UIKit.h>
 #import "TimelineViewController.h"
 
-@class TwitterUser;
 
 
-@interface UserPageViewController : TimelineViewController {
-	IBOutlet UIToolbar *topToolbar;
-	TwitterUser *user;
-	BOOL unauthorized;
+@interface ConversationViewController : TimelineViewController {
+	BOOL loadingComplete;
 }
-@property (nonatomic, retain) UIToolbar *topToolbar;
-@property (nonatomic, retain) TwitterUser *user;
-
-- (id)initWithTwitterUser:(TwitterUser*)aUser;
-- (void)selectUserTimeline:(NSString*)screenName;
-- (IBAction)lists: (id) sender;
-- (IBAction)follow:(id)sender;
+- (id)initWithMessageIdentifier:(NSNumber*)anIdentifier;
+- (void)loadMessage:(NSNumber*)messageIdentifier;
+- (void)loadInReplyToMessage:(TwitterMessage*)message;
 
 @end

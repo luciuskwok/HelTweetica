@@ -77,11 +77,14 @@
 @property (nonatomic, retain) UIAlertView *currentAlert;
 
 // IBActions
-- (IBAction) compose: (id) sender;
+- (IBAction) close:(id)sender;
+- (IBAction) goToUser:(id)sender;
 - (IBAction) reloadData: (id) sender;
+- (IBAction) compose: (id) sender;
 
 // Twitter actions
-- (void) startTwitterAction:(TwitterAction*)action;
+- (void)startTwitterAction:(TwitterAction*)action;
+- (void)handleTwitterStatusCode:(int)code;
 - (void)reloadCurrentTimeline;
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action;
 - (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
@@ -106,6 +109,7 @@
 - (void) rewriteTweetArea;
 - (NSString*) webPageTemplate; // Subclasses should override this to provide their own HTML template.
 - (NSString*) tweetAreaHTML;
+- (NSString*) tweetAreaFooterHTML;
 - (NSString*) timeStringSinceNow: (NSDate*) date;
 - (void) replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template;
 

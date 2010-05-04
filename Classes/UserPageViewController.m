@@ -17,7 +17,6 @@
 #import "UserPageViewController.h"
 #import "Twitter.h"
 #import "TwitterUser.h"
-#import "HelTweeticaAppDelegate.h"
 #import "WebBrowserViewController.h"
 
 #import "TwitterLoadTimelineAction.h"
@@ -32,23 +31,18 @@
 @synthesize topToolbar, user;
 
 
-- (id)initWithTwitter:(Twitter*)aTwitter user:(TwitterUser*)aUser {
+- (id)initWithTwitterUser:(TwitterUser*)aUser {
 	self = [super initWithNibName:@"UserPage" bundle:nil];
 	if (self) {
 		self.user = aUser;
-		
-		// Limit number of tweets to request for user or list.
-		self.defaultLoadCount = @"50";
-		
+		self.defaultLoadCount = @"50"; // Limit number of tweets to request for user or list.
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[topToolbar release];
-	
 	[user release];
-
 	[super dealloc];
 }
 
@@ -201,7 +195,28 @@
 	[html replaceOccurrencesOfString:@"{protectedUser}" withString:protectedUser options:0 range:NSMakeRange(0, html.length)];
 	[html replaceOccurrencesOfString:@"{verifiedUser}" withString:verifiedUser options:0 range:NSMakeRange(0, html.length)];
 
+	// Blocks
+	[self replaceBlock:@"Name" display:(user.fullName.length != 0) inTemplate:html];
+	[self replaceBlock:@"Location" display:(user.location.length != 0) inTemplate:html];
+	[self replaceBlock:@"Web" display:(user.webURL.length != 0) inTemplate:html];
+	[self replaceBlock:@"Bio" display:(user.bio.length != 0) inTemplate:html];
+	[self replaceBlock:@"JoinDate" display:(user.createdAt != nil) inTemplate:html];
+	
 	return html;
+}
+
+- (NSString*) tweetAreaFooterHTML {
+	NSString *result = @"";
+	
+	if (actions.count != 0) {
+		result = @"<div class='status'>Loading...</div>";
+	} else if (unauthorized) {
+		result = @"<div class='status'>Protected user.</div>";
+	} else if ([currentTimeline count] == 0) {
+		result = @"<div class='status'>No messages.</div>";
+	}
+	
+	return result;
 }
 
 - (NSString*) webPageTemplate {
@@ -255,12 +270,20 @@
 	[topToolbar setItems:toolbarItems animated:YES];
 }
 
-#pragma mark IBActions
-
-- (IBAction)close:(id)sender {
-	[self closeAllPopovers];
-	[self.navigationController popViewControllerAnimated: YES];
+- (void)handleTwitterStatusCode:(int)code {
+	// For user pages, a status code of 401 indicates that the currentAccount isn't authorized to view this user's page
+	if (code == 401) {
+		unauthorized = YES;
+		[refreshTimer invalidate];
+		refreshTimer = nil;
+		[self rewriteTweetArea];
+	} else {
+		[super handleTwitterStatusCode:code];
+	}
 }
+
+
+#pragma mark IBActions
 
 - (IBAction) lists: (id) sender {
 	if ([self closeAllPopovers] == NO) {
