@@ -178,6 +178,10 @@
 		E0CB31A0116691400086CEFE /* Analyze.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CB319E116691400086CEFE /* Analyze.m */; };
 		E0CB31A1116691400086CEFE /* Analyze.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0CB319F116691400086CEFE /* Analyze.xib */; };
 		E0CBCC42116DDBC80000C281 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0CBCC41116DDBC80000C281 /* action-4-on.png */; };
+		E0D6F938119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F937119013E600C7A479 /* TwitterFriendshipsAction.m */; };
+		E0D6F939119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F937119013E600C7A479 /* TwitterFriendshipsAction.m */; };
+		E0D6F9B91190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F9B81190230800C7A479 /* TwitterShowFriendshipsAction.m */; };
+		E0D6F9BA1190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F9B81190230800C7A479 /* TwitterShowFriendshipsAction.m */; };
 		E0DD53CA118E2DDC0042CF49 /* header.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD53C9118E2DDC0042CF49 /* header.html */; };
 		E0DD53CB118E2DDC0042CF49 /* header.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD53C9118E2DDC0042CF49 /* header.html */; };
 		E0DD53CD118E2EAF0042CF49 /* footer.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD53CC118E2EAF0042CF49 /* footer.html */; };
@@ -317,6 +321,10 @@
 		E0CB319E116691400086CEFE /* Analyze.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analyze.m; sourceTree = "<group>"; };
 		E0CB319F116691400086CEFE /* Analyze.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Analyze.xib; sourceTree = "<group>"; };
 		E0CBCC41116DDBC80000C281 /* action-4-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-4-on.png"; path = "Resources/action-4-on.png"; sourceTree = "<group>"; };
+		E0D6F936119013E600C7A479 /* TwitterFriendshipsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterFriendshipsAction.h; sourceTree = "<group>"; };
+		E0D6F937119013E600C7A479 /* TwitterFriendshipsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterFriendshipsAction.m; sourceTree = "<group>"; };
+		E0D6F9B71190230800C7A479 /* TwitterShowFriendshipsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterShowFriendshipsAction.h; sourceTree = "<group>"; };
+		E0D6F9B81190230800C7A479 /* TwitterShowFriendshipsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterShowFriendshipsAction.m; sourceTree = "<group>"; };
 		E0DD53C9118E2DDC0042CF49 /* header.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = header.html; path = Resources/header.html; sourceTree = "<group>"; };
 		E0DD53CC118E2EAF0042CF49 /* footer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = footer.html; path = Resources/footer.html; sourceTree = "<group>"; };
 		E0DD541C118E43070042CF49 /* user-page-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "user-page-template.html"; path = "Resources/user-page-template.html"; sourceTree = "<group>"; };
@@ -542,6 +550,10 @@
 				E084039F118C93F600670BAB /* TwitterSearchAction.m */,
 				E01865471184C8980021995D /* TwitterUpdateStatusAction.h */,
 				E01865481184C8980021995D /* TwitterUpdateStatusAction.m */,
+				E0D6F936119013E600C7A479 /* TwitterFriendshipsAction.h */,
+				E0D6F937119013E600C7A479 /* TwitterFriendshipsAction.m */,
+				E0D6F9B71190230800C7A479 /* TwitterShowFriendshipsAction.h */,
+				E0D6F9B81190230800C7A479 /* TwitterShowFriendshipsAction.m */,
 			);
 			name = TwitterActions;
 			sourceTree = "<group>";
@@ -864,6 +876,8 @@
 				E084089B118DE04E00670BAB /* TwitterUser.m in Sources */,
 				E084099A118E246900670BAB /* UserPageViewController.m in Sources */,
 				E0493617118EBE3900BCA128 /* TimelineViewController.m in Sources */,
+				E0D6F939119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */,
+				E0D6F9BA1190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,6 +922,8 @@
 				E084089A118DE04E00670BAB /* TwitterUser.m in Sources */,
 				E0840998118E246900670BAB /* UserPageViewController.m in Sources */,
 				E0493618118EBE3900BCA128 /* TimelineViewController.m in Sources */,
+				E0D6F938119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */,
+				E0D6F9B91190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
