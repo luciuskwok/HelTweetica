@@ -66,8 +66,17 @@
 	NSNumberFormatter *formatter = [[[NSNumberFormatter alloc] init] autorelease];
 	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	return [formatter stringFromNumber:number];
-	
 }
+
+- (NSString*)htmlFormattedString:(NSString*)string {
+	NSMutableString *s = [NSMutableString stringWithString:string];
+
+	// Replace newlines and carriage returns with <br>
+	[s replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, [s length])];
+	[s replaceOccurrencesOfString:@"\r" withString:@"<br>" options:0 range:NSMakeRange(0, [s length])];
+	
+	return s;
+}	
 
 - (NSString*)webURLHTML:(NSString*)url {
 	NSMutableString *visibleText = [NSMutableString stringWithString:url];
@@ -102,7 +111,7 @@
 	NSString *fullName = user.fullName ? user.fullName : @"";
 	NSString *location = user.location ? user.location : @"";
 	NSString *web = user.webURL ? [self webURLHTML:user.webURL] : @"";
-	NSString *bio = user.bio ? user.bio : @"";
+	NSString *bio = user.bio ? [self htmlFormattedString: user.bio] : @"";
 	
 	NSString *friendsCount = user.friendsCount ? [self formattedNumber:user.friendsCount] : @"";
 	NSString *followersCount = user.followersCount ? [self formattedNumber:user.followersCount] : @"";
@@ -200,8 +209,8 @@
 		return;
 	}
 	
-	self.customPageTitle = @"";
-	self.currentTimeline = self.user.statuses;
+	self.customPageTitle = nil;
+	self.currentTimeline = user.statuses;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
 	[currentTimelineAction.parameters setObject:screenName forKey:@"id"];
 	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
@@ -210,8 +219,8 @@
 - (void)selectFavoritesTimeline:(NSString*)screenName {
 	if (screenName == nil) return;
 	
-	self.customPageTitle = [NSString stringWithFormat:@"%@&rsquo;s <b>favorites</b>"];
-	self.currentTimeline = self.user.favorites;
+	self.customPageTitle = [NSString stringWithFormat:@"%@&rsquo;s <b>favorites</b>", user.screenName];
+	self.currentTimeline = user.favorites;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	[currentTimelineAction.parameters setObject:screenName forKey:@"id"];
 	// Favorites always loads 20 per page. Cannot change the count.
@@ -225,11 +234,7 @@
 	TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];
 	if (aUser != nil) {
 		// Switch to instance of TwitterUser from the shared twitter instance.
-		if (self.user != aUser) {
-			self.user = aUser;
-			self.user.statuses = aUser.statuses;
-			self.user.favorites = aUser.favorites;
-		}
+		self.user = aUser;
 		
 		// Rewrite user_area div
 		[self.webView setDocumentElement:@"user_info_area" innerHTML:[self userInfoHTML]];
