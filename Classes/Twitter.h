@@ -41,6 +41,7 @@
 - (TwitterUser *)userWithScreenName:(NSString *)screenName;
 
 - (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses updateFavorites:(BOOL)updateFaves;
+- (void)addUsers:(NSSet *)newUsers;
 
 - (void) save;
 

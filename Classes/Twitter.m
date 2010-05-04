@@ -128,6 +128,27 @@
 	}
 }
 
+- (void)addUsers:(NSSet *)newUsers {
+	// Update set of users.
+	TwitterUser *member;
+	for (TwitterUser *user in newUsers) {
+		member = [self.users member:user];
+		if (member) {
+			// Copy data from old user to new user instance
+			user.statuses = member.statuses;
+			user.favorites = member.favorites;
+			user.lists = member.lists;
+			user.listSubscriptions = member.listSubscriptions;
+			
+			// Remove old user
+			[self.users removeObject:member];
+		}
+		
+		// Add new user
+		[self.users addObject: user];
+	}
+}
+
 #pragma mark -
 
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier {
@@ -138,7 +159,7 @@
 
 
 - (TwitterUser *)userWithScreenName:(NSString *)screenName {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"screenName == %@", screenName];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"screenName LIKE[cd] %@", screenName];
 	NSSet *filteredSet = [users filteredSetUsingPredicate:predicate];
 	return [filteredSet anyObject];
 }

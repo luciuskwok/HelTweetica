@@ -15,7 +15,7 @@
  */
 
 // Constants
-#define kMaxNumberOfMessagesShown 200
+#define kDefaultMaxTweetsShown 200
 
 // Imports
 #import "TimelineViewController.h"
@@ -36,7 +36,7 @@
 
 
 @implementation TimelineViewController
-@synthesize webView, composeButton, twitter, actions, defaultCount;
+@synthesize webView, composeButton, twitter, actions, defaultLoadCount;
 @synthesize currentAccount, currentTimeline, currentTimelineAction, customPageTitle, customTabName;
 @synthesize currentPopover, currentActionSheet, currentAlert;
 
@@ -53,15 +53,13 @@
 
 // Initializer for loading from nib
 - (void) awakeFromNib {
-	// Use Twitter instance from app delegate
-	appDelegate = [[UIApplication sharedApplication] delegate];
+	appDelegate = [[UIApplication sharedApplication] delegate]; // Use Twitter instance from app delegate
 	self.twitter = appDelegate.twitter;
 	
-	// String to pass in the count, per_page, and rpp parameters.
-	self.defaultCount = @"100";
+	self.defaultLoadCount = @"100"; // String to pass in the count, per_page, and rpp parameters.
+	maxTweetsShown = kDefaultMaxTweetsShown; // Number of tweet_rows to display in web view
 	
-	// List of currently active network connections
-	self.actions = [NSMutableArray array];
+	self.actions = [NSMutableArray array]; // List of currently active network connections
 	networkIsReachable = YES;
 }
 
@@ -85,7 +83,7 @@
 	
 	[twitter release];
 	[actions release];
-	[defaultCount release];
+	[defaultLoadCount release];
  
 	[currentAccount release];
 	[currentTimeline release];
@@ -225,7 +223,7 @@
 	// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
 	NSNumber *newerThan = nil;
 	if (([currentTimeline count] > 10) && (isFavorites == NO)) {
-		TwitterMessage *message = [currentTimeline objectAtIndex: 0];
+		TwitterMessage *message = [currentTimeline objectAtIndex: 1]; // Use object at index 1, and test for overlap to determine whether there is a gap in the timeline.
 		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
 		if (staleness < kMaxMessageStaleness) {
 			newerThan = message.identifier;
@@ -241,6 +239,18 @@
 	[self startTwitterAction:action];
 }
 
+- (void) sortAndLimitTimeline:(NSMutableArray*)aTimeline {
+	// Sort by identifier, descending.
+	NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
+	[aTimeline sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
+	
+	// Keep timeline within size limits by removing old messages.
+	if (aTimeline.count > kMaxNumberOfMessagesInATimeline) {
+		NSRange removalRange = NSMakeRange(kMaxNumberOfMessagesInATimeline, aTimeline.count - kMaxNumberOfMessagesInATimeline);
+		[aTimeline removeObjectsInRange:removalRange];
+	}
+}
+
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
 	if (action.messages.count > 0) {
 		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
@@ -250,35 +260,50 @@
 		[twitter synchronizeStatusesWithArray: newMessages updateFavorites:updateFaves];
 		
 		// Merge downloaded messages with existing messages.
+		//BOOL overlap = NO;
 		for (TwitterMessage *message in newMessages) {
-			if ([currentTimeline containsObject:message] == NO)
+			if ([currentTimeline containsObject:message]) {
+				//overlap = YES; // Need to do something, maybe mark the last message in the array to signify a gap.
+			} else {
 				[currentTimeline addObject: message];
-		}
-		
-		// Update set of users.
-		NSSet *newUsers = action.users;
-		TwitterUser *member;
-		for (TwitterUser *user in newUsers) {
-			member = [twitter.users member:user];
-			if (member) {
-				[twitter.users removeObject:member];
 			}
-			[twitter.users addObject: user];
 		}
 		
-		// Sort by identifier, descending.
-		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
-		[currentTimeline sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
+		// Update set of users in Twitter
+		[twitter addUsers:action.users];
 		
-		// Keep timeline within size limits by removing old messages.
-		if (currentTimeline.count > kMaxNumberOfMessagesInATimeline) {
-			NSRange removalRange = NSMakeRange(kMaxNumberOfMessagesInATimeline, currentTimeline.count - kMaxNumberOfMessagesInATimeline);
-			[currentTimeline removeObjectsInRange:removalRange];
-		}
+		// Sort and remove oldest messages in timeline 
+		[self sortAndLimitTimeline:currentTimeline];
 	}
 	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];	
+}
+
+- (void) loadOlderInCurrentTimeline {
+	if (currentAccount == nil || currentAccount.xAuthToken == nil) {
+		[self setLoadingSpinnerVisibility:NO];
+		return; // No current account or not logged in.
+	}
+	
+	TwitterAction *action = self.currentTimelineAction;
+	if (action == nil) return; // No action to reload.
+	
+	// Issue: if the display only shows 200 tweets, the "Show Older" link should just show a page starting from the next items in the array. And if there are gaps in the timeline, there's no easy way of showing them.
+	
+	NSNumber *olderThan = nil;
+	if ([currentTimeline count] > 10) {
+		TwitterMessage *message = [currentTimeline lastObject];
+		olderThan = message.identifier;
+	}
+	
+	if (olderThan)
+		[action.parameters setObject:[olderThan stringValue] forKey:@"max_id"];
+	
+	// Prepare action and start it. 
+	action.completionTarget= self;
+	action.completionAction = @selector(didReloadCurrentTimeline:);
+	[self startTwitterAction:action];
 }
 
 - (void) startLoadingCurrentTimeline {
@@ -544,7 +569,7 @@
 	
 	if ((timeline != nil) && ([timeline count] != 0)) {
 		int totalMessages = [timeline count];
-		int displayedCount = (totalMessages < kMaxNumberOfMessagesShown) ? totalMessages : kMaxNumberOfMessagesShown;
+		int displayedCount = (totalMessages < maxTweetsShown) ? totalMessages : maxTweetsShown;
 		
 		// Count and oldest
 		TwitterMessage *message, *retweeterMessage;
@@ -626,9 +651,10 @@
 		}
 		[html appendString:@"</div> "]; // Close tweet_table
 		
-		/*// Action to Load older messages 
-		 if ((displayedCount == totalMessages) && (selectedTab >= 0) && (selectedTab < 3))
-		 [html appendString:@"<div class='time' style='text-align:center;'><a href='action:loadOlder'>Load older messages</a></div>\n"];*/
+		// Action to Load older messages 
+		
+		if (totalMessages < maxTweetsShown)
+			[html appendString:@"<div class='load_older'><a href='action:loadOlder'>Load older messages</a></div> "];
 		
 	} else { // No tweets or Loading or Not logged in
 		if (currentAccount.xAuthToken == nil) {
@@ -721,7 +747,7 @@
 		} else if ([actionName hasPrefix:@"conversation"]) { // Show more info on the tweet
 			[self showConversationWithMessageIdentifier:messageIdentifier];
 		} else if ([actionName hasPrefix:@"loadOlder"]) { // Load older
-			//[self loadOlderMessages:nil];
+			[self loadOlderInCurrentTimeline];
 		}
 		
 		return NO;
@@ -781,7 +807,7 @@
 	// Create Twitter action to load list statuses into the timeline.
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
-	[currentTimelineAction.parameters setObject:defaultCount forKey:@"per_page"];
+	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"per_page"];
 	[self reloadCurrentTimeline];
 	
 	// Rewrite and scroll web view
@@ -806,7 +832,7 @@
 	self.customTabName = NSLocalizedString (@"Results", @"tab");
 	
 	// Create Twitter action to load search results into the current timeline.
-	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultCount] autorelease];
+	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultLoadCount] autorelease];
 	self.currentTimelineAction = action;
 	[self reloadCurrentTimeline];
 	

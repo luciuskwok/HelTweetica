@@ -40,6 +40,7 @@
 	
 	// Fields that are not saved via NSCoder
 	NSMutableArray *statuses;
+	NSMutableArray *favorites;
 	NSMutableArray *lists;
 	NSMutableArray *listSubscriptions;
 	
@@ -65,6 +66,7 @@
 @property (nonatomic, assign) BOOL verifiedUser;
 
 @property (nonatomic, retain) NSMutableArray *statuses;
+@property (nonatomic, retain) NSMutableArray *favorites;
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 

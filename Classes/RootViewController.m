@@ -79,7 +79,7 @@
 	
 	self.currentTimeline = currentAccount.timeline;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
+	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void) selectMentionsTimeline {
@@ -88,7 +88,7 @@
 	
 	self.currentTimeline = currentAccount.mentions;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
+	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void) selectDirectMessageTimeline {
@@ -97,7 +97,7 @@
 	
 	self.currentTimeline = currentAccount.directMessages;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
+	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void) selectFavoritesTimeline {

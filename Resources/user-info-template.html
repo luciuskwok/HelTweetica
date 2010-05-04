@@ -2,7 +2,7 @@
 	<div class='user_info_table'>
 		<div class='user_info_row'>
 			<div class='user_info_key_cell'></div>
-			<div class='user_info_value_cell user_screen_name'>{screenName} {protectedUser}</div>
+			<div class='user_info_value_cell user_screen_name'><a href='action:user'>{screenName}</a> {protectedUser}</div>
 		</div>
 		<div class='user_info_row'>
 			<div class='user_info_key_cell'>Name</div>
@@ -31,8 +31,8 @@
 			<div class='user_info_key_cell'></div>
 			<div class='user_info_value_cell user_number_value'>{friendsCount}</div>
 			<div class='user_info_value_cell user_number_value'>{followersCount}</div>
-			<div class='user_info_value_cell user_number_value'>{statusesCount}</div>
-			<div class='user_info_value_cell user_number_value'>{favoritesCount}</div>
+			<div class='user_info_value_cell user_number_value'><a href='action:user'>{statusesCount}</a></div>
+			<div class='user_info_value_cell user_number_value'><a href='action:favorites'>{favoritesCount}</a></div>
 		</div>
 		<div class='user_info_row'>
 			<div class='user_info_key_cell'></div>

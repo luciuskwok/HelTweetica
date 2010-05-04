@@ -34,8 +34,7 @@
 - (void)selectUserTimeline:(NSString*)screenName;
 
 - (IBAction)close:(id)sender;
-- (IBAction) lists: (id) sender;
+- (IBAction)lists: (id) sender;
 - (IBAction)follow:(id)sender;
-- (IBAction)directMessage:(id)sender;
 
 @end

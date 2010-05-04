@@ -34,7 +34,7 @@
 		self.user = aUser;
 		
 		// Limit number of tweets to request for user or list.
-		self.defaultCount = @"50";
+		self.defaultLoadCount = @"50";
 		
 	}
 	return self;
@@ -152,7 +152,10 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
- 	// Download the latest tweets from this user.
+ 	if (user.screenName == nil)
+		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
+
+	// Download the latest tweets from this user.
 	[self selectUserTimeline:user.screenName];
 	[self reloadCurrentTimeline];
 
@@ -166,7 +169,6 @@
 	self.followButton = nil;
 	//self.directMessageButton = nil;
 }
-
 
 #pragma mark IBActions
 
@@ -189,9 +191,6 @@
 - (IBAction)follow:(id)sender {
 }
 
-- (IBAction)directMessage:(id)sender {
-}
-
 #pragma mark User timeline
 // TODO: needs to fold in RTs
 
@@ -201,28 +200,65 @@
 		return;
 	}
 	
+	self.customPageTitle = @"";
 	self.currentTimeline = self.user.statuses;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
 	[currentTimelineAction.parameters setObject:screenName forKey:@"id"];
-	[currentTimelineAction.parameters setObject:defaultCount forKey:@"count"];
+	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
+}
+
+- (void)selectFavoritesTimeline:(NSString*)screenName {
+	if (screenName == nil) return;
+	
+	self.customPageTitle = [NSString stringWithFormat:@"%@&rsquo;s <b>favorites</b>"];
+	self.currentTimeline = self.user.favorites;
+	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
+	[currentTimelineAction.parameters setObject:screenName forKey:@"id"];
+	// Favorites always loads 20 per page. Cannot change the count.
+	//[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
 	[super didReloadCurrentTimeline:action];
 	
-	// Intercept loading of the current timeline to replace the user object with one that has more info.
-	TwitterUser *aUser = self.user;
-	if ([aUser.identifier intValue] == -1) { // This means the user info needs to be loaded from Twitter
-		aUser = [twitter userWithScreenName:aUser.screenName];
-		if (aUser != nil) {
-			// Switch to instance of TwitterUser from the shared twitter instance.
+	// Update user object with latest version.
+	TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];
+	if (aUser != nil) {
+		// Switch to instance of TwitterUser from the shared twitter instance.
+		if (self.user != aUser) {
 			self.user = aUser;
-			self.user.statuses = self.currentTimeline;
-			
-			// Rewrite user_area div
-			[self.webView setDocumentElement:@"user_info_area" innerHTML:[self userInfoHTML]];
+			self.user.statuses = aUser.statuses;
+			self.user.favorites = aUser.favorites;
+		}
+		
+		// Rewrite user_area div
+		[self.webView setDocumentElement:@"user_info_area" innerHTML:[self userInfoHTML]];
+	}
+}
+
+
+#pragma mark Web view delegate methods
+
+- (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+	NSURL *url = [request URL];
+	
+	if ([[url scheme] isEqualToString:@"action"]) {
+		//TwitterAccount *account = [twitter currentAccount];
+		NSString *actionName = [url resourceSpecifier];
+		
+		// Tabs
+		if ([actionName isEqualToString:@"user"]) { // Home Timeline
+			[self selectUserTimeline:user.screenName];
+			[self reloadCurrentTimeline];
+			return NO;
+		} else if ([actionName isEqualToString:@"favorites"]) { // Favorites
+			[self selectFavoritesTimeline:user.screenName];
+			[self reloadCurrentTimeline];
+			return NO;
 		}
 	}
+	
+	return [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
 }
 
 

@@ -41,7 +41,8 @@
 
 	Twitter *twitter;
 	NSMutableArray *actions;
-	NSString *defaultCount;
+	NSString *defaultLoadCount;
+	int maxTweetsShown;
 
 	NSTimer *refreshTimer;
 	BOOL networkIsReachable;
@@ -63,7 +64,7 @@
 
 @property (nonatomic, retain) Twitter *twitter;
 @property (nonatomic, retain) NSMutableArray *actions;
-@property (nonatomic, retain) NSString *defaultCount;
+@property (nonatomic, retain) NSString *defaultLoadCount;
 
 @property (nonatomic, retain) TwitterAccount *currentAccount;
 @property (nonatomic, retain) NSMutableArray *currentTimeline;

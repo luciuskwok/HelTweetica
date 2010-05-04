@@ -115,7 +115,8 @@ p { margin: 0px 0px 20px 0px; }
 }
 .screen_name { font-weight: bold; color: #000; }
 .time { color: #888; font-size: 13px; font-style: italic; }
-.time a { color: #889; }
+.time a { color: #88A; }
+.load_older { font-weight: bold; text-align: center; margin: 10px 0px 0px 0px; }
 
 .tweet_actions {
 	display: table-cell; 
@@ -188,6 +189,7 @@ p { margin: 0px 0px 20px 0px; }
 	line-height: 40px; 
 	color: #888;
 }
+.user_screen_name a { color: #888; }
 .user_verified {
 	margin: 0px 0px -4px 0px;
 }
@@ -201,13 +203,14 @@ p { margin: 0px 0px 20px 0px; }
 	font-weight: bold;
 }
 .user_number_value {
-	padding: 0px 10px 0px 0px;
+	padding: 0px;
 	width: 90px;
 	text-align: left;
 	font-weight: bold;
 	color: #444;
 }
 .user_number_key {
+	padding: 0px;
 	width: 90px;
 	text-align: left;
 }
