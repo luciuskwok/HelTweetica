@@ -1,8 +1,8 @@
 //
-//  TwitterLoadListsAction.m
+//  TwitterShowFriendshipsAction.m
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/1/10.
+//  Created by Lucius Kwok on 5/4/10.
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
  
@@ -13,31 +13,23 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "TwitterLoadListsAction.h"
+#import "TwitterShowFriendshipsAction.h"
+#import "LKJSONParser.h"
 
 
-@implementation TwitterLoadListsAction
-@synthesize lists, currentList, keyPath;
 
+@implementation TwitterShowFriendshipsAction
+@synthesize sourceFollowsTarget, targetFollowsSource, valid, keyPath;
 
-- (id)initWithUser:(NSString*)userOrNil subscriptions:(BOOL)subscriptions {
-	self = [super init];
-	if (self) {
-		NSMutableString *method = [NSMutableString string];
-		if (userOrNil) 
-			[method appendFormat:@"%@/", userOrNil];
-		[method appendString:@"lists"];
-		if (subscriptions)
-			[method appendString:@"/subscriptions"];
-		self.twitterMethod = method;
-		self.lists = [NSMutableArray array];
+- (id) initWithTarget:(NSString*)targetScreenName {
+	if (self = [super init]) {
+		self.twitterMethod =@"friendships/show";
+		[parameters setObject:targetScreenName forKey:@"target_screen_name"];	
 	}
 	return self;
 }
 
 - (void) dealloc {
-	[lists release];
-	[currentList release];
 	[keyPath release];
 	[super dealloc];
 }
@@ -52,21 +44,15 @@
 		parser.delegate = self;
 		[parser parse];
 		[parser release];
+		valid = YES;
 	}
 }
-
-#pragma mark -
-#pragma mark LKJSONParser delegate methods
 
 - (void) parserDidBeginDictionary:(LKJSONParser*)parser {
 	if (keyPath == nil) {
 		self.keyPath = @"/";
 	} else {
 		self.keyPath = [keyPath stringByAppendingString:@"/"];
-	}
-	
-	if ([keyPath isEqualToString:@"/lists/"]) {
-		self.currentList = [[[TwitterList alloc] init] autorelease];
 	}
 }
 
@@ -75,15 +61,6 @@
 		self.keyPath = [keyPath substringToIndex: keyPath.length - 1];
 	} else {
 		self.keyPath = [keyPath stringByDeletingLastPathComponent];
-	}
-	
-	if ([keyPath isEqualToString:@"/lists"]) {
-		if (currentList != nil) {
-			[lists addObject: currentList];
-			self.currentList = nil;
-		} else {
-			NSLog (@"Error while parsing JSON.");
-		}
 	}
 }
 
@@ -96,41 +73,13 @@
 	}
 }
 
-- (void) parserFoundNullValue:(LKJSONParser*)parser {
-}
-
 - (void) parser:(LKJSONParser*)parser foundBoolValue:(BOOL)value {
-	//NSLog (@"%@ = %d", keyPath, value);
-}
-
-- (void) parser:(LKJSONParser*)parser foundNumberValue:(NSString*)value {
-	SInt64 x = 0;
-	[[NSScanner scannerWithString:value] scanLongLong: &x];
-	NSNumber *number = [NSNumber numberWithLongLong: x];
-	
-	if ([keyPath isEqualToString:@"/lists/member_count"]) {
-		currentList.memberCount = number;
-	} else if ([keyPath isEqualToString:@"/lists/id"]) {
-		currentList.identifier = number;
-	} 
-	
-	//NSLog (@"%@ = %@", keyPath, value);
-}
-
-- (void) parser:(LKJSONParser*)parser foundStringValue:(NSString*)value {
-	if ([keyPath isEqualToString:@"/lists/description"]) {
-		currentList.description = value;
-	} else if ([keyPath isEqualToString:@"/lists/name"]) {
-		currentList.name = value;
-	} else if ([keyPath isEqualToString:@"/lists/full_name"]) {
-		currentList.fullName = value;
-	} else if ([keyPath isEqualToString:@"/lists/slug"]) {
-		currentList.slug = value;
-	} else if ([keyPath isEqualToString:@"/lists/user/screen_name"]) {
-		currentList.username = value;
+	if ([keyPath hasPrefix:@"/relationship/source/following"]) {
+		sourceFollowsTarget = value;
+	} else if ([keyPath hasPrefix:@"/relationship/source/followed_by"]) {
+		targetFollowsSource = value;
 	}
-	
-	//NSLog (@"%@ = %@", keyPath, value);
 }
+
 
 @end

@@ -21,11 +21,15 @@
 #import "WebBrowserViewController.h"
 
 #import "TwitterLoadTimelineAction.h"
+#import "TwitterFriendshipsAction.h"
+#import "TwitterShowFriendshipsAction.h"
 
+// Tag used to identify Follow/Unfollow button in Toolbar
+#define kFollowButtonTag 69
 
 
 @implementation UserPageViewController
-@synthesize followButton, user;
+@synthesize topToolbar, user;
 
 
 - (id)initWithTwitter:(Twitter*)aTwitter user:(TwitterUser*)aUser {
@@ -41,7 +45,7 @@
 }
 
 - (void)dealloc {
-	[followButton release];
+	[topToolbar release];
 	
 	[user release];
 
@@ -71,11 +75,66 @@
 - (NSString*)htmlFormattedString:(NSString*)string {
 	NSMutableString *s = [NSMutableString stringWithString:string];
 
+	NSString *usernameText, *insertText, *urlText, *linkText;
+	
+	// Find URLs beginning with http: https*://[^ \t\r\n\v\f]*
+	NSRange unprocessed, foundRange;
+	unprocessed = NSMakeRange(0, [s length]);
+	while (unprocessed.location < [s length]) {
+		foundRange = [s rangeOfString: @"https*://[^ \t\r\n]*" options: NSRegularExpressionSearch range: unprocessed];
+		if (foundRange.location == NSNotFound) break;
+		
+		// Replace URLs with link text
+		urlText = [s substringWithRange: foundRange];
+		linkText = [urlText substringFromIndex: [urlText hasPrefix:@"https"] ? 8 : 7];
+		if ([linkText length] > 29) {
+			linkText = [NSString stringWithFormat: @"%@...", [linkText substringToIndex:26]];
+			insertText = [NSString stringWithFormat: @"<a href='%@'>%@</a>", urlText, linkText];
+		} else {	
+			insertText = [NSString stringWithFormat: @"<a href='%@'>%@</a>", urlText, linkText];
+		}
+		[s replaceCharactersInRange: foundRange withString: insertText];
+		
+		unprocessed.location = foundRange.location + [insertText length];
+		unprocessed.length = [s length] - unprocessed.location;
+	}
+	
+	// Find @usernames: @([A-Za-z0-9_]*) 
+	unprocessed = NSMakeRange(0, [s length]);
+	while (unprocessed.location < [s length]) {
+		// TODO: Should ignore @ inside of html tags, or above should url-encode @ symbols.
+		foundRange = [s rangeOfString: @"@[A-Za-z0-9_]*" options: NSRegularExpressionSearch range: unprocessed];
+		if (foundRange.location == NSNotFound) break;
+		
+		usernameText = [s substringWithRange: NSMakeRange (foundRange.location + 1, foundRange.length - 1)];
+		insertText = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", usernameText, usernameText];
+		[s replaceCharactersInRange: foundRange withString: insertText];
+		
+		unprocessed.location = foundRange.location + [insertText length];
+		unprocessed.length = [s length] - unprocessed.location;
+	}
+	
 	// Replace newlines and carriage returns with <br>
 	[s replaceOccurrencesOfString:@"\r\n" withString:@"<br>" options:0 range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"\r" withString:@"<br>" options:0 range:NSMakeRange(0, [s length])];
 	
+	// Remove NULs
+	[s replaceOccurrencesOfString:@"\0" withString:@"" options:0 range:NSMakeRange(0, [s length])];
+	
+	// Break up long words with soft hyphens
+	unprocessed = NSMakeRange(0, [s length]);
+	while (unprocessed.location < [s length]) {
+		foundRange = [s rangeOfString: @"[A-Za-z0-9]{46,46}" options: NSRegularExpressionSearch range: unprocessed];
+		if (foundRange.location == NSNotFound) break;
+		
+		// Insert soft hyphen after 40 chars
+		[s replaceCharactersInRange: NSMakeRange(foundRange.location + foundRange.length, 0) withString:@"&shy;"];
+		
+		unprocessed.location = foundRange.location + foundRange.length + 5;
+		unprocessed.length = [s length] - unprocessed.location;
+	}
+		
 	return s;
 }	
 
@@ -159,25 +218,41 @@
 	return html;
 }
 
-#pragma mark View lifecycle
+#pragma mark TwitterActions
 
-- (void)viewDidLoad {
- 	if (user.screenName == nil)
-		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
-
-	// Download the latest tweets from this user.
-	[self selectUserTimeline:user.screenName];
-	[self reloadCurrentTimeline];
-
-	[super viewDidLoad];
-	//screenNameButton.title = user.screenName;
-
+- (void)loadFriendStatus:(NSString*)screenName {
+	TwitterShowFriendshipsAction *action = [[[TwitterShowFriendshipsAction alloc] initWithTarget:screenName] autorelease];
+	action.completionAction = @selector(didLoadFriendStatus:);
+	action.completionTarget = self;
+	[self startTwitterAction:action];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	self.followButton = nil;
-	//self.directMessageButton = nil;
+- (void)didLoadFriendStatus:(TwitterShowFriendshipsAction *)action {
+	// Insert follow/unfollow button in toolbar
+	
+	SEL buttonAction = action.sourceFollowsTarget ? @selector(unfollow:) : @selector(follow:);
+	NSString *buttonTitle = action.sourceFollowsTarget ? NSLocalizedString (@"Unfollow", @"button") : NSLocalizedString (@"Follow", @"button");
+	NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.topToolbar.items];
+	
+	// Remove any existing Follow/Unfollow buttons
+	int index;
+	for (index = 0; index < toolbarItems.count; index++) {
+		UIBarItem *item = [toolbarItems objectAtIndex:index];
+		if (item.tag == kFollowButtonTag) {
+			[toolbarItems removeObjectAtIndex:index];
+			break;
+		}
+	}
+	
+	// Only add button if the friend status is valid
+	if (action.valid) {
+		index = toolbarItems.count - 1; // Position one item from end
+		UIBarButtonItem *followButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered target:self action:buttonAction] autorelease];
+		followButton.tag = kFollowButtonTag;
+		[toolbarItems insertObject:followButton atIndex:index];
+	}
+	
+	[topToolbar setItems:toolbarItems animated:YES];
 }
 
 #pragma mark IBActions
@@ -199,9 +274,30 @@
 }
 
 - (IBAction)follow:(id)sender {
+	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:YES] autorelease];
+	action.completionAction = @selector(didFollow:);
+	action.completionTarget = self;
+	[self startTwitterAction:action];
 }
 
-#pragma mark User timeline
+- (void)didFollow:(id)action {
+	[self loadFriendStatus: user.screenName];
+}
+
+- (IBAction)unfollow:(id)sender {
+	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:NO] autorelease];
+	action.completionAction = @selector(didUnfollow:);
+	action.completionTarget = self;
+	[self startTwitterAction:action];
+}
+
+- (void)didUnfollow:(id)action {
+	[self loadFriendStatus: user.screenName];
+}
+
+
+
+#pragma mark Timeline loading
 // TODO: needs to fold in RTs
 
 - (void)selectUserTimeline:(NSString*)screenName {
@@ -267,5 +363,29 @@
 	return [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
 }
 
+
+#pragma mark View lifecycle
+
+- (void)viewDidLoad {
+ 	if (user.screenName == nil)
+		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
+	
+	// Download the latest tweets from this user.
+	[self selectUserTimeline:user.screenName];
+	[self reloadCurrentTimeline];
+	
+	// Get the following/follower status
+	[self loadFriendStatus: user.screenName];
+	
+	[super viewDidLoad];
+	//screenNameButton.title = user.screenName;
+	
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+	self.topToolbar = nil;
+	//self.directMessageButton = nil;
+}
 
 @end

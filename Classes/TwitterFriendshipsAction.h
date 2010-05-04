@@ -1,9 +1,8 @@
 //
-//  UserPageViewController.h
+//  TwitterFriendshipsAction.h
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/2/10.
-
+//  Created by Lucius Kwok on 5/4/10.
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
  
@@ -14,27 +13,19 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <UIKit/UIKit.h>
-#import "TimelineViewController.h"
-
-@class TwitterUser;
-@class HelTweeticaAppDelegate;
+#import <Foundation/Foundation.h>
+#import "TwitterAction.h"
 
 
-@interface UserPageViewController : TimelineViewController {
-	IBOutlet UIToolbar *topToolbar;
-
-	TwitterUser *user;
+@interface TwitterFriendshipsAction : TwitterAction {
+	BOOL sourceFollowsTarget;
+	BOOL valid;
+	NSString *keyPath;
 }
-@property (nonatomic, retain) UIToolbar *topToolbar;
+@property (nonatomic, assign) BOOL sourceFollowsTarget;
+@property (nonatomic, assign) BOOL valid;
+@property (nonatomic, retain) NSString *keyPath;
 
-@property (nonatomic, retain) TwitterUser *user;
-
-- (id)initWithTwitter:(Twitter*)aTwitter user:(TwitterUser*)aUser;
-- (void)selectUserTimeline:(NSString*)screenName;
-
-- (IBAction)close:(id)sender;
-- (IBAction)lists: (id) sender;
-- (IBAction)follow:(id)sender;
+- (id) initWithScreenName:(NSString*)screenName create:(BOOL)create;
 
 @end

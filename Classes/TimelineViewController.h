@@ -81,6 +81,7 @@
 - (IBAction) reloadData: (id) sender;
 
 // Twitter actions
+- (void) startTwitterAction:(TwitterAction*)action;
 - (void)reloadCurrentTimeline;
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action;
 - (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
