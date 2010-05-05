@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="4"/>
+			<integer value="2"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -92,12 +92,6 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<reference key="IBUIToolbar" ref="562221270"/>
 								<int key="IBUISystemItemIdentifier">5</int>
-							</object>
-							<object class="IBUIBarButtonItem" id="483054486">
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<float key="IBUIWidth">25</float>
-								<reference key="IBUIToolbar" ref="562221270"/>
-								<int key="IBUISystemItemIdentifier">6</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="889660034">
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -280,7 +274,6 @@
 							<reference ref="113633141"/>
 							<reference ref="914968917"/>
 							<reference ref="49221195"/>
-							<reference ref="483054486"/>
 							<reference ref="712379383"/>
 							<reference ref="387610850"/>
 							<reference ref="889660034"/>
@@ -333,11 +326,6 @@
 						<reference key="parent" ref="562221270"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">39</int>
-						<reference key="object" ref="483054486"/>
-						<reference key="parent" ref="562221270"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">40</int>
 						<reference key="object" ref="889660034"/>
 						<reference key="parent" ref="562221270"/>
@@ -360,7 +348,6 @@
 					<string>33.IBPluginDependency</string>
 					<string>35.IBPluginDependency</string>
 					<string>37.IBPluginDependency</string>
-					<string>39.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>40.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
@@ -372,8 +359,7 @@
 					<string>UIResponder</string>
 					<string>LKWebView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{155, 687}, {797, 140}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{155, 4}, {783, 1002}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

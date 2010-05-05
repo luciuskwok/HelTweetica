@@ -120,7 +120,8 @@
 		case 404: messageNotFound = YES; break;
 		default: break;
 	}
-	[self loadingComplete];
+	if (code >= 400) 
+		[self loadingComplete];
 }
 
 #pragma mark Web view

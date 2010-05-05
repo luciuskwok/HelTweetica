@@ -36,7 +36,7 @@
 	};
 	28C286E00D94DF7D0034E888 /* RootViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {941, 5152}}";
+			sepNavIntBoundsRect = "{{0, 0}, {941, 5184}}";
 			sepNavSelRange = "{9835, 0}";
 			sepNavVisRange = "{9593, 1615}";
 		};
@@ -53,6 +53,7 @@
 		);
 		breakpoints = (
 			E0A98CD9119141B100C9C997 /* TimelineViewController.m:848 */,
+			E0A98DA7119155EE00C9C997 /* ConversationViewController.m:68 */,
 		);
 		codeSenseManager = E00C261F1162D60F00F62B70 /* Code sense */;
 		executables = (
@@ -649,6 +650,13 @@
 			E0A98D7F119150AC00C9C997 /* PBXTextBookmark */ = E0A98D7F119150AC00C9C997 /* PBXTextBookmark */;
 			E0A98D9D1191533C00C9C997 /* PBXTextBookmark */ = E0A98D9D1191533C00C9C997 /* PBXTextBookmark */;
 			E0A98DA01191538200C9C997 /* PBXTextBookmark */ = E0A98DA01191538200C9C997 /* PBXTextBookmark */;
+			E0A98DA51191555600C9C997 /* PBXTextBookmark */ = E0A98DA51191555600C9C997 /* PBXTextBookmark */;
+			E0A98DA61191555800C9C997 /* PBXTextBookmark */ = E0A98DA61191555800C9C997 /* PBXTextBookmark */;
+			E0A98DA9119155F600C9C997 /* PBXTextBookmark */ = E0A98DA9119155F600C9C997 /* PBXTextBookmark */;
+			E0A98DAA119155F600C9C997 /* PBXTextBookmark */ = E0A98DAA119155F600C9C997 /* PBXTextBookmark */;
+			E0A98DAB119155F600C9C997 /* PBXTextBookmark */ = E0A98DAB119155F600C9C997 /* PBXTextBookmark */;
+			E0A98DAE1191577B00C9C997 /* PBXTextBookmark */ = E0A98DAE1191577B00C9C997 /* PBXTextBookmark */;
+			E0A98DAF1191577B00C9C997 /* PBXTextBookmark */ = E0A98DAF1191577B00C9C997 /* PBXTextBookmark */;
 			E0B54E87118BF2BC00FFED10 = E0B54E87118BF2BC00FFED10 /* PBXTextBookmark */;
 			E0B551A4118C349F00FFED10 = E0B551A4118C349F00FFED10 /* PBXTextBookmark */;
 			E0C172FE1185DEED008D4585 = E0C172FE1185DEED008D4585 /* PBXTextBookmark */;
@@ -1246,7 +1254,7 @@
 	};
 	E03F91D7118F7BEA00D3A76B /* main-template.html */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {941, 570}}";
+			sepNavIntBoundsRect = "{{0, 0}, {941, 806}}";
 			sepNavSelRange = "{432, 102}";
 			sepNavVisRange = "{0, 897}";
 		};
@@ -1415,9 +1423,9 @@
 	};
 	E0493616118EBE3900BCA128 /* TimelineViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {581, 14416}}";
+			sepNavIntBoundsRect = "{{0, 0}, {941, 14496}}";
 			sepNavSelRange = "{33560, 0}";
-			sepNavVisRange = "{6676, 1735}";
+			sepNavVisRange = "{5002, 1413}";
 		};
 	};
 	E0493623118EBE6300BCA128 /* PBXTextBookmark */ = {
@@ -2055,8 +2063,8 @@
 	E0A98A311190B7ED00C9C997 /* ConversationViewController.m */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {941, 2528}}";
-			sepNavSelRange = "{801, 0}";
-			sepNavVisRange = "{2950, 1590}";
+			sepNavSelRange = "{3762, 0}";
+			sepNavVisRange = "{1116, 1791}";
 			sepNavWindowFrame = "{{574, 95}, {806, 933}}";
 		};
 	};
@@ -2075,7 +2083,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 55";
 		rLen = 0;
-		rLoc = 4288;
+		rLoc = 4308;
 		rType = 0;
 		vrLen = 1272;
 		vrLoc = 151;
@@ -2295,7 +2303,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 56";
 		rLen = 0;
-		rLoc = 4288;
+		rLoc = 4308;
 		rType = 0;
 		vrLen = 851;
 		vrLoc = 680;
@@ -2532,7 +2540,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 105";
 		rLen = 0;
-		rLoc = 4754;
+		rLoc = 4774;
 		rType = 0;
 		vrLen = 1233;
 		vrLoc = 1394;
@@ -3191,7 +3199,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 139";
 		rLen = 0;
-		rLoc = 4754;
+		rLoc = 4774;
 		rType = 0;
 		vrLen = 1638;
 		vrLoc = 2639;
@@ -3201,7 +3209,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 140";
 		rLen = 0;
-		rLoc = 4754;
+		rLoc = 4774;
 		rType = 0;
 		vrLen = 1593;
 		vrLoc = 2639;
@@ -3331,7 +3339,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 138";
 		rLen = 448;
-		rLoc = 4306;
+		rLoc = 4326;
 		rType = 0;
 		vrLen = 998;
 		vrLoc = 3369;
@@ -3585,9 +3593,9 @@
 	};
 	E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {941, 2528}}";
+			sepNavIntBoundsRect = "{{0, 0}, {581, 2640}}";
 			sepNavSelRange = "{2485, 0}";
-			sepNavVisRange = "{3222, 1776}";
+			sepNavVisRange = "{3264, 1436}";
 		};
 	};
 	E0A98B961190E46D00C9C997 /* PBXTextBookmark */ = {
@@ -3645,7 +3653,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 138";
 		rLen = 448;
-		rLoc = 4306;
+		rLoc = 4326;
 		rType = 0;
 		vrLen = 1153;
 		vrLoc = 2939;
@@ -4908,7 +4916,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 120";
 		rLen = 513;
-		rLoc = 3792;
+		rLoc = 3812;
 		rType = 0;
 		vrLen = 1370;
 		vrLoc = 2817;
@@ -5038,7 +5046,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 120";
 		rLen = 513;
-		rLoc = 3792;
+		rLoc = 3812;
 		rType = 0;
 		vrLen = 1347;
 		vrLoc = 56;
@@ -5266,9 +5274,10 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 848;
-		modificationTime = 294736284.52209;
+		location = HelTweetica;
+		modificationTime = 294737470.15617;
 		originalNumberOfMultipleMatches = 1;
-		state = 0;
+		state = 1;
 	};
 	E0A98CDB119141B100C9C997 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -5407,7 +5416,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 119";
 		rLen = 0;
-		rLoc = 3740;
+		rLoc = 3759;
 		rType = 0;
 		vrLen = 1142;
 		vrLoc = 2850;
@@ -5417,7 +5426,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 119";
 		rLen = 0;
-		rLoc = 3740;
+		rLoc = 3759;
 		rType = 0;
 		vrLen = 1177;
 		vrLoc = 2817;
@@ -5454,7 +5463,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 119";
 		rLen = 0;
-		rLoc = 3740;
+		rLoc = 3759;
 		rType = 0;
 		vrLen = 1340;
 		vrLoc = 2768;
@@ -5564,7 +5573,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 145";
 		rLen = 0;
-		rLoc = 4530;
+		rLoc = 4550;
 		rType = 0;
 		vrLen = 1405;
 		vrLoc = 3110;
@@ -5574,7 +5583,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 129";
 		rLen = 0;
-		rLoc = 3964;
+		rLoc = 3984;
 		rType = 0;
 		vrLen = 1392;
 		vrLoc = 3126;
@@ -5928,7 +5937,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 129";
 		rLen = 0;
-		rLoc = 3964;
+		rLoc = 3984;
 		rType = 0;
 		vrLen = 1138;
 		vrLoc = 3258;
@@ -5938,7 +5947,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 129";
 		rLen = 0;
-		rLoc = 3964;
+		rLoc = 3984;
 		rType = 0;
 		vrLen = 1606;
 		vrLoc = 234;
@@ -5958,7 +5967,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 129";
 		rLen = 0;
-		rLoc = 3964;
+		rLoc = 3984;
 		rType = 0;
 		vrLen = 1127;
 		vrLoc = 713;
@@ -5978,7 +5987,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 129";
 		rLen = 0;
-		rLoc = 3964;
+		rLoc = 3984;
 		rType = 0;
 		vrLen = 1481;
 		vrLoc = 731;
@@ -6068,7 +6077,7 @@
 		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
 		name = "ConversationViewController.m: 131";
 		rLen = 0;
-		rLoc = 3964;
+		rLoc = 3984;
 		rType = 0;
 		vrLen = 1080;
 		vrLoc = 858;
@@ -6172,6 +6181,94 @@
 		rType = 0;
 		vrLen = 1776;
 		vrLoc = 3222;
+	};
+	E0A98DA51191555600C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
+		name = "GoToUserViewController.m: 84";
+		rLen = 0;
+		rLoc = 2485;
+		rType = 0;
+		vrLen = 1734;
+		vrLoc = 3264;
+	};
+	E0A98DA61191555800C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
+		name = "GoToUserViewController.m: 84";
+		rLen = 0;
+		rLoc = 2485;
+		rType = 0;
+		vrLen = 1436;
+		vrLoc = 3264;
+	};
+	E0A98DA7119155EE00C9C997 /* ConversationViewController.m:68 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
+		functionName = "-loadingComplete";
+		hitCount = 1;
+		ignoreCount = 0;
+		lineNumber = 68;
+		location = HelTweetica;
+		modificationTime = 294737541.753792;
+		originalNumberOfMultipleMatches = 1;
+		state = 1;
+	};
+	E0A98DA9119155F600C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
+		name = "GoToUserViewController.m: 84";
+		rLen = 0;
+		rLoc = 2485;
+		rType = 0;
+		vrLen = 2009;
+		vrLoc = 2939;
+	};
+	E0A98DAA119155F600C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
+		name = "ConversationViewController.m: 66";
+		rLen = 23;
+		rLoc = 1939;
+		rType = 0;
+		vrLen = 1744;
+		vrLoc = 1114;
+	};
+	E0A98DAB119155F600C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
+		name = "ConversationViewController.m: 66";
+		rLen = 23;
+		rLoc = 1939;
+		rType = 0;
+		vrLen = 1744;
+		vrLoc = 1114;
+	};
+	E0A98DAE1191577B00C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
+		name = "GoToUserViewController.m: 84";
+		rLen = 0;
+		rLoc = 2485;
+		rType = 0;
+		vrLen = 1436;
+		vrLoc = 3264;
+	};
+	E0A98DAF1191577B00C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */;
+		name = "ConversationViewController.m: 124";
+		rLen = 0;
+		rLoc = 3762;
+		rType = 0;
+		vrLen = 1453;
+		vrLoc = 1277;
 	};
 	E0B2088B118BDC1F00843A89 /* LKWebView.h */ = {
 		uiCtxt = {
