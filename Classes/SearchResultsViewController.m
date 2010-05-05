@@ -47,6 +47,15 @@
  	// Start search
 	[self reloadCurrentTimeline];
 	
+	// If this is a saved search, disable the save button
+	// Filter set by search term
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"query LIKE[cd] %@", query];
+	NSArray *filteredResults = [currentAccount.savedSearches filteredArrayUsingPredicate:predicate];
+	if (filteredResults.count != 0) {
+		saveButton.title = NSLocalizedString (@"Saved", @"button");
+		saveButton.enabled = NO;
+	}
+	
 	[super viewDidLoad];
 }
 

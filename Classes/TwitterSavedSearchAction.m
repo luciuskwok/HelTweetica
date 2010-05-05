@@ -29,7 +29,7 @@
 - (id) initWithDestroyIdentifier:(NSNumber*)identifier {
 	if (self = [super init]) {
 		self.twitterMethod = @"saved_searches/destroy";
-		[parameters setObject:identifier forKey:@"id"];
+		[parameters setObject:[identifier stringValue] forKey:@"id"];
 	}
 	return self;
 }

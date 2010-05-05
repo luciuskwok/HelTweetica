@@ -27,6 +27,20 @@
 	[super dealloc];
 }
 
+- (id) initWithCoder: (NSCoder*) decoder {
+	if (self = [super init]) {
+		self.query = [decoder decodeObjectForKey:@"query"];
+		self.identifier = [decoder decodeObjectForKey:@"identifier"];
+		self.receivedDate = [decoder decodeObjectForKey:@"receivedDate"];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeObject: query forKey:@"query"];
+	[encoder encodeObject: identifier forKey:@"identifier"];
+	[encoder encodeObject: receivedDate forKey:@"receivedDate"];
+}
 
 
 @end

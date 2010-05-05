@@ -19,6 +19,8 @@
 #import "TwitterAccount.h"
 #import "TwitterSavedSearch.h"
 #import "TwitterLoadSavedSearchesAction.h"
+#import "TwitterSavedSearchAction.h"
+
 
 
 @implementation SearchViewController
@@ -169,6 +171,25 @@
 	
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+		// Delete saved search from server
+		TwitterSavedSearch *savedSearch = [account.savedSearches objectAtIndex: indexPath.row];
+		TwitterSavedSearchAction *action = [[[TwitterSavedSearchAction alloc] initWithDestroyIdentifier:savedSearch.identifier] autorelease];
+		action.delegate = self;
+		action.consumerToken = account.xAuthToken;
+		action.consumerSecret = account.xAuthSecret;
+		[action start];
+		
+        // Delete the row from the data source
+		[account.savedSearches removeObjectAtIndex: indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+		
+    }   
+}
+
 
 #pragma mark Table view delegate
 
