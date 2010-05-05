@@ -214,8 +214,10 @@
 		result = @"<div class='status'>Protected user.</div>";
 	} else if ([currentTimeline count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
+	} else if ([currentTimeline count] < maxTweetsShown) {
+		// Action to Load older messages 
+		result = @"<div class='load_older'><a href='action:loadOlder'>Load older messages</a></div> ";
 	}
-	
 	return result;
 }
 

@@ -269,6 +269,7 @@
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
 								<string>E0175BAB117BFAA1003F5970</string>
+								<string>E04935D9118EB2E300BCA128</string>
 								<string>E0175BA9117BFA4D003F5970</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>E0DD53C7118E2D770042CF49</string>
@@ -279,14 +280,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>3</integer>
-									<integer>2</integer>
-									<integer>1</integer>
+									<integer>67</integer>
+									<integer>65</integer>
+									<integer>64</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {246, 858}}</string>
+							<string>{{0, 719}, {246, 858}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -303,7 +304,7 @@
 							<real>246</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>173 88 1258 917 0 0 1680 1028 </string>
+						<string>254 111 1258 917 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -321,7 +322,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E00C26401162D98D00F62B70</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TimelineViewController.h</string>
+								<string>style-ipad.css</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -329,11 +330,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E00C26411162D98D00F62B70</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>TimelineViewController.h</string>
+										<string>style-ipad.css</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0A98BBD1190FF3600C9C997</string>
+										<string>E0A98BE51191053100C9C997</string>
 										<key>history</key>
 										<array>
 											<string>E00C27F51163195700F62B70</string>
@@ -401,7 +402,6 @@
 											<string>E049352C118E9D3800BCA128</string>
 											<string>E0493623118EBE6300BCA128</string>
 											<string>E0493625118EBE6300BCA128</string>
-											<string>E03F9035118F434000D3A76B</string>
 											<string>E03F9036118F434000D3A76B</string>
 											<string>E03F9037118F434000D3A76B</string>
 											<string>E03F9038118F434000D3A76B</string>
@@ -446,13 +446,11 @@
 											<string>E0A98AAA1190C7F000C9C997</string>
 											<string>E0A98AC91190CB4100C9C997</string>
 											<string>E0A98ACA1190CB4100C9C997</string>
-											<string>E0A98B031190CFEC00C9C997</string>
 											<string>E0A98B041190CFEC00C9C997</string>
 											<string>E0A98B341190D6B100C9C997</string>
 											<string>E0A98B581190D9B900C9C997</string>
 											<string>E0A98B601190DA8300C9C997</string>
 											<string>E0A98B6C1190DC1C00C9C997</string>
-											<string>E0A98B961190E46D00C9C997</string>
 											<string>E0A98B971190E46D00C9C997</string>
 											<string>E0A98B981190E46D00C9C997</string>
 											<string>E0A98B991190E46D00C9C997</string>
@@ -461,11 +459,14 @@
 											<string>E0A98B9C1190E46D00C9C997</string>
 											<string>E0A98B9D1190E46D00C9C997</string>
 											<string>E0A98B9E1190E46D00C9C997</string>
-											<string>E0A98B9F1190E46D00C9C997</string>
-											<string>E0A98BB71190E4C200C9C997</string>
-											<string>E0A98BBA1190FF3600C9C997</string>
-											<string>E0A98BBB1190FF3600C9C997</string>
-											<string>E0A98BBC1190FF3600C9C997</string>
+											<string>E0A98BC9119101A000C9C997</string>
+											<string>E0A98BCB119101A000C9C997</string>
+											<string>E0A98BCC119101A000C9C997</string>
+											<string>E0A98BCD119101A000C9C997</string>
+											<string>E0A98BD91191044200C9C997</string>
+											<string>E0A98BDE119104B900C9C997</string>
+											<string>E0A98BE31191053100C9C997</string>
+											<string>E0A98BE41191053100C9C997</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -479,18 +480,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {990, 610}}</string>
+								<string>{{0, 0}, {990, 871}}</string>
 								<key>RubberWindowFrame</key>
-								<string>173 88 1258 917 0 0 1680 1028 </string>
+								<string>254 111 1258 917 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>610pt</string>
+							<string>871pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>261pt</string>
+							<string>0pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -558,9 +559,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {990, 234}}</string>
+										<string>{{10, 27}, {990, -27}}</string>
 										<key>RubberWindowFrame</key>
-										<string>173 88 1258 917 0 0 1680 1028 </string>
+										<string>254 111 1258 917 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -782,13 +783,13 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E0A98BB91190E4C200C9C997</string>
+		<string>E0A98BE61191053100C9C997</string>
 		<string>E0A98A111190AF9E00C9C997</string>
 		<string>E0A98A131190AF9E00C9C997</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>173 88 1258 917 0 0 1680 1028 </string>
+	<string>254 111 1258 917 0 0 1680 1028 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

@@ -119,7 +119,7 @@ p { margin: 0px 0px 20px 0px; }
 .screen_name { font-weight: bold; color: #000; }
 .time { color: #888; font-size: 13px; font-style: italic; }
 .time a { color: #88A; }
-.load_older { font-weight: bold; text-align: center; margin: 10px 0px 0px 0px; }
+.load_older { font-weight: bold; text-align: center; margin: 20px; }
 
 .tweet_actions {
 	display: table-cell; 
@@ -132,7 +132,7 @@ p { margin: 0px 0px 20px 0px; }
 
 .status {
 	text-align: center;
-	margin: 40px;
+	margin: 20px;
 	font-size: 40px; 
 	font-weight: bold;
 	color: #BBB;

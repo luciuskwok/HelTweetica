@@ -10,7 +10,7 @@
 
 
 @implementation GoToUserViewController
-@synthesize twitter, users, delegate;
+@synthesize twitter, users, searchController, delegate;
 
 
 - (id)initWithTwitter:(Twitter*)aTwitter {
@@ -30,6 +30,7 @@
 - (void)dealloc {
 	[twitter release];
 	[users release];
+	[searchController release];
 	[super dealloc];
 }
 
@@ -45,17 +46,33 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+	
+	// Set table header view
+	CGRect frame = self.view.bounds;
+	frame.size.height = 44;
+	UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:frame] autorelease];
+	searchBar.delegate = self;
+	searchBar.tintColor = [UIColor blackColor];
+	searchBar.placeholder = NSLocalizedString (@"Screen name", @"search bar placeholder");
+	self.tableView.tableHeaderView = searchBar;
+	
 	// Title
 	self.navigationItem.title = NSLocalizedString (@"Go to User", @"Nav bar");
 	
-	// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	// Display an Edit button in the navigation bar for this view controller.
+    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	
+	// Search display controller
+	self.searchController = [[[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self] autorelease];
+	searchController.delegate = self;
+	searchController.searchResultsDataSource = self;
+	searchController.searchResultsDelegate = self;
+	
 }
 
 - (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
+	[super viewDidUnload];
+	self.searchController = nil;
 }
 
 /*
@@ -89,82 +106,50 @@
 
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
+ 	if (aTableView == self.tableView) {
+		return 1;
+	}
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.users.count;
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
+ 	if (aTableView == self.tableView) {
+		return self.users.count;
+	}
 }
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+   	if (aTableView == self.tableView) {
+		static NSString *CellIdentifier = @"Cell";
+		UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		}
+		
+		// Set the label text to the screen name
+		if (indexPath.row < self.users.count) {
+			TwitterUser *user = [self.users objectAtIndex:indexPath.row];
+			cell.textLabel.text = user.screenName;
+		}
+		return cell;
     }
-    
-    if (indexPath.row < self.users.count) {
-		TwitterUser *user = [self.users objectAtIndex:indexPath.row];
-		cell.textLabel.text = user.screenName;
-	}
-    
-    return cell;
+	
+	// Search display controller
+    return nil;
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < self.users.count) {
-		TwitterUser *user = [self.users objectAtIndex:indexPath.row];
-		if ([delegate respondsToSelector:@selector(showUserPage:)])
-			[delegate showUserPage: user.screenName];
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (aTableView == self.tableView) {
+		if (indexPath.row < self.users.count) {
+			TwitterUser *user = [self.users objectAtIndex:indexPath.row];
+			if ([delegate respondsToSelector:@selector(showUserPage:)])
+				[delegate showUserPage: user.screenName];
+		}
 	}
 }
 

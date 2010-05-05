@@ -323,6 +323,9 @@
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];
+	
+	// Show Loading message.
+	[self rewriteTweetArea];
 }
 
 - (void) startLoadingCurrentTimeline {
