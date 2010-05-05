@@ -1,8 +1,8 @@
 //
-//  LoadSavedSearchesAction.h
+//  TwitterSavedSearchAction.h
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/1/10.
+//  Created by Lucius Kwok on 5/5/10.
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
  
@@ -15,17 +15,13 @@
 
 #import <Foundation/Foundation.h>
 #import "TwitterAction.h"
-#import "LKJSONParser.h"
-#import "TwitterSavedSearch.h"
 
 
-@interface TwitterLoadSavedSearchesAction : TwitterAction <LKJSONParserDelegate> {
-	NSMutableArray *savedSearches;
-	NSString *key;
-	TwitterSavedSearch *currentSavedSearch;
+@interface TwitterSavedSearchAction : TwitterAction {
+	BOOL destroy;
 }
-@property (nonatomic, retain) NSMutableArray *savedSearches;
-@property (nonatomic, copy) NSString *key;
-@property (nonatomic, retain) TwitterSavedSearch *currentSavedSearch;
+
+- (id) initWithCreateQuery:(NSString*)query;
+- (id) initWithDestroyIdentifier:(NSNumber*)identifier;
 
 @end

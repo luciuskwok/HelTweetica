@@ -63,7 +63,7 @@
 		self.lists = [self mutableArrayForKey:@"lists" coder:decoder];
 		self.listSubscriptions = [self mutableArrayForKey:@"listSubscriptions" coder:decoder];
 				
-		self.savedSearches = [NSKeyedUnarchiver unarchiveObjectWithData:[decoder decodeObjectForKey: @"savedSearches"]];
+		self.savedSearches = [self mutableArrayForKey: @"savedSearches2" coder:decoder];
 	}
 	return self;
 }
@@ -81,7 +81,7 @@
 	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:lists] forKey: @"lists"];
 	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:listSubscriptions] forKey: @"listSubscriptions"];
 
-	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:savedSearches] forKey: @"savedSearches"];
+	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:savedSearches] forKey: @"savedSearches2"];
 }
 
 - (void) dealloc {

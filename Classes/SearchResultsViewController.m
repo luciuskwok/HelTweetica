@@ -8,14 +8,18 @@
 
 #import "SearchResultsViewController.h"
 #import "TwitterSearchAction.h"
+#import "TwitterSavedSearchAction.h"
 
 
 @implementation SearchResultsViewController
+@synthesize saveButton, query;
+
 
 // Designated initializer. Uses aMessage as the head of a chain of replies, and gets each status in the reply chain.
-- (id)initWithQuery:(NSString*)query {
+- (id)initWithQuery:(NSString*)aQuery {
 	self = [super initWithNibName:@"SearchResults" bundle:nil];
 	if (self) {
+		self.query = aQuery;
 		self.currentTimeline = [NSMutableArray array]; // Always start with an empty array of messages for Search.
 		self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
 		self.customTabName = NSLocalizedString (@"Results", @"tab");
@@ -29,6 +33,8 @@
 }
 
 - (void)dealloc {
+	[saveButton release];
+	[query release];
     [super dealloc];
 }
 
@@ -46,8 +52,7 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+	self.saveButton = nil;
 }
 
 #pragma mark HTML formatting
@@ -89,6 +94,35 @@
 	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];	
+}
+
+#pragma mark IBAction
+
+- (IBAction)saveSearch:(id)sender {
+	// Update button 
+	saveButton.title = NSLocalizedString (@"Saving...", @"button");
+	saveButton.enabled = NO;
+	
+	// Send action to save search query
+	TwitterSavedSearchAction *action = [[[TwitterSavedSearchAction alloc] initWithCreateQuery:query] autorelease];
+	action.completionTarget = self;
+	action.completionAction = @selector(didSaveSearch:);
+	[self startTwitterAction: action];
+}
+
+- (void)didSaveSearch:(TwitterSavedSearchAction *)action {
+	// Update button 
+	if (action.statusCode < 400 || action.statusCode == 403) {
+		// Success
+		saveButton.title = NSLocalizedString (@"Saved", @"button");
+		saveButton.enabled = NO;
+		// Clear cache of saved searches. Or add the search that was just saved.
+		[currentAccount.savedSearches removeAllObjects];
+	} else {
+		// Failure: allow user to re-save search.
+		saveButton.title = NSLocalizedString (@"Save Search", @"button");
+		saveButton.enabled = YES;
+	}
 }
 
 @end

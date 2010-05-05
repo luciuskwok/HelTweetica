@@ -17,6 +17,7 @@
 
 #import "SearchViewController.h"
 #import "TwitterAccount.h"
+#import "TwitterSavedSearch.h"
 #import "TwitterLoadSavedSearchesAction.h"
 
 
@@ -42,20 +43,30 @@
 		
 		[self setContentSize];
 
-		// Request a fresh list of list subscriptions.
-		loading = YES;
-		self.statusMessage = NSLocalizedString (@"Loading...", @"status message");
+		// Check how fresh the saved searches cache is.
+		BOOL shouldReload = YES;
+		if (account.savedSearches.count > 0) {
+			TwitterSavedSearch *savedSearch = [account.savedSearches lastObject];
+			if (savedSearch.receivedDate && [savedSearch.receivedDate timeIntervalSinceNow] > -60)
+				shouldReload = NO;
+		}
 		
-		// Load Saved Searches from Twitter
-		TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
-		action.completionTarget= self;
-		action.completionAction = @selector(didLoadSavedSearches:);
-		action.delegate = self;
-		action.consumerToken = account.xAuthToken;
-		action.consumerSecret = account.xAuthSecret;
-		
-		// Start the URL connection
-		[action start];
+		if (shouldReload) {
+			// Request a fresh list of list subscriptions.
+			loading = YES;
+			self.statusMessage = NSLocalizedString (@"Loading...", @"status message");
+			
+			// Load Saved Searches from Twitter
+			TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
+			action.completionTarget= self;
+			action.completionAction = @selector(didLoadSavedSearches:);
+			action.delegate = self;
+			action.consumerToken = account.xAuthToken;
+			action.consumerSecret = account.xAuthSecret;
+			
+			// Start the URL connection
+			[action start];
+		}
 	}
 	return self;
 }
@@ -76,7 +87,7 @@
 #pragma mark TwitterAction
 
 - (void)didLoadSavedSearches:(TwitterLoadSavedSearchesAction *)action {
-	account.savedSearches = action.queries;
+	account.savedSearches = action.savedSearches;
 	loading = NO;
 	[self setContentSize];
 	[self.tableView reloadData];
@@ -111,8 +122,8 @@
 	// Title
 	self.navigationItem.title = NSLocalizedString (@"Search", @"Nav bar");
 	
-   // Display an Edit button in the navigation bar for this view controller.
-    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	// Display an Edit button in the navigation bar for this view controller.
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
 	// Set the keyboard focus on the search bar
 	[searchBar becomeFirstResponder];
@@ -146,10 +157,10 @@
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
 	}
 
-	NSString *query;
+	TwitterSavedSearch *savedSearch;
 	if (indexPath.row < account.savedSearches.count) {
-		query = [account.savedSearches objectAtIndex: indexPath.row];
-		cell.textLabel.text = query;
+		savedSearch = [account.savedSearches objectAtIndex: indexPath.row];
+		cell.textLabel.text = savedSearch.query;
 		cell.textLabel.textColor = [UIColor blackColor];
 	} else if (indexPath.row == 0) {
 		cell.textLabel.text = self.statusMessage;
@@ -184,8 +195,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row < account.savedSearches.count) {
-		NSString *query = [account.savedSearches objectAtIndex: indexPath.row];
-		[self searchFor:query];
+		TwitterSavedSearch *savedSearch = [account.savedSearches objectAtIndex: indexPath.row];
+		[self searchFor:savedSearch.query];
 	}
 }
 

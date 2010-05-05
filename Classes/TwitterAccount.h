@@ -33,7 +33,7 @@
 	NSMutableArray *lists;
 	NSMutableArray *listSubscriptions;
 	
-	NSArray *savedSearches;
+	NSMutableArray *savedSearches;
 }
 
 @property (nonatomic, retain) NSString *screenName;
@@ -48,7 +48,7 @@
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 
-@property (nonatomic, retain) NSArray *savedSearches;
+@property (nonatomic, retain) NSMutableArray *savedSearches;
 
 - (void) removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier;
 

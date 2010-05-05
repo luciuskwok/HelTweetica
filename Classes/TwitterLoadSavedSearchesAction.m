@@ -17,20 +17,20 @@
 
 
 @implementation TwitterLoadSavedSearchesAction
-@synthesize queries, key;
+@synthesize savedSearches, key, currentSavedSearch;
 
 
 - (id)init {
 	self = [super init];
 	if (self) {
 		self.twitterMethod = @"saved_searches";
-		self.queries = [NSMutableArray array];
+		self.savedSearches = [NSMutableArray array];
 	}
 	return self;
 }
 
 - (void) dealloc {
-	[queries release];
+	[savedSearches release];
 	[key release];
 	[super dealloc];
 }
@@ -54,9 +54,29 @@
 
 - (void) parser:(LKJSONParser*)parser foundStringValue:(NSString*)value {
 	if ([key isEqualToString:@"query"]) {
-		[queries addObject:value];
+		currentSavedSearch.query = value;
 	}
 }
+
+- (void) parser:(LKJSONParser*)parser foundNumberValue:(NSString*)value {
+	SInt64 x = 0;
+	[[NSScanner scannerWithString:value] scanLongLong: &x];
+	NSNumber *number = [NSNumber numberWithLongLong: x];
+	
+	if ([key isEqualToString:@"id"]) {
+		currentSavedSearch.identifier = number;
+	} 
+}
+
+- (void) parserDidBeginDictionary:(LKJSONParser*)parser {
+	self.currentSavedSearch = [[[TwitterSavedSearch alloc] init] autorelease];
+}
+
+- (void) parserDidEndDictionary:(LKJSONParser*)parser {
+	[savedSearches addObject:currentSavedSearch];
+	self.currentSavedSearch = nil;
+}
+
 
 
 @end

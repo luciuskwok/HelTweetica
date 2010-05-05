@@ -11,9 +11,15 @@
 
 
 @interface SearchResultsViewController : TimelineViewController {
-
+	IBOutlet UIBarButtonItem *saveButton;
+	NSString *query;
 }
-- (id)initWithQuery:(NSString*)query;
+@property (nonatomic, retain) UIBarButtonItem *saveButton;
+@property (nonatomic, retain) NSString *query;
+
+- (id)initWithQuery:(NSString*)aQuery;
 - (NSString *)htmlSafeString:(NSString *)string;
+
+- (IBAction)saveSearch:(id)sender;
 
 @end
