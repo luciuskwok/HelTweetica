@@ -91,6 +91,13 @@
 	[currentTimelineAction release];
 	[customPageTitle release];
 	[customTabName release];
+	
+	currentPopover.delegate = nil;
+	[currentPopover release];
+	currentActionSheet.delegate = nil;
+	[currentActionSheet release];
+	currentAlert.delegate = nil;
+	[currentAlert release];
 
 	[super dealloc];
 }
@@ -651,7 +658,7 @@
 			[tweetRowHTML replaceOccurrencesOfString:@"{faveImageSuffix}" withString:faveImageSuffix options:0 range:NSMakeRange(0, tweetRowHTML.length)];
 			
 			// Replace blocks in template
-			[self replaceBlock: @"InReplyTo" display: (message.inReplyToScreenName != nil) inTemplate:tweetRowHTML];
+			[self replaceBlock: @"InReplyTo" display: (message.inReplyToStatusIdentifier != nil) inTemplate:tweetRowHTML];
 			[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
 			[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
 			
@@ -785,6 +792,8 @@
 		} else if (c == '>') {
 			isInsideTag = NO;
 			wordLength = 0;
+		} else if (c == 160) { // non-breaking space
+			wordLength++;
 		} else if ([whitespace characterIsMember:c]) {
 			wordLength = 0;
 		} else {
@@ -805,7 +814,6 @@
 				if (foundRange.location != NSNotFound && foundRange.length >= 2) {
 					usernameText = [s substringWithRange: NSMakeRange (foundRange.location + 1, foundRange.length - 1)];
 					insertText = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", usernameText, usernameText];
-					NSLog (@"username = '%@', insert = '%@'", usernameText, insertText);
 					[s replaceCharactersInRange: foundRange withString: insertText];
 					index += insertText.length;
 					wordLength = 0;
