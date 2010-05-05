@@ -509,6 +509,8 @@
 #pragma mark View Controllers to push
 
 - (void) showUserPage:(NSString*)screenName {
+	[self closeAllPopovers];
+	
 	// Use a custom timeline showing the user's tweets, but with a big header showing the user's info.
 	TwitterUser *user = [twitter userWithScreenName:screenName];
 	if (user == nil) {

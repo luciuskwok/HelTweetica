@@ -172,6 +172,10 @@
 		E0A98A691190BE9C00C9C997 /* conversation-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* conversation-template.html */; };
 		E0A98B691190DB7D00C9C997 /* toolbar-user.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B681190DB7D00C9C997 /* toolbar-user.png */; };
 		E0A98B6A1190DB7D00C9C997 /* toolbar-user.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B681190DB7D00C9C997 /* toolbar-user.png */; };
+		E0A98B7C1190E0E100C9C997 /* GoToUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */; };
+		E0A98B7D1190E0E100C9C997 /* GoToUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B7B1190E0E100C9C997 /* GoToUser.xib */; };
+		E0A98B7E1190E0E100C9C997 /* GoToUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */; };
+		E0A98B7F1190E0E100C9C997 /* GoToUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B7B1190E0E100C9C997 /* GoToUser.xib */; };
 		E0B2088D118BDC1F00843A89 /* LKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B2088C118BDC1F00843A89 /* LKWebView.m */; };
 		E0B54E78118BF0BA00FFED10 /* TwitterLoginAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B54E77118BF0BA00FFED10 /* TwitterLoginAction.m */; };
 		E0B54F19118BFC9E00FFED10 /* TwitterLoadTimelineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B54F18118BFC9E00FFED10 /* TwitterLoadTimelineAction.m */; };
@@ -313,6 +317,9 @@
 		E0A98A321190B7ED00C9C997 /* Conversation.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Conversation.xib; sourceTree = "<group>"; };
 		E0A98A671190BE9C00C9C997 /* conversation-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "conversation-template.html"; path = "Resources/conversation-template.html"; sourceTree = "<group>"; };
 		E0A98B681190DB7D00C9C997 /* toolbar-user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-user.png"; path = "Resources/toolbar-user.png"; sourceTree = "<group>"; };
+		E0A98B791190E0E100C9C997 /* GoToUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoToUserViewController.h; sourceTree = "<group>"; };
+		E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoToUserViewController.m; sourceTree = "<group>"; };
+		E0A98B7B1190E0E100C9C997 /* GoToUser.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoToUser.xib; sourceTree = "<group>"; };
 		E0B2088B118BDC1F00843A89 /* LKWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKWebView.h; sourceTree = "<group>"; };
 		E0B2088C118BDC1F00843A89 /* LKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKWebView.m; sourceTree = "<group>"; };
 		E0B54E76118BF0BA00FFED10 /* TwitterLoginAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoginAction.h; sourceTree = "<group>"; };
@@ -531,6 +538,9 @@
 				E00C262E1162D91600F62B70 /* ComposeViewController.h */,
 				E00C262F1162D91600F62B70 /* ComposeViewController.m */,
 				E00C26291162D90800F62B70 /* Compose.xib */,
+				E0A98B791190E0E100C9C997 /* GoToUserViewController.h */,
+				E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */,
+				E0A98B7B1190E0E100C9C997 /* GoToUser.xib */,
 			);
 			name = RootView;
 			sourceTree = "<group>";
@@ -788,6 +798,7 @@
 				E0A98A361190B7ED00C9C997 /* Conversation.xib in Resources */,
 				E0A98A691190BE9C00C9C997 /* conversation-template.html in Resources */,
 				E0A98B6A1190DB7D00C9C997 /* toolbar-user.png in Resources */,
+				E0A98B7F1190E0E100C9C997 /* GoToUser.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -845,6 +856,7 @@
 				E0A98A341190B7ED00C9C997 /* Conversation.xib in Resources */,
 				E0A98A681190BE9C00C9C997 /* conversation-template.html in Resources */,
 				E0A98B691190DB7D00C9C997 /* toolbar-user.png in Resources */,
+				E0A98B7D1190E0E100C9C997 /* GoToUser.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -895,6 +907,7 @@
 				E0D6F939119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */,
 				E0D6F9BA1190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */,
 				E0A98A351190B7ED00C9C997 /* ConversationViewController.m in Sources */,
+				E0A98B7E1190E0E100C9C997 /* GoToUserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,6 +955,7 @@
 				E0D6F938119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */,
 				E0D6F9B91190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */,
 				E0A98A331190B7ED00C9C997 /* ConversationViewController.m in Sources */,
+				E0A98B7C1190E0E100C9C997 /* GoToUserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

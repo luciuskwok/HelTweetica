@@ -18,8 +18,8 @@
 // Constants
 #define kMaxNumberOfMessagesInATimeline 600
 // When reloading a timeline, newly downloaded messages are merged with existing ones, sorted by identifier, and the oldest ones past this limit are trimmed off.
-#define kMaxMessageStaleness (20 * 60) 
-// When reloading a timeline, when the newest message in the app is older than this, the app reloads the entire timeline instead of requesting only status updates newer than the newest in the app. This is set to 20 minutes. The number is in seconds.
+#define kMaxMessageStaleness (2 * 60 * 60) 
+// When reloading a timeline, when the newest message in the app is older than this, the app reloads the entire timeline instead of requesting only status updates newer than the newest in the app. This is set to 2 hours. The value is in seconds.
 
 
 #import <UIKit/UIKit.h>
@@ -28,12 +28,13 @@
 #import "ListsViewController.h"
 #import "SearchViewController.h"
 #import "ComposeViewController.h"
+#import "GoToUserViewController.h"
 
 @class TwitterAction;
 @class TwitterLoadTimelineAction;
 
 
-@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate> {
+@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, GoToUserViewControllerDelegate> {
 	IBOutlet LKWebView *webView;
 	IBOutlet UIBarButtonItem *composeButton;
 
