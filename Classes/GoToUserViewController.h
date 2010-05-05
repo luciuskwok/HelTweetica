@@ -15,11 +15,13 @@
 @interface GoToUserViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate> {
 	Twitter *twitter;
 	NSArray *users;
+	NSArray *searchResults;
 	UISearchDisplayController *searchController;
 	id <GoToUserViewControllerDelegate> delegate;
 }
 @property (nonatomic, retain) Twitter *twitter;
 @property (nonatomic, retain) NSArray *users;
+@property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) UISearchDisplayController *searchController;
 @property (nonatomic, assign) id delegate;
 

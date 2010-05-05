@@ -212,6 +212,8 @@
 		result = @"<div class='status'>Loading...</div>";
 	} else if (unauthorized) {
 		result = @"<div class='status'>Protected user.</div>";
+	} else if (notFound) {
+		result = @"<div class='status'>No such user.</div>";
 	} else if ([currentTimeline count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	} else if ([currentTimeline count] < maxTweetsShown) {
@@ -274,13 +276,22 @@
 
 - (void)handleTwitterStatusCode:(int)code {
 	// For user pages, a status code of 401 indicates that the currentAccount isn't authorized to view this user's page
-	if (code == 401) {
-		unauthorized = YES;
+	switch (code) {
+		case 401:
+			unauthorized = YES;
+			break;
+		case 404:
+			notFound = YES;
+			break;
+		default:
+			[super handleTwitterStatusCode:code];
+			break;
+	}
+	
+	if (code >= 400) {
 		[refreshTimer invalidate];
 		refreshTimer = nil;
 		[self rewriteTweetArea];
-	} else {
-		[super handleTwitterStatusCode:code];
 	}
 }
 

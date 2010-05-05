@@ -24,6 +24,7 @@
 	IBOutlet UIToolbar *topToolbar;
 	TwitterUser *user;
 	BOOL unauthorized;
+	BOOL notFound;
 }
 @property (nonatomic, retain) UIToolbar *topToolbar;
 @property (nonatomic, retain) TwitterUser *user;

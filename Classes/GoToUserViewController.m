@@ -10,7 +10,7 @@
 
 
 @implementation GoToUserViewController
-@synthesize twitter, users, searchController, delegate;
+@synthesize twitter, users, searchResults, searchController, delegate;
 
 
 - (id)initWithTwitter:(Twitter*)aTwitter {
@@ -20,7 +20,7 @@
 		
 		// Sort users by screen name
 		NSMutableArray *allUsers = [NSMutableArray arrayWithArray:[aTwitter.users allObjects]];
-		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"screenName" ascending:YES] autorelease];
+		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"screenName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
 		[allUsers sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
 		self.users = allUsers;
 	}
@@ -30,6 +30,7 @@
 - (void)dealloc {
 	[twitter release];
 	[users release];
+	[searchResults release];
 	[searchController release];
 	[super dealloc];
 }
@@ -53,7 +54,7 @@
 	UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:frame] autorelease];
 	searchBar.delegate = self;
 	searchBar.tintColor = [UIColor blackColor];
-	searchBar.placeholder = NSLocalizedString (@"Screen name", @"search bar placeholder");
+	searchBar.placeholder = NSLocalizedString (@"Screen name or full name", @"search bar placeholder");
 	self.tableView.tableHeaderView = searchBar;
 	
 	// Title
@@ -75,41 +76,13 @@
 	self.searchController = nil;
 }
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
  	if (aTableView == self.tableView) {
 		return 1;
 	}
+	return 1;
 }
 
 
@@ -117,43 +90,66 @@
  	if (aTableView == self.tableView) {
 		return self.users.count;
 	}
+	return self.searchResults.count;
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-   	if (aTableView == self.tableView) {
-		static NSString *CellIdentifier = @"Cell";
-		UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		}
-		
-		// Set the label text to the screen name
-		if (indexPath.row < self.users.count) {
-			TwitterUser *user = [self.users objectAtIndex:indexPath.row];
-			cell.textLabel.text = user.screenName;
-		}
-		return cell;
-    }
+	NSArray *array = (aTableView == self.tableView) ? self.users : self.searchResults;
 	
-	// Search display controller
-    return nil;
+   	static NSString *CellIdentifier = @"Cell";
+	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+	}
+	
+	// Set the label text to the screen name
+	if (indexPath.row < array.count) {
+		TwitterUser *user = [array objectAtIndex:indexPath.row];
+		cell.textLabel.text = user.screenName;
+	}
+	return cell;
 }
 
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (aTableView == self.tableView) {
-		if (indexPath.row < self.users.count) {
-			TwitterUser *user = [self.users objectAtIndex:indexPath.row];
-			if ([delegate respondsToSelector:@selector(showUserPage:)])
-				[delegate showUserPage: user.screenName];
-		}
+	NSArray *array = (aTableView == self.tableView) ? self.users : self.searchResults;
+
+	if (indexPath.row < array.count) {
+		TwitterUser *user = [array objectAtIndex:indexPath.row];
+		if ([delegate respondsToSelector:@selector(showUserPage:)])
+			[delegate showUserPage: user.screenName];
 	}
 }
 
+#pragma mark Search display delegate
 
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+	// Filter set by search term
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"screenName CONTAINS[cd] %@ OR fullName CONTAINS[cd] %@", searchString, searchString];
+	NSSet *filteredResults = [twitter.users filteredSetUsingPredicate:predicate];
+	
+	// Sort by screen name case-insensitive
+	NSMutableArray *sortedResults = [NSMutableArray arrayWithArray: [filteredResults allObjects]];
+	NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"screenName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
+	[sortedResults sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
+	
+	self.searchResults = sortedResults;
+	
+	return YES;
+}
+
+#pragma mark Search bar delegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+	// Use the entered search term as the user name
+	NSString *screenName = searchBar.text;
+	if ([delegate respondsToSelector:@selector(showUserPage:)])
+		[delegate showUserPage: screenName];
+	
+}
 
 @end
 

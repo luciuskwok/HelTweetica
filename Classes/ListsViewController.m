@@ -62,7 +62,7 @@
     [super viewDidLoad];
 	
 	// Title
-	self.navigationItem.title = NSLocalizedString (@"Lists", @"Nav bar");
+	self.navigationItem.title = NSLocalizedString (@"Lists and Subscriptions", @"Nav bar");
 	
 	[self setContentSize];
 	[self.tableView reloadData];
