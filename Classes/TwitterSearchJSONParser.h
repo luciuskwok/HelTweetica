@@ -30,6 +30,6 @@
 @property (nonatomic, retain) NSString *keyPath;
 @property (nonatomic, retain) NSDate *receivedTimestamp;
 
-- (NSArray*) messagesWithJSONData:(NSData*)jsonData;
+- (void) parseJSONData:(NSData*)jsonData;
 
 @end

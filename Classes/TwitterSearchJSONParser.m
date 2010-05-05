@@ -35,12 +35,11 @@
 	[super dealloc];
 }
 
-- (NSArray*) messagesWithJSONData:(NSData*)jsonData {
+- (void) parseJSONData:(NSData*)jsonData {
 	LKJSONParser *parser = [[LKJSONParser alloc] initWithData:jsonData];
 	parser.delegate = self;
 	[parser parse];
 	[parser release];
-	return [[messages retain] autorelease];
 }
 
 #pragma mark -
