@@ -25,6 +25,7 @@
 #import "ConversationViewController.h"
 #import "UserPageViewController.h"
 #import "WebBrowserViewController.h"
+#import "SearchResultsViewController.h"
 
 #import "TwitterFavoriteAction.h"
 #import "TwitterRetweetAction.h"
@@ -32,7 +33,6 @@
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterLoadListsAction.h"
 #import "TwitterLoadSavedSearchesAction.h"
-#import "TwitterSearchAction.h"
 
 
 
@@ -119,6 +119,14 @@
 - (IBAction)close:(id)sender {
 	[self closeAllPopovers];
 	[self.navigationController popViewControllerAnimated: YES];
+}
+
+- (IBAction) search: (id) sender {
+	if ([self closeAllPopovers] == NO) {
+		SearchViewController *search = [[[SearchViewController alloc] initWithAccount:currentAccount] autorelease];
+		search.delegate = self;
+		[self presentContent: search inNavControllerInPopoverFromItem: sender];
+	}
 }
 
 - (IBAction) goToUser:(id)sender {
@@ -260,9 +268,8 @@
 }
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
-	// Synchronize timeline with Twitter cache. Ignore favorites flag in Search results because they're always false.
-	BOOL updateFaves = ![action isKindOfClass:[TwitterSearchAction class]]; 
-	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:updateFaves];
+	// Synchronize timeline with Twitter cache.
+	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:YES];
 	[twitter addUsers:action.users];
 	
 	// Limit the length of the timeline
@@ -826,30 +833,12 @@
 	[self.webView scrollToTop];
 }
 
-- (NSString *)htmlSafeString:(NSString *)string {
-	NSMutableString *result = [NSMutableString stringWithString:string];
-	[result replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:0 range:NSMakeRange(0, result.length)];
-	return result;
-}
 
 - (void) search:(SearchViewController*)search didRequestQuery:(NSString*)query {
 	[self closeAllPopovers];
-	
-	self.currentTimeline = [NSMutableArray array]; // Always start with an empty array of messages for Search.
-	self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
-	self.customTabName = NSLocalizedString (@"Results", @"tab");
-	
-	// Create Twitter action to load search results into the current timeline.
-	TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultLoadCount] autorelease];
-	self.currentTimelineAction = action;
-	[self reloadCurrentTimeline];
-	
-	// Rewrite and scroll web view
-	[self rewriteTweetArea];	
-	[self.webView scrollToTop];
+	SearchResultsViewController *vc = [[[SearchResultsViewController alloc] initWithQuery:query] autorelease];
+	vc.currentAccount = self.currentAccount;
+	[self.navigationController pushViewController: vc animated: YES];
 }
 
 

@@ -21,6 +21,8 @@
 
 @interface ConversationViewController : TimelineViewController {
 	BOOL loadingComplete;
+	BOOL messageNotFound;
+	BOOL protectedUser;
 }
 - (id)initWithMessageIdentifier:(NSNumber*)anIdentifier;
 - (void)loadMessage:(NSNumber*)messageIdentifier;

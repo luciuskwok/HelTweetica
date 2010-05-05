@@ -31,6 +31,8 @@
 	NSMutableArray *statuses;
 	
 	BOOL privateList;
+	
+	NSDate *receivedDate;
 }
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *username;
@@ -44,5 +46,7 @@
 @property (nonatomic, retain) NSMutableArray *statuses;
 
 @property (assign) BOOL privateList;
+
+@property (nonatomic, retain) NSDate *receivedDate;
 
 @end

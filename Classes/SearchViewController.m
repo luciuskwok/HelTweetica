@@ -113,6 +113,9 @@
 	
    // Display an Edit button in the navigation bar for this view controller.
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	
+	// Set the keyboard focus on the search bar
+	[searchBar becomeFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

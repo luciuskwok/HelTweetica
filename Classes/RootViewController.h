@@ -30,7 +30,6 @@
 
 - (IBAction) accounts: (id) sender;
 - (IBAction) lists: (id) sender;
-- (IBAction) search: (id) sender;
 - (IBAction) login: (id) sender;
 - (IBAction) allstars: (id) sender;
 - (IBAction) analyze: (id) sender;

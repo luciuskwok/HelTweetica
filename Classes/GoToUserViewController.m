@@ -69,6 +69,8 @@
 	searchController.searchResultsDataSource = self;
 	searchController.searchResultsDelegate = self;
 	
+	// Set the keyboard focus on the search bar
+	//[searchBar becomeFirstResponder]; // This isn't working.
 }
 
 - (void)viewDidUnload {

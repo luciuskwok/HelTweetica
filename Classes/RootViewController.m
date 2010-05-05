@@ -280,14 +280,6 @@
 	}
 }
 
-- (IBAction) search: (id) sender {
-	if ([self closeAllPopovers] == NO) {
-		SearchViewController *search = [[[SearchViewController alloc] initWithAccount:currentAccount] autorelease];
-		search.delegate = self;
-		[self presentContent: search inNavControllerInPopoverFromItem: sender];
-	}
-}
-
 - (IBAction) allstars: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:currentAccount.timeline] autorelease];

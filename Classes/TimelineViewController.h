@@ -79,6 +79,7 @@
 
 // IBActions
 - (IBAction) close:(id)sender;
+- (IBAction) search: (id) sender;
 - (IBAction) goToUser:(id)sender;
 - (IBAction) reloadData: (id) sender;
 - (IBAction) compose: (id) sender;

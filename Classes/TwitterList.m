@@ -19,7 +19,15 @@
 
 
 @implementation TwitterList
-@synthesize name, username, fullName, description, slug, identifier, memberCount, statuses, privateList;
+@synthesize name, username, fullName, description, slug, identifier, memberCount, statuses, privateList, receivedDate;
+
+- (id)init {
+	self = [super init];
+	if (self) {
+		self.receivedDate = [NSDate date];
+	}
+	return self;
+}
 
 - (void) dealloc {
 	[name release];
@@ -30,6 +38,7 @@
 	[identifier release];
 	[memberCount release];
 	[statuses release];
+	[receivedDate release];
 	[super dealloc];
 }
 
@@ -45,6 +54,8 @@
 		self.memberCount = [decoder decodeObjectForKey:@"memberCount"];
 
 		privateList = [decoder decodeBoolForKey:@"privateList"];
+		
+		self.receivedDate = [decoder decodeObjectForKey:@"receivedDate"];
 	}
 	return self;
 }
@@ -60,6 +71,8 @@
 	[encoder encodeObject:memberCount forKey:@"memberCount"];
 	
 	[encoder encodeBool:privateList forKey:@"privateList"];
+	
+	[encoder encodeObject:receivedDate forKey:@"receivedDate"];
 }
 
 #pragma mark -

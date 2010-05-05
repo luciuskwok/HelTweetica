@@ -41,6 +41,7 @@
 @property (assign) id delegate;
 
 - (id)initWithAccount:(TwitterAccount*)anAccount;
+- (void) loadListsOfUser:(NSString*)userOrNil;
 
 @end
 

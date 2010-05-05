@@ -18,6 +18,7 @@
 	if (self) {
 		self.customPageTitle = NSLocalizedString (@"The <b>Conversation</b>", @"title");
 		self.currentTimeline = [NSMutableArray array];
+		shouldReloadAfterWebViewFinishesRendering = YES; // This flag is also used to indicate that the web view has not yet loaded the template HTML.
 		[self loadMessage:anIdentifier];
 	}
 	return self;
@@ -29,7 +30,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	shouldReloadAfterWebViewFinishesRendering = NO;
 }
 
 - (void)viewDidUnload {
@@ -66,7 +66,8 @@
 - (void)loadingComplete {
 	// No more messages
 	loadingComplete = YES;
-	[self rewriteTweetArea];
+	if (shouldReloadAfterWebViewFinishesRendering == NO) 
+		[self rewriteTweetArea];
 }
 
 - (void)didLoadMessage:(TwitterLoadTimelineAction *)action {
@@ -75,14 +76,11 @@
 	[twitter addUsers:action.users];
 	
 	// Load next message in conversation.
-	if (currentTimeline.count > 0) {
+	if (!loadingComplete && currentTimeline.count > 0) {
 		TwitterMessage *lastMessage = [currentTimeline lastObject];
 		[self loadInReplyToMessage: lastMessage];
-		[self rewriteTweetArea];	
-	} else {
-		// No more messages or an error occurred.
-		NSLog (@"No messages were returned for the status id.");
-		[self loadingComplete];
+		if (shouldReloadAfterWebViewFinishesRendering == NO) 
+			[self rewriteTweetArea];	
 	}
 }
 
@@ -102,8 +100,8 @@
 
 - (void) fireRefreshTimer:(NSTimer*)timer {
 	// Refresh timer only to update timestamps.
-	[self rewriteTweetArea];
-	[refreshTimer invalidate];
+	if (shouldReloadAfterWebViewFinishesRendering == NO) 
+		[self rewriteTweetArea];
 	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
 }
 
@@ -115,12 +113,22 @@
 	// Do nothing because we're already in a conversation.
 }
 
+- (void)handleTwitterStatusCode:(int)code {
+	// Ignore all status codes while loading tweets and don't load any more tweets.
+	switch (code) {
+		case 403: protectedUser = YES; break;
+		case 404: messageNotFound = YES; break;
+		default: break;
+	}
+	[self loadingComplete];
+}
+
 #pragma mark Web view
 
 - (NSString*) webPageTemplate {
 	// Load main template
 	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"conversation-template.html"];
+	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"basic-template.html"];
 	NSError *error = nil;
 	NSMutableString *html  = [NSMutableString stringWithContentsOfFile:templateFile encoding:NSUTF8StringEncoding error:&error];
 	if (error) { NSLog (@"Error loading conversation-template.html: %@", [error localizedDescription]); }
@@ -135,6 +143,10 @@
 	
 	if (loadingComplete == NO) {
 		result = @"<div class='status'>Loading...</div>";
+	} else if (protectedUser) {
+		result = @"<div class='status'>Protected message.</div>";
+	} else if (messageNotFound) {
+		result = @"<div class='status'>Message was deleted.</div>";
 	} else if ([currentTimeline count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	}

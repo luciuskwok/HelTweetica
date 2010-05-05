@@ -25,6 +25,7 @@
 
 // Tag used to identify Follow/Unfollow button in Toolbar
 #define kFollowButtonTag 69
+#define kFollowButtonPositionFromEnd 2
 
 
 @implementation UserPageViewController
@@ -265,7 +266,7 @@
 	
 	// Only add button if the friend status is valid
 	if (action.valid && !	[currentAccount.screenName isEqualToString:user.screenName]) {
-		index = toolbarItems.count - 2; // Position two from end
+		index = toolbarItems.count - kFollowButtonPositionFromEnd; // Position two from end
 		UIBarButtonItem *followButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered target:self action:buttonAction] autorelease];
 		followButton.tag = kFollowButtonTag;
 		[toolbarItems insertObject:followButton atIndex:index];

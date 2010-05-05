@@ -20,10 +20,6 @@
 #import "TwitterLoadListsAction.h"
 
 
-@interface ListsViewController (PrivateMethods)
-- (void) loadListsOfUser:(NSString*)userOrNil;
-@end
-
 @implementation ListsViewController
 @synthesize screenName, currentLists, currentSubscriptions;
 @synthesize statusMessage, delegate;
@@ -62,7 +58,11 @@
     [super viewDidLoad];
 	
 	// Title
-	self.navigationItem.title = NSLocalizedString (@"Lists and Subscriptions", @"Nav bar");
+	if (screenName) {
+		self.navigationItem.title = [NSString localizedStringWithFormat:@"%@’s Lists", screenName];
+	} else {
+		self.navigationItem.title = NSLocalizedString (@"Your Lists", @"Nav bar");
+	}
 	
 	[self setContentSize];
 	[self.tableView reloadData];
@@ -103,17 +103,37 @@
 }
 
 - (void) loadListsOfUser:(NSString*)userOrNil {
+	// To avoid reloading lists too often, compare the timestamp of a list
+	BOOL shouldLoadLists = YES;
+	if (currentLists.count > 0) {
+		TwitterList *list = [currentLists lastObject];
+		if (list.receivedDate && [list.receivedDate timeIntervalSinceNow] > -60)
+			shouldLoadLists = NO;
+	}
+	
 	// Load user's own lists.
-	TwitterLoadListsAction *listsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
-	listsAction.completionTarget= self;
-	listsAction.completionAction = @selector(didLoadLists:);
-	[self startTwitterAction:listsAction];
+	if (shouldLoadLists) {
+		TwitterLoadListsAction *listsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
+		listsAction.completionTarget= self;
+		listsAction.completionAction = @selector(didLoadLists:);
+		[self startTwitterAction:listsAction];
+	}
+	
+	// To avoid reloading lists too often, compare the timestamp of a list
+	BOOL shouldLoadSubscriptions = YES;
+	if (currentLists.count > 0) {
+		TwitterList *list = [currentSubscriptions lastObject];
+		if (list.receivedDate && [list.receivedDate timeIntervalSinceNow] > -60)
+			shouldLoadSubscriptions = NO;
+	}
 	
 	// Load lists that user subscribes to.
-	TwitterLoadListsAction *subscriptionsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
-	subscriptionsAction.completionTarget= self;
-	subscriptionsAction.completionAction = @selector(didLoadListSubscriptions:);
-	[self startTwitterAction:subscriptionsAction];
+	if (shouldLoadSubscriptions) {
+		TwitterLoadListsAction *subscriptionsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
+		subscriptionsAction.completionTarget= self;
+		subscriptionsAction.completionAction = @selector(didLoadListSubscriptions:);
+		[self startTwitterAction:subscriptionsAction];
+	}
 }
 
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {
@@ -122,11 +142,14 @@
 	// Remove all old objects and insert new objects, reusing old ones if they match.
 	[existingLists removeAllObjects];
 	int index;
-	id oldList, newList;
+	TwitterList *oldList, *newList;
 	for (index = 0; index < newLists.count; index++) {
 		newList = [newLists objectAtIndex: index];
 		oldList = [oldSet member:newList]; // If the set of old lists includes an identical member from the new lists, replace the entry in the new lists with the old one.
-		[existingLists addObject: oldList ? oldList: newList];
+		if (oldList)
+			newList = oldList;
+		newList.receivedDate = [NSDate date];
+		[existingLists addObject: newList];
 	}
 }
 

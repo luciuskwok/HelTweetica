@@ -168,14 +168,18 @@
 		E0A98A341190B7ED00C9C997 /* Conversation.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A321190B7ED00C9C997 /* Conversation.xib */; };
 		E0A98A351190B7ED00C9C997 /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */; };
 		E0A98A361190B7ED00C9C997 /* Conversation.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A321190B7ED00C9C997 /* Conversation.xib */; };
-		E0A98A681190BE9C00C9C997 /* conversation-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* conversation-template.html */; };
-		E0A98A691190BE9C00C9C997 /* conversation-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* conversation-template.html */; };
+		E0A98A681190BE9C00C9C997 /* basic-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* basic-template.html */; };
+		E0A98A691190BE9C00C9C997 /* basic-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* basic-template.html */; };
 		E0A98B691190DB7D00C9C997 /* toolbar-user.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B681190DB7D00C9C997 /* toolbar-user.png */; };
 		E0A98B6A1190DB7D00C9C997 /* toolbar-user.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B681190DB7D00C9C997 /* toolbar-user.png */; };
 		E0A98B7C1190E0E100C9C997 /* GoToUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */; };
 		E0A98B7D1190E0E100C9C997 /* GoToUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B7B1190E0E100C9C997 /* GoToUser.xib */; };
 		E0A98B7E1190E0E100C9C997 /* GoToUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */; };
 		E0A98B7F1190E0E100C9C997 /* GoToUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B7B1190E0E100C9C997 /* GoToUser.xib */; };
+		E0A98C7B11913A1300C9C997 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */; };
+		E0A98C7C11913A1300C9C997 /* SearchResults.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98C7A11913A1300C9C997 /* SearchResults.xib */; };
+		E0A98C7D11913A1300C9C997 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */; };
+		E0A98C7E11913A1300C9C997 /* SearchResults.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98C7A11913A1300C9C997 /* SearchResults.xib */; };
 		E0B2088D118BDC1F00843A89 /* LKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B2088C118BDC1F00843A89 /* LKWebView.m */; };
 		E0B54E78118BF0BA00FFED10 /* TwitterLoginAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B54E77118BF0BA00FFED10 /* TwitterLoginAction.m */; };
 		E0B54F19118BFC9E00FFED10 /* TwitterLoadTimelineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B54F18118BFC9E00FFED10 /* TwitterLoadTimelineAction.m */; };
@@ -315,11 +319,14 @@
 		E0A98A301190B7ED00C9C997 /* ConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationViewController.h; sourceTree = "<group>"; };
 		E0A98A311190B7ED00C9C997 /* ConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationViewController.m; sourceTree = "<group>"; };
 		E0A98A321190B7ED00C9C997 /* Conversation.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Conversation.xib; sourceTree = "<group>"; };
-		E0A98A671190BE9C00C9C997 /* conversation-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "conversation-template.html"; path = "Resources/conversation-template.html"; sourceTree = "<group>"; };
+		E0A98A671190BE9C00C9C997 /* basic-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "basic-template.html"; path = "Resources/basic-template.html"; sourceTree = "<group>"; };
 		E0A98B681190DB7D00C9C997 /* toolbar-user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-user.png"; path = "Resources/toolbar-user.png"; sourceTree = "<group>"; };
 		E0A98B791190E0E100C9C997 /* GoToUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoToUserViewController.h; sourceTree = "<group>"; };
 		E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoToUserViewController.m; sourceTree = "<group>"; };
 		E0A98B7B1190E0E100C9C997 /* GoToUser.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoToUser.xib; sourceTree = "<group>"; };
+		E0A98C7811913A1300C9C997 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
+		E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsViewController.m; sourceTree = "<group>"; };
+		E0A98C7A11913A1300C9C997 /* SearchResults.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResults.xib; sourceTree = "<group>"; };
 		E0B2088B118BDC1F00843A89 /* LKWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKWebView.h; sourceTree = "<group>"; };
 		E0B2088C118BDC1F00843A89 /* LKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKWebView.m; sourceTree = "<group>"; };
 		E0B54E76118BF0BA00FFED10 /* TwitterLoginAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoginAction.h; sourceTree = "<group>"; };
@@ -392,6 +399,7 @@
 			isa = PBXGroup;
 			children = (
 				E0175BAB117BFAA1003F5970 /* RootView */,
+				E0A98C77119139FF00C9C997 /* Search */,
 				E0A98A2F1190B7D400C9C997 /* Conversation */,
 				E04935D9118EB2E300BCA128 /* User Page */,
 				E0175BAA117BFA7F003F5970 /* WebBrowser */,
@@ -529,18 +537,12 @@
 				E044894F116F245C008603EB /* ListsViewController.h */,
 				E0448950116F245C008603EB /* ListsViewController.m */,
 				E0448951116F245C008603EB /* Lists.xib */,
-				E0F04C7511723DBF00AAA38E /* SearchViewController.h */,
-				E0F04C7611723DBF00AAA38E /* SearchViewController.m */,
-				E0F04C7711723DBF00AAA38E /* Search.xib */,
 				E0CB319D116691400086CEFE /* Analyze.h */,
 				E0CB319E116691400086CEFE /* Analyze.m */,
 				E0CB319F116691400086CEFE /* Analyze.xib */,
 				E00C262E1162D91600F62B70 /* ComposeViewController.h */,
 				E00C262F1162D91600F62B70 /* ComposeViewController.m */,
 				E00C26291162D90800F62B70 /* Compose.xib */,
-				E0A98B791190E0E100C9C997 /* GoToUserViewController.h */,
-				E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */,
-				E0A98B7B1190E0E100C9C997 /* GoToUser.xib */,
 			);
 			name = RootView;
 			sourceTree = "<group>";
@@ -594,6 +596,9 @@
 		E04935D9118EB2E300BCA128 /* User Page */ = {
 			isa = PBXGroup;
 			children = (
+				E0A98B791190E0E100C9C997 /* GoToUserViewController.h */,
+				E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */,
+				E0A98B7B1190E0E100C9C997 /* GoToUser.xib */,
 				E0840995118E246900670BAB /* UserPageViewController.h */,
 				E0840996118E246900670BAB /* UserPageViewController.m */,
 				E0840997118E246900670BAB /* UserPage.xib */,
@@ -609,6 +614,19 @@
 				E0A98A321190B7ED00C9C997 /* Conversation.xib */,
 			);
 			name = Conversation;
+			sourceTree = "<group>";
+		};
+		E0A98C77119139FF00C9C997 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E0F04C7511723DBF00AAA38E /* SearchViewController.h */,
+				E0F04C7611723DBF00AAA38E /* SearchViewController.m */,
+				E0F04C7711723DBF00AAA38E /* Search.xib */,
+				E0A98C7811913A1300C9C997 /* SearchResultsViewController.h */,
+				E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */,
+				E0A98C7A11913A1300C9C997 /* SearchResults.xib */,
+			);
+			name = Search;
 			sourceTree = "<group>";
 		};
 		E0DD53C6118E2D5F0042CF49 /* Toolbar images */ = {
@@ -628,7 +646,7 @@
 				E00C27DA11630B7900F62B70 /* functions.js */,
 				E00C26C91162E93E00F62B70 /* style-ipad.css */,
 				E03F91D7118F7BEA00D3A76B /* main-template.html */,
-				E0A98A671190BE9C00C9C997 /* conversation-template.html */,
+				E0A98A671190BE9C00C9C997 /* basic-template.html */,
 				E03F90DE118F58DF00D3A76B /* tweet-row-template.html */,
 				E03F91DA118F7CFC00D3A76B /* user-info-template.html */,
 				E0DD541C118E43070042CF49 /* user-page-template.html */,
@@ -796,9 +814,10 @@
 				E03F91D9118F7BEA00D3A76B /* main-template.html in Resources */,
 				E03F91DC118F7CFC00D3A76B /* user-info-template.html in Resources */,
 				E0A98A361190B7ED00C9C997 /* Conversation.xib in Resources */,
-				E0A98A691190BE9C00C9C997 /* conversation-template.html in Resources */,
+				E0A98A691190BE9C00C9C997 /* basic-template.html in Resources */,
 				E0A98B6A1190DB7D00C9C997 /* toolbar-user.png in Resources */,
 				E0A98B7F1190E0E100C9C997 /* GoToUser.xib in Resources */,
+				E0A98C7E11913A1300C9C997 /* SearchResults.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -854,9 +873,10 @@
 				E03F91D8118F7BEA00D3A76B /* main-template.html in Resources */,
 				E03F91DB118F7CFC00D3A76B /* user-info-template.html in Resources */,
 				E0A98A341190B7ED00C9C997 /* Conversation.xib in Resources */,
-				E0A98A681190BE9C00C9C997 /* conversation-template.html in Resources */,
+				E0A98A681190BE9C00C9C997 /* basic-template.html in Resources */,
 				E0A98B691190DB7D00C9C997 /* toolbar-user.png in Resources */,
 				E0A98B7D1190E0E100C9C997 /* GoToUser.xib in Resources */,
+				E0A98C7C11913A1300C9C997 /* SearchResults.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,6 +928,7 @@
 				E0D6F9BA1190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */,
 				E0A98A351190B7ED00C9C997 /* ConversationViewController.m in Sources */,
 				E0A98B7E1190E0E100C9C997 /* GoToUserViewController.m in Sources */,
+				E0A98C7D11913A1300C9C997 /* SearchResultsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -956,6 +977,7 @@
 				E0D6F9B91190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */,
 				E0A98A331190B7ED00C9C997 /* ConversationViewController.m in Sources */,
 				E0A98B7C1190E0E100C9C997 /* GoToUserViewController.m in Sources */,
+				E0A98C7B11913A1300C9C997 /* SearchResultsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
