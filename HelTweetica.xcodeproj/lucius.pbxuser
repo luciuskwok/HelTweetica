@@ -45,7 +45,7 @@
 		activeArchitecturePreference = armv7;
 		activeBuildConfigurationName = Debug;
 		activeExecutable = E00C26131162D5F100F62B70 /* Dev */;
-		activeSDKPreference = iphonesimulator3.2;
+		activeSDKPreference = iphoneos3.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Dev */;
 		addToTargets = (
 			E03570721174E6BE004B9A0F /* AppStore */,
@@ -647,6 +647,8 @@
 			E0A98D7D119150AC00C9C997 /* PBXTextBookmark */ = E0A98D7D119150AC00C9C997 /* PBXTextBookmark */;
 			E0A98D7E119150AC00C9C997 /* PBXTextBookmark */ = E0A98D7E119150AC00C9C997 /* PBXTextBookmark */;
 			E0A98D7F119150AC00C9C997 /* PBXTextBookmark */ = E0A98D7F119150AC00C9C997 /* PBXTextBookmark */;
+			E0A98D9D1191533C00C9C997 /* PBXTextBookmark */ = E0A98D9D1191533C00C9C997 /* PBXTextBookmark */;
+			E0A98DA01191538200C9C997 /* PBXTextBookmark */ = E0A98DA01191538200C9C997 /* PBXTextBookmark */;
 			E0B54E87118BF2BC00FFED10 = E0B54E87118BF2BC00FFED10 /* PBXTextBookmark */;
 			E0B551A4118C349F00FFED10 = E0B551A4118C349F00FFED10 /* PBXTextBookmark */;
 			E0C172FE1185DEED008D4585 = E0C172FE1185DEED008D4585 /* PBXTextBookmark */;
@@ -3583,9 +3585,9 @@
 	};
 	E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {941, 2720}}";
-			sepNavSelRange = "{2294, 0}";
-			sepNavVisRange = "{969, 1582}";
+			sepNavIntBoundsRect = "{{0, 0}, {941, 2528}}";
+			sepNavSelRange = "{2485, 0}";
+			sepNavVisRange = "{3222, 1776}";
 		};
 	};
 	E0A98B961190E46D00C9C997 /* PBXTextBookmark */ = {
@@ -3724,7 +3726,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 124;
+		rLoc = 121;
 		rType = 1;
 	};
 	E0A98BA41190E46D00C9C997 /* PBXTextBookmark */ = {
@@ -3732,7 +3734,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 164";
 		rLen = 0;
-		rLoc = 3688;
+		rLoc = 3635;
 		rType = 0;
 		vrLen = 1001;
 		vrLoc = 3765;
@@ -3742,7 +3744,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 164";
 		rLen = 0;
-		rLoc = 3688;
+		rLoc = 3635;
 		rType = 0;
 		vrLen = 1001;
 		vrLoc = 3765;
@@ -3912,7 +3914,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 140";
 		rLen = 0;
-		rLoc = 3470;
+		rLoc = 3417;
 		rType = 0;
 		vrLen = 1752;
 		vrLoc = 2527;
@@ -3922,7 +3924,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 140";
 		rLen = 0;
-		rLoc = 3470;
+		rLoc = 3417;
 		rType = 0;
 		vrLen = 1752;
 		vrLoc = 2527;
@@ -4032,7 +4034,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 140";
 		rLen = 0;
-		rLoc = 3470;
+		rLoc = 3417;
 		rType = 0;
 		vrLen = 1498;
 		vrLoc = 2432;
@@ -4102,7 +4104,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 140";
 		rLen = 0;
-		rLoc = 3470;
+		rLoc = 3417;
 		rType = 0;
 		vrLen = 1500;
 		vrLoc = 2430;
@@ -4112,7 +4114,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 121";
 		rLen = 0;
-		rLoc = 2745;
+		rLoc = 2692;
 		rType = 0;
 		vrLen = 1488;
 		vrLoc = 2430;
@@ -4162,7 +4164,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 159";
 		rLen = 0;
-		rLoc = 4096;
+		rLoc = 4043;
 		rType = 0;
 		vrLen = 1565;
 		vrLoc = 3006;
@@ -4172,7 +4174,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 168";
 		rLen = 0;
-		rLoc = 4734;
+		rLoc = 4681;
 		rType = 0;
 		vrLen = 1969;
 		vrLoc = 3274;
@@ -4262,7 +4264,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 160";
 		rLen = 0;
-		rLoc = 4239;
+		rLoc = 4186;
 		rType = 0;
 		vrLen = 2006;
 		vrLoc = 3274;
@@ -4322,7 +4324,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 5037;
+		rLoc = 4984;
 		rType = 0;
 		vrLen = 2007;
 		vrLoc = 2934;
@@ -4332,7 +4334,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 5037;
+		rLoc = 4984;
 		rType = 0;
 		vrLen = 2054;
 		vrLoc = 2887;
@@ -4342,7 +4344,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 144";
 		rLen = 0;
-		rLoc = 4823;
+		rLoc = 4770;
 		rType = 0;
 		vrLen = 2052;
 		vrLoc = 2887;
@@ -4352,7 +4354,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 143";
 		rLen = 0;
-		rLoc = 4752;
+		rLoc = 4699;
 		rType = 0;
 		vrLen = 1792;
 		vrLoc = 3165;
@@ -4362,7 +4364,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 4924;
+		rLoc = 4871;
 		rType = 0;
 		vrLen = 1781;
 		vrLoc = 3165;
@@ -4372,7 +4374,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 4924;
+		rLoc = 4871;
 		rType = 0;
 		vrLen = 1781;
 		vrLoc = 3165;
@@ -4382,7 +4384,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 4924;
+		rLoc = 4871;
 		rType = 0;
 		vrLen = 1775;
 		vrLoc = 3165;
@@ -4392,7 +4394,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 4924;
+		rLoc = 4871;
 		rType = 0;
 		vrLen = 1774;
 		vrLoc = 3165;
@@ -4412,7 +4414,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 4924;
+		rLoc = 4871;
 		rType = 0;
 		vrLen = 1448;
 		vrLoc = 3497;
@@ -4422,7 +4424,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 4924;
+		rLoc = 4871;
 		rType = 0;
 		vrLen = 1781;
 		vrLoc = 3165;
@@ -4432,7 +4434,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 115";
 		rLen = 0;
-		rLoc = 3505;
+		rLoc = 3452;
 		rType = 0;
 		vrLen = 1781;
 		vrLoc = 3165;
@@ -5264,10 +5266,9 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 848;
-		location = HelTweetica;
-		modificationTime = 294735613.637514;
+		modificationTime = 294736284.52209;
 		originalNumberOfMultipleMatches = 1;
-		state = 1;
+		state = 0;
 	};
 	E0A98CDB119141B100C9C997 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -5324,7 +5325,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 148";
 		rLen = 0;
-		rLoc = 4924;
+		rLoc = 4871;
 		rType = 0;
 		vrLen = 1448;
 		vrLoc = 3497;
@@ -6027,7 +6028,7 @@
 		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
 		name = "GoToUserViewController.m: 115";
 		rLen = 0;
-		rLoc = 3505;
+		rLoc = 3452;
 		rType = 0;
 		vrLen = 1777;
 		vrLoc = 3168;
@@ -6151,6 +6152,26 @@
 		rType = 0;
 		vrLen = 1582;
 		vrLoc = 969;
+	};
+	E0A98D9D1191533C00C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
+		name = "GoToUserViewController.m: 84";
+		rLen = 0;
+		rLoc = 2485;
+		rType = 0;
+		vrLen = 1776;
+		vrLoc = 3222;
+	};
+	E0A98DA01191538200C9C997 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A98B7A1190E0E100C9C997 /* GoToUserViewController.m */;
+		name = "GoToUserViewController.m: 84";
+		rLen = 0;
+		rLoc = 2485;
+		rType = 0;
+		vrLen = 1776;
+		vrLoc = 3222;
 	};
 	E0B2088B118BDC1F00843A89 /* LKWebView.h */ = {
 		uiCtxt = {

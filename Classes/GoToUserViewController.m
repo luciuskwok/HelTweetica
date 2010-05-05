@@ -81,9 +81,6 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
- 	if (aTableView == self.tableView) {
-		return 1;
-	}
 	return 1;
 }
 
