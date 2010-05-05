@@ -54,10 +54,9 @@
 
 - (void) parseReceivedData:(NSData*)data {
 	if (statusCode < 400) {
-		TwitterSearchJSONParser *parser = [[TwitterSearchJSONParser alloc] init];
+		TwitterSearchJSONParser *parser = [[[TwitterSearchJSONParser alloc] init] autorelease];
 		parser.receivedTimestamp = [NSDate date];
-		self.messages = [parser messagesWithJSONData:receivedData];
-		[parser release];
+		[self mergeTimelineWithMessages: parser.messages];
 	}
 }
 

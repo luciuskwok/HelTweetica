@@ -56,6 +56,7 @@
 	} else {
 		NSString *twitterMethod = [NSString stringWithFormat:@"statuses/show/%@", messageIdentifier];
 		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:twitterMethod] autorelease];
+		action.timeline = currentTimeline;
 		action.completionAction = @selector(didLoadMessage:);
 		action.completionTarget = self;
 		[self startTwitterAction:action];
@@ -69,21 +70,15 @@
 }
 
 - (void)didLoadMessage:(TwitterLoadTimelineAction *)action {
-	if (action.messages.count > 0) {
-		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-		[twitter synchronizeStatusesWithArray: newMessages updateFavorites:YES];
-		
-		// Add message to timeline. There should only be one.
-		[currentTimeline addObjectsFromArray: newMessages];
-
-		// Update set of users in Twitter
-		[twitter addUsers:action.users];
-		
-		// Finished loading, so update tweet area and remove loading spinner.
+	// Synchronized users and messages with Twitter cache.
+	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:YES];
+	[twitter addUsers:action.users];
+	
+	// Load next message in conversation.
+	if (currentTimeline.count > 0) {
+		TwitterMessage *lastMessage = [currentTimeline lastObject];
+		[self loadInReplyToMessage: lastMessage];
 		[self rewriteTweetArea];	
-		
-		// Load next message if this is a reply
-		[self loadInReplyToMessage: [newMessages objectAtIndex:0]];
 	} else {
 		// No more messages or an error occurred.
 		NSLog (@"No messages were returned for the status id.");

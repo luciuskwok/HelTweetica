@@ -234,7 +234,7 @@
 		return; // No current account or not logged in.
 	}
 	
-	TwitterAction *action = self.currentTimelineAction;
+	TwitterLoadTimelineAction *action = self.currentTimelineAction;
 	if (action == nil) return; // No action to reload.
 
 	BOOL isFavorites = [action.twitterMethod isEqualToString:@"favorites"];
@@ -253,46 +253,22 @@
 		[action.parameters setObject:[newerThan stringValue] forKey:@"since_id"];
 	
 	// Prepare action and start it. 
+	action.timeline = currentTimeline;
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];
 }
 
-- (void) sortAndLimitTimeline:(NSMutableArray*)aTimeline {
-	// Sort by identifier, descending.
-	NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
-	[aTimeline sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
-	
-	// Keep timeline within size limits by removing old messages.
-	if (aTimeline.count > kMaxNumberOfMessagesInATimeline) {
-		NSRange removalRange = NSMakeRange(kMaxNumberOfMessagesInATimeline, aTimeline.count - kMaxNumberOfMessagesInATimeline);
-		[aTimeline removeObjectsInRange:removalRange];
-	}
-}
-
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
-	if (action.messages.count > 0) {
-		NSMutableArray *newMessages = [NSMutableArray arrayWithArray: action.messages];
-		
-		// Search results will not have valid favorite flag data because it's not linked to an account.
-		BOOL updateFaves = ([action isKindOfClass:[TwitterSearchAction class]] == NO); 
-		[twitter synchronizeStatusesWithArray: newMessages updateFavorites:updateFaves];
-		
-		// Merge downloaded messages with existing messages.
-		//BOOL overlap = NO;
-		for (TwitterMessage *message in newMessages) {
-			if ([currentTimeline containsObject:message]) {
-				//overlap = YES; // Need to do something, maybe mark the last message in the array to signify a gap.
-			} else {
-				[currentTimeline addObject: message];
-			}
-		}
-		
-		// Update set of users in Twitter
-		[twitter addUsers:action.users];
-		
-		// Sort and remove oldest messages in timeline 
-		[self sortAndLimitTimeline:currentTimeline];
+	// Synchronize timeline with Twitter cache. Ignore favorites flag in Search results because they're always false.
+	BOOL updateFaves = ![action isKindOfClass:[TwitterSearchAction class]]; 
+	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:updateFaves];
+	[twitter addUsers:action.users];
+	
+	// Limit the length of the timeline
+	if (action.timeline.count > kMaxNumberOfMessagesInATimeline) {
+		NSRange removalRange = NSMakeRange(kMaxNumberOfMessagesInATimeline, action.timeline.count - kMaxNumberOfMessagesInATimeline);
+		[action.timeline removeObjectsInRange:removalRange];
 	}
 	
 	// Finished loading, so update tweet area and remove loading spinner.
@@ -305,7 +281,7 @@
 		return; // No current account or not logged in.
 	}
 	
-	TwitterAction *action = self.currentTimelineAction;
+	TwitterLoadTimelineAction *action = self.currentTimelineAction;
 	if (action == nil) return; // No action to reload.
 	
 	// Issue: if the display only shows 200 tweets, the "Show Older" link should just show a page starting from the next items in the array. And if there are gaps in the timeline, there's no easy way of showing them.
@@ -320,6 +296,7 @@
 		[action.parameters setObject:[olderThan stringValue] forKey:@"max_id"];
 	
 	// Prepare action and start it. 
+	action.timeline = currentTimeline;
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];

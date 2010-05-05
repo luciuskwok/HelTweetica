@@ -18,7 +18,7 @@
 
 
 @implementation TwitterLoadTimelineAction
-@synthesize messages, users;
+@synthesize timeline, users, overlap;
 
 - (id)initWithTwitterMethod:(NSString*)method {
 	self = [super init];
@@ -28,7 +28,7 @@
 	return self;
 }
 - (void) dealloc {
-	[messages release];
+	[timeline release];
 	[users release];
 	[super dealloc];
 }
@@ -39,13 +39,32 @@
 
 - (void) parseReceivedData:(NSData*)data {
 	if (statusCode < 400) {
-		TwitterMessageJSONParser *parser = [[TwitterMessageJSONParser alloc] init];
+		TwitterMessageJSONParser *parser = [[[TwitterMessageJSONParser alloc] init] autorelease];
 		parser.receivedTimestamp = [NSDate date];
 		parser.directMessage = [twitterMethod hasPrefix:@"direct_messages"];
 		[parser parseJSONData:receivedData];
-		self.messages = parser.messages;
 		self.users = parser.users;
-		[parser release];
+		[self mergeTimelineWithMessages: parser.messages];
+	}
+}
+
+- (void) mergeTimelineWithMessages:(NSMutableArray*)messages {
+	if (timeline == nil) {
+		self.timeline = messages;
+	} else {
+		// Merge downloaded messages with existing messages.
+		overlap = NO;
+		for (TwitterMessage *message in messages) {
+			if ([timeline containsObject:message]) {
+				overlap = YES; // Need to do something, maybe mark the last message in the array to signify a gap.
+			} else {
+				[timeline addObject: message];
+			}
+		}
+		
+		// Sort by identifier, descending.
+		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
+		[timeline sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
 	}
 }
 
