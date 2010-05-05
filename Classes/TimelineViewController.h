@@ -114,6 +114,7 @@
 - (NSString*) tweetAreaFooterHTML;
 - (NSString*) timeStringSinceNow: (NSDate*) date;
 - (void) replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template;
+- (NSString*)htmlFormattedString:(NSString*)string;
 
 
 // Web view delegate methods

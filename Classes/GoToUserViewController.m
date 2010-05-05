@@ -143,8 +143,8 @@
 #pragma mark Search bar delegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	// Use the entered search term as the user name
-	NSString *screenName = searchBar.text;
+	// Use the entered search term as the user name. Remove whitespace from screenName.
+	NSString *screenName = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if ([delegate respondsToSelector:@selector(showUserPage:)])
 		[delegate showUserPage: screenName];
 	

@@ -630,7 +630,7 @@
 			NSString *profileImageURL = message.avatar ? message.avatar : @"";
 			NSString *retweetIcon = retweeterMessage ? @"<img src='retweet.png'>" : @"";
 			NSString *lockIcon = [message isLocked] ? @"<img src='lock.png'>" : @"";
-			NSString *content = message.content ? [message layoutSafeContent] : @"";
+			NSString *content = message.content ? [self htmlFormattedString:message.content] : @"";
 			NSString *createdDate = message.createdDate ? [self timeStringSinceNow: message.createdDate] : @"";
 			NSString *via = message.source ? message.source : @"";
 			NSString *inReplyToScreenName = message.inReplyToScreenName ? message.inReplyToScreenName : @"";
@@ -737,6 +737,87 @@
 	}
 }
 
+- (NSString*)htmlFormattedString:(NSString*)string {
+	NSMutableString *s = [NSMutableString stringWithString:string];
+	
+	NSString *usernameText, *insertText, *urlText, *linkText;
+	
+	// Find URLs beginning with http: https*://[^ \t\r\n\v\f]*
+	NSRange unprocessed, foundRange;
+	unprocessed = NSMakeRange(0, s.length);
+	while (unprocessed.location < s.length) {
+		foundRange = [s rangeOfString: @"https*://[^ \t\r\n]*" options: NSRegularExpressionSearch range: unprocessed];
+		if (foundRange.location == NSNotFound) break;
+		
+		// Replace URLs with link text
+		urlText = [s substringWithRange: foundRange];
+		linkText = [urlText substringFromIndex: [urlText hasPrefix:@"https"] ? 8 : 7];
+		if ([linkText length] > 29) {
+			linkText = [NSString stringWithFormat: @"%@...", [linkText substringToIndex:26]];
+			insertText = [NSString stringWithFormat: @"<a href='%@'>%@</a>", urlText, linkText];
+		} else {	
+			insertText = [NSString stringWithFormat: @"<a href='%@'>%@</a>", urlText, linkText];
+		}
+		[s replaceCharactersInRange: foundRange withString: insertText];
+		
+		unprocessed.location = foundRange.location + [insertText length];
+		unprocessed.length = s.length - unprocessed.location;
+	}
+	
+	// Replace newlines and carriage returns with <br>
+	[s replaceOccurrencesOfString:@"\r\n" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
+	[s replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
+	[s replaceOccurrencesOfString:@"\r" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
+	
+	// Remove NULs
+	[s replaceOccurrencesOfString:@"\0" withString:@"" options:0 range:NSMakeRange(0, s.length)];
+	
+	// Process letters outside of HTML tags. Break up long words with soft hyphens and detect @user strings.
+	NSCharacterSet *whitespace = [NSCharacterSet whitespaceCharacterSet];
+	unsigned int index = 0;
+	unsigned int wordLength = 0;
+	BOOL isInsideTag = NO;
+	unichar c;
+	while (index < s.length) {
+		c = [s characterAtIndex:index];
+		if (c == '<') {
+			isInsideTag = YES;
+		} else if (c == '>') {
+			isInsideTag = NO;
+			wordLength = 0;
+		} else if ([whitespace characterIsMember:c]) {
+			wordLength = 0;
+		} else {
+			wordLength++;
+		}
+		
+		if (isInsideTag == NO) {
+			// Break up words longer than 20 chars
+			if (wordLength >= 20) {
+				[s replaceCharactersInRange:NSMakeRange(index, 0) withString:@"&shy;"]; // soft hyphen.
+				index += 5;
+				wordLength = 10; // Reset to 10 so that every 10 chars over 20, it gets a soft hyphen.
+			}
+			
+			if (c == '@') {
+				// Add action link to "@username"
+				foundRange = [s rangeOfString: @"@[A-Za-z0-9_]*" options: NSRegularExpressionSearch range: NSMakeRange (index, s.length - index)];
+				if (foundRange.location != NSNotFound && foundRange.length >= 2) {
+					usernameText = [s substringWithRange: NSMakeRange (foundRange.location + 1, foundRange.length - 1)];
+					insertText = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", usernameText, usernameText];
+					NSLog (@"username = '%@', insert = '%@'", usernameText, insertText);
+					[s replaceCharactersInRange: foundRange withString: insertText];
+					index += insertText.length;
+					wordLength = 0;
+				}
+			}
+		}
+		
+		index++;
+	}
+	
+	return s;
+}	
 
 #pragma mark UIWebView delegate methods
 

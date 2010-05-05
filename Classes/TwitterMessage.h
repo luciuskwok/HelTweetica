@@ -71,7 +71,6 @@
 
 - (SInt64) identifierInt64;
 - (void) setIdentifierInt64:(SInt64)x;
-- (NSString*) layoutSafeContent;
 
 - (void) loadLargeAvatar;
 
