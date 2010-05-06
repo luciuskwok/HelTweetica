@@ -100,13 +100,14 @@
    	static NSString *CellIdentifier = @"Cell";
 	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 	}
 	
 	// Set the label text to the screen name
 	if (indexPath.row < array.count) {
 		TwitterUser *user = [array objectAtIndex:indexPath.row];
 		cell.textLabel.text = user.screenName;
+		cell.detailTextLabel.text = user.fullName ? user.fullName : @"";
 	}
 	return cell;
 }
