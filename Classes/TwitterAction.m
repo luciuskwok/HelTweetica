@@ -124,7 +124,6 @@
 	[self startURLRequest:request];
 }
 
-
 - (void) startGetRequest {
 	NSString *base = [NSString stringWithFormat:@"http://api.twitter.com/1/%@.json", twitterMethod]; // version 1 only
 	NSURL *url = [TwitterAction URLWithBase:base query:parameters];
@@ -171,7 +170,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
 	if (aConnection != connection) return;
-	isLoading = NO; // TODO: check status code and deal with error if necessary.
+	isLoading = NO;
 	
 	// Parse the received data
 	[self parseReceivedData:receivedData];
@@ -205,6 +204,12 @@
 	self.receivedData = nil;
 	[appDelegate decrementNetworkActionCount];
 }
+
+- (NSCachedURLResponse *)connection:(NSURLConnection *)aConnection willCacheResponse:(NSCachedURLResponse *)aResponse {
+	return nil; // Don't cache any responses for TwitterActions.
+}
+
+#pragma mark -
 
 - (void) parseReceivedData:(NSData*)data {
 }

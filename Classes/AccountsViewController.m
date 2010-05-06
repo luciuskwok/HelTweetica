@@ -81,7 +81,10 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-	[self setContentSize]; 
+	if (twitter.accounts.count == 0) { // Automatically show the login screen if no accounts exist
+		[self add:nil];
+	}
+	[self setContentSize];
 	[super viewWillAppear:animated];
 }
 

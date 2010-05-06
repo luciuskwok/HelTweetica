@@ -20,10 +20,12 @@
 @interface TwitterLoadTimelineAction : TwitterAction {
 	NSMutableArray *timeline;
 	NSSet *users;
+	int newMessageCount;
 	BOOL overlap;
 }
 @property (nonatomic, retain) NSMutableArray *timeline;
 @property (nonatomic, retain) NSSet *users;
+@property (nonatomic, assign) int newMessageCount;
 @property (nonatomic, assign) BOOL overlap;
 
 - (id)initWithTwitterMethod:(NSString*)method ;

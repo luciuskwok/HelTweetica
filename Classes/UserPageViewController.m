@@ -37,6 +37,7 @@
 	if (self) {
 		self.user = aUser;
 		self.defaultLoadCount = @"50"; // Limit number of tweets to request for user or list.
+		maxTweetsShown = 1000; // Allow for a larger limit for searches.
 	}
 	return self;
 }
@@ -314,6 +315,7 @@
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 	NSURL *url = [request URL];
+	suppressNetworkErrorAlerts = NO;
 	
 	if ([[url scheme] isEqualToString:@"action"]) {
 		//TwitterAccount *account = [twitter currentAccount];
@@ -323,16 +325,15 @@
 		if ([actionName hasPrefix:@"user"]) { // Home Timeline
 			NSString *screenName = [actionName lastPathComponent];
 			if ([screenName caseInsensitiveCompare:user.screenName] == NSOrderedSame) {
-				[self.webView scrollToTop];
 				[self selectUserTimeline:user.screenName];
-				[self reloadCurrentTimeline];
+				[self startLoadingCurrentTimeline];
 			} else {
 				[self showUserPage:screenName];
 			}
 			return NO;
 		} else if ([actionName isEqualToString:@"favorites"]) { // Favorites
 			[self selectFavoritesTimeline:user.screenName];
-			[self reloadCurrentTimeline];
+			[self startLoadingCurrentTimeline];
 			return NO;
 		}
 	}

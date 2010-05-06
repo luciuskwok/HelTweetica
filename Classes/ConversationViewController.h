@@ -20,10 +20,13 @@
 
 
 @interface ConversationViewController : TimelineViewController {
+	NSNumber *selectedMessageIdentifier;
 	BOOL loadingComplete;
 	BOOL messageNotFound;
 	BOOL protectedUser;
 }
+@property (nonatomic, retain) NSNumber *selectedMessageIdentifier;
+
 - (id)initWithMessageIdentifier:(NSNumber*)anIdentifier;
 - (void)loadMessage:(NSNumber*)messageIdentifier;
 - (void)loadInReplyToMessage:(TwitterMessage*)message;

@@ -48,32 +48,7 @@
 - (id) init {
 	if (self = [super init]) {
 		statuses = [[NSMutableSet alloc] init];
-		
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		
-		// Twitter Accounts
-		NSData *accountsData = [defaults objectForKey: @"twitterAccounts"];
-		if (accountsData != nil) {
-			self.accounts = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:accountsData]];
-			
-			// Add all statuses to set
-			for (TwitterAccount *account in accounts) {
-				[self synchronizeStatusesWithArray: account.timeline updateFavorites:YES];
-				[self synchronizeStatusesWithArray: account.mentions updateFavorites:YES];
-				[self synchronizeStatusesWithArray: account.favorites updateFavorites:YES];
-			}
-			
-		}
-		
-		// Twitter Users
-		NSData *usersData = [defaults objectForKey: @"twitterUsers"];
-		if (usersData != nil) {
-			self.users = [NSKeyedUnarchiver unarchiveObjectWithData:usersData];
-		} else {
-			self.users = [NSMutableSet set];
-		}
-
-
+		[self load];
 	}
 	return self;
 }
@@ -157,11 +132,47 @@
 	return [filteredSet anyObject];
 }
 
+- (NSSet*) statusesInReplyToStatusIdentifier:(NSNumber*)identifier {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"inReplyToStatusIdentifier == %@", identifier];
+	return [statuses filteredSetUsingPredicate:predicate];
+}
 
 - (TwitterUser *)userWithScreenName:(NSString *)screenName {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"screenName LIKE[cd] %@", screenName];
 	NSSet *filteredSet = [users filteredSetUsingPredicate:predicate];
 	return [filteredSet anyObject];
+}
+
+#pragma mark Load and Save cache to disk
+
+- (void) load {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	// Twitter Accounts
+	NSData *accountsData = [defaults objectForKey: @"twitterAccounts"];
+	if (accountsData != nil) {
+		self.accounts = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:accountsData]];
+		
+		// Add all statuses to set
+		for (TwitterAccount *account in accounts) {
+			[self synchronizeStatusesWithArray: account.timeline updateFavorites:YES];
+			[self synchronizeStatusesWithArray: account.mentions updateFavorites:YES];
+			[self synchronizeStatusesWithArray: account.favorites updateFavorites:YES];
+		}
+		
+	}
+	
+	// Twitter Users
+	NSData *usersData = [defaults objectForKey: @"twitterUsers"];
+	if (usersData != nil) {
+		self.users = [NSKeyedUnarchiver unarchiveObjectWithData:usersData];
+		for (TwitterUser* user in users) {
+			[self synchronizeStatusesWithArray:user.statuses updateFavorites:YES];
+			[self synchronizeStatusesWithArray:user.favorites updateFavorites:YES];
+		}
+	} else {
+		self.users = [NSMutableSet set];
+	}
 }
 
 - (void) save {

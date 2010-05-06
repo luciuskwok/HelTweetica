@@ -62,6 +62,13 @@
 	
 	self.actions = [NSMutableArray array]; // List of currently active network connections
 	networkIsReachable = YES;
+	
+	// Keep the HTML templates around
+	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
+	NSError *error = nil;
+	tweetRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-template.html"] encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil)
+		NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -144,6 +151,7 @@
 }
 
 - (IBAction) reloadData: (id) sender {
+	suppressNetworkErrorAlerts = NO;
 	[self reloadCurrentTimeline];
 	[self.webView scrollToTop];
 }
@@ -232,7 +240,7 @@
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
 	NSString *title = NSLocalizedString (@"Network error", @"Alert");
 	[self showAlertWithTitle:title message:[error localizedDescription]];
-	[actions removeObject: action];
+	[self removeTwitterAction: action];
 	networkIsReachable = NO;
 }
 
@@ -293,7 +301,6 @@
 
 - (void) loadOlderInCurrentTimeline {
 	if (currentAccount == nil || currentAccount.xAuthToken == nil) {
-		[self setLoadingSpinnerVisibility:NO];
 		return; // No current account or not logged in.
 	}
 	
@@ -317,15 +324,35 @@
 	// Prepare action and start it. 
 	action.timeline = currentTimeline;
 	action.completionTarget= self;
-	action.completionAction = @selector(didReloadCurrentTimeline:);
+	action.completionAction = @selector(didLoadOlderInCurrentTimeline:);
 	[self startTwitterAction:action];
 	
 	// Show Loading message.
 	[self rewriteTweetArea];
 }
 
+- (void) didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action {
+	if (action.newMessageCount > 0) {
+		// Synchronize timeline with Twitter cache.
+		[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:YES];
+		[twitter addUsers:action.users];
+	}
+	
+	if (action.newMessageCount <= 1) { // The one message is the one in the max_id.
+		noOlderMessages = YES;
+	}
+	
+	// Finished loading, so update tweet area and remove loading spinner.
+	[self rewriteTweetArea];
+		
+}
+
+
 - (void) startLoadingCurrentTimeline {
-	[self reloadCurrentTimeline];
+	suppressNetworkErrorAlerts = NO;
+	if (networkIsReachable) {
+		[self reloadCurrentTimeline];
+	}
 	[self rewriteTweetArea];
 }
 
@@ -335,10 +362,11 @@
 	refreshTimer = nil;
 	
 	// If there are actions already pending, reschedule refresh 
-	if ([actions count] == 0) {
+	if ([actions count] == 0 && webViewHasValidHTML) {
 		CGPoint scrollPosition = [self.webView scrollPosition];
-		if (scrollPosition.y == 0.0f && webViewHasValidHTML && networkIsReachable && !currentPopover&& !currentAlert && !currentActionSheet) {
+		if (scrollPosition.y == 0.0f && networkIsReachable && !currentPopover&& !currentAlert && !currentActionSheet) {
 			// Only reload from the network if the scroll position is at the top, the web view has been loaded, the network is reachable, and no popovers are showing.
+			suppressNetworkErrorAlerts = YES; // Don't show an error alert for auto reloads.
 			[self reloadCurrentTimeline];
 		} else {
 			// Don't load new statuses if scroll position is below top.
@@ -565,15 +593,18 @@
 }
 
 - (void) setLoadingSpinnerVisibility: (BOOL) isVisible {
-	[self.webView setDocumentElement:@"spinner" visibility:isVisible];
+	if (webViewHasValidHTML)
+		[self.webView setDocumentElement:@"spinner" visibility:isVisible];
 }
 
 - (void) rewriteTweetArea {
 	// Replace text in tweet area with new statuses
-	NSString *result = [self.webView setDocumentElement:@"tweet_area" innerHTML:[self tweetAreaHTML]];
-	if ([result length] == 0) { // If the result of the JavaScript call is empty, there was an error.
-		NSLog (@"JavaScript error in refreshing tweet area. Reloading entire web view.");
-		[self reloadWebView];
+	if (webViewHasValidHTML) {
+		NSString *result = [self.webView setDocumentElement:@"tweet_area" innerHTML:[self tweetAreaHTML]];
+		if ([result length] == 0) { // If the result of the JavaScript call is empty, there was an error.
+			NSLog (@"JavaScript error in refreshing tweet area. Reloading entire web view.");
+			[self reloadWebView];
+		}
 	}
 	
 	// Start refresh timer so that the timestamps are always accurate
@@ -599,72 +630,14 @@
 	}
 	
 	NSArray *timeline = self.currentTimeline; 
-	TwitterMessage *message, *retweeterMessage;
 	int displayedCount = (timeline.count < maxTweetsShown) ? timeline.count : maxTweetsShown;
 	
 	// Template for tweet_row
-	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSError *error = nil;
-	NSString *tweetRowTemplate = [NSString stringWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-template.html"] encoding:NSUTF8StringEncoding error:&error];
-	if (error != nil)
-		NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
-	NSMutableString *tweetRowHTML;
 	
 	NSAutoreleasePool *pool;
-	BOOL isFavorite;
-	int index;
-	for (index=0; index<displayedCount; index++) {
+	for (int index=0; index<displayedCount; index++) {
 		pool = [[NSAutoreleasePool alloc] init];
-		message = [timeline objectAtIndex:index];
-		//isFavorite = message.favorite; // Is the original tweet or the retweeter's tweet supposed to be the one that gets the star? If the latter, uncomment this.
-		retweeterMessage = nil;
-		
-		// Swap retweeted message with root message
-		if (message.retweetedMessage != nil) {
-			retweeterMessage = message;
-			message = retweeterMessage.retweetedMessage;
-		}
-		
-		// Favorites
-		isFavorite = (message.favorite || retweeterMessage.favorite);
-		
-		// Create mutable copy of template
-		tweetRowHTML = [NSMutableString stringWithString:tweetRowTemplate];
-		
-		// Fields for replacement
-		NSString *screenName = message.screenName ? message.screenName : @"";
-		NSString *messageIdentifier = message.identifier ? [message.identifier stringValue] : @"";
-		NSString *profileImageURL = message.avatar ? message.avatar : @"";
-		NSString *retweetIcon = retweeterMessage ? @"<img src='retweet.png'>" : @"";
-		NSString *lockIcon = [message isLocked] ? @"<img src='lock.png'>" : @"";
-		NSString *content = message.content ? [self htmlFormattedString:message.content] : @"";
-		NSString *createdDate = message.createdDate ? [self timeStringSinceNow: message.createdDate] : @"";
-		NSString *via = message.source ? message.source : @"";
-		NSString *inReplyToScreenName = message.inReplyToScreenName ? message.inReplyToScreenName : @"";
-		NSString *retweetedBy = retweeterMessage.screenName ? retweeterMessage.screenName : @"";
-		NSString *faveImageSuffix = isFavorite ? @"-on" : @"";
-		
-		// Replace fields in template with actual data
-		[tweetRowHTML replaceOccurrencesOfString:@"{screenName}" withString:screenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{messageIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{profileImageURL}" withString:profileImageURL options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{retweetIcon}" withString:retweetIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{lockIcon}" withString:lockIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{content}" withString:content options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{createdDate}" withString:createdDate options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{via}" withString:via options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{inReplyToScreenName}" withString:inReplyToScreenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{retweetedBy}" withString:retweetedBy options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		[tweetRowHTML replaceOccurrencesOfString:@"{faveImageSuffix}" withString:faveImageSuffix options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-		
-		// Replace blocks in template
-		[self replaceBlock: @"InReplyTo" display: (message.inReplyToStatusIdentifier != nil) inTemplate:tweetRowHTML];
-		[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
-		[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
-		
-		// Append row to table
-		[html appendString:tweetRowHTML];
-		
+		[html appendString: [self tweetRowHTMLForRow:index]];
 		[pool release];
 	}
 		
@@ -676,6 +649,57 @@
 	return html;
 }
 
+- (NSString *)tweetRowHTMLForRow:(int)row {
+	NSMutableString *tweetRowHTML;
+	TwitterMessage *message = [self.currentTimeline objectAtIndex:row];
+	TwitterMessage *retweeterMessage = nil;
+	
+	// Swap retweeted message with root message
+	if (message.retweetedMessage != nil) {
+		retweeterMessage = message;
+		message = retweeterMessage.retweetedMessage;
+	}
+	
+	// Favorites
+	BOOL isFavorite = (message.favorite || retweeterMessage.favorite);
+	
+	// Create mutable copy of template
+	tweetRowHTML = [NSMutableString stringWithString:tweetRowTemplate];
+	
+	// Fields for replacement
+	NSString *screenName = message.screenName ? message.screenName : @"";
+	NSString *messageIdentifier = message.identifier ? [message.identifier stringValue] : @"";
+	NSString *profileImageURL = message.avatar ? message.avatar : @"";
+	NSString *retweetIcon = retweeterMessage ? @"<img src='retweet.png'>" : @"";
+	NSString *lockIcon = [message isLocked] ? @"<img src='lock.png'>" : @"";
+	NSString *content = message.content ? [self htmlFormattedString:message.content] : @"";
+	NSString *createdDate = message.createdDate ? [self timeStringSinceNow: message.createdDate] : @"";
+	NSString *via = message.source ? message.source : @"";
+	NSString *inReplyToScreenName = message.inReplyToScreenName ? message.inReplyToScreenName : @"";
+	NSString *retweetedBy = retweeterMessage.screenName ? retweeterMessage.screenName : @"";
+	NSString *faveImageSuffix = isFavorite ? @"-on" : @"";
+	
+	// Replace fields in template with actual data
+	[tweetRowHTML replaceOccurrencesOfString:@"{screenName}" withString:screenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{messageIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{profileImageURL}" withString:profileImageURL options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{retweetIcon}" withString:retweetIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{lockIcon}" withString:lockIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{content}" withString:content options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{createdDate}" withString:createdDate options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{via}" withString:via options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{inReplyToScreenName}" withString:inReplyToScreenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{retweetedBy}" withString:retweetedBy options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	[tweetRowHTML replaceOccurrencesOfString:@"{faveImageSuffix}" withString:faveImageSuffix options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	
+	// Replace blocks in template
+	[self replaceBlock: @"InReplyTo" display: (message.inReplyToStatusIdentifier != nil) inTemplate:tweetRowHTML];
+	[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
+	[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
+	
+	return tweetRowHTML;
+}
+
 - (NSString*) tweetAreaFooterHTML {
 	NSString *result = @"";
 	
@@ -685,6 +709,8 @@
 		result = @"<div class='status'>Loading...</div>";
 	} else if ([currentTimeline count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
+	} else if (noOlderMessages) {
+		result = @"<div class='status'>No more messages.</div>";
 	} else if ([currentTimeline count] < maxTweetsShown) {
 		// Action to Load older messages 
 		result = @"<div class='load_older'><a href='action:loadOlder'>Load older messages</a></div> ";
@@ -775,6 +801,9 @@
 	[s replaceOccurrencesOfString:@"\r\n" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
 	[s replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
 	[s replaceOccurrencesOfString:@"\r" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
+	
+	// Replace tabs with a non-breaking space followed by a norma space
+	[s replaceOccurrencesOfString:@"\t" withString:@"&nbsp; " options:0 range:NSMakeRange(0, s.length)];
 	
 	// Remove NULs
 	[s replaceOccurrencesOfString:@"\0" withString:@"" options:0 range:NSMakeRange(0, s.length)];
@@ -874,9 +903,16 @@
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
 	[appDelegate decrementNetworkActionCount];
 	if (!webViewHasValidHTML) {
-		// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
-		[self reloadCurrentTimeline];
 		webViewHasValidHTML = YES;
+
+		// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
+		suppressNetworkErrorAlerts = YES;
+		[self reloadCurrentTimeline];
+	}
+	
+	// Hide Loading spinner if there are no actions
+	if (actions.count == 0) {
+		[self setLoadingSpinnerVisibility:NO];
 	}
 }
 
@@ -916,6 +952,7 @@
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
 	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"per_page"];
+	suppressNetworkErrorAlerts = NO;
 	[self reloadCurrentTimeline];
 	
 	// Rewrite and scroll web view
@@ -935,15 +972,15 @@
 #pragma mark Alert view
 
 - (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage {
-	if (self.currentAlert == nil) { // Don't show another alert if one is already up.
+	if (self.currentAlert == nil && !suppressNetworkErrorAlerts) { // Don't show another alert if one is already up.
 		self.currentAlert = [[[UIAlertView alloc] initWithTitle:aTitle message:aMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		[currentAlert show];
 	}
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	[self rewriteTweetArea];
-	[self setLoadingSpinnerVisibility:NO];
+	//[self rewriteTweetArea];
+	//[self setLoadingSpinnerVisibility:NO];
 	self.currentAlert = nil;
 }
 

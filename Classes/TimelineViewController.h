@@ -48,6 +48,8 @@
 	NSTimer *refreshTimer;
 	BOOL networkIsReachable;
 	BOOL webViewHasValidHTML;
+	BOOL suppressNetworkErrorAlerts;
+	BOOL noOlderMessages;
 
 	TwitterAccount *currentAccount;
 	NSMutableArray *currentTimeline;
@@ -59,6 +61,7 @@
 	UIActionSheet *currentActionSheet;
 	UIAlertView *currentAlert;
 	
+	NSString *tweetRowTemplate;
 }
 @property (nonatomic, retain) LKWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *composeButton;
@@ -89,6 +92,7 @@
 - (void)handleTwitterStatusCode:(int)code;
 - (void)reloadCurrentTimeline;
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action;
+- (void)startLoadingCurrentTimeline;
 - (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
 - (void)fave: (NSNumber*) messageIdentifier;
 - (void)retweet:(NSNumber*)messageIdentifier;
@@ -109,12 +113,13 @@
 - (void) reloadWebView;
 - (void) setLoadingSpinnerVisibility: (BOOL) isVisible;
 - (void) rewriteTweetArea;
-- (NSString*) webPageTemplate; // Subclasses should override this to provide their own HTML template.
-- (NSString*) tweetAreaHTML;
-- (NSString*) tweetAreaFooterHTML;
-- (NSString*) timeStringSinceNow: (NSDate*) date;
-- (void) replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template;
-- (NSString*)htmlFormattedString:(NSString*)string;
+- (NSString *)webPageTemplate; // Subclasses should override this to provide their own HTML template.
+- (NSString *)tweetAreaHTML;
+- (NSString *)tweetRowHTMLForRow:(int)row;
+- (NSString *)tweetAreaFooterHTML;
+- (NSString *)timeStringSinceNow: (NSDate*) date;
+- (void)replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template;
+- (NSString *)htmlFormattedString:(NSString*)string;
 
 
 // Web view delegate methods

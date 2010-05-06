@@ -23,6 +23,7 @@
 		self.currentTimeline = [NSMutableArray array]; // Always start with an empty array of messages for Search.
 		self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
 		self.customTabName = NSLocalizedString (@"Results", @"tab");
+		maxTweetsShown = 1000; // Allow for a larger limit for searches.
 		
 		// Create Twitter action to load search results into the current timeline.
 		TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultLoadCount] autorelease];

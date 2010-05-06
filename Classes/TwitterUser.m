@@ -32,6 +32,13 @@
 	return self;
 }
 
+- (NSMutableArray*) mutableArrayForKey:(NSString *)key coder:(NSCoder *)decoder {
+	NSMutableArray *array = [decoder decodeObjectForKey:key];
+	if (!array) 
+		array = [NSMutableArray array];
+	return array;
+}
+
 - (id) initWithCoder: (NSCoder*) decoder {
 	if (self = [super init]) {
 		self.identifier = [decoder decodeObjectForKey:@"identifier"];
@@ -53,8 +60,8 @@
 		protectedUser = [decoder decodeBoolForKey:@"protectedUser"];
 		verifiedUser = [decoder decodeBoolForKey:@"verifiedUser"];
 		
-		self.statuses = [NSMutableArray array];
-		self.favorites = [NSMutableArray array];
+		self.statuses = [self mutableArrayForKey:@"statuses" coder:decoder];
+		self.favorites = [self mutableArrayForKey:@"favorites" coder:decoder];
 		self.lists = [NSMutableArray array];
 		self.listSubscriptions = [NSMutableArray array];
 	}
@@ -80,6 +87,9 @@
 	
 	[encoder encodeBool:protectedUser forKey:@"protectedUser"];
 	[encoder encodeBool:verifiedUser forKey:@"verifiedUser"];
+
+	[encoder encodeObject:statuses forKey:@"statuses"];
+	[encoder encodeObject:favorites forKey:@"favorites"];
 }
 
 - (void)dealloc {

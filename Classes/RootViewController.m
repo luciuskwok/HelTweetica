@@ -151,7 +151,8 @@
 }
 
 - (void) rewriteTabArea {
-	[self.webView setDocumentElement:@"tab_area" innerHTML:[self tabAreaHTML]];
+	if (webViewHasValidHTML)
+		[self.webView setDocumentElement:@"tab_area" innerHTML:[self tabAreaHTML]];
 }
 
 - (void) rewriteTweetArea {
@@ -226,8 +227,10 @@
 - (void) didSelectAccount:(TwitterAccount*)anAccount {
 	self.currentAccount = anAccount;
 	[self closeAllPopovers];
-	[self.webView setDocumentElement:@"current_account" innerHTML:[self currentAccountHTML]];
-	[self.webView scrollToTop];
+	if (webViewHasValidHTML) {
+		[self.webView setDocumentElement:@"current_account" innerHTML:[self currentAccountHTML]];
+		[self.webView scrollToTop];
+	}
 	[self selectHomeTimeline];
 	[self startLoadingCurrentTimeline];
 	

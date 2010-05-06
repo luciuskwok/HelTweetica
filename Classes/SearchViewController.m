@@ -105,6 +105,8 @@
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
 	loading = NO;
 	self.statusMessage = [error localizedDescription];
+	[self setContentSize];
+	[self.tableView reloadData];
 }
 
 #pragma mark View lifecycle

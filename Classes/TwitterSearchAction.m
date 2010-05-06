@@ -59,7 +59,10 @@
 		TwitterSearchJSONParser *parser = [[[TwitterSearchJSONParser alloc] init] autorelease];
 		parser.receivedTimestamp = [NSDate date];
 		[parser parseJSONData:data];
+		newMessageCount = parser.messages.count;
 		[self mergeTimelineWithMessages: parser.messages];
+	} else {
+		newMessageCount = 0;
 	}
 }
 

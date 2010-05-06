@@ -18,7 +18,7 @@
 
 
 @implementation TwitterLoadTimelineAction
-@synthesize timeline, users, overlap;
+@synthesize timeline, users, newMessageCount, overlap;
 
 - (id)initWithTwitterMethod:(NSString*)method {
 	self = [super init];
@@ -44,7 +44,10 @@
 		parser.directMessage = [twitterMethod hasPrefix:@"direct_messages"];
 		[parser parseJSONData:receivedData];
 		self.users = parser.users;
+		newMessageCount = parser.messages.count;
 		[self mergeTimelineWithMessages: parser.messages];
+	} else {
+		newMessageCount = 0;
 	}
 }
 

@@ -38,11 +38,13 @@
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
 
 - (TwitterMessage *)statusWithIdentifier:(NSNumber *)identifier;
+- (NSSet*) statusesInReplyToStatusIdentifier:(NSNumber*)identifier;
 - (TwitterUser *)userWithScreenName:(NSString *)screenName;
 
 - (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses updateFavorites:(BOOL)updateFaves;
 - (void)addUsers:(NSSet *)newUsers;
 
+- (void) load;
 - (void) save;
 
 @end

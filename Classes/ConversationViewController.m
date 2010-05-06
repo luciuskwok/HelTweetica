@@ -11,19 +11,24 @@
 
 
 @implementation ConversationViewController
+@synthesize selectedMessageIdentifier;
+
 
 // Designated initializer. Uses aMessage as the head of a chain of replies, and gets each status in the reply chain.
 - (id)initWithMessageIdentifier:(NSNumber*)anIdentifier {
 	self = [super initWithNibName:@"Conversation" bundle:nil];
 	if (self) {
+		self.selectedMessageIdentifier = anIdentifier;
 		self.customPageTitle = NSLocalizedString (@"The <b>Conversation</b>", @"title");
 		self.currentTimeline = [NSMutableArray array];
+		maxTweetsShown = 1000; // Allow for a larger limit for searches.
 		[self loadMessage:anIdentifier];
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[selectedMessageIdentifier release];
     [super dealloc];
 }
 
@@ -60,13 +65,22 @@
 		action.completionTarget = self;
 		[self startTwitterAction:action];
 	}
+	
+	// Also load all cached replies to this message
+	NSMutableSet *timelineSet = [NSMutableSet setWithArray:currentTimeline];
+	NSSet *replies = [twitter statusesInReplyToStatusIdentifier:messageIdentifier];
+	[timelineSet unionSet:replies];
+	[currentTimeline setArray: [timelineSet allObjects]];
+	
+	// Sort by message id
+	NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
+	[currentTimeline sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
 }
 
 - (void)loadingComplete {
 	// No more messages
 	loadingComplete = YES;
-	if (webViewHasValidHTML) 
-		[self rewriteTweetArea];
+	[self rewriteTweetArea];
 }
 
 - (void)didLoadMessage:(TwitterLoadTimelineAction *)action {
@@ -99,9 +113,7 @@
 
 - (void) fireRefreshTimer:(NSTimer*)timer {
 	// Refresh timer only to update timestamps.
-	if (webViewHasValidHTML) 
-		[self rewriteTweetArea];
-	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
+	[self rewriteTweetArea];
 }
 
 - (void)reloadCurrentTimeline {

@@ -154,6 +154,9 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"instapaperNetworkError" object:error];
 }
 
+- (NSCachedURLResponse *)connection:(NSURLConnection *)aConnection willCacheResponse:(NSCachedURLResponse *)aResponse {
+	return nil; // Don't cache any responses for TwitterActions.
+}
 
 
 @end
