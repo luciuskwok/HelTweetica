@@ -33,6 +33,8 @@
 			[theParameters setObject:count forKey:@"rpp"]; // Results per page.
 		
 		self.parameters = theParameters;
+		
+		// self.method is nil because search uses a completely different API from the rest of Twitter.
 	}
 	return self;
 }

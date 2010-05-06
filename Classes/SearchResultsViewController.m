@@ -95,12 +95,6 @@
 	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:NO];
 	[twitter addUsers:action.users];
 	
-	// Limit the length of the timeline
-	if (action.timeline.count > kMaxNumberOfMessagesInATimeline) {
-		NSRange removalRange = NSMakeRange(kMaxNumberOfMessagesInATimeline, action.timeline.count - kMaxNumberOfMessagesInATimeline);
-		[action.timeline removeObjectsInRange:removalRange];
-	}
-	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];	
 }

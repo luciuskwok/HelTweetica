@@ -210,8 +210,9 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
     }
     
     // Configure the cell
@@ -220,10 +221,12 @@
 		list = [currentLists objectAtIndex: indexPath.row];
 		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
 		cell.textLabel.textColor = [UIColor blackColor];
+		cell.detailTextLabel.text = [list.memberCount stringValue];
 	} else if (indexPath.row < currentLists.count + currentSubscriptions.count) {
 		list = [currentSubscriptions objectAtIndex: indexPath.row - currentLists.count];
 		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
 		cell.textLabel.textColor = [UIColor blackColor];
+		cell.detailTextLabel.text = [list.memberCount stringValue];
 	} else if (indexPath.row == 0) {
 		cell.textLabel.text = self.statusMessage;
 		cell.textLabel.textColor = [UIColor grayColor];

@@ -267,6 +267,9 @@
 	if (newerThan)
 		[action.parameters setObject:[newerThan stringValue] forKey:@"since_id"];
 	
+	// Remove "max_id" parameter in case it was set from loading older messages;
+	[action.parameters removeObjectForKey:@"max_id"];
+	
 	// Prepare action and start it. 
 	action.timeline = currentTimeline;
 	action.completionTarget= self;
@@ -309,6 +312,9 @@
 	if (olderThan)
 		[action.parameters setObject:[olderThan stringValue] forKey:@"max_id"];
 	
+	// Remove "since_id" parameter in case it was set from loading newer messages;
+	[action.parameters removeObjectForKey:@"since_id"];
+	
 	// Prepare action and start it. 
 	action.timeline = currentTimeline;
 	action.completionTarget= self;
@@ -332,8 +338,8 @@
 	// If there are actions already pending, reschedule refresh 
 	if ([actions count] == 0) {
 		CGPoint scrollPosition = [self.webView scrollPosition];
-		if (scrollPosition.y == 0.0f && shouldReloadAfterWebViewFinishesRendering == NO && networkIsReachable) {
-			// If scrolled to top, load new tweets
+		if (scrollPosition.y == 0.0f && !shouldReloadAfterWebViewFinishesRendering && networkIsReachable && !currentPopover&& !currentAlert && !currentActionSheet) {
+			// Only reload from the network if the scroll position is at the top, the web view has been loaded, the network is reachable, and no popovers are showing.
 			[self reloadCurrentTimeline];
 		} else {
 			// Don't load new statuses if scroll position is below top.
@@ -583,92 +589,87 @@
 - (NSString*) tweetAreaHTML {
 	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
 	
-	NSArray *timeline = currentTimeline; 
+	[html appendString:@"<div class='tweet_table'> "];
 	
-	if ((timeline != nil) && ([timeline count] != 0)) {
-		int totalMessages = [timeline count];
-		int displayedCount = (totalMessages < maxTweetsShown) ? totalMessages : maxTweetsShown;
-		
-		// Count and oldest
-		TwitterMessage *message, *retweeterMessage;
-		
-		[html appendString:@"<div class='tweet_table'> "];
-		
-		// Page title for Lists and Search
-		if (customPageTitle) {
-			// Put the title inside a regular tweet table row.
-			[html appendString:@"<div class='tweet_row'><div class='tweet_avatar'></div><div class='tweet_content'>"];
-			[html appendFormat:@"<div class='page_title'>%@</div>", customPageTitle];
-			[html appendString:@"</div><div class='tweet_actions'> </div></div>"];
-		}
-		
-		// Template for tweet_row
-		NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-		NSError *error = nil;
-		NSString *tweetRowTemplate = [NSString stringWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-template.html"] encoding:NSUTF8StringEncoding error:&error];
-		if (error != nil)
-			NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
-		NSMutableString *tweetRowHTML;
-		
-		NSAutoreleasePool *pool;
-		BOOL isFavorite;
-		int index;
-		for (index=0; index<displayedCount; index++) {
-			pool = [[NSAutoreleasePool alloc] init];
-			message = [timeline objectAtIndex:index];
-			//isFavorite = message.favorite; // Is the original tweet or the retweeter's tweet supposed to be the one that gets the star? If the latter, uncomment this.
-			retweeterMessage = nil;
-			
-			// Swap retweeted message with root message
-			if (message.retweetedMessage != nil) {
-				retweeterMessage = message;
-				message = retweeterMessage.retweetedMessage;
-			}
-			
-			// Favorites
-			isFavorite = (message.favorite || retweeterMessage.favorite);
-			
-			// Create mutable copy of template
-			tweetRowHTML = [NSMutableString stringWithString:tweetRowTemplate];
-			
-			// Fields for replacement
-			NSString *screenName = message.screenName ? message.screenName : @"";
-			NSString *messageIdentifier = message.identifier ? [message.identifier stringValue] : @"";
-			NSString *profileImageURL = message.avatar ? message.avatar : @"";
-			NSString *retweetIcon = retweeterMessage ? @"<img src='retweet.png'>" : @"";
-			NSString *lockIcon = [message isLocked] ? @"<img src='lock.png'>" : @"";
-			NSString *content = message.content ? [self htmlFormattedString:message.content] : @"";
-			NSString *createdDate = message.createdDate ? [self timeStringSinceNow: message.createdDate] : @"";
-			NSString *via = message.source ? message.source : @"";
-			NSString *inReplyToScreenName = message.inReplyToScreenName ? message.inReplyToScreenName : @"";
-			NSString *retweetedBy = retweeterMessage.screenName ? retweeterMessage.screenName : @"";
-			NSString *faveImageSuffix = isFavorite ? @"-on" : @"";
-			
-			// Replace fields in template with actual data
-			[tweetRowHTML replaceOccurrencesOfString:@"{screenName}" withString:screenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{messageIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{profileImageURL}" withString:profileImageURL options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{retweetIcon}" withString:retweetIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{lockIcon}" withString:lockIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{content}" withString:content options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{createdDate}" withString:createdDate options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{via}" withString:via options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{inReplyToScreenName}" withString:inReplyToScreenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{retweetedBy}" withString:retweetedBy options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			[tweetRowHTML replaceOccurrencesOfString:@"{faveImageSuffix}" withString:faveImageSuffix options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-			
-			// Replace blocks in template
-			[self replaceBlock: @"InReplyTo" display: (message.inReplyToStatusIdentifier != nil) inTemplate:tweetRowHTML];
-			[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
-			[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
-			
-			// Append row to table
-			[html appendString:tweetRowHTML];
-			
-			[pool release];
-		}
-		[html appendString:@"</div> "]; // Close tweet_table
+	// Page Title for Lists and Search
+	if (customPageTitle) {
+		// Put the title inside a regular tweet table row.
+		[html appendString:@"<div class='tweet_row'><div class='tweet_avatar'></div><div class='tweet_content'>"];
+		[html appendFormat:@"<div class='page_title'>%@</div>", customPageTitle];
+		[html appendString:@"</div><div class='tweet_actions'> </div></div>"];
 	}
+	
+	NSArray *timeline = self.currentTimeline; 
+	TwitterMessage *message, *retweeterMessage;
+	int displayedCount = (timeline.count < maxTweetsShown) ? timeline.count : maxTweetsShown;
+	
+	// Template for tweet_row
+	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
+	NSError *error = nil;
+	NSString *tweetRowTemplate = [NSString stringWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-template.html"] encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil)
+		NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
+	NSMutableString *tweetRowHTML;
+	
+	NSAutoreleasePool *pool;
+	BOOL isFavorite;
+	int index;
+	for (index=0; index<displayedCount; index++) {
+		pool = [[NSAutoreleasePool alloc] init];
+		message = [timeline objectAtIndex:index];
+		//isFavorite = message.favorite; // Is the original tweet or the retweeter's tweet supposed to be the one that gets the star? If the latter, uncomment this.
+		retweeterMessage = nil;
+		
+		// Swap retweeted message with root message
+		if (message.retweetedMessage != nil) {
+			retweeterMessage = message;
+			message = retweeterMessage.retweetedMessage;
+		}
+		
+		// Favorites
+		isFavorite = (message.favorite || retweeterMessage.favorite);
+		
+		// Create mutable copy of template
+		tweetRowHTML = [NSMutableString stringWithString:tweetRowTemplate];
+		
+		// Fields for replacement
+		NSString *screenName = message.screenName ? message.screenName : @"";
+		NSString *messageIdentifier = message.identifier ? [message.identifier stringValue] : @"";
+		NSString *profileImageURL = message.avatar ? message.avatar : @"";
+		NSString *retweetIcon = retweeterMessage ? @"<img src='retweet.png'>" : @"";
+		NSString *lockIcon = [message isLocked] ? @"<img src='lock.png'>" : @"";
+		NSString *content = message.content ? [self htmlFormattedString:message.content] : @"";
+		NSString *createdDate = message.createdDate ? [self timeStringSinceNow: message.createdDate] : @"";
+		NSString *via = message.source ? message.source : @"";
+		NSString *inReplyToScreenName = message.inReplyToScreenName ? message.inReplyToScreenName : @"";
+		NSString *retweetedBy = retweeterMessage.screenName ? retweeterMessage.screenName : @"";
+		NSString *faveImageSuffix = isFavorite ? @"-on" : @"";
+		
+		// Replace fields in template with actual data
+		[tweetRowHTML replaceOccurrencesOfString:@"{screenName}" withString:screenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{messageIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{profileImageURL}" withString:profileImageURL options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{retweetIcon}" withString:retweetIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{lockIcon}" withString:lockIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{content}" withString:content options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{createdDate}" withString:createdDate options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{via}" withString:via options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{inReplyToScreenName}" withString:inReplyToScreenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{retweetedBy}" withString:retweetedBy options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		[tweetRowHTML replaceOccurrencesOfString:@"{faveImageSuffix}" withString:faveImageSuffix options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+		
+		// Replace blocks in template
+		[self replaceBlock: @"InReplyTo" display: (message.inReplyToStatusIdentifier != nil) inTemplate:tweetRowHTML];
+		[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
+		[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
+		
+		// Append row to table
+		[html appendString:tweetRowHTML];
+		
+		[pool release];
+	}
+		
+	[html appendString:@"</div> "]; // Close tweet_table
 	
 	// Footer
 	[html appendString:[self tweetAreaFooterHTML]];
