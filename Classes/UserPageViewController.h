@@ -25,6 +25,8 @@
 	TwitterUser *user;
 	BOOL unauthorized;
 	BOOL notFound;
+	
+	NSString *highlightedTweetRowTemplate;
 }
 @property (nonatomic, retain) UIToolbar *topToolbar;
 @property (nonatomic, retain) TwitterUser *user;

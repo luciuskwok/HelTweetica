@@ -24,6 +24,8 @@
 	BOOL loadingComplete;
 	BOOL messageNotFound;
 	BOOL protectedUser;
+
+	NSString *highlightedTweetRowTemplate;
 }
 @property (nonatomic, retain) NSNumber *selectedMessageIdentifier;
 

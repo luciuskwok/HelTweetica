@@ -106,6 +106,8 @@
 	currentAlert.delegate = nil;
 	[currentAlert release];
 
+	[tweetRowTemplate release];
+	
 	[super dealloc];
 }
 
@@ -649,6 +651,10 @@
 	return html;
 }
 
+- (NSString *)tweetRowTemplateForRow:(int)row {
+	return tweetRowTemplate;
+}
+
 - (NSString *)tweetRowHTMLForRow:(int)row {
 	NSMutableString *tweetRowHTML;
 	TwitterMessage *message = [self.currentTimeline objectAtIndex:row];
@@ -664,7 +670,7 @@
 	BOOL isFavorite = (message.favorite || retweeterMessage.favorite);
 	
 	// Create mutable copy of template
-	tweetRowHTML = [NSMutableString stringWithString:tweetRowTemplate];
+	tweetRowHTML = [NSMutableString stringWithString: [self tweetRowTemplateForRow: row]];
 	
 	// Fields for replacement
 	NSString *screenName = message.screenName ? message.screenName : @"";

@@ -16,7 +16,7 @@
 
 
 // Constants
-#define kMaxNumberOfMessagesInATimeline 600
+#define kMaxNumberOfMessagesInATimeline 2000
 // When reloading a timeline, newly downloaded messages are merged with existing ones, sorted by identifier, and the oldest ones past this limit are trimmed off.
 #define kMaxMessageStaleness (2 * 60 * 60) 
 // When reloading a timeline, when the newest message in the app is older than this, the app reloads the entire timeline instead of requesting only status updates newer than the newest in the app. This is set to 2 hours. The value is in seconds.
@@ -115,6 +115,7 @@
 - (void) rewriteTweetArea;
 - (NSString *)webPageTemplate; // Subclasses should override this to provide their own HTML template.
 - (NSString *)tweetAreaHTML;
+- (NSString *)tweetRowTemplateForRow:(int)row;
 - (NSString *)tweetRowHTMLForRow:(int)row;
 - (NSString *)tweetAreaFooterHTML;
 - (NSString *)timeStringSinceNow: (NSDate*) date;

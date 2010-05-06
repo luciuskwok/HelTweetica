@@ -37,7 +37,14 @@
 	if (self) {
 		self.user = aUser;
 		self.defaultLoadCount = @"50"; // Limit number of tweets to request for user or list.
-		maxTweetsShown = 1000; // Allow for a larger limit for searches.
+		maxTweetsShown = 400; // Allow for a larger limit for searches.
+		
+		// Special template to highlight the selected message. tweet-row-highlighted-template.html
+		NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
+		NSError *error = nil;
+		highlightedTweetRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-highlighted-template.html"] encoding:NSUTF8StringEncoding error:&error];
+		if (error != nil)
+			NSLog (@"Error loading tweet-row-highlighted-template.html: %@", [error localizedDescription]);
 	}
 	return self;
 }
@@ -45,6 +52,7 @@
 - (void)dealloc {
 	[topToolbar release];
 	[user release];
+	[highlightedTweetRowTemplate release];
 	[super dealloc];
 }
 
@@ -139,6 +147,12 @@
 	[self replaceBlock:@"JoinDate" display:(user.createdAt != nil) inTemplate:html];
 	
 	return html;
+}
+
+- (NSString *)tweetRowTemplateForRow:(int)row {
+	if (row == 0)
+		return highlightedTweetRowTemplate;
+	return tweetRowTemplate;
 }
 
 - (NSString*) tweetAreaFooterHTML {

@@ -23,12 +23,20 @@
 		self.currentTimeline = [NSMutableArray array];
 		maxTweetsShown = 1000; // Allow for a larger limit for searches.
 		[self loadMessage:anIdentifier];
+		
+		// Special template to highlight the selected message. tweet-row-highlighted-template.html
+		NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
+		NSError *error = nil;
+		highlightedTweetRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-highlighted-template.html"] encoding:NSUTF8StringEncoding error:&error];
+		if (error != nil)
+			NSLog (@"Error loading tweet-row-highlighted-template.html: %@", [error localizedDescription]);
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[selectedMessageIdentifier release];
+	[highlightedTweetRowTemplate release];
     [super dealloc];
 }
 
@@ -148,6 +156,13 @@
 	// Add any customization here.
 	
 	return html;
+}
+
+- (NSString *)tweetRowTemplateForRow:(int)row {
+	TwitterMessage *message = [self.currentTimeline objectAtIndex:row];
+	if ([message.identifier isEqualToNumber:selectedMessageIdentifier])
+		return highlightedTweetRowTemplate;
+	return tweetRowTemplate;
 }
 
 - (NSString*) tweetAreaFooterHTML {
