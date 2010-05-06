@@ -118,7 +118,12 @@ p { margin: 0px 0px 20px 0px; }
 	border-bottom: 1px solid #ccc;
 }
 .screen_name { font-weight: bold; color: #000; }
-.time { color: #888; font-size: 13px; line-height: 15px; font-style: italic; }
+.time { 
+	color: #888; 
+	font-size: 13px;
+	line-height: 15px; 
+	font-style: italic; 
+}
 .time a { color: #88A; }
 .load_older { font-weight: bold; text-align: center; margin: 20px; }
 
@@ -222,4 +227,5 @@ p { margin: 0px 0px 20px 0px; }
 .highlighted_tweet_row {
 	font-size: 25px;
 	line-height: 30px;
+	background: #FFB;
 }

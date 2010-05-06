@@ -270,7 +270,10 @@
 }
 
 - (IBAction) accounts: (id) sender {
-	[self showAccounts: sender];	
+	AccountsViewController *accountsController = [self showAccounts: sender];	
+	if (twitter.accounts.count == 0) { // Automatically show the login screen if no accounts exist
+		[accountsController add:sender];
+	}
 }
 
 - (IBAction) lists: (id) sender {

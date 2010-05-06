@@ -150,7 +150,7 @@
 }
 
 - (NSString *)tweetRowTemplateForRow:(int)row {
-	if (row == 0)
+	if (row == 0 && self.currentTimeline == user.statuses)
 		return highlightedTweetRowTemplate;
 	return tweetRowTemplate;
 }
@@ -164,6 +164,8 @@
 		result = @"<div class='status'>Protected user.</div>";
 	} else if (notFound) {
 		result = @"<div class='status'>No such user.</div>";
+	} else if (noOlderMessages) {
+		result = @"";
 	} else if ([currentTimeline count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	} else if ([currentTimeline count] < maxTweetsShown) {

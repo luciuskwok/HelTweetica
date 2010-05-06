@@ -129,7 +129,9 @@
 }
 
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
-	// Do nothing because we're already in a conversation.
+	// Select the tapped message
+	self.selectedMessageIdentifier = identifier;
+	[self rewriteTweetArea];
 }
 
 - (void)handleTwitterStatusCode:(int)code {

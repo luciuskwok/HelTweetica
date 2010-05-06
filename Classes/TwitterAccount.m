@@ -41,7 +41,7 @@
 - (NSMutableArray*) mutableArrayForKey:(NSString *)key coder:(NSCoder *)decoder {
 	NSData *data = [decoder decodeObjectForKey:key];
 	NSMutableArray *array;
-	if (data != nil) {
+	if (data && [data isKindOfClass:[NSData class]]) {
 		array = [NSMutableArray arrayWithArray: [NSKeyedUnarchiver unarchiveObjectWithData:data]];
 	} else {
 		array = [NSMutableArray array];

@@ -463,7 +463,6 @@
 				E0DD53C8118E2DA20042CF49 /* AllStars images */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				E0EC7243116AAE5F001078B7 /* MainWindow-iPad.xib */,
-				E0A8F16D116D799900DF2BDB /* test.json */,
 				E0DF13E711647FAD004FE7B9 /* Default.png */,
 				E06A3678116EEA920098CF12 /* Default-Landscape.png */,
 				E06A3679116EEA920098CF12 /* Default-Portrait.png */,
@@ -706,6 +705,7 @@
 		E0E489BB11868ADA00EB658C /* Unit Tests */ = {
 			isa = PBXGroup;
 			children = (
+				E0A8F16D116D799900DF2BDB /* test.json */,
 				E0E489DC11868EEB00EB658C /* ParserTests.h */,
 				E0E489DD11868EEB00EB658C /* ParserTests.m */,
 				E0E48ABE1186950E00EB658C /* HelTweeticaAppTests.h */,

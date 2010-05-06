@@ -265,7 +265,7 @@
 	
 	// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
 	NSNumber *newerThan = nil;
-	if (([currentTimeline count] > 10) && (isFavorites == NO)) {
+	if (([currentTimeline count] > 2) && (isFavorites == NO)) {
 		TwitterMessage *message = [currentTimeline objectAtIndex: 1]; // Use object at index 1, and test for overlap to determine whether there is a gap in the timeline.
 		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
 		if (staleness < kMaxMessageStaleness) {
@@ -312,7 +312,7 @@
 	// Issue: if the display only shows 200 tweets, the "Show Older" link should just show a page starting from the next items in the array. And if there are gaps in the timeline, there's no easy way of showing them.
 	
 	NSNumber *olderThan = nil;
-	if ([currentTimeline count] > 10) {
+	if ([currentTimeline count] > 2) {
 		TwitterMessage *message = [currentTimeline lastObject];
 		olderThan = message.identifier;
 	}
@@ -716,7 +716,7 @@
 	} else if ([currentTimeline count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	} else if (noOlderMessages) {
-		result = @"<div class='status'>No more messages.</div>";
+		result = @"";
 	} else if ([currentTimeline count] < maxTweetsShown) {
 		// Action to Load older messages 
 		result = @"<div class='load_older'><a href='action:loadOlder'>Load older messages</a></div> ";

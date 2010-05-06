@@ -33,9 +33,13 @@
 }
 
 - (NSMutableArray*) mutableArrayForKey:(NSString *)key coder:(NSCoder *)decoder {
-	NSMutableArray *array = [decoder decodeObjectForKey:key];
-	if (!array) 
+	NSData *data = [decoder decodeObjectForKey:key];
+	NSMutableArray *array;
+	if (data && [data isKindOfClass:[NSData class]]) {
+		array = [NSMutableArray arrayWithArray: [NSKeyedUnarchiver unarchiveObjectWithData:data]];
+	} else {
 		array = [NSMutableArray array];
+	}
 	return array;
 }
 
@@ -88,8 +92,8 @@
 	[encoder encodeBool:protectedUser forKey:@"protectedUser"];
 	[encoder encodeBool:verifiedUser forKey:@"verifiedUser"];
 
-	[encoder encodeObject:statuses forKey:@"statuses"];
-	[encoder encodeObject:favorites forKey:@"favorites"];
+	[encoder encodeObject:[NSKeyedArchiver archivedDataWithRootObject:statuses] forKey:@"statuses"];
+	[encoder encodeObject:[NSKeyedArchiver archivedDataWithRootObject:favorites] forKey:@"favorites"];
 }
 
 - (void)dealloc {
