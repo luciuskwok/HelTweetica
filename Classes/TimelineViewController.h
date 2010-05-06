@@ -47,7 +47,7 @@
 
 	NSTimer *refreshTimer;
 	BOOL networkIsReachable;
-	BOOL shouldReloadAfterWebViewFinishesRendering;
+	BOOL webViewHasValidHTML;
 
 	TwitterAccount *currentAccount;
 	NSMutableArray *currentTimeline;

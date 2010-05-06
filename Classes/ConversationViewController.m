@@ -18,7 +18,6 @@
 	if (self) {
 		self.customPageTitle = NSLocalizedString (@"The <b>Conversation</b>", @"title");
 		self.currentTimeline = [NSMutableArray array];
-		shouldReloadAfterWebViewFinishesRendering = YES; // This flag is also used to indicate that the web view has not yet loaded the template HTML.
 		[self loadMessage:anIdentifier];
 	}
 	return self;
@@ -66,7 +65,7 @@
 - (void)loadingComplete {
 	// No more messages
 	loadingComplete = YES;
-	if (shouldReloadAfterWebViewFinishesRendering == NO) 
+	if (webViewHasValidHTML) 
 		[self rewriteTweetArea];
 }
 
@@ -79,7 +78,7 @@
 	if (!loadingComplete && currentTimeline.count > 0) {
 		TwitterMessage *lastMessage = [currentTimeline lastObject];
 		[self loadInReplyToMessage: lastMessage];
-		if (shouldReloadAfterWebViewFinishesRendering == NO) 
+		if (webViewHasValidHTML) 
 			[self rewriteTweetArea];	
 	}
 }
@@ -100,7 +99,7 @@
 
 - (void) fireRefreshTimer:(NSTimer*)timer {
 	// Refresh timer only to update timestamps.
-	if (shouldReloadAfterWebViewFinishesRendering == NO) 
+	if (webViewHasValidHTML) 
 		[self rewriteTweetArea];
 	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
 }

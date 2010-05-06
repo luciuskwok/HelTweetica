@@ -107,7 +107,6 @@
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	[self reloadWebView];
-	shouldReloadAfterWebViewFinishesRendering = YES; // Automatically reload after web view is done rendering.
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -338,7 +337,7 @@
 	// If there are actions already pending, reschedule refresh 
 	if ([actions count] == 0) {
 		CGPoint scrollPosition = [self.webView scrollPosition];
-		if (scrollPosition.y == 0.0f && !shouldReloadAfterWebViewFinishesRendering && networkIsReachable && !currentPopover&& !currentAlert && !currentActionSheet) {
+		if (scrollPosition.y == 0.0f && webViewHasValidHTML && networkIsReachable && !currentPopover&& !currentAlert && !currentActionSheet) {
 			// Only reload from the network if the scroll position is at the top, the web view has been loaded, the network is reachable, and no popovers are showing.
 			[self reloadCurrentTimeline];
 		} else {
@@ -874,9 +873,10 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
 	[appDelegate decrementNetworkActionCount];
-	if (shouldReloadAfterWebViewFinishesRendering) {
+	if (!webViewHasValidHTML) {
+		// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
 		[self reloadCurrentTimeline];
-		shouldReloadAfterWebViewFinishesRendering = NO;
+		webViewHasValidHTML = YES;
 	}
 }
 
