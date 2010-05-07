@@ -109,24 +109,30 @@
 	// Favorites always loads 20 per page. Cannot change the count.
 }
 
-- (void) reloadRetweetTimeline {
+- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
 	if ([currentTimelineAction.twitterMethod isEqualToString:@"statuses/home_timeline"]) {
 		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/retweeted_by_me"] autorelease];
+		if (sinceIdentifier) 
+			[action.parameters setObject:sinceIdentifier forKey:@"since_id"];
+		if (maxIdentifier) 
+			[action.parameters setObject:maxIdentifier forKey:@"max_id"];
 		[action.parameters setObject:defaultLoadCount forKey:@"count"];
-		
-		// Set the since_id parameter minimize the number of statuses requested
-		if (currentTimeline.count > 0) {
-			TwitterMessage *message = [currentTimeline objectAtIndex: 0]; 
-			[action.parameters setObject:[message.identifier stringValue] forKey:@"since_id"];
-		}
 		
 		// Prepare action and start it. 
 		action.timeline = currentTimeline;
 		action.completionTarget= self;
-		action.completionAction = @selector(didReloadCurrentTimeline:);
+		action.completionAction = @selector(didReloadRetweets:);
 		[self startTwitterAction:action];
-		
 	}
+}
+
+- (void)didReloadRetweets:(TwitterLoadTimelineAction *)action {
+	// Synchronize timeline with Twitter cache.
+	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:YES];
+	[twitter addUsers:action.users];
+	
+	// Finished loading, so update tweet area and remove loading spinner.
+	[self rewriteTweetArea];	
 }
 
 - (AccountsViewController*) showAccounts:(id)sender {

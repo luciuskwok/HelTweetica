@@ -294,7 +294,7 @@
 
 #pragma mark Timeline loading
 
-- (void) reloadRetweetTimeline {
+- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
 	if ([currentTimelineAction.twitterMethod isEqualToString:@"statuses/user_timeline"]) {
 		/*
 		NSString *method = nil;

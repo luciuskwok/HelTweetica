@@ -274,9 +274,6 @@
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];
-	
-	// Also start an action to load RTs
-	[self reloadRetweetTimeline];
 }
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
@@ -292,13 +289,24 @@
 	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];	
+
+	// Also start an action to load RTs that the account's user has posted within the loaded timeline
+	if (action.loadedMessages.count > 1) {
+		TwitterMessage *firstMessage = [action.loadedMessages objectAtIndex:0];
+		TwitterMessage *lastMessage = [action.loadedMessages lastObject];
+		NSNumber *sinceIdentifier = lastMessage.identifier;
+		NSNumber *maxIdentifier = firstMessage.identifier;
+		
+		[self reloadRetweetsSince:sinceIdentifier toMax:maxIdentifier];
+	}
 }
 
-- (void) reloadRetweetTimeline {
-	// Subclasses should implement -reloadRetweetTimeline to load the correct RT timeline.
+- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
+	// Subclasses should implement this method to load the correct RT timeline.
+	// This method loads RTs that are newer than the since_id and up to and incuding the max_id.
 }
 
-- (void) loadOlderInCurrentTimeline {
+- (void)loadOlderInCurrentTimeline {
 	if (currentAccount == nil || currentAccount.xAuthToken == nil) {
 		return; // No current account or not logged in.
 	}
