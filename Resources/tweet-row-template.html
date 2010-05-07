@@ -15,7 +15,9 @@
 		
 		<span class='time'>
 			<nobr><a href='action:conversation/{messageIdentifier}'>{createdDate}</a></nobr>
-			via {via}
+			{Block:Via} 
+				via {via}
+			{/Block:Via} 
 			{Block:InReplyTo} 
 				<a href='action:conversation/{messageIdentifier}'>in reply to {inReplyToScreenName}</a>
 			{/Block:InReplyTo} 

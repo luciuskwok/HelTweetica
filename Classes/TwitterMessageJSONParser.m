@@ -110,6 +110,8 @@
 	} else if ([keyPath hasPrefix:@"/retweeted_status/"]) {
 		if (self.currentMessage) 
 			[self.currentMessage.retweetedMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
+	} else if ([keyPath hasPrefix:@"/recipient/"]) {
+		// Ignore these key paths because they're only in DMs.
 	} else if ([keyPath hasPrefix:@"/"]) {
 		[self.currentMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} 

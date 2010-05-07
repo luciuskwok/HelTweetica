@@ -730,6 +730,7 @@
 	[tweetRowHTML replaceOccurrencesOfString:@"{faveImageSuffix}" withString:faveImageSuffix options:0 range:NSMakeRange(0, tweetRowHTML.length)];
 	
 	// Replace blocks in template
+	[self replaceBlock: @"Via" display: (message.source != nil) inTemplate:tweetRowHTML];
 	[self replaceBlock: @"InReplyTo" display: (message.inReplyToStatusIdentifier != nil) inTemplate:tweetRowHTML];
 	[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
 	[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
