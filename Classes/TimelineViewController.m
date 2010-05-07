@@ -340,7 +340,7 @@
 		[twitter addUsers:action.users];
 	}
 	
-	if (action.newMessageCount <= 1) { // The one message is the one in the max_id.
+	if (action.newMessageCount <= 2) { // The one message is the one in the max_id.
 		noOlderMessages = YES;
 	}
 	
@@ -555,6 +555,13 @@
 	[self.navigationController pushViewController: vc animated: YES];
 }
 
+- (void) searchForQuery:(NSString*)query {
+	[self closeAllPopovers];
+	SearchResultsViewController *vc = [[[SearchResultsViewController alloc] initWithQuery:query] autorelease];
+	vc.currentAccount = self.currentAccount;
+	[self.navigationController pushViewController: vc animated: YES];
+}	
+
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
 	// Show conversation page
 	ConversationViewController *vc = [[[ConversationViewController alloc] initWithMessageIdentifier:identifier] autorelease];
@@ -709,7 +716,9 @@
 - (NSString*) tweetAreaFooterHTML {
 	NSString *result = @"";
 	
-	if (currentAccount.xAuthToken == nil) {
+	if (networkIsReachable == NO) {
+		result = @"<div class='status'>No Internet connection.</div>";
+	} else if (currentAccount.xAuthToken == nil) {
 		result = @"<div class='status'>Not logged in.</div>";
 	} else if (actions.count > 0) {
 		result = @"<div class='status'>Loading...</div>";
@@ -779,7 +788,7 @@
 - (NSString*)htmlFormattedString:(NSString*)string {
 	NSMutableString *s = [NSMutableString stringWithString:string];
 	
-	NSString *usernameText, *insertText, *urlText, *linkText;
+	NSString *foundText, *insertText, *urlText, *linkText;
 	
 	// Find URLs beginning with http: https*://[^ \t\r\n\v\f]*
 	NSRange unprocessed, foundRange;
@@ -843,17 +852,30 @@
 				wordLength = 10; // Reset to 10 so that every 10 chars over 20, it gets a soft hyphen.
 			}
 			
+			// @username: action link to User Page
 			if (c == '@') {
-				// Add action link to "@username"
 				foundRange = [s rangeOfString: @"@[A-Za-z0-9_]*" options: NSRegularExpressionSearch range: NSMakeRange (index, s.length - index)];
 				if (foundRange.location != NSNotFound && foundRange.length >= 2) {
-					usernameText = [s substringWithRange: NSMakeRange (foundRange.location + 1, foundRange.length - 1)];
-					insertText = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", usernameText, usernameText];
+					foundText = [s substringWithRange: NSMakeRange (foundRange.location + 1, foundRange.length - 1)];
+					insertText = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", foundText, foundText];
 					[s replaceCharactersInRange: foundRange withString: insertText];
 					index += insertText.length;
 					wordLength = 0;
 				}
 			}
+			
+			// #hashtag: action link to Search
+			if (c == '#') {
+				foundRange = [s rangeOfString: @"#[A-Za-z0-9_]*" options: NSRegularExpressionSearch range: NSMakeRange (index, s.length - index)];
+				if (foundRange.location != NSNotFound && foundRange.length >= 2) {
+					foundText = [s substringWithRange:foundRange];
+					insertText = [NSString stringWithFormat: @"<a href='action:search/%@'>%@</a>", foundText, foundText];
+					[s replaceCharactersInRange: foundRange withString: insertText];
+					index += insertText.length;
+					wordLength = 0;
+				}
+			}
+			
 		}
 		
 		index++;
@@ -886,6 +908,8 @@
 			[self directMessageWithTweet:messageIdentifier];
 		} else if ([actionName hasPrefix:@"user"]) { // Show user page
 			[self showUserPage:[actionName lastPathComponent]];
+		} else if ([actionName hasPrefix:@"search"]) { // Show search page
+			[self searchForQuery:[[actionName lastPathComponent] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		} else if ([actionName hasPrefix:@"conversation"]) { // Show more info on the tweet
 			[self showConversationWithMessageIdentifier:messageIdentifier];
 		} else if ([actionName hasPrefix:@"loadOlder"]) { // Load older
@@ -968,10 +992,7 @@
 
 
 - (void) search:(SearchViewController*)search didRequestQuery:(NSString*)query {
-	[self closeAllPopovers];
-	SearchResultsViewController *vc = [[[SearchResultsViewController alloc] initWithQuery:query] autorelease];
-	vc.currentAccount = self.currentAccount;
-	[self.navigationController pushViewController: vc animated: YES];
+	[self searchForQuery:query];
 }
 
 
