@@ -158,16 +158,6 @@
 	[self.webView scrollToTop];
 }
 
-- (IBAction) compose: (id) sender {
-	if ([self closeAllPopovers] == NO) { 
-		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
-		compose.delegate = self;
-		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
-	}
-}
-
-
-
 #pragma mark TwitterAction
 
 - (void)startTwitterAction:(TwitterAction*)action {
@@ -284,6 +274,9 @@
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];
+	
+	// Also start an action to load RTs
+	[self reloadRetweetTimeline];
 }
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
@@ -299,6 +292,10 @@
 	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];	
+}
+
+- (void) reloadRetweetTimeline {
+	NSLog (@"Subclasses should -reloadRetweetTimeline to load the correct RT timeline.");
 }
 
 - (void) loadOlderInCurrentTimeline {
@@ -389,19 +386,27 @@
 	[self startTwitterAction:action];
 }
 
+- (void)didUpdateStatusSuccessfully {
+	// Remove message text from compose screen.
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:@"" forKey:@"messageContent"];
+	[defaults removeObjectForKey:@"inReplyTo"];
+	
+	// Reload timeline
+	[self startLoadingCurrentTimeline];
+}
+
 - (void)didUpdateStatus:(TwitterUpdateStatusAction *)action {
 	if ((action.statusCode < 400) || (action.statusCode == 403)) { // Twitter returns 403 if user tries to post duplicate status updates.
-		// Remove message text from compose screen.
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		[defaults setObject:@"" forKey:@"messageContent"];
-		[defaults removeObjectForKey:@"inReplyTo"];
-		
-		// Reload timeline
-		[self startLoadingCurrentTimeline];
+		[self didUpdateStatusSuccessfully];
 	} else {
 		// Status update was not successful, so report the error.
 		[self showNetworkErrorAlertForStatusCode:action.statusCode];
 	}
+}
+
+- (void)didRetweet:(id)action {
+	[self didUpdateStatusSuccessfully];
 }
 
 - (void) fave: (NSNumber*) messageIdentifier {
@@ -429,25 +434,40 @@
 	[currentAccount.favorites removeObject: message];
 }
 
-- (void)retweet:(NSNumber*)messageIdentifier {
-	TwitterRetweetAction *action = [[[TwitterRetweetAction alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didRetweet:);
-	[self startTwitterAction:action];
-}
+#pragma mark Compose
 
-- (void)didRetweet:(TwitterRetweetAction *)action {
-	NSString *title = NSLocalizedString (@"Retweeted!", @"");
-	NSString *message = NSLocalizedString (@"You just retweeted that message.", @"");
-	[self showAlertWithTitle:title message:message];
+- (IBAction)compose:(id)sender {
+	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+	[compose loadFromUserDefaults];
+	compose.delegate = self;
+	[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+}	
+
+- (void)retweet:(NSNumber*)identifier {
+	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	if (message == nil) return;
+	
+	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+	[compose loadFromUserDefaults];
+	compose.delegate = self;
+	if (message != nil) {
+		// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
+		compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.screenName, message.content];
+		compose.originalRetweetContent = compose.messageContent;
+		compose.inReplyTo = identifier;
+	}
+	
+	[self closeAllPopovers];
+	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
 - (void) replyToMessage: (NSNumber*)identifier {
 	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+	[compose loadFromUserDefaults];
 	compose.delegate = self;
 	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
 	
-	// Insert @username in beginnig of message. This preserves any other people being replied to.
+	// Insert @username in beginning of message. This preserves any other people being replied to.
 	if (message != nil) {
 		NSString *replyUsername = message.screenName;
 		if (compose.messageContent != nil) {
@@ -455,8 +475,10 @@
 		} else {
 			compose.messageContent = [NSString stringWithFormat:@"@%@ ", replyUsername];
 		}
+		compose.inReplyTo = identifier;
+		compose.originalRetweetContent = nil;
+		compose.newStyleRetweet = NO;
 	}
-	compose.inReplyTo = identifier;
 	
 	[self closeAllPopovers];
 	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
@@ -464,6 +486,7 @@
 
 - (void) directMessageWithTweet:(NSNumber*)identifier {
 	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+	[compose loadFromUserDefaults];
 	compose.delegate = self;
 	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
 	
@@ -475,8 +498,9 @@
 		} else {
 			compose.messageContent = [NSString stringWithFormat:@"d %@ ", replyUsername];
 		}
+		compose.inReplyTo = identifier;
+		compose.originalRetweetContent = nil;
 	}
-	compose.inReplyTo = identifier;
 	
 	[self closeAllPopovers];
 	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
@@ -959,9 +983,17 @@
 
 #pragma mark Popover delegate methods
 
-- (void) sendStatusUpdate:(NSString*)text inReplyTo:(NSNumber*)inReplyTo {
+- (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo {
 	[self closeAllPopovers];
 	[self updateStatus:text inReplyTo:inReplyTo];
+}
+
+- (void) compose:(ComposeViewController*)aCompose didRetweetMessage:(NSNumber*)identifier {
+	[self closeAllPopovers];
+	TwitterRetweetAction *action = [[[TwitterRetweetAction alloc] initWithMessageIdentifier:identifier] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didRetweet:);
+	[self startTwitterAction:action];
 }
 
 - (void) lists:(ListsViewController*)lists didSelectList:(TwitterList*)list {

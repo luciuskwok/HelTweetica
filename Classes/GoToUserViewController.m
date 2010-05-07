@@ -53,7 +53,7 @@
 	frame.size.height = 44;
 	UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:frame] autorelease];
 	searchBar.delegate = self;
-	searchBar.tintColor = [UIColor blackColor];
+	//searchBar.tintColor = [UIColor blackColor];
 	searchBar.placeholder = NSLocalizedString (@"Screen name or full name", @"search bar placeholder");
 	self.tableView.tableHeaderView = searchBar;
 	

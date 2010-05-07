@@ -21,7 +21,10 @@
 
 
 @implementation ComposeViewController
-@synthesize messageField, charactersRemaining, account, messageContent, inReplyTo, delegate;
+@synthesize messageField, charactersRemaining, retweetStyleButton, bottomToolbar;
+@synthesize account, messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
+@synthesize delegate;
+
 
 - (id)initWithAccount:(TwitterAccount*)anAccount {
 	if (self = [super initWithNibName:@"Compose" bundle:nil]) {
@@ -35,9 +38,9 @@
 			self.navigationItem.title = account.screenName;
 		}
 		
-		// Send button
-		NSString *sendTitle = NSLocalizedString (@"Send", @"");
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:sendTitle style:UIBarButtonSystemItemDone target:self action:@selector(send:)] autorelease];
+		// Clear button
+		NSString *clearTitle = NSLocalizedString (@"Clear", @"");
+		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:clearTitle style:UIBarButtonItemStyleBordered target:self action:@selector(clear:)] autorelease];
 		
 		// Close button
 		if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
@@ -47,12 +50,9 @@
 		
 		// Content size for popover
 		if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
-			[self setContentSizeForViewInPopover: CGSizeMake(320, 200)];
+			[self setContentSizeForViewInPopover: CGSizeMake(320, 240)];
 		}
 		
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		self.messageContent = [defaults objectForKey:@"messageContent"];
-		self.inReplyTo = [defaults objectForKey:@"inReplyTo"];
 	}
 	return self;
 }
@@ -60,10 +60,14 @@
 - (void)dealloc {
 	[messageField release];
 	[charactersRemaining release];
+	[retweetStyleButton release];
+	[bottomToolbar release];
 	
 	[account release];
 	[messageContent release];
 	[inReplyTo release];
+	[originalRetweetContent release];
+	
 	[super dealloc];
 }
 
@@ -71,24 +75,31 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) updateCharacterCountWithText:(NSString *)text {
-	// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
-	NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
-	int remaining = kTwitterCharacterMax - [normalizationFormC length];
-	charactersRemaining.text = [NSString stringWithFormat:@"%d", remaining];
-	if (remaining < 0) {
-		charactersRemaining.textColor = [UIColor redColor];
-	} else {
-		charactersRemaining.textColor = [UIColor grayColor];
-	}
-	
-	// Verify message length and account for Send button
-	self.navigationItem.rightBarButtonItem.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (account != nil));
+- (void) loadFromUserDefaults {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	self.messageContent = [defaults objectForKey:@"messageContent"];
+	self.inReplyTo = [defaults objectForKey:@"inReplyTo"];
+	self.originalRetweetContent = [defaults objectForKey:@"originalRetweetContent"];
+	self.newStyleRetweet = [defaults boolForKey:@"newStyleRetweet"];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.messageField = nil;
+- (NSString*) retweetStyleButtonTitle {
+	return newStyleRetweet ? NSLocalizedString (@"RT style: New", "button") : NSLocalizedString (@"RT style: Old", "button");
+}
+
+- (void) setNewStyleRetweet:(BOOL)x {
+	newStyleRetweet = x;
+	self.retweetStyleButton.title = [self retweetStyleButtonTitle];
+	if (newStyleRetweet && originalRetweetContent) {
+		// Reinstate original retweet message and disable editing
+		self.messageField.text = originalRetweetContent;
+		self.messageField.editable = NO;
+	} else {
+		// Allow editing
+		self.messageField.editable = YES;
+		[self updateCharacterCountWithText: messageField.text];
+		[self.messageField becomeFirstResponder];
+	}
 }
 
 - (void) viewDidLoad {
@@ -98,6 +109,41 @@
 	if (messageContent != nil) {
 		messageField.text = messageContent;
 		[self updateCharacterCountWithText:messageContent];
+	}
+	
+	// Retweet style
+	if (originalRetweetContent != nil) {
+		NSString *title = [self retweetStyleButtonTitle];
+		self.retweetStyleButton = [[[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(toggleRetweetStyle:)] autorelease];
+		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray: bottomToolbar.items];
+		[toolbarItems insertObject:retweetStyleButton atIndex:1];
+		bottomToolbar.items = toolbarItems;
+		[self setNewStyleRetweet:newStyleRetweet];
+	}
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    self.messageField = nil;
+	self.charactersRemaining = nil;
+	self.retweetStyleButton = nil;
+}
+
+- (void) updateCharacterCountWithText:(NSString *)text {
+	if (originalRetweetContent && newStyleRetweet) { // New-style RT doesn't require counting chars
+		charactersRemaining.title = @"OK";
+		self.navigationItem.rightBarButtonItem.enabled = YES;
+	} else {
+		// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
+		NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
+		int remaining = kTwitterCharacterMax - [normalizationFormC length];
+		if (remaining < 0) {
+			charactersRemaining.title = [NSString stringWithFormat:@"Too long! %d", remaining];
+		} else {
+			charactersRemaining.title = [NSString stringWithFormat:@"%d", remaining];
+		}
+		// Verify message length and account for Send button
+		self.navigationItem.rightBarButtonItem.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (account != nil));
 	}
 }
 
@@ -112,6 +158,8 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: [messageField text] forKey:@"messageContent"];
 	[defaults setObject: inReplyTo forKey:@"inReplyTo"];
+	[defaults setObject: originalRetweetContent forKey:@"originalRetweetContent"];
+	[defaults setBool: newStyleRetweet forKey:@"newStyleRetweet"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -123,19 +171,44 @@
 }
 
 - (IBAction) send: (id) sender {
-	// Check length
-	NSString *text = messageField.text;
-	// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
-	NSString *normalizedText = [text precomposedStringWithCanonicalMapping];
-	if ((normalizedText.length == 0) || (normalizedText.length > kTwitterCharacterMax)) {
-		return;
+	if (originalRetweetContent && newStyleRetweet) {
+		[delegate compose:self didRetweetMessage:inReplyTo];
+	} else { // Plain old status update
+		// Check length
+		NSString *text = messageField.text;
+		// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
+		NSString *normalizedText = [text precomposedStringWithCanonicalMapping];
+		if ((normalizedText.length == 0) || (normalizedText.length > kTwitterCharacterMax)) {
+			return;
+		}
+		
+		[delegate compose:self didSendMessage:normalizedText inReplyTo:inReplyTo];
 	}
-	
-	[delegate sendStatusUpdate:normalizedText inReplyTo:inReplyTo];
 	
 	self.messageContent = nil;
 	self.inReplyTo = nil;
 	[self close: nil];
+}
+
+- (IBAction) clear: (id) sender {
+	messageField.text = @"";
+	originalRetweetContent = nil;
+	[self updateCharacterCountWithText:@""];
+	[self setNewStyleRetweet: newStyleRetweet];
+	
+	// Remove RT-Style button
+	if (retweetStyleButton) {
+		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray: bottomToolbar.items];
+		[toolbarItems removeObject:retweetStyleButton];
+		bottomToolbar.items = toolbarItems;
+		self.retweetStyleButton = nil;
+	}
+	
+}
+
+- (IBAction) toggleRetweetStyle: (id) sender {
+	self.newStyleRetweet = !newStyleRetweet;
+	[self updateCharacterCountWithText:messageField.text];
 }
 
 #pragma mark Text view delegate methods

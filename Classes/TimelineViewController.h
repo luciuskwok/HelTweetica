@@ -92,6 +92,7 @@
 - (void)handleTwitterStatusCode:(int)code;
 - (void)reloadCurrentTimeline;
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action;
+- (void)reloadRetweetTimeline;
 - (void)startLoadingCurrentTimeline;
 - (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
 - (void)fave: (NSNumber*) messageIdentifier;

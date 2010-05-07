@@ -22,30 +22,43 @@
 
 @interface ComposeViewController : UIViewController {
 	IBOutlet UITextView *messageField;
-	IBOutlet UILabel *charactersRemaining;
+	IBOutlet UIBarButtonItem *charactersRemaining;
+	IBOutlet UIBarButtonItem *retweetStyleButton;
+	IBOutlet UIToolbar *bottomToolbar;
 	
 	TwitterAccount *account;
 	NSString *messageContent;
 	NSNumber *inReplyTo;
+	NSString *originalRetweetContent;
+	BOOL newStyleRetweet;
 	
 	id <ComposeViewControllerDelegate> delegate;
 }
 @property (nonatomic, retain) UITextView *messageField;
-@property (nonatomic, retain) UILabel *charactersRemaining;
+@property (nonatomic, retain) UIBarButtonItem *charactersRemaining;
+@property (nonatomic, retain) UIBarButtonItem *retweetStyleButton;
+@property (nonatomic, retain) UIToolbar *bottomToolbar;
 
 @property (nonatomic, retain) TwitterAccount *account;
 @property (nonatomic, retain) NSString *messageContent;
 @property (nonatomic, retain) NSNumber *inReplyTo;
+@property (nonatomic, retain) NSString *originalRetweetContent;
+@property (nonatomic, assign) BOOL newStyleRetweet;
 
 @property (assign) id delegate;
 
 - (id)initWithAccount:(TwitterAccount*)anAccount;
+- (void) loadFromUserDefaults;
+- (void) updateCharacterCountWithText:(NSString *)text;
+
 - (IBAction) close: (id) sender;
 - (IBAction) send: (id) sender;
+- (IBAction) clear: (id) sender;
 
 @end
 
 @protocol ComposeViewControllerDelegate <NSObject>
-- (void) sendStatusUpdate:(NSString*)text inReplyTo:(NSNumber*)inReplyTo;
+- (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo;
+- (void) compose:(ComposeViewController*)aCompose didRetweetMessage:(NSNumber*)identifier;
 @end
 
