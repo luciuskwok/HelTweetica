@@ -57,13 +57,12 @@
 
     [super viewDidLoad];
 	
-	// Title
-	if (screenName) {
-		self.navigationItem.title = [NSString localizedStringWithFormat:@"%@’s Lists", screenName];
-	} else {
-		self.navigationItem.title = NSLocalizedString (@"Your Lists", @"Nav bar");
-	}
+	// Nav bar visibility. It looks strange to have a popover without a nav bar, and the top of the table gets clipped off.
+	[self.navigationController setNavigationBarHidden:NO];
 	
+	// Title
+	self.navigationItem.title = NSLocalizedString (@"Lists", @"Nav bar");
+
 	[self setContentSize];
 	[self.tableView reloadData];
 	
@@ -192,15 +191,25 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	NSString *name = (screenName) ? [NSString stringWithFormat:@"%@’s", screenName] : @"Your";
+	if (section == 0) {
+		return [NSString localizedStringWithFormat:@"%@ Lists", name];
+	}
+	return [NSString localizedStringWithFormat:@"%@ Subscriptions", name];
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	int count = currentLists.count + currentSubscriptions.count;
-	if (count == 0)
-		return 1;
-   return count;
+	switch (section) {
+		case 0:
+			return currentLists.count ? currentLists.count : 1;
+		case 1:
+			return currentSubscriptions.count;
+	}
+   return 0;
 }
 
 // Customize the appearance of table view cells.
@@ -217,13 +226,9 @@
     
     // Configure the cell
 	TwitterList *list;
-	if (indexPath.row < currentLists.count) {
-		list = [currentLists objectAtIndex: indexPath.row];
-		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
-		cell.textLabel.textColor = [UIColor blackColor];
-		cell.detailTextLabel.text = [list.memberCount stringValue];
-	} else if (indexPath.row < currentLists.count + currentSubscriptions.count) {
-		list = [currentSubscriptions objectAtIndex: indexPath.row - currentLists.count];
+	NSArray *array = (indexPath.section == 0) ? currentLists : currentSubscriptions;
+	if (indexPath.row < array.count) {
+		list = [array objectAtIndex: indexPath.row];
 		cell.textLabel.text = [list.fullName substringFromIndex:1]; // strip off the initial @
 		cell.textLabel.textColor = [UIColor blackColor];
 		cell.detailTextLabel.text = [list.memberCount stringValue];
@@ -246,19 +251,16 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	// Only allow selection of rows in the list
-	int count = currentLists.count + currentSubscriptions.count;
-	if (indexPath.row >= count) return nil;
+	NSArray *array = (indexPath.section == 0) ? currentLists : currentSubscriptions;
+	if (indexPath.row >= array.count) return nil;
 	return indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	TwitterList *list = nil;
-	if (indexPath.row < currentLists.count) {
-		list = [currentLists objectAtIndex: indexPath.row];
-	} else if (indexPath.row < currentLists.count + currentSubscriptions.count) {
-		list = [currentSubscriptions objectAtIndex: indexPath.row - currentLists.count];
-	} 
-	if (list != nil) {
+	NSArray *array = (indexPath.section == 0) ? currentLists : currentSubscriptions;
+	if (indexPath.row < array.count) {
+		TwitterList *list = [array objectAtIndex: indexPath.row];
+
 		// Create array to hold statuses if it doesn't exist.
 		if (list.statuses == nil)
 			list.statuses = [NSMutableArray array];

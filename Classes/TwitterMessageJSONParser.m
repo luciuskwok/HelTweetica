@@ -84,7 +84,16 @@
 		} else {
 			NSLog (@"Error while parsing JSON.");
 		}
-	} else if ([key isEqualToString:@"/user/"] || [key isEqualToString:@"/retweeted_status/user/"] || [key isEqualToString:@"/sender/"]) {
+	} else if ([key isEqualToString:@"/retweeted_status"]) {
+		if (currentUser) {
+			// Set the current user's receivedDate to the message.createdAt so that we know which user info is the latest
+			currentUser.updatedAt = currentMessage.retweetedMessage.createdDate;
+			// and copy certain fields from the user to the message.
+			currentMessage.retweetedMessage.screenName = currentUser.screenName;
+			currentMessage.retweetedMessage.avatar = currentUser.profileImageURL;
+			currentMessage.retweetedMessage.locked = currentUser.protectedUser;
+		}
+	} else if ([key isEqualToString:@"/user"] || [key isEqualToString:@"/retweeted_status/user"] || [key isEqualToString:@"/sender"]) {
 		if (currentUser != nil) {
 			[users addObject: currentUser];
 		} else {
@@ -97,7 +106,7 @@
 
 - (void) foundValue:(id)value forKeyPath:(NSString*)keyPath {
 	if ([keyPath hasPrefix:@"/user/"] || [keyPath hasPrefix:@"/retweeted_status/user/"] || [keyPath hasPrefix:@"/sender/"]) {
-		[self.currentUser  setValue:value forTwitterKey:[keyPath lastPathComponent]];
+		[self.currentUser setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/retweeted_status/"]) {
 		if (self.currentMessage) 
 			[self.currentMessage.retweetedMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];

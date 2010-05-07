@@ -47,7 +47,9 @@
 
 - (id) init {
 	if (self = [super init]) {
-		statuses = [[NSMutableSet alloc] init];
+		self.accounts = [NSMutableArray array];
+		self.users = [NSMutableSet set];
+		self.statuses = [NSMutableSet set];
 		[self load];
 	}
 	return self;
@@ -109,6 +111,7 @@
 	for (TwitterUser *user in newUsers) {
 		member = [self.users member:user];
 		if (member) {
+			// TODO: compare the updatedAt ivars and use the data from the newest. Also check for nil values.
 			// Copy data from old user to new user instance
 			user.statuses = member.statuses;
 			user.favorites = member.favorites;
@@ -170,8 +173,6 @@
 			[self synchronizeStatusesWithArray:user.statuses updateFavorites:YES];
 			[self synchronizeStatusesWithArray:user.favorites updateFavorites:YES];
 		}
-	} else {
-		self.users = [NSMutableSet set];
 	}
 }
 

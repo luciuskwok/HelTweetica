@@ -57,10 +57,13 @@
 - (void) parserDidBeginDictionary:(LKJSONParser*)parser {
 	if ([parser.keyPath isEqualToString:@"/"]) {
 		self.userResult = [[[TwitterUser alloc] init] autorelease];
+		userResult.updatedAt = [NSDate date];
 	} else if ([parser.keyPath isEqualToString:@"/status/"]) {
 		self.latestStatus = [[[TwitterMessage alloc] init] autorelease];
+		latestStatus.receivedDate = [NSDate date];
 	} else if ([parser.keyPath isEqualToString:@"/status/retweeted_status/"]) {
 		self.latestStatus.retweetedMessage = [[[TwitterMessage alloc] init] autorelease];
+		latestStatus.retweetedMessage.receivedDate = [NSDate date];
 	}
 }
 
