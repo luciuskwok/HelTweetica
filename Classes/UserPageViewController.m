@@ -276,10 +276,41 @@
 	[self loadFriendStatus: user.screenName];
 }
 
+#pragma mark User info loading
 
+- (void) loadUserInfo {
+	// users/show
+	
+	
+}
 
 #pragma mark Timeline loading
-// TODO: needs to fold in RTs
+
+- (void) reloadRetweetTimeline {
+	if ([currentTimelineAction.twitterMethod isEqualToString:@"statuses/user_timeline"]) {
+		/*
+		NSString *method = nil;
+		
+		// if user is same as account, get my own retweets.
+		// @"statuses/retweeted_by_me"
+		
+		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/retweeted_by_me"] autorelease];
+		[action.parameters setObject:defaultLoadCount forKey:@"count"];
+		
+		// Set the since_id parameter minimize the number of statuses requested
+		if (currentTimeline.count > 0) {
+			TwitterMessage *message = [currentTimeline objectAtIndex: 0]; 
+			[action.parameters setObject:[message.identifier stringValue] forKey:@"since_id"];
+		}
+		
+		// Prepare action and start it. 
+		action.timeline = currentTimeline;
+		action.completionTarget= self;
+		action.completionAction = @selector(didReloadCurrentTimeline:);
+		[self startTwitterAction:action];
+		*/
+	}
+}
 
 - (void)selectUserTimeline:(NSString*)screenName {
 	if (screenName == nil) {

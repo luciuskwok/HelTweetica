@@ -109,6 +109,26 @@
 	// Favorites always loads 20 per page. Cannot change the count.
 }
 
+- (void) reloadRetweetTimeline {
+	if ([currentTimelineAction.twitterMethod isEqualToString:@"statuses/home_timeline"]) {
+		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/retweeted_by_me"] autorelease];
+		[action.parameters setObject:defaultLoadCount forKey:@"count"];
+		
+		// Set the since_id parameter minimize the number of statuses requested
+		if (currentTimeline.count > 0) {
+			TwitterMessage *message = [currentTimeline objectAtIndex: 0]; 
+			[action.parameters setObject:[message.identifier stringValue] forKey:@"since_id"];
+		}
+		
+		// Prepare action and start it. 
+		action.timeline = currentTimeline;
+		action.completionTarget= self;
+		action.completionAction = @selector(didReloadCurrentTimeline:);
+		[self startTwitterAction:action];
+		
+	}
+}
+
 - (AccountsViewController*) showAccounts:(id)sender {
 	if ([self closeAllPopovers]) 
 		return nil;

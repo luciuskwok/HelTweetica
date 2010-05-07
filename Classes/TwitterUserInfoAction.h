@@ -1,8 +1,8 @@
 //
-//  TwitterSavedSearch.h
+//  TwitterUserInfoAction.h
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/5/10.
+//  Created by Lucius Kwok on 5/7/10.
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
  
@@ -16,13 +16,8 @@
 #import <Foundation/Foundation.h>
 
 
-@interface TwitterSavedSearch : NSObject {
-	NSString *query;
-	NSNumber *identifier;
-	NSDate *receivedDate;
+@interface TwitterUserInfoAction : NSObject {
+
 }
-@property (nonatomic, retain) NSString *query;
-@property (nonatomic, retain) NSNumber *identifier;
-@property (nonatomic, retain) NSDate *receivedDate;
 
 @end

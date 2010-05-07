@@ -1,8 +1,8 @@
 //
-//  TwitterSavedSearch.h
+//  TwitterUserInfoAction.m
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/5/10.
+//  Created by Lucius Kwok on 5/7/10.
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
  
@@ -13,16 +13,10 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
+
+#import "TwitterUserInfoAction.h"
 
 
-@interface TwitterSavedSearch : NSObject {
-	NSString *query;
-	NSNumber *identifier;
-	NSDate *receivedDate;
-}
-@property (nonatomic, retain) NSString *query;
-@property (nonatomic, retain) NSNumber *identifier;
-@property (nonatomic, retain) NSDate *receivedDate;
+@implementation TwitterUserInfoAction
 
 @end
