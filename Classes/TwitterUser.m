@@ -214,4 +214,11 @@
 	// Other values are usually taken from elsewhere, for example: the user dictionary embedded in the status update in timelines.
 }
 
+- (BOOL) isNewerThan:(TwitterUser*)aUser {
+	if (self.updatedAt == nil) return NO;
+	if (aUser.updatedAt == nil) return YES;
+	return ([self.updatedAt compare:aUser.updatedAt] == NSOrderedDescending);
+}
+
+
 @end

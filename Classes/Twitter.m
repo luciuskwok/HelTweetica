@@ -110,8 +110,7 @@
 	TwitterUser *member;
 	for (TwitterUser *user in newUsers) {
 		member = [self.users member:user];
-		if (member) {
-			// TODO: compare the updatedAt ivars and use the data from the newest. Also check for nil values.
+		if (member && [user isNewerThan:member]) {
 			// Copy data from old user to new user instance
 			user.statuses = member.statuses;
 			user.favorites = member.favorites;
@@ -122,7 +121,7 @@
 			[self.users removeObject:member];
 		}
 		
-		// Add new user
+		// Add new user. If user already is in self.users, this does nothing.
 		[self.users addObject: user];
 	}
 }

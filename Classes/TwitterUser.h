@@ -73,5 +73,6 @@
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 
 - (void) setValue:(id)value forTwitterKey:(NSString*)key;
+- (BOOL) isNewerThan:(TwitterUser*)aUser;
 
 @end

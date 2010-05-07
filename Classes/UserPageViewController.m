@@ -347,8 +347,6 @@
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
 	[super didReloadCurrentTimeline:action];
 	
-	// TODO: should use the user instance updated with the TwitterUserInfoAction, since it's the latest info, while user info from tweets is only as new as the latest tweet from that user.
-	
 	// Update user object with latest version.
 	TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];
 	if (aUser != nil) {
