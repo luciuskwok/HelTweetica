@@ -21,11 +21,9 @@
 
 @interface TwitterLoadSavedSearchesAction : TwitterAction <LKJSONParserDelegate> {
 	NSMutableArray *savedSearches;
-	NSString *key;
 	TwitterSavedSearch *currentSavedSearch;
 }
 @property (nonatomic, retain) NSMutableArray *savedSearches;
-@property (nonatomic, copy) NSString *key;
 @property (nonatomic, retain) TwitterSavedSearch *currentSavedSearch;
 
 @end

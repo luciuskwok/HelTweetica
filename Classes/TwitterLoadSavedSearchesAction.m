@@ -17,7 +17,7 @@
 
 
 @implementation TwitterLoadSavedSearchesAction
-@synthesize savedSearches, key, currentSavedSearch;
+@synthesize savedSearches, currentSavedSearch;
 
 
 - (id)init {
@@ -31,7 +31,6 @@
 
 - (void) dealloc {
 	[savedSearches release];
-	[key release];
 	[super dealloc];
 }
 
@@ -48,12 +47,8 @@
 	}
 }
 
-- (void) parser:(LKJSONParser*)parser foundKey:(NSString*)aKey {
-	self.key = aKey;
-}
-
 - (void) parser:(LKJSONParser*)parser foundStringValue:(NSString*)value {
-	if ([key isEqualToString:@"query"]) {
+	if ([parser.keyPath isEqualToString:@"/query"]) {
 		currentSavedSearch.query = value;
 	}
 }
@@ -63,7 +58,7 @@
 	[[NSScanner scannerWithString:value] scanLongLong: &x];
 	NSNumber *number = [NSNumber numberWithLongLong: x];
 	
-	if ([key isEqualToString:@"id"]) {
+	if ([parser.keyPath isEqualToString:@"/id"]) {
 		currentSavedSearch.identifier = number;
 	} 
 }

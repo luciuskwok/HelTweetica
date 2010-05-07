@@ -21,12 +21,10 @@
 	BOOL sourceFollowsTarget;
 	BOOL targetFollowsSource;
 	BOOL valid;
-	NSString *keyPath;
 }
 @property (nonatomic, assign) BOOL sourceFollowsTarget;
 @property (nonatomic, assign) BOOL targetFollowsSource;
 @property (nonatomic, assign) BOOL valid;
-@property (nonatomic, retain) NSString *keyPath;
 
 - (id) initWithTarget:(NSString*)targetScreenName;
 

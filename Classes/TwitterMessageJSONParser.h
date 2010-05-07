@@ -28,7 +28,6 @@
 	TwitterMessage *currentMessage;
 	TwitterUser *currentUser;
 	
-	NSString *keyPath;
 	BOOL directMessage;
 	NSDate *receivedTimestamp;
 }
@@ -39,11 +38,9 @@
 @property (nonatomic, retain) TwitterMessage *currentMessage;
 @property (nonatomic, retain) TwitterUser *currentUser;
 
-@property (nonatomic, retain) NSString *keyPath;
 @property (assign) BOOL directMessage;
 @property (nonatomic, retain) NSDate *receivedTimestamp;
 
 - (void) parseJSONData:(NSData*)jsonData;
-- (TwitterMessage*) currentRetweetedMessage;
 
 @end

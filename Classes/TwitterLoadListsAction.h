@@ -22,11 +22,9 @@
 @interface TwitterLoadListsAction : TwitterAction <LKJSONParserDelegate> {
 	NSMutableArray *lists;
 	TwitterList *currentList;
-	NSString *keyPath;
 }
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) TwitterList *currentList;
-@property (nonatomic, retain) NSString *keyPath;
 
 - (id)initWithUser:(NSString*)userOrNil subscriptions:(BOOL)subscriptions;
 

@@ -19,7 +19,7 @@
 
 
 @implementation TwitterShowFriendshipsAction
-@synthesize sourceFollowsTarget, targetFollowsSource, valid, keyPath;
+@synthesize sourceFollowsTarget, targetFollowsSource, valid;
 
 - (id) initWithTarget:(NSString*)targetScreenName {
 	if (self = [super init]) {
@@ -30,7 +30,6 @@
 }
 
 - (void) dealloc {
-	[keyPath release];
 	[super dealloc];
 }
 
@@ -48,35 +47,10 @@
 	}
 }
 
-- (void) parserDidBeginDictionary:(LKJSONParser*)parser {
-	if (keyPath == nil) {
-		self.keyPath = @"/";
-	} else {
-		self.keyPath = [keyPath stringByAppendingString:@"/"];
-	}
-}
-
-- (void) parserDidEndDictionary:(LKJSONParser*)parser {
-	if ([keyPath hasSuffix:@"/"]) {
-		self.keyPath = [keyPath substringToIndex: keyPath.length - 1];
-	} else {
-		self.keyPath = [keyPath stringByDeletingLastPathComponent];
-	}
-}
-
-- (void) parser:(LKJSONParser*)parser foundKey:(NSString*)key {
-	if ([keyPath hasSuffix:@"/"]) {
-		self.keyPath = [keyPath stringByAppendingPathComponent:key];
-	} else {
-		NSString *base = [keyPath stringByDeletingLastPathComponent];
-		self.keyPath = [base stringByAppendingPathComponent:key];
-	}
-}
-
 - (void) parser:(LKJSONParser*)parser foundBoolValue:(BOOL)value {
-	if ([keyPath hasPrefix:@"/relationship/source/following"]) {
+	if ([parser.keyPath hasPrefix:@"/relationship/source/following"]) {
 		sourceFollowsTarget = value;
-	} else if ([keyPath hasPrefix:@"/relationship/source/followed_by"]) {
+	} else if ([parser.keyPath hasPrefix:@"/relationship/source/followed_by"]) {
 		targetFollowsSource = value;
 	}
 }

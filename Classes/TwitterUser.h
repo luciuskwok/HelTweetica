@@ -33,6 +33,7 @@
 	NSNumber *favoritesCount;
 	
 	NSDate *createdAt; // Join date
+	NSDate *updatedAt; // Creation date of status update that encapsulated this user info, or the date the info was received.
 	
 	BOOL protectedUser; // Protected (lock icon)
 	BOOL verifiedUser;
@@ -61,6 +62,7 @@
 @property (nonatomic, retain) NSNumber *favoritesCount;
 
 @property (nonatomic, retain) NSDate *createdAt;
+@property (nonatomic, retain) NSDate *updatedAt;
 
 @property (nonatomic, assign) BOOL protectedUser;
 @property (nonatomic, assign) BOOL verifiedUser;
@@ -69,5 +71,7 @@
 @property (nonatomic, retain) NSMutableArray *favorites;
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
+
+- (void) setValue:(id)value forTwitterKey:(NSString*)key;
 
 @end

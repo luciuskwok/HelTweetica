@@ -15,8 +15,79 @@
 
 
 #import "TwitterUserInfoAction.h"
+#import "TwitterUser.h"
+#import "TwitterMessage.h"
+#import "LKJSONParser.h"
 
 
 @implementation TwitterUserInfoAction
+@synthesize userResult, latestStatus, valid;
+
+- (id)initWithScreenName:(NSString*)screenName {
+	self = [super init];
+	if (self) {
+		self.twitterMethod =@"users/show";
+		[parameters setObject:screenName forKey:@"screen_name"];	
+	}
+	return self;
+}
+
+- (void) dealloc {
+	[userResult release];
+	[latestStatus release];
+	[super dealloc];
+}
+
+- (void) start {
+	[self startGetRequest];
+}
+
+- (void) parseReceivedData:(NSData*)data {
+	if (statusCode < 400) {
+		LKJSONParser *parser = [[LKJSONParser alloc] initWithData:data];
+		parser.delegate = self;
+		[parser parse];
+		[parser release];
+		valid = YES;
+	}
+}
+
+#pragma mark Keys
+
+- (void) parserDidBeginDictionary:(LKJSONParser*)parser {
+	if ([parser.keyPath isEqualToString:@"/"]) {
+		self.userResult = [[[TwitterUser alloc] init] autorelease];
+	} else if ([parser.keyPath isEqualToString:@"/status/"]) {
+		self.latestStatus = [[[TwitterMessage alloc] init] autorelease];
+	} else if ([parser.keyPath isEqualToString:@"/status/retweeted_status/"]) {
+		self.latestStatus.retweetedMessage = [[[TwitterMessage alloc] init] autorelease];
+	}
+}
+
+#pragma mark Values
+
+- (void) foundValue:(id)value forKeyPath:(NSString*)keyPath {
+	if ([keyPath hasPrefix:@"/status/retweeted_status"]) {
+		if (self.latestStatus) 
+			[self.latestStatus.retweetedMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
+	} else if ([keyPath hasPrefix:@"/status"]) {
+		[self.latestStatus setValue:value forTwitterKey:[keyPath lastPathComponent]];
+	} else if ([keyPath hasPrefix:@"/"]) {
+		[self.userResult setValue:value forTwitterKey:[keyPath lastPathComponent]];
+	} 
+
+}
+
+- (void) parser:(LKJSONParser*)parser foundBoolValue:(BOOL)value {
+	[self foundValue: [NSNumber numberWithBool:value] forKeyPath:parser.keyPath];
+}
+
+- (void) parser:(LKJSONParser*)parser foundStringValue:(NSString*)value {
+	[self foundValue: value forKeyPath:parser.keyPath];
+}
+
+- (void) parser:(LKJSONParser*)parser foundNumberValue:(NSString*)value {
+	[self foundValue: value forKeyPath:parser.keyPath];
+}
 
 @end

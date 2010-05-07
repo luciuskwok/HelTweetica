@@ -69,7 +69,7 @@
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
 					</object>
-					<object class="IBUIToolbar" id="867491775">
+					<object class="IBUIToolbar" id="966445589">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{0, 416}, {320, 44}}</string>
@@ -79,21 +79,21 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIBarButtonItem" id="357229466">
+							<object class="IBUIBarButtonItem" id="918689410">
 								<string key="IBUITitle">Send</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIStyle">2</int>
-								<reference key="IBUIToolbar" ref="867491775"/>
+								<reference key="IBUIToolbar" ref="966445589"/>
 							</object>
-							<object class="IBUIBarButtonItem" id="276834385">
+							<object class="IBUIBarButtonItem" id="856121468">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<reference key="IBUIToolbar" ref="867491775"/>
+								<reference key="IBUIToolbar" ref="966445589"/>
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
-							<object class="IBUIBarButtonItem" id="795628844">
+							<object class="IBUIBarButtonItem" id="133534651">
 								<string key="IBUITitle">140</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<reference key="IBUIToolbar" ref="867491775"/>
+								<reference key="IBUIToolbar" ref="966445589"/>
 							</object>
 						</object>
 					</object>
@@ -142,7 +142,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">charactersRemaining</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="795628844"/>
+						<reference key="destination" ref="133534651"/>
 					</object>
 					<int key="connectionID">21</int>
 				</object>
@@ -150,17 +150,25 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">bottomToolbar</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="867491775"/>
+						<reference key="destination" ref="966445589"/>
 					</object>
 					<int key="connectionID">24</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">send:</string>
-						<reference key="source" ref="357229466"/>
+						<reference key="source" ref="918689410"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">25</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">sendButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="918689410"/>
+					</object>
+					<int key="connectionID">26</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -178,7 +186,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="233081019"/>
-							<reference ref="867491775"/>
+							<reference ref="966445589"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -200,29 +208,29 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">17</int>
-						<reference key="object" ref="867491775"/>
+						<reference key="object" ref="966445589"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="357229466"/>
-							<reference ref="276834385"/>
-							<reference ref="795628844"/>
+							<reference ref="918689410"/>
+							<reference ref="856121468"/>
+							<reference ref="133534651"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">18</int>
-						<reference key="object" ref="357229466"/>
-						<reference key="parent" ref="867491775"/>
+						<reference key="object" ref="918689410"/>
+						<reference key="parent" ref="966445589"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">19</int>
-						<reference key="object" ref="276834385"/>
-						<reference key="parent" ref="867491775"/>
+						<reference key="object" ref="856121468"/>
+						<reference key="parent" ref="966445589"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">20</int>
-						<reference key="object" ref="795628844"/>
-						<reference key="parent" ref="867491775"/>
+						<reference key="object" ref="133534651"/>
+						<reference key="parent" ref="966445589"/>
 					</object>
 				</object>
 			</object>
@@ -271,7 +279,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">25</int>
+			<int key="maxID">26</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -303,6 +311,7 @@
 							<string>delegate</string>
 							<string>messageField</string>
 							<string>retweetStyleButton</string>
+							<string>sendButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -310,6 +319,7 @@
 							<string>UIBarButtonItem</string>
 							<string>id</string>
 							<string>UITextView</string>
+							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 						</object>
 					</object>

@@ -14,10 +14,18 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "TwitterAction.h"
+@class TwitterUser, TwitterMessage;
 
-
-@interface TwitterUserInfoAction : NSObject {
-
+@interface TwitterUserInfoAction : TwitterAction {
+	TwitterUser *userResult;
+	TwitterMessage *latestStatus;
+	BOOL valid;
 }
+@property (nonatomic, retain) TwitterUser *userResult;
+@property (nonatomic, retain) TwitterMessage *latestStatus;
+@property (nonatomic, assign) BOOL valid;
+
+- (id)initWithScreenName:(NSString*)screenName;
 
 @end

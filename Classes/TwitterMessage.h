@@ -74,4 +74,7 @@
 
 - (void) loadLargeAvatar;
 
+- (void) setValue:(id)value forTwitterKey:(NSString*)key;
+
+
 @end

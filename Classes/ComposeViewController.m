@@ -21,7 +21,7 @@
 
 
 @implementation ComposeViewController
-@synthesize messageField, charactersRemaining, retweetStyleButton, bottomToolbar;
+@synthesize messageField, sendButton, retweetStyleButton, charactersRemaining, bottomToolbar;
 @synthesize account, messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
 @synthesize delegate;
 
@@ -59,8 +59,9 @@
 
 - (void)dealloc {
 	[messageField release];
-	[charactersRemaining release];
+	[sendButton release];
 	[retweetStyleButton release];
+	[charactersRemaining release];
 	[bottomToolbar release];
 	
 	[account release];
@@ -132,7 +133,7 @@
 - (void) updateCharacterCountWithText:(NSString *)text {
 	if (originalRetweetContent && newStyleRetweet) { // New-style RT doesn't require counting chars
 		charactersRemaining.title = @"OK";
-		self.navigationItem.rightBarButtonItem.enabled = YES;
+		sendButton.enabled = YES;
 	} else {
 		// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
 		NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
@@ -143,7 +144,7 @@
 			charactersRemaining.title = [NSString stringWithFormat:@"%d", remaining];
 		}
 		// Verify message length and account for Send button
-		self.navigationItem.rightBarButtonItem.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (account != nil));
+		sendButton.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (account != nil));
 	}
 }
 

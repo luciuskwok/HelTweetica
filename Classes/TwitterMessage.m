@@ -123,6 +123,65 @@
 	return result;
 }
 
+#pragma mark Twitter API
+
+- (NSDate*) dateWithTwitterStatusString: (NSString*) string {
+	// Twitter and Search use two different date formats, which differ by a comma at character 4.
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	if ([string characterAtIndex:3] == ',') {
+		// Twitter Search API format
+		[formatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
+	} else {
+		// Twitter API default format
+		[formatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; // Mon Jan 25 00:46:47 +0000 2010
+	}
+	NSDate *result = [formatter dateFromString:string];
+	[formatter release];
+	return result;
+}
+
+- (NSNumber *)scanInt64FromString:(NSString *)string {
+	SInt64 x = 0;
+	[[NSScanner scannerWithString:string] scanLongLong: &x];
+	NSNumber *number = [NSNumber numberWithLongLong: x];
+	return number;
+}
+
+// Given a key from the JSON data returned by the Twitter API, put the value in the appropriate ivar.
+- (void) setValue:(id)value forTwitterKey:(NSString*)key {
+	// String and number values
+	if ([value isKindOfClass:[NSString class]]) {
+		if ([key isEqualToString:@"in_reply_to_screen_name"]) {
+			self.inReplyToScreenName = value;
+		} else if ([key isEqualToString:@"source"]) {
+			self.source = value;
+		} else if ([key isEqualToString:@"text"]) {
+			self.content = value;
+		} else if ([key isEqualToString:@"id"]) {
+			self.identifier = [self scanInt64FromString:value];
+		} else if ([key isEqualToString:@"in_reply_to_status_id"]) {
+			self.inReplyToStatusIdentifier = [self scanInt64FromString:value];
+		} else if ([key isEqualToString:@"in_reply_to_user_id"]) {
+			self.inReplyToUserIdentifier = [self scanInt64FromString:value];
+		} else if ([key isEqualToString:@"created_at"]) {
+			self.createdDate = [self dateWithTwitterStatusString:value];
+		}
+	}
+	
+	// Boolean values
+	if ([value isKindOfClass:[NSNumber class]]) {
+		BOOL flag = [value boolValue];
+		if ([key isEqualToString:@"favorited"]) {
+			self.favorite = flag;
+		}
+	}
+	
+	// Other values are usually taken from elsewhere, for example: the user dictionary embedded in the status update in timelines.
+}
+
+
+#pragma mark All Stars
+
 - (void) loadLargeAvatar {
 	NSString *largeImageURLString = [self.avatar stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
 	NSURL *url = [NSURL URLWithString:largeImageURLString];
@@ -182,7 +241,6 @@
 	return result;
 }
 
-#pragma mark -
 #pragma mark NSURLConnection delegate methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {

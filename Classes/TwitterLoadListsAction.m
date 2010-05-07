@@ -17,7 +17,7 @@
 
 
 @implementation TwitterLoadListsAction
-@synthesize lists, currentList, keyPath;
+@synthesize lists, currentList;
 
 
 - (id)initWithUser:(NSString*)userOrNil subscriptions:(BOOL)subscriptions {
@@ -38,7 +38,6 @@
 - (void) dealloc {
 	[lists release];
 	[currentList release];
-	[keyPath release];
 	[super dealloc];
 }
 
@@ -59,25 +58,13 @@
 #pragma mark LKJSONParser delegate methods
 
 - (void) parserDidBeginDictionary:(LKJSONParser*)parser {
-	if (keyPath == nil) {
-		self.keyPath = @"/";
-	} else {
-		self.keyPath = [keyPath stringByAppendingString:@"/"];
-	}
-	
-	if ([keyPath isEqualToString:@"/lists/"]) {
+	if ([parser.keyPath isEqualToString:@"/lists/"]) {
 		self.currentList = [[[TwitterList alloc] init] autorelease];
 	}
 }
 
 - (void) parserDidEndDictionary:(LKJSONParser*)parser {
-	if ([keyPath hasSuffix:@"/"]) {
-		self.keyPath = [keyPath substringToIndex: keyPath.length - 1];
-	} else {
-		self.keyPath = [keyPath stringByDeletingLastPathComponent];
-	}
-	
-	if ([keyPath isEqualToString:@"/lists"]) {
+	if ([parser.keyPath isEqualToString:@"/lists"]) {
 		if (currentList != nil) {
 			[lists addObject: currentList];
 			self.currentList = nil;
@@ -87,37 +74,20 @@
 	}
 }
 
-- (void) parser:(LKJSONParser*)parser foundKey:(NSString*)key {
-	if ([keyPath hasSuffix:@"/"]) {
-		self.keyPath = [keyPath stringByAppendingPathComponent:key];
-	} else {
-		NSString *base = [keyPath stringByDeletingLastPathComponent];
-		self.keyPath = [base stringByAppendingPathComponent:key];
-	}
-}
-
-- (void) parserFoundNullValue:(LKJSONParser*)parser {
-}
-
-- (void) parser:(LKJSONParser*)parser foundBoolValue:(BOOL)value {
-	//NSLog (@"%@ = %d", keyPath, value);
-}
-
 - (void) parser:(LKJSONParser*)parser foundNumberValue:(NSString*)value {
 	SInt64 x = 0;
 	[[NSScanner scannerWithString:value] scanLongLong: &x];
 	NSNumber *number = [NSNumber numberWithLongLong: x];
 	
-	if ([keyPath isEqualToString:@"/lists/member_count"]) {
+	if ([parser.keyPath isEqualToString:@"/lists/member_count"]) {
 		currentList.memberCount = number;
-	} else if ([keyPath isEqualToString:@"/lists/id"]) {
+	} else if ([parser.keyPath isEqualToString:@"/lists/id"]) {
 		currentList.identifier = number;
 	} 
-	
-	//NSLog (@"%@ = %@", keyPath, value);
 }
 
 - (void) parser:(LKJSONParser*)parser foundStringValue:(NSString*)value {
+	NSString *keyPath = parser.keyPath;
 	if ([keyPath isEqualToString:@"/lists/description"]) {
 		currentList.description = value;
 	} else if ([keyPath isEqualToString:@"/lists/name"]) {
@@ -129,8 +99,6 @@
 	} else if ([keyPath isEqualToString:@"/lists/user/screen_name"]) {
 		currentList.username = value;
 	}
-	
-	//NSLog (@"%@ = %@", keyPath, value);
 }
 
 @end

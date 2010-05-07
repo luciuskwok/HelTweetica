@@ -21,13 +21,11 @@
 @interface TwitterSearchJSONParser : NSObject <LKJSONParserDelegate> {
 	NSMutableArray *messages;
 	TwitterMessage *currentMessage;
-	NSString *keyPath;
 	NSDate *receivedTimestamp;
 }
 
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, retain) TwitterMessage *currentMessage;
-@property (nonatomic, retain) NSString *keyPath;
 @property (nonatomic, retain) NSDate *receivedTimestamp;
 
 - (void) parseJSONData:(NSData*)jsonData;

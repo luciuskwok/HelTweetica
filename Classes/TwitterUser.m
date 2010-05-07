@@ -17,7 +17,7 @@
 
 
 @implementation TwitterUser
-@synthesize identifier, screenName, fullName, bio, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdAt, protectedUser, verifiedUser;
+@synthesize identifier, screenName, fullName, bio, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdAt, updatedAt, protectedUser, verifiedUser;
 @synthesize statuses, favorites, lists, listSubscriptions;
 
 
@@ -60,6 +60,7 @@
 		self.favoritesCount = [decoder decodeObjectForKey:@"favoritesCount"];
 		
 		self.createdAt = [decoder decodeObjectForKey:@"createdAt"];
+		self.updatedAt = [decoder decodeObjectForKey:@"updatedAt"];
 		
 		protectedUser = [decoder decodeBoolForKey:@"protectedUser"];
 		verifiedUser = [decoder decodeBoolForKey:@"verifiedUser"];
@@ -88,6 +89,7 @@
 	[encoder encodeObject:favoritesCount forKey:@"favoritesCount"];
 	
 	[encoder encodeObject:createdAt forKey:@"createdAt"];
+	[encoder encodeObject:updatedAt forKey:@"updatedAt"];
 	
 	[encoder encodeBool:protectedUser forKey:@"protectedUser"];
 	[encoder encodeBool:verifiedUser forKey:@"verifiedUser"];
@@ -112,6 +114,7 @@
 	[favoritesCount release];
 	
 	[createdAt release];
+	[updatedAt release];
 	
 	[statuses release];
 	[favorites release];
@@ -139,5 +142,76 @@
 	return result;
 }
 
+#pragma mark Twitter API
+
+- (NSDate*) dateWithTwitterStatusString: (NSString*) string {
+	// Twitter and Search use two different date formats, which differ by a comma at character 4.
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	if ([string characterAtIndex:3] == ',') {
+		// Twitter Search API format
+		[formatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
+	} else {
+		// Twitter API default format
+		[formatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; // Mon Jan 25 00:46:47 +0000 2010
+	}
+	NSDate *result = [formatter dateFromString:string];
+	[formatter release];
+	return result;
+}
+
+- (NSNumber *)scanInt64FromString:(NSString *)string {
+	SInt64 x = 0;
+	[[NSScanner scannerWithString:string] scanLongLong: &x];
+	NSNumber *number = [NSNumber numberWithLongLong: x];
+	return number;
+}
+
+// Given a key from the JSON data returned by the Twitter API, put the value in the appropriate ivar.
+- (void) setValue:(id)value forTwitterKey:(NSString*)key {
+	// String and number values
+	if ([value isKindOfClass:[NSString class]]) {
+		// Numbers
+		if ([key isEqualToString:@"id"]) {
+			self.identifier = [self scanInt64FromString:value];
+		} else if ([key isEqualToString:@"friends_count"]) {
+			self.friendsCount = [self scanInt64FromString:value];
+		} else if ([key isEqualToString:@"followers_count"]) {
+			self.followersCount = [self scanInt64FromString:value];
+		} else if ([key isEqualToString:@"statuses_count"]) {
+			self.statusesCount = [self scanInt64FromString:value];
+		} else if ([key isEqualToString:@"favourites_count"]) {
+			self.favoritesCount = [self scanInt64FromString:value];
+		}
+		
+		// Strings
+		if ([key isEqualToString:@"screen_name"]) {
+			self.screenName = value;
+		} else if ([key isEqualToString:@"name"]) {
+			self.fullName = value;
+		} else if ([key isEqualToString:@"description"]) {
+			self.bio = value;
+		} else if ([key isEqualToString:@"location"]) {
+			self.location = value;
+		} else if ([key isEqualToString:@"profile_image_url"]) {
+			self.profileImageURL = value;
+		} else if ([key isEqualToString:@"url"]) {
+			self.webURL = value;
+		} else if ([key isEqualToString:@"created_at"]) {
+			self.createdAt = [self dateWithTwitterStatusString:value];
+		}
+	}
+	
+	// Boolean values
+	if ([value isKindOfClass:[NSNumber class]]) {
+		BOOL flag = [value boolValue];
+		if ([key isEqualToString:@"protected"]) {
+			self.protectedUser = flag;
+		} else if ([key isEqualToString:@"verified"]) {
+			self.verifiedUser = flag;
+		}
+	}
+	
+	// Other values are usually taken from elsewhere, for example: the user dictionary embedded in the status update in timelines.
+}
 
 @end

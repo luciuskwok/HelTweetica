@@ -22,8 +22,9 @@
 
 @interface ComposeViewController : UIViewController {
 	IBOutlet UITextView *messageField;
-	IBOutlet UIBarButtonItem *charactersRemaining;
+	IBOutlet UIBarButtonItem *sendButton;
 	IBOutlet UIBarButtonItem *retweetStyleButton;
+	IBOutlet UIBarButtonItem *charactersRemaining;
 	IBOutlet UIToolbar *bottomToolbar;
 	
 	TwitterAccount *account;
@@ -35,8 +36,9 @@
 	id <ComposeViewControllerDelegate> delegate;
 }
 @property (nonatomic, retain) UITextView *messageField;
-@property (nonatomic, retain) UIBarButtonItem *charactersRemaining;
+@property (nonatomic, retain) UIBarButtonItem *sendButton;
 @property (nonatomic, retain) UIBarButtonItem *retweetStyleButton;
+@property (nonatomic, retain) UIBarButtonItem *charactersRemaining;
 @property (nonatomic, retain) UIToolbar *bottomToolbar;
 
 @property (nonatomic, retain) TwitterAccount *account;

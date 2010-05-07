@@ -295,7 +295,7 @@
 }
 
 - (void) reloadRetweetTimeline {
-	NSLog (@"Subclasses should -reloadRetweetTimeline to load the correct RT timeline.");
+	// Subclasses should implement -reloadRetweetTimeline to load the correct RT timeline.
 }
 
 - (void) loadOlderInCurrentTimeline {

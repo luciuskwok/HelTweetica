@@ -49,7 +49,7 @@
 @end
 
 @implementation LKJSONParser
-@synthesize delegate;
+@synthesize keyPath, delegate;
 
 - (id) initWithData:(NSData*)jsonData {
 	if (self = [super init]) {
@@ -60,6 +60,7 @@
 
 - (void) dealloc {
 	[jsonText release];
+	[keyPath release];
 	[super dealloc];
 }
 
@@ -239,11 +240,24 @@
 }
 
 - (void) beginDictionary {
+	if (keyPath == nil) {
+		self.keyPath = @"/";
+	} else {
+		if ([keyPath hasSuffix:@"/"] == NO)
+			self.keyPath = [keyPath stringByAppendingString:@"/"];
+	}
+	
 	if ([delegate respondsToSelector:@selector (parserDidBeginDictionary:)]) 
 		[delegate parserDidBeginDictionary:self];
 }
 
 - (void) endDictionary {
+	if ([keyPath hasSuffix:@"/"]) {
+		self.keyPath = [keyPath substringToIndex: keyPath.length - 1];
+	} else {
+		self.keyPath = [keyPath stringByDeletingLastPathComponent];
+	}
+	
 	if ([delegate respondsToSelector:@selector (parserDidEndDictionary:)]) 
 		[delegate parserDidEndDictionary:self];
 }
@@ -269,6 +283,13 @@
 }
 
 - (void) foundKey:(NSString*)key {
+	if ([keyPath hasSuffix:@"/"]) {
+		self.keyPath = [keyPath stringByAppendingPathComponent:key];
+	} else {
+		NSString *base = [keyPath stringByDeletingLastPathComponent];
+		self.keyPath = [base stringByAppendingPathComponent:key];
+	}
+
 	if ([delegate respondsToSelector:@selector (parser:foundKey:)]) 
 		[delegate parser:self foundKey:key];
 }

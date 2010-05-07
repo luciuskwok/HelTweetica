@@ -22,6 +22,8 @@
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterFriendshipsAction.h"
 #import "TwitterShowFriendshipsAction.h"
+#import "TwitterUserInfoAction.h"
+
 
 // Tag used to identify Follow/Unfollow button in Toolbar
 #define kFollowButtonTag 69
@@ -279,10 +281,16 @@
 #pragma mark User info loading
 
 - (void) loadUserInfo {
-	// users/show
-	
-	
+	TwitterUserInfoAction *action = [[[TwitterUserInfoAction alloc] initWithScreenName:user.screenName] autorelease];
+	action.completionAction = @selector(didLoadUserInfo:);
+	action.completionTarget = self;
+	[self startTwitterAction:action];
 }
+
+- (void)didLoadUserInfo:(id)action {
+	// TODO: set user in Twitter singleton and in this class.
+}
+
 
 #pragma mark Timeline loading
 
@@ -338,6 +346,8 @@
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
 	[super didReloadCurrentTimeline:action];
+	
+	// TODO: should use the user instance updated with the TwitterUserInfoAction, since it's the latest info, while user info from tweets is only as new as the latest tweet from that user.
 	
 	// Update user object with latest version.
 	TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];
@@ -395,6 +405,9 @@
 	// Get the following/follower status, but only if it's a different user from the account.
 	if ([currentAccount.screenName isEqualToString:user.screenName] == NO) 
 		[self loadFriendStatus: user.screenName];
+	
+	// Get the latest user info
+	[self loadUserInfo];
 	
 	[super viewDidLoad];
 	//screenNameButton.title = user.screenName;

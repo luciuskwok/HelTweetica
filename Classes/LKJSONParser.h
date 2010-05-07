@@ -22,9 +22,11 @@
 	// Parser state
 	NSString *jsonText;
 	unsigned int jsonOffset;
+	NSString *keyPath;
+	
 	id delegate;
 }
-
+@property (nonatomic, retain) NSString *keyPath;
 @property (assign) id delegate;
 
 - (id) initWithData:(NSData*)jsonData;
