@@ -27,6 +27,8 @@
 	
 	TwitterMessage *currentMessage;
 	TwitterUser *currentUser;
+	TwitterMessage *currentRetweetedMessage;
+	TwitterUser *currentRetweetedUser;
 	
 	BOOL directMessage;
 	NSDate *receivedTimestamp;
@@ -37,6 +39,8 @@
 
 @property (nonatomic, retain) TwitterMessage *currentMessage;
 @property (nonatomic, retain) TwitterUser *currentUser;
+@property (nonatomic, retain) TwitterMessage *currentRetweetedMessage;
+@property (nonatomic, retain) TwitterUser *currentRetweetedUser;
 
 @property (assign) BOOL directMessage;
 @property (nonatomic, retain) NSDate *receivedTimestamp;

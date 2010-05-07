@@ -21,7 +21,9 @@
 
 
 @implementation TwitterMessageJSONParser
-@synthesize messages, users, currentMessage, currentUser, directMessage, receivedTimestamp;
+@synthesize messages, users;
+@synthesize currentMessage, currentUser, currentRetweetedMessage, currentRetweetedUser;
+@synthesize directMessage, receivedTimestamp;
 
 - (id) init {
 	if (self = [super init]) {
@@ -37,6 +39,8 @@
 	
 	[currentMessage release];
 	[currentUser release];
+	[currentRetweetedMessage release];
+	[currentRetweetedUser release];
 	
 	[receivedTimestamp release];
 	[super dealloc];
@@ -53,49 +57,83 @@
 
 - (void) parserDidBeginDictionary:(LKJSONParser*)parser {
 	NSString *key = parser.keyPath;
-	if ([key isEqualToString:@"/retweeted_status/"]) {
-		if (currentMessage) {
-			currentMessage.retweetedMessage = [[[TwitterMessage alloc] init] autorelease];
-			currentMessage.retweetedMessage.receivedDate = receivedTimestamp;
-		}
-	} else if ([key isEqualToString:@"/user/"] || [key isEqualToString:@"/retweeted_status/user/"] || [key isEqualToString:@"/sender/"]) {
-		self.currentUser = [[[TwitterUser alloc] init] autorelease];
-	} else if ([key isEqualToString:@"/"]) {
+	
+	// Statuses
+	if ([key isEqualToString:@"/"]) {
 		self.currentMessage = [[[TwitterMessage alloc] init] autorelease];
 		currentMessage.direct = directMessage;
 		currentMessage.receivedDate = receivedTimestamp;
+	} else if ([key isEqualToString:@"/user/"] || [key isEqualToString:@"/sender/"]) {
+		self.currentUser = [[[TwitterUser alloc] init] autorelease];
 	}
+	
+	// Retweets
+	if ([key isEqualToString:@"/retweeted_status/"]) {
+		self.currentRetweetedMessage = [[[TwitterMessage alloc] init] autorelease];
+		currentRetweetedMessage.receivedDate = receivedTimestamp;
+	} else if ([key isEqualToString:@"/retweeted_status/user/"]) {
+		self.currentRetweetedUser = [[[TwitterUser alloc] init] autorelease];
+	} 
 }
 
 - (void) parserDidEndDictionary:(LKJSONParser*)parser {
 	NSString *key = parser.keyPath;
+	
+	// Statuses
 	if ([key isEqualToString:@"/"]) {
-		if (currentMessage != nil) {
-			[messages addObject: currentMessage];
-			if (currentUser) {
-				// Set the current user's receivedDate to the message.createdAt so that we know which user info is the latest
+		if (currentMessage) {
+			// This line depends on the last currentUser to be left over after its dictionary is closed:
+			if (currentUser)
 				currentUser.updatedAt = currentMessage.createdDate;
-				// and copy certain fields from the user to the message.
-				currentMessage.screenName = currentUser.screenName;
-				currentMessage.avatar = currentUser.profileImageURL;
-				currentMessage.locked = currentUser.protectedUser;
-			}
+			
+			// Add object to messages array and set currentMessage to nil so that next object doesn't affect the closed message.
+			[messages addObject: currentMessage];
 			self.currentMessage = nil;
 		} else {
 			NSLog (@"Error while parsing JSON.");
 		}
-	} else if ([key isEqualToString:@"/retweeted_status"]) {
+	} else if ([key isEqualToString:@"/user"] || [key isEqualToString:@"/sender"]) {
+		// Fill out message fields that are inside the user dictionary
 		if (currentUser) {
-			// Set the current user's receivedDate to the message.createdAt so that we know which user info is the latest
-			currentUser.updatedAt = currentMessage.retweetedMessage.createdDate;
-			// and copy certain fields from the user to the message.
-			currentMessage.retweetedMessage.screenName = currentUser.screenName;
-			currentMessage.retweetedMessage.avatar = currentUser.profileImageURL;
-			currentMessage.retweetedMessage.locked = currentUser.protectedUser;
-		}
-	} else if ([key isEqualToString:@"/user"] || [key isEqualToString:@"/retweeted_status/user"] || [key isEqualToString:@"/sender"]) {
-		if (currentUser != nil) {
+			if (currentMessage) {
+				// Some fields that this app stores in the message are in the JSON stream in the embedded user's dictionary.
+				currentMessage.screenName = currentUser.screenName;
+				currentMessage.avatar = currentUser.profileImageURL;
+				currentMessage.locked = currentUser.protectedUser;
+			}
+			
+			// Add to users set.
 			[users addObject: currentUser];
+		} else {
+			NSLog (@"Error while parsing JSON.");
+		}
+	}
+	
+	// Retweets
+	if ([key isEqualToString:@"/retweeted_status"]) {
+		if (currentRetweetedMessage != nil) {
+			// This line depends on the last currentRetweetedUser to be left over after its dictionary is closed:
+			if (currentRetweetedUser)
+				currentRetweetedUser.updatedAt = currentRetweetedMessage.createdDate;
+			
+			// Add retweeted message to the currentMessage's retweetedMessage ivar.
+			currentMessage.retweetedMessage = currentRetweetedMessage;
+			self.currentRetweetedMessage = nil;
+		} else {
+			NSLog (@"Error while parsing JSON.");
+		}
+	} else if ([key isEqualToString:@"/retweeted_status/user"]) {
+		// Fill out message fields that are inside the user dictionary
+		if (currentRetweetedUser) {
+			if (currentRetweetedMessage) {
+				// Some fields that this app stores in the message are in the JSON stream in the embedded user's dictionary.
+				currentRetweetedMessage.screenName = currentRetweetedUser.screenName;
+				currentRetweetedMessage.avatar = currentRetweetedUser.profileImageURL;
+				currentRetweetedMessage.locked = currentRetweetedUser.protectedUser;
+			}
+			
+			// Add to users set.
+			[users addObject: currentRetweetedUser];
 		} else {
 			NSLog (@"Error while parsing JSON.");
 		}
@@ -105,11 +143,12 @@
 #pragma mark Values
 
 - (void) foundValue:(id)value forKeyPath:(NSString*)keyPath {
-	if ([keyPath hasPrefix:@"/user/"] || [keyPath hasPrefix:@"/retweeted_status/user/"] || [keyPath hasPrefix:@"/sender/"]) {
+	if ([keyPath hasPrefix:@"/user/"] || [keyPath hasPrefix:@"/sender/"]) {
 		[self.currentUser setValue:value forTwitterKey:[keyPath lastPathComponent]];
+	} else if ([keyPath hasPrefix:@"/retweeted_status/user/"]) {
+		[self.currentRetweetedUser setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/retweeted_status/"]) {
-		if (self.currentMessage) 
-			[self.currentMessage.retweetedMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
+		[self.currentRetweetedMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/recipient/"]) {
 		// Ignore these key paths because they're only in DMs.
 	} else if ([keyPath hasPrefix:@"/"]) {
