@@ -92,14 +92,6 @@
 	[encoder encodeBool:direct forKey:@"direct"];
 }
 
-- (SInt64) identifierInt64 {
-	return [self.identifier longLongValue];
-}
-
-- (void) setIdentifierInt64:(SInt64)x {
-	self.identifier = [NSNumber numberWithLongLong:x];
-}
-
 // description: for the debugger po command.
 - (NSString*) description {
 	NSMutableString *result = [NSMutableString string];
@@ -181,6 +173,7 @@
 
 
 #pragma mark All Stars
+// All Stars hack. (This is the wrong way to download images from URLs.)
 
 - (void) loadLargeAvatar {
 	NSString *largeImageURLString = [self.avatar stringByReplacingOccurrencesOfString:@"_normal" withString:@""];

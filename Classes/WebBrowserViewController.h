@@ -28,7 +28,6 @@
 	IBOutlet UIBarButtonItem *forwardButton;
 	IBOutlet UIBarButtonItem *stopButton;
 	IBOutlet UIBarButtonItem *reloadButton;
-	IBOutlet UIBarButtonItem *actionButton;
 
 	UIActionSheet *currentActionSheet;
 	NSURLRequest *request;
@@ -42,7 +41,6 @@
 @property (nonatomic, retain) UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) UIBarButtonItem *stopButton;
 @property (nonatomic, retain) UIBarButtonItem *reloadButton;
-@property (nonatomic, retain) UIBarButtonItem *actionButton;
 
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (nonatomic, retain) NSURLRequest *request;
@@ -50,6 +48,7 @@
 - (id)initWithURLRequest:(NSURLRequest*)aRequest;
 
 - (IBAction) done: (id) sender;
+- (IBAction) instapaper: (id) sender;
 - (IBAction) action: (id) sender;
 
 

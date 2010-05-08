@@ -21,15 +21,19 @@
 #import "HelTweeticaAppDelegate.h"
 
 
+#define kInstapaperActionSheetTag 1
+#define kActionActionSheetTag 2
+
+
 @interface WebBrowserViewController (PrivateMethods)
 - (void) updateButtons;
 - (void) emailLink:(NSURL*)url;
-- (void) readLater;
-- (void) instapaperSettings;
+- (void) saveToInstapaper;
+- (void) showInstapaperSettings;
 @end
 
 @implementation WebBrowserViewController
-@synthesize webView, backButton, forwardButton, stopButton, reloadButton, actionButton, currentActionSheet, request;
+@synthesize webView, backButton, forwardButton, stopButton, reloadButton, currentActionSheet, request;
 
 - (id)initWithURLRequest:(NSURLRequest*)aRequest {
 	if (self = [super initWithNibName:@"WebBrowser" bundle:nil]) {
@@ -52,7 +56,7 @@
 	[forwardButton release];
 	[stopButton release];
 	[reloadButton release];
-	[actionButton release];
+	
 	[currentActionSheet release];
 	[request release];
     [super dealloc];
@@ -130,20 +134,40 @@
 
 #pragma mark -
 
-- (IBAction) done: (id) sender {
+- (IBAction)done: (id) sender {
 	[self closeAllPopovers];
 	[self.navigationController popViewControllerAnimated: YES];
 }
 
-- (IBAction) action: (id) sender {
+- (IBAction)instapaper: (id) sender {
+	if ([self closeAllPopovers] == NO) {
+		NSString *cancelButton = NSLocalizedString (@"Cancel", @"alert button");
+		NSString *saveButton = NSLocalizedString (@"Save to Instapaper", @"alert button");
+		NSString *settingsButton = NSLocalizedString (@"Instapaper Settings...", @"alert button");
+		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle: cancelButton destructiveButtonTitle: nil otherButtonTitles: saveButton, settingsButton, nil];
+		sheet.tag = kInstapaperActionSheetTag;
+		
+		if ([UIActionSheet instancesRespondToSelector:@selector(showFromBarButtonItem:animated:)]) {
+			// iPad version shows popover from the button pressed.	
+			[sheet showFromBarButtonItem:sender animated:YES];
+		} else {
+			// iPhone version:
+			[sheet showInView:self.view];
+		}
+		
+		self.currentActionSheet = sheet;
+		[sheet release];
+	}
+}
+
+- (IBAction)action: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		NSString *cancelButton = NSLocalizedString (@"Cancel", @"alert button");
 		NSString *safariButton = NSLocalizedString (@"Open in Safari", @"alert button");
 		NSString *emailButton = NSLocalizedString (@"Email Link", @"alert button");
 		//NSString *repostButton = NSLocalizedString (@"Repost Link", @"alert button");
-		NSString *instapaperButton = NSLocalizedString (@"Read Later", @"alert button");
-		NSString *instapaperSettingsButton = NSLocalizedString (@"Instapaper Settings...", @"alert button");
-		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle: cancelButton destructiveButtonTitle: nil otherButtonTitles: safariButton, emailButton, instapaperButton, instapaperSettingsButton, nil];
+		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle: cancelButton destructiveButtonTitle: nil otherButtonTitles: safariButton, emailButton, nil];
+		sheet.tag = kActionActionSheetTag;
 		
 		if ([UIActionSheet instancesRespondToSelector:@selector(showFromBarButtonItem:animated:)]) {
 			// iPad version shows popover from the button pressed.	
@@ -160,23 +184,21 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSURL *currentURL = [webView.request URL];
-	switch (buttonIndex) {
-		case 0:  // Safari
-			[[UIApplication sharedApplication] openURL: currentURL];
-			break;
-		case 1:  // Email Link
-			[self emailLink:currentURL];
-			break;
-		case 2:  // Read Later (with Instapaper)
-			[self readLater];
-			break;
-		case 3:  // Instapaper Settings
+	
+	if (actionSheet.tag == kInstapaperActionSheetTag) {
+		if (buttonIndex == 0) { // Save
+			[self saveToInstapaper];
+		} else if (buttonIndex == 1) { // Settings
 			// Call settings but don't automatically add URL to instapaper
 			addURLToInstapaperWhenUsernameChanges = NO;
-			[self instapaperSettings];
-			break;
-		default:
-			break;
+			[self showInstapaperSettings];
+		}
+	} else if (actionSheet.tag == kActionActionSheetTag) {
+		if (buttonIndex == 0) { // Safari
+			[[UIApplication sharedApplication] openURL: currentURL];
+		} else if (buttonIndex == 1) { // Email
+			[self emailLink:currentURL];
+		}
 	}
 }
 
@@ -209,7 +231,7 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (void) instapaperCurrentURL {
+- (void) saveCurrentURLToInstapaper {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *instapaperUsername = [defaults objectForKey:@"instapaperUsername"];
 	NSString *instapaperPassword = [defaults objectForKey:@"instapaperPassword"];
@@ -218,27 +240,27 @@
 	[[Instapaper sharedInstapaper] addURL:currentURL withUsername:instapaperUsername password:instapaperPassword];
 }
 
-- (void) readLater {
+- (void) saveToInstapaper {
 	// Get Instapaper credentials
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *instapaperUsername = [defaults objectForKey:@"instapaperUsername"];
 	
 	if (instapaperUsername == nil) {
 		addURLToInstapaperWhenUsernameChanges = YES; // If the login succeeds, automatically add the current URL.
-		[self instapaperSettings];
+		[self showInstapaperSettings];
 	} else {
-		[self instapaperCurrentURL];
+		[self saveCurrentURLToInstapaper];
 	}
 }
 
-- (void) instapaperSettings {
+- (void) showInstapaperSettings {
 	InstapaperSettingsViewController *settings = [[[InstapaperSettingsViewController alloc] init] autorelease];
 	[self presentModalViewController:settings animated:YES];
 }
 
 - (void) instapaperUsernameDidChange: (NSNotification*) notification {
 	if (addURLToInstapaperWhenUsernameChanges)
-		[self instapaperCurrentURL];
+		[self saveCurrentURLToInstapaper];
 }
 
 #pragma mark -

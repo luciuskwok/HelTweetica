@@ -126,6 +126,11 @@
 	}
 }
 
+- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
+	[super twitterAction:action didFailWithError:error];
+	[self loadingComplete];
+}
+
 - (void) fireRefreshTimer:(NSTimer*)timer {
 	// Refresh timer only to update timestamps.
 	[self rewriteTweetArea];
@@ -179,6 +184,8 @@
 	
 	if (loadingComplete == NO) {
 		result = @"<div class='status'>Loading...</div>";
+	} else if (networkIsReachable == NO) {
+		result = @"<div class='status'>No Internet connection.</div>";
 	} else if (protectedUser) {
 		result = @"<div class='status'>Protected message.</div>";
 	} else if (messageNotFound) {

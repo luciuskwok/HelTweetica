@@ -40,6 +40,7 @@
 	BOOL favorite;
 	BOOL direct;
 	
+	// All Stars hack:
 	NSURLConnection *downloadConnection;
 	NSInteger downloadStatusCode;
 	NSMutableData *downloadData;
@@ -66,12 +67,11 @@
 @property (assign, getter=isFavorite) BOOL favorite;
 @property (assign, getter=isDirect) BOOL direct;
 
+// All Stars hack. (This is the wrong way to download images from URLs.)
 @property (nonatomic, retain) NSURLConnection *downloadConnection;
 @property (nonatomic, retain) NSMutableData *downloadData;
 
-- (SInt64) identifierInt64;
-- (void) setIdentifierInt64:(SInt64)x;
-
+// All Stars hack:
 - (void) loadLargeAvatar;
 
 - (void) setValue:(id)value forTwitterKey:(NSString*)key;

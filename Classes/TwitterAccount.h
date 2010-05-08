@@ -18,6 +18,7 @@
 #import <Foundation/Foundation.h>
 
 @class TwitterMessage;
+@class TwitterTimeline;
 
 
 @interface TwitterAccount : NSObject {

@@ -57,7 +57,7 @@
 	appDelegate = [[UIApplication sharedApplication] delegate]; // Use Twitter instance from app delegate
 	self.twitter = appDelegate.twitter;
 	
-	self.defaultLoadCount = @"100"; // String to pass in the count, per_page, and rpp parameters.
+	self.defaultLoadCount = @"50"; // String to pass in the count, per_page, and rpp parameters.
 	maxTweetsShown = kDefaultMaxTweetsShown; // Number of tweet_rows to display in web view
 	
 	self.actions = [NSMutableArray array]; // List of currently active network connections

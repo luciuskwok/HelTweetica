@@ -16,8 +16,10 @@
 
 
 #import "TwitterAccount.h"
+#import "TwitterTimeline.h"
 #import "TwitterMessage.h"
 #import "TwitterList.h"
+
 
 
 @implementation TwitterAccount

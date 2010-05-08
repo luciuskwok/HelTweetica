@@ -90,6 +90,8 @@
 // Twitter actions
 - (void)startTwitterAction:(TwitterAction*)action;
 - (void)handleTwitterStatusCode:(int)code;
+- (void)twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error;
+
 - (void)reloadCurrentTimeline;
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action;
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier;

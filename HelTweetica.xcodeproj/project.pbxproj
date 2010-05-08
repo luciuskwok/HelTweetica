@@ -201,6 +201,8 @@
 		E0CBCC42116DDBC80000C281 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0CBCC41116DDBC80000C281 /* action-4-on.png */; };
 		E0D3E4E01193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
 		E0D3E4E11193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
+		E0D3E6AE1194D4280098BFB6 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */; };
+		E0D3E6AF1194D4280098BFB6 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */; };
 		E0D6F938119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F937119013E600C7A479 /* TwitterFriendshipsAction.m */; };
 		E0D6F939119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F937119013E600C7A479 /* TwitterFriendshipsAction.m */; };
 		E0D6F9B91190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F9B81190230800C7A479 /* TwitterShowFriendshipsAction.m */; };
@@ -357,6 +359,8 @@
 		E0CBCC41116DDBC80000C281 /* action-4-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-4-on.png"; path = "Resources/action-4-on.png"; sourceTree = "<group>"; };
 		E0D3E4DE1193CDB20098BFB6 /* TwitterUserInfoAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUserInfoAction.h; sourceTree = "<group>"; };
 		E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserInfoAction.m; sourceTree = "<group>"; };
+		E0D3E6AC1194D4280098BFB6 /* TwitterTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTimeline.h; sourceTree = "<group>"; };
+		E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterTimeline.m; sourceTree = "<group>"; };
 		E0D6F936119013E600C7A479 /* TwitterFriendshipsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterFriendshipsAction.h; sourceTree = "<group>"; };
 		E0D6F937119013E600C7A479 /* TwitterFriendshipsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterFriendshipsAction.m; sourceTree = "<group>"; };
 		E0D6F9B71190230800C7A479 /* TwitterShowFriendshipsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterShowFriendshipsAction.h; sourceTree = "<group>"; };
@@ -495,6 +499,8 @@
 				E00C26331162D91C00F62B70 /* Twitter.m */,
 				E06A348B116E8B7D0098CF12 /* TwitterAccount.h */,
 				E06A348C116E8B7D0098CF12 /* TwitterAccount.m */,
+				E0D3E6AC1194D4280098BFB6 /* TwitterTimeline.h */,
+				E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */,
 				E0840898118DE04E00670BAB /* TwitterUser.h */,
 				E0840899118DE04E00670BAB /* TwitterUser.m */,
 				E0DF1271116453EB004FE7B9 /* TwitterMessage.h */,
@@ -948,6 +954,7 @@
 				E0A98E6E1191732100C9C997 /* TwitterSavedSearchAction.m in Sources */,
 				E0A98E7C1191761200C9C997 /* TwitterSavedSearch.m in Sources */,
 				E0D3E4E11193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */,
+				E0D3E6AF1194D4280098BFB6 /* TwitterTimeline.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1000,6 +1007,7 @@
 				E0A98E6D1191732100C9C997 /* TwitterSavedSearchAction.m in Sources */,
 				E0A98E7B1191761200C9C997 /* TwitterSavedSearch.m in Sources */,
 				E0D3E4E01193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */,
+				E0D3E6AE1194D4280098BFB6 /* TwitterTimeline.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

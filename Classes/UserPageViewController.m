@@ -242,7 +242,6 @@
 	}
 }
 
-
 #pragma mark IBActions
 
 - (IBAction) lists: (id) sender {
@@ -260,6 +259,7 @@
 	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:YES] autorelease];
 	action.completionAction = @selector(didFollow:);
 	action.completionTarget = self;
+	suppressNetworkErrorAlerts = NO;
 	[self startTwitterAction:action];
 }
 
@@ -363,7 +363,6 @@
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 	NSURL *url = [request URL];
-	suppressNetworkErrorAlerts = NO;
 	
 	if ([[url scheme] isEqualToString:@"action"]) {
 		//TwitterAccount *account = [twitter currentAccount];
@@ -397,6 +396,7 @@
 		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
 	
 	// Download the latest tweets from this user.
+	suppressNetworkErrorAlerts = YES;
 	[self selectUserTimeline:user.screenName];
 	[self reloadCurrentTimeline];
 	
