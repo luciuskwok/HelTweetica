@@ -62,7 +62,7 @@
 + (NSString*) stringWithEncodedParameters:(NSDictionary*)inParameters {
 	NSMutableString *s = [NSMutableString string];
 	NSArray *allKeys = [inParameters allKeys];
-	NSString *key, *value;
+	NSString *key, *encodedValue;
 	BOOL firstParameter = YES;
 	for (key in allKeys) {
 		if (firstParameter) {
@@ -70,8 +70,11 @@
 		} else {
 			[s appendString:@"&"];
 		}
-		value = [TwitterAction URLEncodeString: [inParameters objectForKey:key]];
-		[s appendFormat: @"%@=%@", key, value];
+		id value = [inParameters objectForKey:key];
+		if ([value isKindOfClass:[NSNumber class]])
+			value = [value stringValue];
+		encodedValue = [TwitterAction URLEncodeString: value];
+		[s appendFormat: @"%@=%@", key, encodedValue];
 	}
 	return s;
 }

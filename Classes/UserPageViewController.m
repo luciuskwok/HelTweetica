@@ -308,7 +308,7 @@
 		// Set the since_id parameter minimize the number of statuses requested
 		if (currentTimeline.count > 0) {
 			TwitterMessage *message = [currentTimeline objectAtIndex: 0]; 
-			[action.parameters setObject:[message.identifier stringValue] forKey:@"since_id"];
+			[action.parameters setObject:message.identifier forKey:@"since_id"];
 		}
 		
 		// Prepare action and start it. 

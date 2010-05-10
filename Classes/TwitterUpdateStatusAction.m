@@ -22,11 +22,10 @@
 	if (self = [super init]) {
 		self.twitterMethod = @"statuses/update";
 		
-		NSMutableDictionary *theParameters = [NSMutableDictionary dictionary];
-		[theParameters setObject:text forKey:@"status"];
+		self.parameters = [NSMutableDictionary dictionary];
+		[parameters setObject:text forKey:@"status"];
 		if (replyTo) 
-			[theParameters setObject:[replyTo stringValue] forKey:@"in_reply_to_status_id"];
-		self.parameters = theParameters;
+			[parameters setObject:replyTo forKey:@"in_reply_to_status_id"];
 	}
 	return self;
 }

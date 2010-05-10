@@ -264,7 +264,7 @@
 	}
 	
 	if (newerThan)
-		[action.parameters setObject:[newerThan stringValue] forKey:@"since_id"];
+		[action.parameters setObject:newerThan forKey:@"since_id"];
 	
 	// Remove "max_id" parameter in case it was set from loading older messages;
 	[action.parameters removeObjectForKey:@"max_id"];
@@ -292,12 +292,12 @@
 
 	// Also start an action to load RTs that the account's user has posted within the loaded timeline
 	if (action.loadedMessages.count > 1) {
-		TwitterMessage *firstMessage = [action.loadedMessages objectAtIndex:0];
+		//TwitterMessage *firstMessage = [action.loadedMessages objectAtIndex:0];
 		TwitterMessage *lastMessage = [action.loadedMessages lastObject];
 		NSNumber *sinceIdentifier = lastMessage.identifier;
-		NSNumber *maxIdentifier = firstMessage.identifier;
+		//NSNumber *maxIdentifier = firstMessage.identifier;
 		
-		[self reloadRetweetsSince:sinceIdentifier toMax:maxIdentifier];
+		[self reloadRetweetsSince:sinceIdentifier toMax:nil];
 	}
 }
 
@@ -323,7 +323,7 @@
 	}
 	
 	if (olderThan)
-		[action.parameters setObject:[olderThan stringValue] forKey:@"max_id"];
+		[action.parameters setObject:olderThan forKey:@"max_id"];
 	
 	// Remove "since_id" parameter in case it was set from loading newer messages;
 	[action.parameters removeObjectForKey:@"since_id"];
