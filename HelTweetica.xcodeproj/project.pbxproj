@@ -1044,6 +1044,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Felt Tip Inc.";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1055,6 +1056,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = HelTweetica;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BA526C72-2CC5-4D6C-B726-990FDA8BF87D";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

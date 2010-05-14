@@ -63,6 +63,7 @@
 	
 	NSString *tweetRowTemplate;
 	NSString *tweetGapRowTemplate;
+	NSString *loadingHTML;
 }
 @property (nonatomic, retain) LKWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *composeButton;

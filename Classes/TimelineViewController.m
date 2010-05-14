@@ -15,7 +15,7 @@
  */
 
 // Constants
-#define kDefaultMaxTweetsShown 200
+#define kDefaultMaxTweetsShown 300
 
 // Imports
 #import "TimelineViewController.h"
@@ -59,8 +59,7 @@
 	appDelegate = [[UIApplication sharedApplication] delegate]; // Use Twitter instance from app delegate
 	self.twitter = appDelegate.twitter;
 	
-	// TODO: revert to 50 after testing
-	self.defaultLoadCount = @"10"; // String to pass in the count, per_page, and rpp parameters.
+	self.defaultLoadCount = @"50"; // String to pass in the count, per_page, and rpp parameters.
 	maxTweetsShown = kDefaultMaxTweetsShown; // Number of tweet_rows to display in web view
 	
 	self.actions = [NSMutableArray array]; // List of currently active network connections
@@ -76,7 +75,9 @@
 	error = nil;
 	tweetGapRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"load-gap-template.html"] encoding:NSUTF8StringEncoding error:&error];
 	if (error != nil)
-		NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
+		NSLog (@"Error loading load-gap-template.html: %@", [error localizedDescription]);
+	
+	loadingHTML = [@"<div class='status'><img class='status_spinner_image' src='spinner.gif'> Loading...</div>"retain];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -115,6 +116,7 @@
 
 	[tweetRowTemplate release];
 	[tweetGapRowTemplate release];
+	[loadingHTML release];
 	
 	[super dealloc];
 }
@@ -309,7 +311,7 @@
 	// This method loads RTs that are newer than the since_id and up to and incuding the max_id.
 }
 
-- (void)loadOlderInCurrentTimeline {
+- (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier {
 	if (currentAccount == nil || currentAccount.xAuthToken == nil) {
 		return; // No current account or not logged in.
 	}
@@ -317,16 +319,21 @@
 	TwitterLoadTimelineAction *action = currentTimeline.loadAction;
 	if (action == nil) return; // No action to reload.
 	
-	// Issue: if the display only shows 200 tweets, the "Show Older" link should just show a page starting from the next items in the array. And if there are gaps in the timeline, there's no easy way of showing them.
-	
-	NSNumber *olderThan = nil;
-	if ([currentTimeline.messages count] > 2) {
-		TwitterMessage *message = [currentTimeline.messages lastObject];
-		olderThan = message.identifier;
+	if (maxIdentifier) { // Load gap
+		// Replace "Load gap" link with a Loading message
+		NSString *element = [NSString stringWithFormat:@"gap-%@", [maxIdentifier stringValue]];
+		[self.webView setDocumentElement:element innerHTML:loadingHTML];
+	} else {
+		[self.webView setDocumentElement:@"footer" innerHTML:loadingHTML];
+
+		if ([currentTimeline.messages count] > 2) {
+			TwitterMessage *message = [currentTimeline.messages lastObject];
+			maxIdentifier = message.identifier;
+		}
 	}
 	
-	if (olderThan)
-		[action.parameters setObject:olderThan forKey:@"max_id"];
+	if (maxIdentifier)
+		[action.parameters setObject:maxIdentifier forKey:@"max_id"];
 	
 	// Remove "since_id" parameter in case it was set from loading newer messages;
 	[action.parameters removeObjectForKey:@"since_id"];
@@ -336,9 +343,6 @@
 	action.completionTarget= self;
 	action.completionAction = @selector(didLoadOlderInCurrentTimeline:);
 	[self startTwitterAction:action];
-	
-	// Show Loading message.
-	[self rewriteTweetArea];
 }
 
 - (void) didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action {
@@ -689,7 +693,9 @@
 	[html appendString:@"</div> "]; // Close tweet_table
 	
 	// Footer
+	[html appendString:@"<div id='footer'>"];
 	[html appendString:[self tweetAreaFooterHTML]];
+	[html appendString:@"</div> "]; // Close footer
 	
 	return html;
 }
@@ -765,7 +771,7 @@
 	} else if (currentAccount.xAuthToken == nil) {
 		result = @"<div class='status'>Not logged in.</div>";
 	} else if (actions.count > 0 || !webViewHasValidHTML) {
-		result = @"<div class='status'>Loading...</div>";
+		result = loadingHTML;
 	} else if ([currentTimeline.messages count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	} else if (noOlderMessages) {
@@ -957,7 +963,9 @@
 		} else if ([actionName hasPrefix:@"conversation"]) { // Show more info on the tweet
 			[self showConversationWithMessageIdentifier:messageIdentifier];
 		} else if ([actionName hasPrefix:@"loadOlder"]) { // Load older
-			[self loadOlderInCurrentTimeline];
+			[self loadOlderWithMaxIdentifier:nil];
+		} else if ([actionName hasPrefix:@"loadGap"]) { // Load gap
+			[self loadOlderWithMaxIdentifier:messageIdentifier];
 		}
 		
 		return NO;

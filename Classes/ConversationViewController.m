@@ -28,8 +28,9 @@
 	if (self) {
 		self.selectedMessageIdentifier = anIdentifier;
 		self.customPageTitle = NSLocalizedString (@"The <b>Conversation</b>", @"title");
-		self.currentTimeline = [NSMutableArray array];
+		self.currentTimeline = [[[TwitterTimeline alloc] init] autorelease];
 		maxTweetsShown = 1000; // Allow for a larger limit for searches.
+		currentTimeline.gaps = nil; // Ignore gaps
 		[self loadMessage:anIdentifier];
 		
 		// Special template to highlight the selected message. tweet-row-highlighted-template.html
@@ -174,7 +175,7 @@
 }
 
 - (NSString *)tweetRowTemplateForRow:(int)row {
-	TwitterMessage *message = [self.currentTimeline.messages objectAtIndex:row];
+	TwitterMessage *message = [currentTimeline.messages objectAtIndex:row];
 	if ([message.identifier isEqualToNumber:selectedMessageIdentifier])
 		return highlightedTweetRowTemplate;
 	return tweetRowTemplate;
@@ -184,7 +185,7 @@
 	NSString *result = @"";
 	
 	if (loadingComplete == NO) {
-		result = @"<div class='status'>Loading...</div>";
+		result = loadingHTML;
 	} else if (networkIsReachable == NO) {
 		result = @"<div class='status'>No Internet connection.</div>";
 	} else if (protectedUser) {
