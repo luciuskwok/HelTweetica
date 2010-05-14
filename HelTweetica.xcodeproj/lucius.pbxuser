@@ -52,7 +52,6 @@
 			1D6058900D05DD3D006BFB54 /* Dev */,
 		);
 		breakpoints = (
-			E00630F8119E0DD6009F477B /* TimelineViewController.m:977 */,
 		);
 		codeSenseManager = E00C261F1162D60F00F62B70 /* Code sense */;
 		executables = (
@@ -103,7 +102,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					521,
+					10,
 					20,
 					48,
 					43,
@@ -321,6 +320,15 @@
 			E00630FB119E0DDD009F477B /* PBXTextBookmark */ = E00630FB119E0DDD009F477B /* PBXTextBookmark */;
 			E00630FC119E0E04009F477B /* PBXTextBookmark */ = E00630FC119E0E04009F477B /* PBXTextBookmark */;
 			E0063103119E0E80009F477B /* PBXTextBookmark */ = E0063103119E0E80009F477B /* PBXTextBookmark */;
+			E0063108119E1017009F477B /* PBXTextBookmark */ = E0063108119E1017009F477B /* PBXTextBookmark */;
+			E006310A119E10F3009F477B /* PBXTextBookmark */ = E006310A119E10F3009F477B /* PBXTextBookmark */;
+			E006310F119E1189009F477B /* PBXTextBookmark */ = E006310F119E1189009F477B /* PBXTextBookmark */;
+			E0063110119E1189009F477B /* PBXTextBookmark */ = E0063110119E1189009F477B /* PBXTextBookmark */;
+			E0063111119E1189009F477B /* PBXTextBookmark */ = E0063111119E1189009F477B /* PBXTextBookmark */;
+			E0063115119E13E2009F477B /* PBXTextBookmark */ = E0063115119E13E2009F477B /* PBXTextBookmark */;
+			E0063119119E14C3009F477B /* PBXTextBookmark */ = E0063119119E14C3009F477B /* PBXTextBookmark */;
+			E006311A119E14C3009F477B /* PBXTextBookmark */ = E006311A119E14C3009F477B /* PBXTextBookmark */;
+			E006311B119E14C3009F477B /* PBXTextBookmark */ = E006311B119E14C3009F477B /* PBXTextBookmark */;
 			E00C27F51163195700F62B70 = E00C27F51163195700F62B70 /* PBXBookmark */;
 			E0175B93117BF944003F5970 = E0175B93117BF944003F5970 /* PBXTextBookmark */;
 			E0175B9B117BF944003F5970 = E0175B9B117BF944003F5970 /* PBXTextBookmark */;
@@ -1327,7 +1335,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 128";
 		rLen = 0;
-		rLoc = 2513;
+		rLoc = 2499;
 		rType = 0;
 		vrLen = 1022;
 		vrLoc = 1687;
@@ -1521,7 +1529,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 128";
 		rLen = 0;
-		rLoc = 2513;
+		rLoc = 2499;
 		rType = 0;
 		vrLen = 784;
 		vrLoc = 1925;
@@ -1531,7 +1539,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 149";
 		rLen = 0;
-		rLoc = 2867;
+		rLoc = 2853;
 		rType = 0;
 		vrLen = 704;
 		vrLoc = 2247;
@@ -1551,7 +1559,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 149";
 		rLen = 0;
-		rLoc = 2867;
+		rLoc = 2853;
 		rType = 0;
 		vrLen = 702;
 		vrLoc = 2249;
@@ -1561,7 +1569,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 147";
 		rLen = 0;
-		rLoc = 2822;
+		rLoc = 2808;
 		rType = 0;
 		vrLen = 1070;
 		vrLoc = 2410;
@@ -1571,7 +1579,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 150";
 		rLen = 0;
-		rLoc = 2867;
+		rLoc = 2853;
 		rType = 0;
 		vrLen = 1068;
 		vrLoc = 2410;
@@ -1581,7 +1589,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 132";
 		rLen = 0;
-		rLoc = 2485;
+		rLoc = 2470;
 		rType = 0;
 		vrLen = 985;
 		vrLoc = 1868;
@@ -1591,7 +1599,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 132";
 		rLen = 0;
-		rLoc = 2485;
+		rLoc = 2470;
 		rType = 0;
 		vrLen = 985;
 		vrLoc = 1868;
@@ -2072,24 +2080,6 @@
 		vrLen = 1374;
 		vrLoc = 16313;
 	};
-	E00630F8119E0DD6009F477B /* TimelineViewController.m:977 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
-		functionName = "-webView:shouldStartLoadWithRequest:navigationType:";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 977;
-		location = HelTweetica;
-		modificationTime = 295571193.933756;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
 	E00630FA119E0DDD009F477B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
@@ -2129,6 +2119,96 @@
 		rType = 0;
 		vrLen = 1548;
 		vrLoc = 37696;
+	};
+	E0063108119E1017009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 980";
+		rLen = 0;
+		rLoc = 38983;
+		rType = 0;
+		vrLen = 1328;
+		vrLoc = 37931;
+	};
+	E006310A119E10F3009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 979";
+		rLen = 0;
+		rLoc = 38891;
+		rType = 0;
+		vrLen = 829;
+		vrLoc = 38399;
+	};
+	E006310F119E1189009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 979";
+		rLen = 0;
+		rLoc = 38891;
+		rType = 0;
+		vrLen = 1331;
+		vrLoc = 37931;
+	};
+	E0063110119E1189009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
+		name = "style-ipad.css: 132";
+		rLen = 0;
+		rLoc = 2470;
+		rType = 0;
+		vrLen = 639;
+		vrLoc = 2185;
+	};
+	E0063111119E1189009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
+		name = "style-ipad.css: 146";
+		rLen = 0;
+		rLoc = 2699;
+		rType = 0;
+		vrLen = 910;
+		vrLoc = 2370;
+	};
+	E0063115119E13E2009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
+		name = "style-ipad.css: 132";
+		rLen = 0;
+		rLoc = 2480;
+		rType = 0;
+		vrLen = 911;
+		vrLoc = 2370;
+	};
+	E0063119119E14C3009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
+		name = "style-ipad.css: 132";
+		rLen = 0;
+		rLoc = 2480;
+		rType = 0;
+		vrLen = 942;
+		vrLoc = 2370;
+	};
+	E006311A119E14C3009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 979";
+		rLen = 0;
+		rLoc = 38891;
+		rType = 0;
+		vrLen = 1964;
+		vrLoc = 37740;
+	};
+	E006311B119E14C3009F477B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 62";
+		rLen = 0;
+		rLoc = 2915;
+		rType = 0;
+		vrLen = 2003;
+		vrLoc = 2040;
 	};
 	E00C26131162D5F100F62B70 /* Dev */ = {
 		isa = PBXExecutable;
@@ -2236,9 +2316,9 @@
 	};
 	E00C26C91162E93E00F62B70 /* style-ipad.css */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {930, 3856}}";
-			sepNavSelRange = "{2485, 0}";
-			sepNavVisRange = "{1868, 985}";
+			sepNavIntBoundsRect = "{{0, 0}, {711, 3856}}";
+			sepNavSelRange = "{2480, 0}";
+			sepNavVisRange = "{2370, 942}";
 		};
 	};
 	E00C27DA11630B7900F62B70 /* functions.js */ = {
@@ -2607,9 +2687,9 @@
 	};
 	E0493616118EBE3900BCA128 /* TimelineViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {711, 17744}}";
-			sepNavSelRange = "{38983, 0}";
-			sepNavVisRange = "{37696, 1548}";
+			sepNavIntBoundsRect = "{{0, 0}, {711, 17440}}";
+			sepNavSelRange = "{2915, 0}";
+			sepNavVisRange = "{2040, 2003}";
 			sepNavWindowFrame = "{{4, 4}, {806, 774}}";
 		};
 	};
@@ -2963,7 +3043,7 @@
 		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
 		name = "style-ipad.css: 230";
 		rLen = 0;
-		rLoc = 4323;
+		rLoc = 4309;
 		rType = 0;
 		vrLen = 820;
 		vrLoc = 3371;
