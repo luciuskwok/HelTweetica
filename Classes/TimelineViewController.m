@@ -453,10 +453,12 @@
 #pragma mark Compose
 
 - (IBAction)compose:(id)sender {
-	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
-	[compose loadFromUserDefaults];
-	compose.delegate = self;
-	[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+	if ([self closeAllPopovers] == NO) {
+		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:currentAccount] autorelease];
+		[compose loadFromUserDefaults];
+		compose.delegate = self;
+		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+	}
 }	
 
 - (void)retweet:(NSNumber*)identifier {
@@ -563,12 +565,6 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self presentPopoverFromItem:item viewController:navController];
-		
-		/* The only reason that the content view controller has a reference to the popover is so that it can close it. 
-			An alternative is to have the delegate methods include one to close the popover.
-			Chockenberry's solution is to have a global variable or singleton which manages the popover.
-		*/
-		
 	} else { // iPhone
 		navController.navigationBar.barStyle = UIBarStyleBlack;
 		[self presentModalViewController:navController animated:YES];
@@ -936,17 +932,23 @@
 
 #pragma mark UIWebView delegate methods
 
+- (NSNumber*)number64WithString:(NSString*)string {
+	if (string == nil) return nil;
+	
+	NSScanner *scanner = [NSScanner scannerWithString:string];
+	SInt64 identifierInt64;
+	if ([scanner scanLongLong: &identifierInt64])
+		return [NSNumber numberWithLongLong: identifierInt64];
+	return nil;
+}
+
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 	NSURL *url = [request URL];
 	
 	// Actions
 	if ([[url scheme] isEqualToString:@"action"]) {
-		//TwitterAccount *account = [twitter currentAccount];
 		NSString *actionName = [url resourceSpecifier];
-		NSScanner *scanner = [NSScanner scannerWithString:[actionName lastPathComponent]];
-		SInt64 identifierInt64;
-		[scanner scanLongLong: &identifierInt64];
-		NSNumber *messageIdentifier = [NSNumber numberWithLongLong: identifierInt64];
+		NSNumber *messageIdentifier = [self number64WithString:[actionName lastPathComponent]];
 		
 		if ([actionName hasPrefix:@"fave"]) { // Add message to favorites or remove from favorites
 			[self fave: messageIdentifier];
@@ -970,8 +972,22 @@
 		
 		return NO;
 	} else if ([[url scheme] hasPrefix:@"http"]) {
-		// Push a separate web browser for links
-		[self showWebBrowserWithURLRequest:request];
+		// Catch twitter.com status links
+		NSNumber *messageIdentifier = nil;
+		if ([[url host] hasSuffix:@"twitter.com"]) {
+			NSArray *pathComponents = [[url path] componentsSeparatedByString:@"/"];
+			if (pathComponents.count == 4 && [[pathComponents objectAtIndex:2] isEqualToString:@"status"]) {
+				messageIdentifier = [self number64WithString:[[url path] lastPathComponent]];
+			}
+		}
+		
+		if (messageIdentifier != nil) {
+			[self showConversationWithMessageIdentifier:messageIdentifier];
+		} else {
+			// Push a separate web browser for links
+			[self showWebBrowserWithURLRequest:request];
+		}
+		
 		return NO;
 	}
 	
