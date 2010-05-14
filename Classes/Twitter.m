@@ -17,7 +17,7 @@
 
 #import "Twitter.h"
 
-
+#import "TwitterTimeline.h"
 
 #import "TwitterFavoriteAction.h"
 #import "TwitterLoginAction.h"
@@ -157,9 +157,9 @@
 		
 		// Add all statuses to set
 		for (TwitterAccount *account in accounts) {
-			[self synchronizeStatusesWithArray: account.timeline updateFavorites:YES];
-			[self synchronizeStatusesWithArray: account.mentions updateFavorites:YES];
-			[self synchronizeStatusesWithArray: account.favorites updateFavorites:YES];
+			[self synchronizeStatusesWithArray: account.homeTimeline.messages updateFavorites:YES];
+			[self synchronizeStatusesWithArray: account.mentions.messages updateFavorites:YES];
+			[self synchronizeStatusesWithArray: account.favorites.messages updateFavorites:YES];
 		}
 		
 	}
@@ -169,8 +169,8 @@
 	if (usersData != nil) {
 		self.users = [NSKeyedUnarchiver unarchiveObjectWithData:usersData];
 		for (TwitterUser* user in users) {
-			[self synchronizeStatusesWithArray:user.statuses updateFavorites:YES];
-			[self synchronizeStatusesWithArray:user.favorites updateFavorites:YES];
+			[self synchronizeStatusesWithArray:user.statuses.messages updateFavorites:YES];
+			[self synchronizeStatusesWithArray:user.favorites.messages updateFavorites:YES];
 		}
 	}
 }

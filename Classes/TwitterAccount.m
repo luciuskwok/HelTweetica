@@ -23,16 +23,16 @@
 
 
 @implementation TwitterAccount
-@synthesize screenName, xAuthToken, xAuthSecret, timeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
+@synthesize screenName, xAuthToken, xAuthSecret, homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
 - (id)init {
 	// Initialize a blank account
 	self = [super init];
 	if (self) {
-		self.timeline = [NSMutableArray array];
-		self.mentions = [NSMutableArray array];
-		self.directMessages = [NSMutableArray array];
-		self.favorites = [NSMutableArray array];
+		self.homeTimeline = [[[TwitterTimeline alloc] init] autorelease];
+		self.mentions = [[[TwitterTimeline alloc] init] autorelease];
+		self.directMessages = [[[TwitterTimeline alloc] init] autorelease];
+		self.favorites = [[[TwitterTimeline alloc] init] autorelease];
 		
 		self.lists = [NSMutableArray array];
 		self.listSubscriptions = [NSMutableArray array];
@@ -51,16 +51,24 @@
 	return array;
 }
 
+- (TwitterTimeline *)timelineForKey:(NSString *)key coder:(NSCoder *)decoder {
+	TwitterTimeline *aTimeline = [decoder decodeObjectForKey:key];
+	if ([aTimeline isKindOfClass: [TwitterTimeline class]]) {
+		return aTimeline;
+	}
+	return [[[TwitterTimeline alloc] init] autorelease];
+}
+
 - (id) initWithCoder: (NSCoder*) decoder {
 	if (self = [super init]) {
 		self.screenName = [decoder decodeObjectForKey:@"screenName"];
 		self.xAuthToken = [decoder decodeObjectForKey:@"xAuthToken"];
 		self.xAuthSecret = [decoder decodeObjectForKey:@"xAuthSecret"];
 		
-		self.timeline = [self mutableArrayForKey:@"timeline" coder:decoder];
-		self.mentions = [self mutableArrayForKey:@"mentions" coder:decoder];
-		self.directMessages = [self mutableArrayForKey:@"directMessages" coder:decoder];
-		self.favorites = [self mutableArrayForKey:@"favorites" coder:decoder];
+		self.homeTimeline = [self timelineForKey:@"timeline" coder:decoder];
+		self.mentions = [self timelineForKey:@"mentions" coder:decoder];
+		self.directMessages = [self timelineForKey:@"directMessages" coder:decoder];
+		self.favorites = [self timelineForKey:@"favorites" coder:decoder];
 
 		self.lists = [self mutableArrayForKey:@"lists" coder:decoder];
 		self.listSubscriptions = [self mutableArrayForKey:@"listSubscriptions" coder:decoder];
@@ -75,10 +83,10 @@
 	[encoder encodeObject: xAuthToken forKey:@"xAuthToken"];
 	[encoder encodeObject: xAuthSecret forKey:@"xAuthSecret"];
 	
-	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:timeline] forKey: @"timeline"];
-	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:mentions] forKey: @"mentions"];
-	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:directMessages] forKey: @"directMessages"];
-	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:favorites] forKey: @"favorites"];
+	[encoder encodeObject: homeTimeline forKey: @"homeTimeline"];
+	[encoder encodeObject: mentions forKey: @"mentions"];
+	[encoder encodeObject: directMessages forKey: @"directMessages"];
+	[encoder encodeObject: favorites forKey: @"favorites"];
 
 	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:lists] forKey: @"lists"];
 	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:listSubscriptions] forKey: @"listSubscriptions"];
@@ -90,10 +98,12 @@
 	[screenName release];
 	[xAuthToken release];
 	[xAuthSecret release];
-	[timeline release];
+	
+	[homeTimeline release];
 	[mentions release];
 	[directMessages release];
 	[favorites release];
+	
 	[lists release];
 	[listSubscriptions release];
 	[savedSearches release];
@@ -103,16 +113,7 @@
 #pragma mark -
 
 - (void) removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier {
-	// Removes all instances with matching identifier from favorites timeline
-	NSMutableArray *newFavorites = [NSMutableArray arrayWithCapacity: favorites.count];
-	
-	for (TwitterMessage *message in favorites) {
-		if ([message.identifier isEqualToNumber: identifier] == NO) {
-			[newFavorites addObject: message];
-		}
-	}
-	
-	self.favorites = newFavorites;
+	[self.favorites removeMessageWithIdentifier:identifier];
 }
 
 @end

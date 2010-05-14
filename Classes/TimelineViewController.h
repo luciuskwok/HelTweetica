@@ -31,6 +31,7 @@
 #import "GoToUserViewController.h"
 
 @class TwitterAction;
+@class TwitterTimeline;
 @class TwitterLoadTimelineAction;
 
 
@@ -52,7 +53,7 @@
 	BOOL noOlderMessages;
 
 	TwitterAccount *currentAccount;
-	NSMutableArray *currentTimeline;
+	TwitterTimeline *currentTimeline;
 	TwitterLoadTimelineAction *currentTimelineAction;
 	NSString *customPageTitle;
 	NSString *customTabName;
@@ -71,7 +72,7 @@
 @property (nonatomic, retain) NSString *defaultLoadCount;
 
 @property (nonatomic, retain) TwitterAccount *currentAccount;
-@property (nonatomic, retain) NSMutableArray *currentTimeline;
+@property (nonatomic, retain) TwitterTimeline *currentTimeline;
 @property (nonatomic, retain) TwitterLoadTimelineAction *currentTimelineAction;
 @property (nonatomic, retain) NSString *customPageTitle;
 @property (nonatomic, retain) NSString *customTabName;

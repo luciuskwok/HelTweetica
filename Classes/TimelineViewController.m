@@ -34,6 +34,8 @@
 #import "TwitterLoadListsAction.h"
 #import "TwitterLoadSavedSearchesAction.h"
 
+#import "TwitterTimeline.h"
+
 
 
 @implementation TimelineViewController
@@ -252,11 +254,12 @@
 	if (action == nil) return; // No action to reload.
 
 	BOOL isFavorites = [action.twitterMethod isEqualToString:@"favorites"];
+	NSMutableArray *messages = self.currentTimeline.messages;
 	
 	// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
 	NSNumber *newerThan = nil;
-	if (([currentTimeline count] > 2) && (isFavorites == NO)) {
-		TwitterMessage *message = [currentTimeline objectAtIndex: 1]; // Use object at index 1, and test for overlap to determine whether there is a gap in the timeline.
+	if (([messages count] > 2) && (isFavorites == NO)) {
+		TwitterMessage *message = [messages objectAtIndex: 1]; // Use object at index 1, and test for overlap to determine whether there is a gap in the timeline.
 		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
 		if (staleness < kMaxMessageStaleness) {
 			newerThan = message.identifier;
@@ -270,7 +273,7 @@
 	[action.parameters removeObjectForKey:@"max_id"];
 	
 	// Prepare action and start it. 
-	action.timeline = currentTimeline;
+	action.timeline = messages;
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];
@@ -317,8 +320,8 @@
 	// Issue: if the display only shows 200 tweets, the "Show Older" link should just show a page starting from the next items in the array. And if there are gaps in the timeline, there's no easy way of showing them.
 	
 	NSNumber *olderThan = nil;
-	if ([currentTimeline count] > 2) {
-		TwitterMessage *message = [currentTimeline lastObject];
+	if ([currentTimeline.messages count] > 2) {
+		TwitterMessage *message = [currentTimeline.messages lastObject];
 		olderThan = message.identifier;
 	}
 	
@@ -329,7 +332,7 @@
 	[action.parameters removeObjectForKey:@"since_id"];
 	
 	// Prepare action and start it. 
-	action.timeline = currentTimeline;
+	action.timeline = currentTimeline.messages;
 	action.completionTarget= self;
 	action.completionAction = @selector(didLoadOlderInCurrentTimeline:);
 	[self startTwitterAction:action];
@@ -439,7 +442,8 @@
 	[self.webView setDocumentElement:element innerHTML:html];
 	
 	// Remove from favorites timeline
-	[currentAccount.favorites removeObject: message];
+	if (message.favorite == NO) 
+		[currentAccount.favorites.messages removeObject: message];
 }
 
 #pragma mark Compose
@@ -670,7 +674,7 @@
 		[html appendString:@"</div><div class='tweet_actions'> </div></div>"];
 	}
 	
-	NSArray *timeline = self.currentTimeline; 
+	NSArray *timeline = self.currentTimeline.messages; 
 	int displayedCount = (timeline.count < maxTweetsShown) ? timeline.count : maxTweetsShown;
 	
 	// Template for tweet_row
@@ -696,7 +700,7 @@
 
 - (NSString *)tweetRowHTMLForRow:(int)row {
 	NSMutableString *tweetRowHTML;
-	TwitterMessage *message = [self.currentTimeline objectAtIndex:row];
+	TwitterMessage *message = [self.currentTimeline.messages objectAtIndex:row];
 	TwitterMessage *retweeterMessage = nil;
 	
 	// Swap retweeted message with root message
@@ -753,13 +757,13 @@
 		result = @"<div class='status'>No Internet connection.</div>";
 	} else if (currentAccount.xAuthToken == nil) {
 		result = @"<div class='status'>Not logged in.</div>";
-	} else if (actions.count > 0) {
+	} else if (actions.count > 0 || !webViewHasValidHTML) {
 		result = @"<div class='status'>Loading...</div>";
-	} else if ([currentTimeline count] == 0) {
+	} else if ([currentTimeline.messages count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	} else if (noOlderMessages) {
 		result = @"";
-	} else if ([currentTimeline count] < maxTweetsShown) {
+	} else if ([currentTimeline.messages count] < maxTweetsShown) {
 		// Action to Load older messages 
 		result = @"<div class='load_older'><a href='action:loadOlder'>Load older messages</a></div> ";
 	}

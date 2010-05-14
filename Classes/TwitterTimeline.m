@@ -54,5 +54,15 @@
 	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:gaps] forKey: @"gaps"];
 }
 
+#pragma mark Synchronize
+
+- (void)removeMessageWithIdentifier:(NSNumber*)anIdentifier {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", anIdentifier];
+	NSMutableArray *filteredArray = [NSMutableArray arrayWithArray: self.messages];
+	[filteredArray filterUsingPredicate:predicate];
+	[self.messages removeObjectsInArray:filteredArray];
+}
+
+
 
 @end

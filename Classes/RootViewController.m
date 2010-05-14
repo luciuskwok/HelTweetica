@@ -17,7 +17,9 @@
 
 #import "RootViewController.h"
 #import "TwitterAccount.h"
+#import "TwitterTimeline.h"
 #import "TwitterMessage.h"
+
 #import "Analyze.h"
 #import "AccountsViewController.h"
 #import "AllStarsViewController.h"
@@ -77,7 +79,7 @@
 	self.customTabName = kTimelineIdentifier;
 	self.customPageTitle = nil; // Reset the custom page title.
 	
-	self.currentTimeline = currentAccount.timeline;
+	self.currentTimeline = currentAccount.homeTimeline;
 	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
 	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
@@ -119,7 +121,7 @@
 		[action.parameters setObject:defaultLoadCount forKey:@"count"];
 		
 		// Prepare action and start it. 
-		action.timeline = currentTimeline;
+		action.timeline = currentTimeline.messages;
 		action.completionTarget= self;
 		action.completionAction = @selector(didReloadRetweets:);
 		[self startTwitterAction:action];
@@ -314,7 +316,7 @@
 
 - (IBAction) allstars: (id) sender {
 	if ([self closeAllPopovers] == NO) {
-		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:currentAccount.timeline] autorelease];
+		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:currentAccount.homeTimeline.messages] autorelease];
 		[self presentModalViewController:controller animated:YES];
 		[controller startDelayedShuffleModeAfterInterval:kDelayBeforeEnteringShuffleMode];
 	}
@@ -323,7 +325,7 @@
 - (IBAction) analyze: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		Analyze *c = [[[Analyze alloc] init] autorelease];
-		c.timeline = currentAccount.timeline;
+		c.timeline = currentAccount.homeTimeline.messages;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			[self presentPopoverFromItem:sender viewController:c];
 		} else {

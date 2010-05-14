@@ -26,10 +26,10 @@
 	NSString *xAuthToken;
 	NSString *xAuthSecret;
 	
-	NSMutableArray *timeline;
-	NSMutableArray *mentions;
-	NSMutableArray *directMessages;
-	NSMutableArray *favorites;
+	TwitterTimeline *homeTimeline;
+	TwitterTimeline *mentions;
+	TwitterTimeline *directMessages;
+	TwitterTimeline *favorites;
 	
 	NSMutableArray *lists;
 	NSMutableArray *listSubscriptions;
@@ -41,10 +41,10 @@
 @property (nonatomic, retain) NSString *xAuthToken;
 @property (nonatomic, retain) NSString *xAuthSecret;
 
-@property (nonatomic, retain) NSMutableArray *timeline;
-@property (nonatomic, retain) NSMutableArray *mentions;
-@property (nonatomic, retain) NSMutableArray *directMessages;
-@property (nonatomic, retain) NSMutableArray *favorites;
+@property (nonatomic, retain) TwitterTimeline *homeTimeline;
+@property (nonatomic, retain) TwitterTimeline *mentions;
+@property (nonatomic, retain) TwitterTimeline *directMessages;
+@property (nonatomic, retain) TwitterTimeline *favorites;
 
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;

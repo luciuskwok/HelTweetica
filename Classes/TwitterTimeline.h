@@ -16,4 +16,6 @@
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, retain) NSMutableArray *gaps;
 
+- (void)removeMessageWithIdentifier:(NSNumber*)anIdentifier;
+
 @end

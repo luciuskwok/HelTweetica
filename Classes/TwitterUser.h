@@ -15,6 +15,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class TwitterTimeline;
+
 
 @interface TwitterUser : NSObject {
 	
@@ -40,8 +42,8 @@
 	// There is a "following" flag but it only applies to the authenticating user who requested the stream, so it depends on the account being used. There should be some way of caching the social graph of who follows whom.
 	
 	// Fields that are not saved via NSCoder
-	NSMutableArray *statuses;
-	NSMutableArray *favorites;
+	TwitterTimeline *statuses;
+	TwitterTimeline *favorites;
 	NSMutableArray *lists;
 	NSMutableArray *listSubscriptions;
 	
@@ -67,8 +69,8 @@
 @property (nonatomic, assign) BOOL protectedUser;
 @property (nonatomic, assign) BOOL verifiedUser;
 
-@property (nonatomic, retain) NSMutableArray *statuses;
-@property (nonatomic, retain) NSMutableArray *favorites;
+@property (nonatomic, retain) TwitterTimeline *statuses;
+@property (nonatomic, retain) TwitterTimeline *favorites;
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 

@@ -14,6 +14,8 @@
  */
 
 #import "TwitterUser.h"
+#import "TwitterTimeline.h"
+
 
 
 @implementation TwitterUser
@@ -43,6 +45,14 @@
 	return array;
 }
 
+- (TwitterTimeline *)decodeTimelineForKey:(NSString *)key withDecoder:(NSCoder *)decoder {
+	TwitterTimeline *aTimeline = [decoder decodeObjectForKey:key];
+	if ([aTimeline isKindOfClass: [TwitterTimeline class]]) {
+		return aTimeline;
+	}
+	return [[[TwitterTimeline alloc] init] autorelease];
+}
+
 - (id) initWithCoder: (NSCoder*) decoder {
 	if (self = [super init]) {
 		self.identifier = [decoder decodeObjectForKey:@"identifier"];
@@ -65,8 +75,8 @@
 		protectedUser = [decoder decodeBoolForKey:@"protectedUser"];
 		verifiedUser = [decoder decodeBoolForKey:@"verifiedUser"];
 		
-		self.statuses = [self mutableArrayForKey:@"statuses" coder:decoder];
-		self.favorites = [self mutableArrayForKey:@"favorites" coder:decoder];
+		self.statuses = [self decodeTimelineForKey:@"statuses" withDecoder:decoder];
+		self.favorites = [self decodeTimelineForKey:@"favorites" withDecoder:decoder];
 		self.lists = [NSMutableArray array];
 		self.listSubscriptions = [NSMutableArray array];
 	}
@@ -94,8 +104,8 @@
 	[encoder encodeBool:protectedUser forKey:@"protectedUser"];
 	[encoder encodeBool:verifiedUser forKey:@"verifiedUser"];
 
-	[encoder encodeObject:[NSKeyedArchiver archivedDataWithRootObject:statuses] forKey:@"statuses"];
-	[encoder encodeObject:[NSKeyedArchiver archivedDataWithRootObject:favorites] forKey:@"favorites"];
+	[encoder encodeObject:statuses forKey:@"statuses"];
+	[encoder encodeObject:favorites forKey:@"favorites"];
 }
 
 - (void)dealloc {

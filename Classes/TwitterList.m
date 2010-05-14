@@ -16,6 +16,7 @@
 
 
 #import "TwitterList.h"
+#import "TwitterTimeline.h"
 
 
 @implementation TwitterList

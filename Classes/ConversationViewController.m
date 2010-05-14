@@ -15,6 +15,7 @@
 
 #import "ConversationViewController.h"
 #import "TwitterLoadTimelineAction.h"
+#import "TwitterTimeline.h"
 
 
 @implementation ConversationViewController
@@ -70,26 +71,26 @@
 	// Check if message is already loaded
 	TwitterMessage *message = [twitter statusWithIdentifier:messageIdentifier];
 	if (message) {
-		[currentTimeline addObject:message];
+		[currentTimeline.messages addObject:message];
 		[self loadInReplyToMessage: message];
 	} else {
 		NSString *twitterMethod = [NSString stringWithFormat:@"statuses/show/%@", messageIdentifier];
 		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:twitterMethod] autorelease];
-		action.timeline = currentTimeline;
+		action.timeline = currentTimeline.messages;
 		action.completionAction = @selector(didLoadMessage:);
 		action.completionTarget = self;
 		[self startTwitterAction:action];
 	}
 	
 	// Also load all cached replies to this message
-	NSMutableSet *timelineSet = [NSMutableSet setWithArray:currentTimeline];
+	NSMutableSet *timelineSet = [NSMutableSet setWithArray:currentTimeline.messages];
 	NSSet *replies = [twitter statusesInReplyToStatusIdentifier:messageIdentifier];
 	[timelineSet unionSet:replies];
-	[currentTimeline setArray: [timelineSet allObjects]];
+	[currentTimeline.messages setArray: [timelineSet allObjects]];
 	
 	// Sort by message id
 	NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
-	[currentTimeline sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
+	[currentTimeline.messages sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
 }
 
 - (void)loadingComplete {
@@ -104,8 +105,8 @@
 	[twitter addUsers:action.users];
 	
 	// Load next message in conversation.
-	if (!loadingComplete && currentTimeline.count > 0) {
-		TwitterMessage *lastMessage = [currentTimeline lastObject];
+	if (!loadingComplete && currentTimeline.messages.count > 0) {
+		TwitterMessage *lastMessage = [currentTimeline.messages lastObject];
 		[self loadInReplyToMessage: lastMessage];
 		if (webViewHasValidHTML) 
 			[self rewriteTweetArea];	
@@ -173,7 +174,7 @@
 }
 
 - (NSString *)tweetRowTemplateForRow:(int)row {
-	TwitterMessage *message = [self.currentTimeline objectAtIndex:row];
+	TwitterMessage *message = [self.currentTimeline.messages objectAtIndex:row];
 	if ([message.identifier isEqualToNumber:selectedMessageIdentifier])
 		return highlightedTweetRowTemplate;
 	return tweetRowTemplate;
@@ -190,7 +191,7 @@
 		result = @"<div class='status'>Protected message.</div>";
 	} else if (messageNotFound) {
 		result = @"<div class='status'>Message was deleted.</div>";
-	} else if ([currentTimeline count] == 0) {
+	} else if (currentTimeline.messages.count == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	}
 	

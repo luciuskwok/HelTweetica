@@ -17,6 +17,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class TwitterTimeline;
+
 
 @interface TwitterList : NSObject {
 	NSString *name;
@@ -28,7 +30,7 @@
 	NSNumber *identifier;
 	NSNumber *memberCount;
 	
-	NSMutableArray *statuses;
+	TwitterTimeline *statuses;
 	
 	BOOL privateList;
 	
@@ -43,7 +45,7 @@
 @property (nonatomic, retain) NSNumber *identifier;
 @property (nonatomic, retain) NSNumber *memberCount;
 
-@property (nonatomic, retain) NSMutableArray *statuses;
+@property (nonatomic, retain) TwitterTimeline *statuses;
 
 @property (assign) BOOL privateList;
 
