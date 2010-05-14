@@ -8,14 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+@class TwitterLoadTimelineAction;
+
 
 @interface TwitterTimeline : NSObject {
 	NSMutableArray *messages;
 	NSMutableArray *gaps;
+	TwitterLoadTimelineAction *loadAction;
 }
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, retain) NSMutableArray *gaps;
+@property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
 
 - (void)removeMessageWithIdentifier:(NSNumber*)anIdentifier;
+- (void)limitTimelineLength:(int)count;
 
 @end

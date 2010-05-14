@@ -80,8 +80,8 @@
 	self.customPageTitle = nil; // Reset the custom page title.
 	
 	self.currentTimeline = currentAccount.homeTimeline;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
+	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
+	[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void) selectMentionsTimeline {
@@ -89,8 +89,8 @@
 	self.customPageTitle = nil; // Reset the custom page title.
 	
 	self.currentTimeline = currentAccount.mentions;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
+	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
+	[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void) selectDirectMessageTimeline {
@@ -98,8 +98,8 @@
 	self.customPageTitle = nil; // Reset the custom page title.
 	
 	self.currentTimeline = currentAccount.directMessages;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
-	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
+	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
+	[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void) selectFavoritesTimeline {
@@ -107,12 +107,12 @@
 	self.customPageTitle = nil; // Reset the custom page title.
 	
 	self.currentTimeline = currentAccount.favorites;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
+	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	// Favorites always loads 20 per page. Cannot change the count.
 }
 
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
-	if ([currentTimelineAction.twitterMethod isEqualToString:@"statuses/home_timeline"]) {
+	if ([currentTimeline.loadAction.twitterMethod isEqualToString:@"statuses/home_timeline"]) {
 		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/retweeted_by_me"] autorelease];
 		if (sinceIdentifier) 
 			[action.parameters setObject:sinceIdentifier forKey:@"since_id"];
@@ -121,7 +121,7 @@
 		[action.parameters setObject:defaultLoadCount forKey:@"count"];
 		
 		// Prepare action and start it. 
-		action.timeline = currentTimeline.messages;
+		action.timeline = currentTimeline;
 		action.completionTarget= self;
 		action.completionAction = @selector(didReloadRetweets:);
 		[self startTwitterAction:action];
@@ -130,7 +130,7 @@
 
 - (void)didReloadRetweets:(TwitterLoadTimelineAction *)action {
 	// Synchronize timeline with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:YES];
+	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
 	[twitter addUsers:action.users];
 	
 	// Finished loading, so update tweet area and remove loading spinner.

@@ -76,7 +76,7 @@
 	} else {
 		NSString *twitterMethod = [NSString stringWithFormat:@"statuses/show/%@", messageIdentifier];
 		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:twitterMethod] autorelease];
-		action.timeline = currentTimeline.messages;
+		action.timeline = currentTimeline;
 		action.completionAction = @selector(didLoadMessage:);
 		action.completionTarget = self;
 		[self startTwitterAction:action];
@@ -101,7 +101,7 @@
 
 - (void)didLoadMessage:(TwitterLoadTimelineAction *)action {
 	// Synchronized users and messages with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:YES];
+	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
 	[twitter addUsers:action.users];
 	
 	// Load next message in conversation.

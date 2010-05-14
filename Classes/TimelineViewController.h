@@ -54,7 +54,6 @@
 
 	TwitterAccount *currentAccount;
 	TwitterTimeline *currentTimeline;
-	TwitterLoadTimelineAction *currentTimelineAction;
 	NSString *customPageTitle;
 	NSString *customTabName;
 	
@@ -63,6 +62,7 @@
 	UIAlertView *currentAlert;
 	
 	NSString *tweetRowTemplate;
+	NSString *tweetGapRowTemplate;
 }
 @property (nonatomic, retain) LKWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *composeButton;
@@ -73,7 +73,6 @@
 
 @property (nonatomic, retain) TwitterAccount *currentAccount;
 @property (nonatomic, retain) TwitterTimeline *currentTimeline;
-@property (nonatomic, retain) TwitterLoadTimelineAction *currentTimelineAction;
 @property (nonatomic, retain) NSString *customPageTitle;
 @property (nonatomic, retain) NSString *customTabName;
 

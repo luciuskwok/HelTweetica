@@ -54,22 +54,32 @@
 }
 
 - (void) mergeTimelineWithMessages:(NSMutableArray*)messages {
-	if (timeline == nil) {
-		self.timeline = messages;
+	if (messages.count == 0) return;
+	
+	if (timeline.messages.count == 0) {
+		self.timeline.messages = messages;
 	} else {
 		// Merge downloaded messages with existing messages.
 		overlap = NO;
 		for (TwitterMessage *message in messages) {
-			if ([timeline containsObject:message]) {
-				overlap = YES; // Need to do something, maybe mark the last message in the array to signify a gap.
+			if ([timeline.messages containsObject:message]) {
+				overlap = YES; 
+				
+				// Remove gap indicators if there's overlap
+				[timeline.gaps removeObject:message];
 			} else {
-				[timeline addObject: message];
+				[timeline.messages addObject: message];
 			}
 		}
 		
+		// Note the gap if there's no overlap
+		if (overlap == NO) 
+			[timeline.gaps addObject: [messages lastObject]];
+		
+		
 		// Sort by identifier, descending.
 		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
-		[timeline sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
+		[timeline.messages sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
 	}
 }
 

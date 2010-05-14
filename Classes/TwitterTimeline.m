@@ -7,11 +7,11 @@
 //
 
 #import "TwitterTimeline.h"
-//#import "TwitterLoadTimelineAction.h"
+#import "TwitterLoadTimelineAction.h"
 
 
 @implementation TwitterTimeline
-@synthesize messages, gaps;
+@synthesize messages, gaps, loadAction;
 
 - (id)init {
 	self = [super init];
@@ -25,6 +25,7 @@
 - (void)dealloc {
 	[messages release];
 	[gaps release];
+	[loadAction release];
 	[super dealloc];
 }
 
@@ -63,6 +64,13 @@
 	[self.messages removeObjectsInArray:filteredArray];
 }
 
+- (void)limitTimelineLength:(int)maxLength {
+	// Limit the length of the timeline
+	if (messages.count > maxLength) {
+		NSRange removalRange = NSMakeRange(maxLength, messages.count - maxLength);
+		[messages removeObjectsInRange:removalRange];
+	}
+}	
 
 
 @end

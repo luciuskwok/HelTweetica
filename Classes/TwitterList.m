@@ -26,6 +26,7 @@
 	self = [super init];
 	if (self) {
 		self.receivedDate = [NSDate date];
+		self.statuses = [[[TwitterTimeline alloc] init] autorelease];
 	}
 	return self;
 }
@@ -57,7 +58,10 @@
 		privateList = [decoder decodeBoolForKey:@"privateList"];
 		
 		self.receivedDate = [decoder decodeObjectForKey:@"receivedDate"];
-	}
+
+		// Uncached data.
+		self.statuses = [[[TwitterTimeline alloc] init] autorelease];
+}
 	return self;
 }
 

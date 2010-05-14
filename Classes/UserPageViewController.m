@@ -16,6 +16,7 @@
 
 #import "UserPageViewController.h"
 #import "Twitter.h"
+#import "TwitterTimeline.h"
 #import "TwitterUser.h"
 #import "WebBrowserViewController.h"
 
@@ -295,7 +296,7 @@
 #pragma mark Timeline loading
 
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
-	if ([currentTimelineAction.twitterMethod isEqualToString:@"statuses/user_timeline"]) {
+	if ([currentTimeline.loadAction.twitterMethod isEqualToString:@"statuses/user_timeline"]) {
 		/*
 		NSString *method = nil;
 		
@@ -328,9 +329,9 @@
 	
 	self.customPageTitle = nil;
 	self.currentTimeline = user.statuses;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
-	[currentTimelineAction.parameters setObject:screenName forKey:@"id"];
-	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
+	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
+	[currentTimeline.loadAction.parameters setObject:screenName forKey:@"id"];
+	[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void)selectFavoritesTimeline:(NSString*)screenName {
@@ -338,10 +339,10 @@
 	
 	self.customPageTitle = [NSString stringWithFormat:@"%@&rsquo;s <b>favorites</b>", user.screenName];
 	self.currentTimeline = user.favorites;
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
-	[currentTimelineAction.parameters setObject:screenName forKey:@"id"];
+	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
+	[currentTimeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	// Favorites always loads 20 per page. Cannot change the count.
-	//[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"count"];
+	//[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 }
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {

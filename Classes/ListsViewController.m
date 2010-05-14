@@ -261,10 +261,6 @@
 	if (indexPath.row < array.count) {
 		TwitterList *list = [array objectAtIndex: indexPath.row];
 
-		// Create array to hold statuses if it doesn't exist.
-		if (list.statuses == nil)
-			list.statuses = [NSMutableArray array];
-		
 		// Call delegate to tell a list was selected
 		if ([delegate respondsToSelector:@selector(lists:didSelectList:)])
 			[delegate lists:self didSelectList:list];

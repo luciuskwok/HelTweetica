@@ -14,6 +14,7 @@
  */
 
 #import "SearchResultsViewController.h"
+#import "TwitterTimeline.h"
 #import "TwitterSearchAction.h"
 #import "TwitterSavedSearchAction.h"
 
@@ -27,15 +28,14 @@
 	self = [super initWithNibName:@"SearchResults" bundle:nil];
 	if (self) {
 		self.query = aQuery;
-		self.currentTimeline = [NSMutableArray array]; // Always start with an empty array of messages for Search.
 		self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
 		self.customTabName = NSLocalizedString (@"Results", @"tab");
 		self.defaultLoadCount = @"50"; // Limit number of tweets to request.
 		maxTweetsShown = 1000; // Allow for a larger limit for searches.
 		
-		// Create Twitter action to load search results into the current timeline.
-		TwitterSearchAction *action = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultLoadCount] autorelease];
-		self.currentTimelineAction = action;
+		// Timeline
+		self.currentTimeline = [[[TwitterTimeline alloc] init] autorelease]; // Always start with an empty array of messages for Search.
+		currentTimeline.loadAction = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultLoadCount] autorelease];
 		[self reloadCurrentTimeline];
 	}
 	return self;
@@ -101,7 +101,7 @@
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
 	// Synchronize timeline with Twitter cache. Ignore favorites flag in Search results because they're always false.
-	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:NO];
+	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:NO];
 	[twitter addUsers:action.users];
 	
 	// Finished loading, so update tweet area and remove loading spinner.

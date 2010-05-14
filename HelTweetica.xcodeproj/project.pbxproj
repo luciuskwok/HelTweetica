@@ -15,6 +15,8 @@
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
 		28F335F11007B36200424DE2 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
+		E006304E119DF570009F477B /* load-gap-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E006304D119DF570009F477B /* load-gap-template.html */; };
+		E006304F119DF570009F477B /* load-gap-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E006304D119DF570009F477B /* load-gap-template.html */; };
 		E00C262A1162D90800F62B70 /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = E00C26281162D90800F62B70 /* Login.xib */; };
 		E00C262B1162D90800F62B70 /* Compose.xib in Resources */ = {isa = PBXBuildFile; fileRef = E00C26291162D90800F62B70 /* Compose.xib */; };
 		E00C26301162D91600F62B70 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C262D1162D91600F62B70 /* LoginViewController.m */; };
@@ -234,6 +236,7 @@
 		28F335F01007B36200424DE2 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RootViewController.xib; path = ../Resources/RootViewController.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* HelTweetica-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "HelTweetica-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		E006304D119DF570009F477B /* load-gap-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "load-gap-template.html"; path = "Resources/load-gap-template.html"; sourceTree = "<group>"; };
 		E00C26281162D90800F62B70 /* Login.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Login.xib; path = ../Resources/Login.xib; sourceTree = "<group>"; };
 		E00C26291162D90800F62B70 /* Compose.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Compose.xib; path = ../Resources/Compose.xib; sourceTree = "<group>"; };
 		E00C262C1162D91600F62B70 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -669,6 +672,7 @@
 				E00C26C91162E93E00F62B70 /* style-ipad.css */,
 				E03F91D7118F7BEA00D3A76B /* main-template.html */,
 				E0A98A671190BE9C00C9C997 /* basic-template.html */,
+				E006304D119DF570009F477B /* load-gap-template.html */,
 				E03F90DE118F58DF00D3A76B /* tweet-row-template.html */,
 				E0A6A35D1192969F0034D8E7 /* tweet-row-highlighted-template.html */,
 				E03F91DA118F7CFC00D3A76B /* user-info-template.html */,
@@ -839,6 +843,7 @@
 				E0A98B7F1190E0E100C9C997 /* GoToUser.xib in Resources */,
 				E0A98C7E11913A1300C9C997 /* SearchResults.xib in Resources */,
 				E0A6A35F1192969F0034D8E7 /* tweet-row-highlighted-template.html in Resources */,
+				E006304F119DF570009F477B /* load-gap-template.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -899,6 +904,7 @@
 				E0A98B7D1190E0E100C9C997 /* GoToUser.xib in Resources */,
 				E0A98C7C11913A1300C9C997 /* SearchResults.xib in Resources */,
 				E0A6A35E1192969F0034D8E7 /* tweet-row-highlighted-template.html in Resources */,
+				E006304E119DF570009F477B /* load-gap-template.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

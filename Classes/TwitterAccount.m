@@ -65,7 +65,7 @@
 		self.xAuthToken = [decoder decodeObjectForKey:@"xAuthToken"];
 		self.xAuthSecret = [decoder decodeObjectForKey:@"xAuthSecret"];
 		
-		self.homeTimeline = [self timelineForKey:@"timeline" coder:decoder];
+		self.homeTimeline = [self timelineForKey:@"homeTimeline" coder:decoder];
 		self.mentions = [self timelineForKey:@"mentions" coder:decoder];
 		self.directMessages = [self timelineForKey:@"directMessages" coder:decoder];
 		self.favorites = [self timelineForKey:@"favorites" coder:decoder];

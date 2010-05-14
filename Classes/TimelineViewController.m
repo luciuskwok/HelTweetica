@@ -40,7 +40,7 @@
 
 @implementation TimelineViewController
 @synthesize webView, composeButton, twitter, actions, defaultLoadCount;
-@synthesize currentAccount, currentTimeline, currentTimelineAction, customPageTitle, customTabName;
+@synthesize currentAccount, currentTimeline, customPageTitle, customTabName;
 @synthesize currentPopover, currentActionSheet, currentAlert;
 
 
@@ -59,7 +59,8 @@
 	appDelegate = [[UIApplication sharedApplication] delegate]; // Use Twitter instance from app delegate
 	self.twitter = appDelegate.twitter;
 	
-	self.defaultLoadCount = @"50"; // String to pass in the count, per_page, and rpp parameters.
+	// TODO: revert to 50 after testing
+	self.defaultLoadCount = @"10"; // String to pass in the count, per_page, and rpp parameters.
 	maxTweetsShown = kDefaultMaxTweetsShown; // Number of tweet_rows to display in web view
 	
 	self.actions = [NSMutableArray array]; // List of currently active network connections
@@ -69,6 +70,11 @@
 	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
 	NSError *error = nil;
 	tweetRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-template.html"] encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil)
+		NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
+	
+	error = nil;
+	tweetGapRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"load-gap-template.html"] encoding:NSUTF8StringEncoding error:&error];
 	if (error != nil)
 		NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
 }
@@ -97,7 +103,6 @@
  
 	[currentAccount release];
 	[currentTimeline release];
-	[currentTimelineAction release];
 	[customPageTitle release];
 	[customTabName release];
 	
@@ -109,6 +114,7 @@
 	[currentAlert release];
 
 	[tweetRowTemplate release];
+	[tweetGapRowTemplate release];
 	
 	[super dealloc];
 }
@@ -241,20 +247,17 @@
 
 #pragma mark TwitterAction - Timeline
 
-// TODO: need to fold in own RTs to home timeline
-// See http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_by_me
-
 - (void)reloadCurrentTimeline {
 	if (currentAccount == nil || currentAccount.xAuthToken == nil) {
 		[self setLoadingSpinnerVisibility:NO];
 		return; // No current account or not logged in.
 	}
 	
-	TwitterLoadTimelineAction *action = self.currentTimelineAction;
+	TwitterLoadTimelineAction *action = currentTimeline.loadAction;
 	if (action == nil) return; // No action to reload.
 
 	BOOL isFavorites = [action.twitterMethod isEqualToString:@"favorites"];
-	NSMutableArray *messages = self.currentTimeline.messages;
+	NSMutableArray *messages = currentTimeline.messages;
 	
 	// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
 	NSNumber *newerThan = nil;
@@ -273,7 +276,7 @@
 	[action.parameters removeObjectForKey:@"max_id"];
 	
 	// Prepare action and start it. 
-	action.timeline = messages;
+	action.timeline = currentTimeline;
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];
@@ -281,14 +284,11 @@
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
 	// Synchronize timeline with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:YES];
+	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
 	[twitter addUsers:action.users];
 	
 	// Limit the length of the timeline
-	if (action.timeline.count > kMaxNumberOfMessagesInATimeline) {
-		NSRange removalRange = NSMakeRange(kMaxNumberOfMessagesInATimeline, action.timeline.count - kMaxNumberOfMessagesInATimeline);
-		[action.timeline removeObjectsInRange:removalRange];
-	}
+	[action.timeline limitTimelineLength:kMaxNumberOfMessagesInATimeline];
 	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];	
@@ -314,7 +314,7 @@
 		return; // No current account or not logged in.
 	}
 	
-	TwitterLoadTimelineAction *action = self.currentTimelineAction;
+	TwitterLoadTimelineAction *action = currentTimeline.loadAction;
 	if (action == nil) return; // No action to reload.
 	
 	// Issue: if the display only shows 200 tweets, the "Show Older" link should just show a page starting from the next items in the array. And if there are gaps in the timeline, there's no easy way of showing them.
@@ -332,7 +332,7 @@
 	[action.parameters removeObjectForKey:@"since_id"];
 	
 	// Prepare action and start it. 
-	action.timeline = currentTimeline.messages;
+	action.timeline = currentTimeline;
 	action.completionTarget= self;
 	action.completionAction = @selector(didLoadOlderInCurrentTimeline:);
 	[self startTwitterAction:action];
@@ -344,7 +344,7 @@
 - (void) didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action {
 	if (action.newMessageCount > 0) {
 		// Synchronize timeline with Twitter cache.
-		[twitter synchronizeStatusesWithArray:action.timeline updateFavorites:YES];
+		[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
 		[twitter addUsers:action.users];
 	}
 	
@@ -747,6 +747,13 @@
 	[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
 	[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
 	
+	// Append "Load gap" row if needed
+	if ([currentTimeline.gaps containsObject:message]) {
+		NSMutableString *gapRowHTML = [NSMutableString stringWithString:tweetGapRowTemplate];
+		[gapRowHTML replaceOccurrencesOfString:@"{gapIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, gapRowHTML.length)];
+		[tweetRowHTML appendString:gapRowHTML];
+	}
+	
 	return tweetRowHTML;
 }
 
@@ -1025,8 +1032,8 @@
 	
 	// Create Twitter action to load list statuses into the timeline.
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
-	self.currentTimelineAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
-	[currentTimelineAction.parameters setObject:defaultLoadCount forKey:@"per_page"];
+	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
+	[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"per_page"];
 	suppressNetworkErrorAlerts = NO;
 	[self reloadCurrentTimeline];
 	

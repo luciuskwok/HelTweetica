@@ -125,7 +125,7 @@ p { margin: 0px 0px 20px 0px; }
 	font-style: italic; 
 }
 .time a { color: #88A; }
-.load_older { font-weight: bold; text-align: center; margin: 20px; }
+.load_older { font-weight: bold; text-align: center; margin: 10px; padding: 0px 0px 10px 0px; }
 
 .tweet_actions {
 	display: table-cell; 

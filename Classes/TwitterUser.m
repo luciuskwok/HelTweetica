@@ -26,8 +26,8 @@
 - (id)init {
 	self = [super init];
 	if (self) {
-		self.statuses = [NSMutableArray array];
-		self.favorites = [NSMutableArray array];
+		self.statuses = [[[TwitterTimeline alloc] init] autorelease];
+		self.favorites = [[[TwitterTimeline alloc] init] autorelease];
 		self.lists = [NSMutableArray array];
 		self.listSubscriptions = [NSMutableArray array];
 	}
