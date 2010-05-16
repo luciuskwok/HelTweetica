@@ -59,11 +59,17 @@
 	if (timeline.messages.count == 0) {
 		self.timeline.messages = messages;
 	} else {
+		// Check if last loaded message overlaps timeline
+		TwitterMessage *lastLoadedMessage = [messages lastObject];
+		overlap = [timeline.messages containsObject:lastLoadedMessage];
+		if (overlap == NO) 
+			[timeline.gaps addObject: lastLoadedMessage];
+		
 		// Merge downloaded messages with existing messages.
-		overlap = NO;
+		//overlap = NO;
 		for (TwitterMessage *message in messages) {
 			if ([timeline.messages containsObject:message]) {
-				overlap = YES; 
+				//overlap = YES; 
 				
 				// Remove gap indicators if there's overlap
 				[timeline.gaps removeObject:message];
@@ -71,11 +77,6 @@
 				[timeline.messages addObject: message];
 			}
 		}
-		
-		// Note the gap if there's no overlap
-		if (overlap == NO) 
-			[timeline.gaps addObject: [messages lastObject]];
-		
 		
 		// Sort by identifier, descending.
 		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];

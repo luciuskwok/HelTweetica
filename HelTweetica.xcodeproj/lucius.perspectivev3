@@ -269,21 +269,24 @@
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
 								<string>E0175BAB117BFAA1003F5970</string>
+								<string>E0175BA9117BFA4D003F5970</string>
+								<string>E01865461184C87F0021995D</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>E0DD53C7118E2D770042CF49</string>
+								<string>1C37FBAC04509CD000000102</string>
 								<string>1C77FABC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>4</integer>
-									<integer>2</integer>
-									<integer>1</integer>
+									<integer>89</integer>
+									<integer>87</integer>
+									<integer>86</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {271, 845}}</string>
+							<string>{{0, 1008}, {271, 748}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -293,14 +296,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {288, 863}}</string>
+						<string>{{0, 0}, {288, 766}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>271</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>377 124 1053 904 0 0 1680 1028 </string>
+						<string>16 195 1435 807 0 0 1600 1002 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -318,7 +321,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E00C26401162D98D00F62B70</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TimelineViewController.m</string>
+								<string>style-ipad.css</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +329,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E00C26411162D98D00F62B70</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>TimelineViewController.m</string>
+										<string>style-ipad.css</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E006311B119E14C3009F477B</string>
+										<string>E0377D8D11A06468007B0177</string>
 										<key>history</key>
 										<array>
 											<string>E00C27F51163195700F62B70</string>
@@ -353,7 +356,6 @@
 											<string>E0175BBB117BFE71003F5970</string>
 											<string>E0175BBF117BFE71003F5970</string>
 											<string>E0175BCB117C0294003F5970</string>
-											<string>E0175C53117C1C5F003F5970</string>
 											<string>E0175CC0117C271B003F5970</string>
 											<string>E01866AF1184F3B10021995D</string>
 											<string>E0186773118526B60021995D</string>
@@ -460,19 +462,21 @@
 											<string>E0063032119DEF8E009F477B</string>
 											<string>E0063033119DEF8E009F477B</string>
 											<string>E0063036119DEF8E009F477B</string>
-											<string>E0063038119DEF8E009F477B</string>
-											<string>E0063050119DF5DB009F477B</string>
 											<string>E0063071119DF928009F477B</string>
 											<string>E0063079119DFC38009F477B</string>
 											<string>E006307B119DFC38009F477B</string>
 											<string>E00630A0119E0229009F477B</string>
 											<string>E00630A1119E0229009F477B</string>
-											<string>E00630A3119E0229009F477B</string>
-											<string>E00630A4119E0229009F477B</string>
 											<string>E00630C2119E05B6009F477B</string>
 											<string>E00630D3119E06DA009F477B</string>
-											<string>E0063119119E14C3009F477B</string>
-											<string>E006311A119E14C3009F477B</string>
+											<string>E006318B119E9DBA009F477B</string>
+											<string>E006318C119E9DBA009F477B</string>
+											<string>E0377D6611A058EA007B0177</string>
+											<string>E0377D6711A058EA007B0177</string>
+											<string>E0377D6811A058EA007B0177</string>
+											<string>E0377D8111A0617B007B0177</string>
+											<string>E0377D8711A063EF007B0177</string>
+											<string>E0377D8A11A0643F007B0177</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -486,14 +490,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {760, 858}}</string>
+								<string>{{0, 0}, {1142, 761}}</string>
 								<key>RubberWindowFrame</key>
-								<string>377 124 1053 904 0 0 1680 1028 </string>
+								<string>16 195 1435 807 0 0 1600 1002 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>858pt</string>
+							<string>761pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
@@ -511,7 +515,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {760, -27}}</string>
+										<string>{{10, 27}, {1142, -27}}</string>
+										<key>RubberWindowFrame</key>
+										<string>16 195 1435 807 0 0 1600 1002 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -527,7 +533,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {979, -27}}</string>
+										<string>{{0, 0}, {614, 336}}</string>
 									</dict>
 									<key>Module</key>
 									<string>PBXProjectFindModule</string>
@@ -565,9 +571,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {760, -27}}</string>
-										<key>RubberWindowFrame</key>
-										<string>377 124 1053 904 0 0 1680 1028 </string>
+										<string>{{10, 27}, {822, 146}}</string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -576,7 +580,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>760pt</string>
+					<string>1142pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -595,11 +599,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E0062FFC119DE387009F477B</string>
+				<string>E0377D5511A05468007B0177</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>E0062FFD119DE387009F477B</string>
+				<string>E0377D5611A05468007B0177</string>
 				<string>E00C26401162D98D00F62B70</string>
-				<string>E0062FFE119DE387009F477B</string>
+				<string>E0377D5711A05468007B0177</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -748,14 +752,14 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E0062FFF119DE387009F477B</string>
+				<string>E0377D5811A05468007B0177</string>
 				<string>1CCC7628064C1048000F2A68</string>
 				<string>1CCC7629064C1048000F2A68</string>
-				<string>E0063000119DE387009F477B</string>
-				<string>E0063001119DE387009F477B</string>
-				<string>E0063002119DE387009F477B</string>
-				<string>E0063003119DE387009F477B</string>
-				<string>E00C26401162D98D00F62B70</string>
+				<string>E0377D5911A05468007B0177</string>
+				<string>E0377D5A11A05468007B0177</string>
+				<string>E0377D5B11A05468007B0177</string>
+				<string>E0377D5C11A05468007B0177</string>
+				<string>E0377D5D11A05468007B0177</string>
 			</array>
 			<key>ToolbarConfigUserDefaultsMinorVersion</key>
 			<string>2</string>
@@ -789,13 +793,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E006311C119E14C3009F477B</string>
-		<string>E0063005119DE387009F477B</string>
-		<string>E0063006119DE387009F477B</string>
+		<string>E0377D6B11A058EA007B0177</string>
+		<string>E0377D5F11A05468007B0177</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>377 124 1053 904 0 0 1680 1028 </string>
+	<string>16 195 1435 807 0 0 1600 1002 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

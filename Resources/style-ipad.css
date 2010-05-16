@@ -149,7 +149,7 @@ p { margin: 0px 0px 20px 0px; }
 	color: #BBB;
 }
 .status_spinner_image {
-	margin: 0px 0px -5px 0px;
+	margin: -5px 0px -5px 0px;
 	width: 40px;
 	height: 40px;
 	opacity: 0.5;
@@ -239,4 +239,8 @@ p { margin: 0px 0px 20px 0px; }
 	font-size: 25px;
 	line-height: 30px;
 	background: #FFB;
+}
+
+.mention_tweet_row {
+	background: #E0E8FF;
 }

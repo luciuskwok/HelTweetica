@@ -356,6 +356,8 @@
 		noOlderMessages = YES;
 	}
 	
+	// TODO: load account user's own RTs within the range from max_id in the action to since_id of last tweet in action.messages.
+	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];
 		
@@ -750,7 +752,11 @@
 	[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
 	
 	// Append "Load gap" row if needed
-	if ([currentTimeline.gaps containsObject:message]) {
+	BOOL gap = [currentTimeline.gaps containsObject:retweeterMessage ? retweeterMessage : message];
+	BOOL endRow = (row >= maxTweetsShown - 1 || row >= currentTimeline.messages.count - 1);
+	if (retweeterMessage) 
+		messageIdentifier = [retweeterMessage.identifier stringValue];
+	if (gap && !endRow) {
 		NSMutableString *gapRowHTML = [NSMutableString stringWithString:tweetGapRowTemplate];
 		[gapRowHTML replaceOccurrencesOfString:@"{gapIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, gapRowHTML.length)];
 		[tweetRowHTML appendString:gapRowHTML];
