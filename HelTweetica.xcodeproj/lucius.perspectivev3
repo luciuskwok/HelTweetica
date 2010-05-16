@@ -279,14 +279,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>89</integer>
-									<integer>87</integer>
-									<integer>86</integer>
+									<integer>4</integer>
+									<integer>2</integer>
+									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 1008}, {271, 748}}</string>
+							<string>{{0, 0}, {271, 748}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -303,7 +303,7 @@
 							<real>271</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>16 195 1435 807 0 0 1600 1002 </string>
+						<string>44 82 1435 807 0 0 1600 1002 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -321,7 +321,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E00C26401162D98D00F62B70</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>style-ipad.css</string>
+								<string>TimelineViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -329,11 +329,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E00C26411162D98D00F62B70</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>style-ipad.css</string>
+										<string>TimelineViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0377D8D11A06468007B0177</string>
+										<string>E0377DA111A07764007B0177</string>
 										<key>history</key>
 										<array>
 											<string>E00C27F51163195700F62B70</string>
@@ -473,10 +473,10 @@
 											<string>E006318C119E9DBA009F477B</string>
 											<string>E0377D6611A058EA007B0177</string>
 											<string>E0377D6711A058EA007B0177</string>
-											<string>E0377D6811A058EA007B0177</string>
 											<string>E0377D8111A0617B007B0177</string>
-											<string>E0377D8711A063EF007B0177</string>
-											<string>E0377D8A11A0643F007B0177</string>
+											<string>E0377D9011A06DD4007B0177</string>
+											<string>E0377D9111A06DD4007B0177</string>
+											<string>E0377D9211A06DD4007B0177</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -492,7 +492,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1142, 761}}</string>
 								<key>RubberWindowFrame</key>
-								<string>16 195 1435 807 0 0 1600 1002 </string>
+								<string>44 82 1435 807 0 0 1600 1002 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -517,7 +517,7 @@
 										<key>Frame</key>
 										<string>{{10, 27}, {1142, -27}}</string>
 										<key>RubberWindowFrame</key>
-										<string>16 195 1435 807 0 0 1600 1002 </string>
+										<string>44 82 1435 807 0 0 1600 1002 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -798,7 +798,7 @@
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>16 195 1435 807 0 0 1600 1002 </string>
+	<string>44 82 1435 807 0 0 1600 1002 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

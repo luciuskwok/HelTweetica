@@ -52,7 +52,6 @@
 			1D6058900D05DD3D006BFB54 /* Dev */,
 		);
 		breakpoints = (
-			E0377D7D11A06175007B0177 /* TimelineViewController.m:62 */,
 		);
 		codeSenseManager = E00C261F1162D60F00F62B70 /* Code sense */;
 		executables = (
@@ -224,6 +223,13 @@
 			E0377D8B11A0643F007B0177 /* PBXTextBookmark */ = E0377D8B11A0643F007B0177 /* PBXTextBookmark */;
 			E0377D8C11A0644B007B0177 /* PBXTextBookmark */ = E0377D8C11A0644B007B0177 /* PBXTextBookmark */;
 			E0377D8D11A06468007B0177 /* PBXTextBookmark */ = E0377D8D11A06468007B0177 /* PBXTextBookmark */;
+			E0377D9011A06DD4007B0177 /* PBXTextBookmark */ = E0377D9011A06DD4007B0177 /* PBXTextBookmark */;
+			E0377D9111A06DD4007B0177 /* PBXTextBookmark */ = E0377D9111A06DD4007B0177 /* PBXTextBookmark */;
+			E0377D9211A06DD4007B0177 /* PBXTextBookmark */ = E0377D9211A06DD4007B0177 /* PBXTextBookmark */;
+			E0377D9311A06DD4007B0177 /* PBXTextBookmark */ = E0377D9311A06DD4007B0177 /* PBXTextBookmark */;
+			E0377D9811A06E10007B0177 /* PBXTextBookmark */ = E0377D9811A06E10007B0177 /* PBXTextBookmark */;
+			E0377D9A11A06E20007B0177 /* PBXTextBookmark */ = E0377D9A11A06E20007B0177 /* PBXTextBookmark */;
+			E0377DA111A07764007B0177 /* PBXTextBookmark */ = E0377DA111A07764007B0177 /* PBXTextBookmark */;
 			E03F9036118F434000D3A76B = E03F9036118F434000D3A76B /* PBXTextBookmark */;
 			E03F9037118F434000D3A76B = E03F9037118F434000D3A76B /* PBXTextBookmark */;
 			E03F904A118F450A00D3A76B = E03F904A118F450A00D3A76B /* PBXTextBookmark */;
@@ -594,7 +600,7 @@
 		fRef = E0493615118EBE3900BCA128 /* TimelineViewController.h */;
 		name = "TimelineViewController.h: 66";
 		rLen = 0;
-		rLoc = 3250;
+		rLoc = 3286;
 		rType = 0;
 		vrLen = 923;
 		vrLoc = 2667;
@@ -1039,7 +1045,7 @@
 		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
 		name = "TimelineViewController.m: 753";
 		rLen = 0;
-		rLoc = 29715;
+		rLoc = 30436;
 		rType = 0;
 		vrLen = 2154;
 		vrLoc = 28069;
@@ -1079,7 +1085,7 @@
 		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
 		name = "TimelineViewController.m: 756";
 		rLen = 0;
-		rLoc = 29894;
+		rLoc = 30615;
 		rType = 0;
 		vrLen = 1697;
 		vrLoc = 24922;
@@ -1089,7 +1095,7 @@
 		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
 		name = "TimelineViewController.m: 757";
 		rLen = 0;
-		rLoc = 29914;
+		rLoc = 30635;
 		rType = 0;
 		vrLen = 3418;
 		vrLoc = 26709;
@@ -1099,7 +1105,7 @@
 		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
 		name = "TimelineViewController.m: 757";
 		rLen = 0;
-		rLoc = 29914;
+		rLoc = 30635;
 		rType = 0;
 		vrLen = 3418;
 		vrLoc = 26709;
@@ -1109,7 +1115,7 @@
 		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
 		name = "TimelineViewController.m: 758";
 		rLen = 0;
-		rLoc = 29894;
+		rLoc = 30615;
 		rType = 0;
 		vrLen = 3210;
 		vrLoc = 27044;
@@ -1120,24 +1126,6 @@
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 1251}";
 		};
-	};
-	E0377D7D11A06175007B0177 /* TimelineViewController.m:62 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
-		functionName = "-awakeFromNib";
-		hitCount = 1;
-		ignoreCount = 0;
-		lineNumber = 62;
-		location = HelTweetica;
-		modificationTime = 295723397.553459;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
 	};
 	E0377D8111A0617B007B0177 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -1194,7 +1182,7 @@
 		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
 		name = "TimelineViewController.m: 705";
 		rLen = 41;
-		rLoc = 26135;
+		rLoc = 26856;
 		rType = 0;
 		vrLen = 3056;
 		vrLoc = 25831;
@@ -1258,6 +1246,76 @@
 		rType = 0;
 		vrLen = 688;
 		vrLoc = 3671;
+	};
+	E0377D9011A06DD4007B0177 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E00C26C91162E93E00F62B70 /* style-ipad.css */;
+		name = "style-ipad.css: 245";
+		rLen = 0;
+		rLoc = 4353;
+		rType = 0;
+		vrLen = 688;
+		vrLoc = 3671;
+	};
+	E0377D9111A06DD4007B0177 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493615118EBE3900BCA128 /* TimelineViewController.h */;
+		name = "TimelineViewController.h: 65";
+		rLen = 23;
+		rLoc = 3206;
+		rType = 0;
+		vrLen = 1437;
+		vrLoc = 2668;
+	};
+	E0377D9211A06DD4007B0177 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 710";
+		rLen = 0;
+		rLoc = 26800;
+		rType = 0;
+		vrLen = 1608;
+		vrLoc = 25079;
+	};
+	E0377D9311A06DD4007B0177 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 76";
+		rLen = 0;
+		rLoc = 3628;
+		rType = 0;
+		vrLen = 1977;
+		vrLoc = 2338;
+	};
+	E0377D9811A06E10007B0177 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 80";
+		rLen = 0;
+		rLoc = 3910;
+		rType = 0;
+		vrLen = 1992;
+		vrLoc = 2338;
+	};
+	E0377D9A11A06E20007B0177 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 80";
+		rLen = 0;
+		rLoc = 3910;
+		rType = 0;
+		vrLen = 1992;
+		vrLoc = 2338;
+	};
+	E0377DA111A07764007B0177 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 708";
+		rLen = 0;
+		rLoc = 26450;
+		rType = 0;
+		vrLen = 2018;
+		vrLoc = 26362;
 	};
 	E03F9036118F434000D3A76B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -1364,16 +1422,16 @@
 	};
 	E0493615118EBE3900BCA128 /* TimelineViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {773, 2448}}";
-			sepNavSelRange = "{2786, 14}";
-			sepNavVisRange = "{2270, 1700}";
+			sepNavIntBoundsRect = "{{0, 0}, {1093, 2400}}";
+			sepNavSelRange = "{3206, 23}";
+			sepNavVisRange = "{2668, 1437}";
 		};
 	};
 	E0493616118EBE3900BCA128 /* TimelineViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1100, 17136}}";
-			sepNavSelRange = "{26135, 41}";
-			sepNavVisRange = "{25831, 3056}";
+			sepNavIntBoundsRect = "{{0, 0}, {1093, 17792}}";
+			sepNavSelRange = "{26450, 0}";
+			sepNavVisRange = "{26362, 2018}";
 			sepNavWindowFrame = "{{4, 4}, {806, 774}}";
 		};
 	};

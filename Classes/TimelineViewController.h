@@ -62,6 +62,7 @@
 	UIAlertView *currentAlert;
 	
 	NSString *tweetRowTemplate;
+	NSString *tweetMentionRowTemplate;
 	NSString *tweetGapRowTemplate;
 	NSString *loadingHTML;
 }

@@ -73,6 +73,11 @@
 		NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
 	
 	error = nil;
+	tweetMentionRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-mention-template.html"] encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil)
+		NSLog (@"Error loading tweet-row-mention-template.html: %@", [error localizedDescription]);
+	
+	error = nil;
 	tweetGapRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"load-gap-template.html"] encoding:NSUTF8StringEncoding error:&error];
 	if (error != nil)
 		NSLog (@"Error loading load-gap-template.html: %@", [error localizedDescription]);
@@ -699,6 +704,15 @@
 }
 
 - (NSString *)tweetRowTemplateForRow:(int)row {
+	// Highlight Mentions
+	NSString *screenName = [NSString stringWithFormat:@"@%@", currentAccount.screenName];
+	TwitterMessage *message = [self.currentTimeline.messages objectAtIndex:row];
+	if (message.retweetedMessage)
+		message = message.retweetedMessage;
+	NSRange foundRange = [message.content rangeOfString:screenName];
+	if (foundRange.location != NSNotFound) 
+		return tweetMentionRowTemplate;
+	
 	return tweetRowTemplate;
 }
 
