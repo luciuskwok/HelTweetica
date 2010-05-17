@@ -43,7 +43,7 @@
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeArchitecturePreference = armv7;
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = E00C26131162D5F100F62B70 /* Dev */;
 		activeSDKPreference = iphoneos3.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Dev */;
@@ -136,7 +136,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					481,
+					10,
 					60,
 					20,
 					48,
@@ -306,6 +306,15 @@
 			E0FC923D11A0C46700231F4A /* PBXTextBookmark */ = E0FC923D11A0C46700231F4A /* PBXTextBookmark */;
 			E0FC924011A0C58500231F4A /* PBXTextBookmark */ = E0FC924011A0C58500231F4A /* PBXTextBookmark */;
 			E0FC924311A0C58A00231F4A /* PBXTextBookmark */ = E0FC924311A0C58A00231F4A /* PBXTextBookmark */;
+			E0FC925411A0D7E400231F4A /* PBXTextBookmark */ = E0FC925411A0D7E400231F4A /* PBXTextBookmark */;
+			E0FC925511A0D7E400231F4A /* PBXTextBookmark */ = E0FC925511A0D7E400231F4A /* PBXTextBookmark */;
+			E0FC925611A0D7E400231F4A /* PBXTextBookmark */ = E0FC925611A0D7E400231F4A /* PBXTextBookmark */;
+			E0FC925B11A0D82A00231F4A /* PBXTextBookmark */ = E0FC925B11A0D82A00231F4A /* PBXTextBookmark */;
+			E0FC926211A0D8D800231F4A /* PBXTextBookmark */ = E0FC926211A0D8D800231F4A /* PBXTextBookmark */;
+			E0FC926311A0D8D800231F4A /* PlistBookmark */ = E0FC926311A0D8D800231F4A /* PlistBookmark */;
+			E0FC926411A0D8D800231F4A /* PlistBookmark */ = E0FC926411A0D8D800231F4A /* PlistBookmark */;
+			E0FC926511A0D8D800231F4A /* PlistBookmark */ = E0FC926511A0D8D800231F4A /* PlistBookmark */;
+			E0FC926811A0D90800231F4A /* PlistBookmark */ = E0FC926811A0D90800231F4A /* PlistBookmark */;
 			E0FCEFC7119D350000723C8F = E0FCEFC7119D350000723C8F /* PlistBookmark */;
 			E0FCEFC8119D350000723C8F = E0FCEFC8119D350000723C8F /* PlistBookmark */;
 			E0FCEFC9119D350000723C8F = E0FCEFC9119D350000723C8F /* PBXTextBookmark */;
@@ -1143,9 +1152,9 @@
 	};
 	E0493616118EBE3900BCA128 /* TimelineViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {995, 18256}}";
+			sepNavIntBoundsRect = "{{0, 0}, {995, 18320}}";
 			sepNavSelRange = "{28951, 41}";
-			sepNavVisRange = "{27917, 1737}";
+			sepNavVisRange = "{29987, 1511}";
 			sepNavWindowFrame = "{{4, 4}, {806, 774}}";
 		};
 	};
@@ -1709,7 +1718,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {995, 1328}}";
 			sepNavSelRange = "{2012, 0}";
-			sepNavVisRange = "{1745, 1551}";
+			sepNavVisRange = "{1579, 1575}";
 		};
 	};
 	E0B54E76118BF0BA00FFED10 /* TwitterLoginAction.h */ = {
@@ -2555,6 +2564,103 @@
 		rType = 0;
 		vrLen = 1551;
 		vrLoc = 1745;
+	};
+	E0FC925411A0D7E400231F4A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0B2088C118BDC1F00843A89 /* LKWebView.m */;
+		name = "LKWebView.m: 26";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1575;
+		vrLoc = 1579;
+	};
+	E0FC925511A0D7E400231F4A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 767";
+		rLen = 41;
+		rLoc = 28951;
+		rType = 0;
+		vrLen = 1737;
+		vrLoc = 27917;
+	};
+	E0FC925611A0D7E400231F4A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 767";
+		rLen = 41;
+		rLoc = 28951;
+		rType = 0;
+		vrLen = 1190;
+		vrLoc = 29987;
+	};
+	E0FC925B11A0D82A00231F4A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 767";
+		rLen = 41;
+		rLoc = 28951;
+		rType = 0;
+		vrLen = 1190;
+		vrLoc = 29987;
+	};
+	E0FC926211A0D8D800231F4A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 767";
+		rLen = 41;
+		rLoc = 28951;
+		rType = 0;
+		vrLen = 1511;
+		vrLoc = 29987;
+	};
+	E0FC926311A0D8D800231F4A /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* HelTweetica-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E0FC926411A0D8D800231F4A /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E03570B71174E6BE004B9A0F /* AppStore-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/AppStore-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E0FC926511A0D8D800231F4A /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E03570B71174E6BE004B9A0F /* AppStore-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/AppStore-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E0FC926811A0D90800231F4A /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E03570B71174E6BE004B9A0F /* AppStore-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/AppStore-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
 	};
 	E0FC9A221163CA7A0027C422 /* OAuthClient.h */ = {
 		uiCtxt = {
