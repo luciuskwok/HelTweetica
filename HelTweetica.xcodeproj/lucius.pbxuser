@@ -43,7 +43,7 @@
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeArchitecturePreference = armv7;
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = E00C26131162D5F100F62B70 /* Dev */;
 		activeSDKPreference = iphoneos3.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Dev */;
@@ -190,6 +190,10 @@
 			E002E38E11A0FE3200FA5A76 /* PBXTextBookmark */ = E002E38E11A0FE3200FA5A76 /* PBXTextBookmark */;
 			E002E38F11A0FE3200FA5A76 /* PBXTextBookmark */ = E002E38F11A0FE3200FA5A76 /* PBXTextBookmark */;
 			E002E39011A0FE3200FA5A76 /* PBXTextBookmark */ = E002E39011A0FE3200FA5A76 /* PBXTextBookmark */;
+			E002E39611A0FFB400FA5A76 /* PBXTextBookmark */ = E002E39611A0FFB400FA5A76 /* PBXTextBookmark */;
+			E002E39711A0FFB400FA5A76 /* PlistBookmark */ = E002E39711A0FFB400FA5A76 /* PlistBookmark */;
+			E002E39811A0FFB400FA5A76 /* PlistBookmark */ = E002E39811A0FFB400FA5A76 /* PlistBookmark */;
+			E002E39911A0FFB400FA5A76 /* PlistBookmark */ = E002E39911A0FFB400FA5A76 /* PlistBookmark */;
 			E0062FD2119DE0AA009F477B = E0062FD2119DE0AA009F477B /* PBXTextBookmark */;
 			E0062FD5119DE0AA009F477B = E0062FD5119DE0AA009F477B /* PBXTextBookmark */;
 			E0062FE6119DE27A009F477B = E0062FE6119DE27A009F477B /* PBXTextBookmark */;
@@ -667,6 +671,51 @@
 		rType = 0;
 		vrLen = 2066;
 		vrLoc = 9429;
+	};
+	E002E39611A0FFB400FA5A76 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */;
+		name = "TimelineViewController.m: 288";
+		rLen = 0;
+		rLoc = 10850;
+		rType = 0;
+		vrLen = 2066;
+		vrLoc = 9429;
+	};
+	E002E39711A0FFB400FA5A76 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* HelTweetica-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E002E39811A0FFB400FA5A76 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E03570B71174E6BE004B9A0F /* AppStore-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/AppStore-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E002E39911A0FFB400FA5A76 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E03570B71174E6BE004B9A0F /* AppStore-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/AppStore-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
 	};
 	E0062FD2119DE0AA009F477B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;

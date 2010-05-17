@@ -271,15 +271,15 @@
 								<string>E0175BAB117BFAA1003F5970</string>
 								<string>E0175BA9117BFA4D003F5970</string>
 								<string>E01865461184C87F0021995D</string>
+								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C77FABC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>4</integer>
-									<integer>2</integer>
-									<integer>1</integer>
+									<integer>99</integer>
+									<integer>86</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -312,14 +312,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>E00C26401162D98D00F62B70</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TimelineViewController.m</string>
+								<string>AppStore-Info.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -327,11 +325,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E00C26411162D98D00F62B70</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>TimelineViewController.m</string>
+										<string>AppStore-Info.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E002E39011A0FE3200FA5A76</string>
+										<string>E002E39911A0FFB400FA5A76</string>
 										<key>history</key>
 										<array>
 											<string>E00C27F51163195700F62B70</string>
@@ -470,12 +468,12 @@
 											<string>E0FC923611A0C3A100231F4A</string>
 											<string>E0FC925411A0D7E400231F4A</string>
 											<string>E090501311A0E52000520190</string>
-											<string>E090501411A0E52000520190</string>
-											<string>E002E34711A0ED5000FA5A76</string>
 											<string>E002E35911A0F05700FA5A76</string>
 											<string>E002E37D11A0F89100FA5A76</string>
 											<string>E002E38E11A0FE3200FA5A76</string>
-											<string>E002E38F11A0FE3200FA5A76</string>
+											<string>E002E39611A0FFB400FA5A76</string>
+											<string>E002E39711A0FFB400FA5A76</string>
+											<string>E002E39811A0FFB400FA5A76</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -792,7 +790,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E002E39111A0FE3200FA5A76</string>
 		<string>E002E35311A0ED5000FA5A76</string>
 		<string>E002E35411A0ED5000FA5A76</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica.xcodeproj</string>
