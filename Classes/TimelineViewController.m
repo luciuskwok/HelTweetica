@@ -717,7 +717,6 @@
 }
 
 - (NSString *)tweetRowHTMLForRow:(int)row {
-	NSMutableString *tweetRowHTML;
 	TwitterMessage *message = [self.currentTimeline.messages objectAtIndex:row];
 	TwitterMessage *retweeterMessage = nil;
 	
@@ -730,44 +729,80 @@
 	// Favorites
 	BOOL isFavorite = (message.favorite || retweeterMessage.favorite);
 	
-	// Create mutable copy of template
-	tweetRowHTML = [NSMutableString stringWithString: [self tweetRowTemplateForRow: row]];
 	
-	// Fields for replacement
-	NSString *screenName = message.screenName ? message.screenName : @"";
-	NSString *messageIdentifier = message.identifier ? [message.identifier stringValue] : @"";
-	NSString *profileImageURL = message.avatar ? message.avatar : @"";
-	NSString *retweetIcon = retweeterMessage ? @"<img src='retweet.png'>" : @"";
-	NSString *lockIcon = [message isLocked] ? @"<img src='lock.png'>" : @"";
-	NSString *content = message.content ? [self htmlFormattedString:message.content] : @"";
-	NSString *createdDate = message.createdDate ? [self timeStringSinceNow: message.createdDate] : @"";
-	NSString *via = message.source ? message.source : @"";
-	NSString *inReplyToScreenName = message.inReplyToScreenName ? message.inReplyToScreenName : @"";
-	NSString *retweetedBy = retweeterMessage.screenName ? retweeterMessage.screenName : @"";
-	NSString *faveImageSuffix = isFavorite ? @"-on" : @"";
+	// Set up dictionary with variables to substitute
+	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
+	if (message.screenName)
+		[substitutions setObject:message.screenName forKey:@"screenName"];
+	if (message.identifier)
+		[substitutions setObject:[message.identifier stringValue] forKey:@"messageIdentifier"];
+	if (message.avatar)
+		[substitutions setObject:message.avatar forKey:@"profileImageURL"];
+	if (retweeterMessage)
+		[substitutions setObject:@"<img src='retweet.png'>" forKey:@"retweetIcon"];
+	if ([message isLocked])
+		[substitutions setObject:@"<img src='lock.png'>" forKey:@"lockIcon"];
+	if (message.content)
+		[substitutions setObject:[self htmlFormattedString:message.content] forKey:@"content"];
+	if (message.createdDate) 
+		[substitutions setObject:[self timeStringSinceNow: message.createdDate] forKey:@"createdDate"];
+	if (message.source) 
+		[substitutions setObject:message.source forKey:@"via"];
+	if (message.inReplyToScreenName) 
+		[substitutions setObject:message.inReplyToScreenName forKey:@"inReplyToScreenName"];
+	if (retweeterMessage.screenName) 
+		[substitutions setObject:retweeterMessage.screenName forKey:@"retweetedBy"];
+	if (isFavorite) 
+		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
+	if (message.direct == NO) 
+		[substitutions setObject:@"YES" forKey:@"actions"];
+		
+	// Use scanner to replace curly-bracketed variables with values
+	NSScanner *scanner = [NSScanner scannerWithString:[self tweetRowTemplateForRow: row]];
+	NSMutableString *tweetRowHTML = [[[NSMutableString alloc] init] autorelease];
+	NSString *scannedString, *key, *value;
+	BOOL displayBlock = YES;
 	
-	// Replace fields in template with actual data
-	[tweetRowHTML replaceOccurrencesOfString:@"{screenName}" withString:screenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{messageIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{profileImageURL}" withString:profileImageURL options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{retweetIcon}" withString:retweetIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{lockIcon}" withString:lockIcon options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{content}" withString:content options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{createdDate}" withString:createdDate options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{via}" withString:via options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{inReplyToScreenName}" withString:inReplyToScreenName options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{retweetedBy}" withString:retweetedBy options:0 range:NSMakeRange(0, tweetRowHTML.length)];
-	[tweetRowHTML replaceOccurrencesOfString:@"{faveImageSuffix}" withString:faveImageSuffix options:0 range:NSMakeRange(0, tweetRowHTML.length)];
+	// Set scanner to include whitespace
+	[scanner setCharactersToBeSkipped:nil];
 	
-	// Replace blocks in template
-	[self replaceBlock: @"Via" display: (message.source != nil) inTemplate:tweetRowHTML];
-	[self replaceBlock: @"InReplyTo" display: (message.inReplyToStatusIdentifier != nil) inTemplate:tweetRowHTML];
-	[self replaceBlock: @"Retweet" display: (retweeterMessage != nil) inTemplate:tweetRowHTML];
-	[self replaceBlock: @"Actions" display: (message.direct == NO) inTemplate:tweetRowHTML];
-	
+	while ([scanner isAtEnd] == NO) {
+		// Scan characters up to opening of variable curly brace
+		if ([scanner scanUpToString:@"{" intoString:&scannedString] && displayBlock) {
+			[tweetRowHTML appendString:scannedString];
+		}
+		
+		// Scan name of variable or block
+		if ([scanner scanUpToString:@"}" intoString:&scannedString]) {
+			if ([scannedString hasPrefix:@"{Block:"]) {
+				// Block
+				if ([scannedString length] > 7) {
+					key = [scannedString substringFromIndex:7];
+					value = [substitutions objectForKey:key];
+					displayBlock = (value != nil);
+				}
+			} else if ([scannedString hasPrefix:@"{/Block"]) {
+				// End Block
+				displayBlock = YES;
+			} else {
+				// Variable
+				if (displayBlock && [scannedString length] > 1) {
+					key = [scannedString substringFromIndex:1];
+					value = [substitutions objectForKey:key];
+					if (value) 
+						[tweetRowHTML appendString:value];
+				}
+			}
+		}
+		
+		// Scan past closing curly brace
+		[scanner scanString:@"}" intoString:nil];
+	}
+		
 	// Append "Load gap" row if needed
 	BOOL gap = [currentTimeline.gaps containsObject:retweeterMessage ? retweeterMessage : message];
 	BOOL endRow = (row >= maxTweetsShown - 1 || row >= currentTimeline.messages.count - 1);
+	NSString *messageIdentifier = [message.identifier stringValue];
 	if (retweeterMessage) 
 		messageIdentifier = [retweeterMessage.identifier stringValue];
 	if (gap && !endRow) {
