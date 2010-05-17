@@ -19,11 +19,28 @@
 @implementation LKWebView
 
 - (NSString*) javascriptSafeString:(NSString*)string {
-	NSMutableString *result = [NSMutableString stringWithString: string];
-	[result replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\r" withString:@"" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\n" withString:@"" options:0 range:NSMakeRange(0, result.length)];
+	NSScanner *scanner = [NSScanner scannerWithString:string];
+	NSMutableString *result = [[[NSMutableString alloc] init] autorelease];
+	NSString *value;
+	NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@"\0\t\r\n\"\\"];
+	NSCharacterSet *skipSet = [NSCharacterSet characterSetWithCharactersInString:@"\0\t\r\n"];
+	
+	[scanner setCharactersToBeSkipped:nil];
+	
+	while ([scanner isAtEnd] == NO) {
+		if ([scanner scanUpToCharactersFromSet:set intoString:&value]) {
+			[result appendString: value];
+		}
+		if ([scanner scanString:@"\\" intoString:nil]) {
+			[result appendString:@"\\\\"];
+		} else if ([scanner scanString:@"\"" intoString:nil]) {
+			[result appendString:@"\\\""];
+		} else {
+			[scanner scanCharactersFromSet:skipSet intoString:nil];
+			[result appendString:@" "];
+		}
+	}
+	
 	return result;
 }
 
