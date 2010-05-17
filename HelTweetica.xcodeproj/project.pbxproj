@@ -157,6 +157,8 @@
 		E0904327117A42B100CE8CB9 /* AllStarsMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0904323117A42B100CE8CB9 /* AllStarsMessageViewController.xib */; };
 		E0904392117A4D2C00CE8CB9 /* scanner_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = E0904391117A4D2C00CE8CB9 /* scanner_frame.png */; };
 		E0904393117A4D2C00CE8CB9 /* scanner_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = E0904391117A4D2C00CE8CB9 /* scanner_frame.png */; };
+		E0904FE911A0DF0100520190 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0904FE811A0DF0100520190 /* Entitlements.plist */; };
+		E0904FEA11A0DF0100520190 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0904FE811A0DF0100520190 /* Entitlements.plist */; };
 		E0A41038116C204C0052BAE7 /* action-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41034116C204C0052BAE7 /* action-1.png */; };
 		E0A41039116C204C0052BAE7 /* action-2.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41035116C204C0052BAE7 /* action-2.png */; };
 		E0A4103A116C204C0052BAE7 /* action-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41036116C204C0052BAE7 /* action-3.png */; };
@@ -319,6 +321,7 @@
 		E0904322117A42B100CE8CB9 /* AllStarsMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllStarsMessageViewController.m; sourceTree = "<group>"; };
 		E0904323117A42B100CE8CB9 /* AllStarsMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllStarsMessageViewController.xib; sourceTree = "<group>"; };
 		E0904391117A4D2C00CE8CB9 /* scanner_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scanner_frame.png; path = Resources/scanner_frame.png; sourceTree = "<group>"; };
+		E0904FE811A0DF0100520190 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		E0A41034116C204C0052BAE7 /* action-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-1.png"; path = "Resources/action-1.png"; sourceTree = "<group>"; };
 		E0A41035116C204C0052BAE7 /* action-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-2.png"; path = "Resources/action-2.png"; sourceTree = "<group>"; };
 		E0A41036116C204C0052BAE7 /* action-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-3.png"; path = "Resources/action-3.png"; sourceTree = "<group>"; };
@@ -478,6 +481,7 @@
 				E06A3679116EEA920098CF12 /* Default-Portrait.png */,
 				E0DF13D611647B0B004FE7B9 /* Icon.png */,
 				E0448843116EF16B008603EB /* Icon-72.png */,
+				E0904FE811A0DF0100520190 /* Entitlements.plist */,
 				8D1107310486CEB800E47090 /* HelTweetica-Info.plist */,
 				E03570B71174E6BE004B9A0F /* AppStore-Info.plist */,
 			);
@@ -849,6 +853,7 @@
 				E0A6A35F1192969F0034D8E7 /* tweet-row-highlighted-template.html in Resources */,
 				E006304F119DF570009F477B /* load-gap-template.html in Resources */,
 				E0377D7A11A05B69007B0177 /* tweet-row-mention-template.html in Resources */,
+				E0904FEA11A0DF0100520190 /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,6 +916,7 @@
 				E0A6A35E1192969F0034D8E7 /* tweet-row-highlighted-template.html in Resources */,
 				E006304E119DF570009F477B /* load-gap-template.html in Resources */,
 				E0377D7911A05B69007B0177 /* tweet-row-mention-template.html in Resources */,
+				E0904FE911A0DF0100520190 /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1050,6 +1056,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Felt Tip Inc.";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";

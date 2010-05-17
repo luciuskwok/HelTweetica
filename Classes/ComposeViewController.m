@@ -132,7 +132,7 @@
 
 - (void) updateCharacterCountWithText:(NSString *)text {
 	if (originalRetweetContent && newStyleRetweet) { // New-style RT doesn't require counting chars
-		charactersRemaining.title = @"OK";
+		charactersRemaining.title = @"";
 		sendButton.enabled = YES;
 	} else {
 		// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .

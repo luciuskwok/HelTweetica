@@ -260,27 +260,36 @@
 		return; // No current account or not logged in.
 	}
 	
+	NSMutableArray *messages = currentTimeline.messages;
 	TwitterLoadTimelineAction *action = currentTimeline.loadAction;
 	if (action == nil) return; // No action to reload.
-
-	BOOL isFavorites = [action.twitterMethod isEqualToString:@"favorites"];
-	NSMutableArray *messages = currentTimeline.messages;
 	
-	// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
-	NSNumber *newerThan = nil;
-	if (([messages count] > 2) && (isFavorites == NO)) {
-		TwitterMessage *message = [messages objectAtIndex: 1]; // Use object at index 1, and test for overlap to determine whether there is a gap in the timeline.
-		NSTimeInterval staleness = -[message.receivedDate timeIntervalSinceNow];
-		if (staleness < kMaxMessageStaleness) {
+	// Reset "since_id" and "max_id" parameters in case it was set from previous uses.
+	[action.parameters removeObjectForKey:@"max_id"];
+	[action.parameters removeObjectForKey:@"since_id"];
+	
+	if ([action.twitterMethod isEqualToString:@"favorites"] == NO) { // Only do this for non-Favorites timelines
+		// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
+		NSNumber *newerThan = nil;
+		
+		// Skip past retweets because account user's own RTs don't show up in the home timeline.
+		int messageIndex = 0;
+		TwitterMessage *message;
+		while (messageIndex < messages.count) {
+			message = [messages objectAtIndex:messageIndex];
+			messageIndex++;
+			if (message.retweetedMessage == nil) break;
+		}
+		// On exit, messageIndex points to the message one index after the first non-RT message.
+		
+		if (messageIndex < messages.count) {
+			message = [messages objectAtIndex:messageIndex];
 			newerThan = message.identifier;
 		}
+			
+		if (newerThan)
+			[action.parameters setObject:newerThan forKey:@"since_id"];
 	}
-	
-	if (newerThan)
-		[action.parameters setObject:newerThan forKey:@"since_id"];
-	
-	// Remove "max_id" parameter in case it was set from loading older messages;
-	[action.parameters removeObjectForKey:@"max_id"];
 	
 	// Prepare action and start it. 
 	action.timeline = currentTimeline;
@@ -301,12 +310,16 @@
 	[self rewriteTweetArea];	
 
 	// Also start an action to load RTs that the account's user has posted within the loaded timeline
+	TwitterMessage *lastMessage = nil;
 	if (action.loadedMessages.count > 1) {
-		//TwitterMessage *firstMessage = [action.loadedMessages objectAtIndex:0];
-		TwitterMessage *lastMessage = [action.loadedMessages lastObject];
+		// If any messages were loaded, load RTs that would be mixed in with these tweets.
+		lastMessage = [action.loadedMessages lastObject];
+	} else if (action.timeline.messages.count > 0) {
+		// If no messages were loaded, still load RTs since newest tweet.
+		lastMessage = [action.timeline.messages objectAtIndex:0];
+	}
+	if (lastMessage) {
 		NSNumber *sinceIdentifier = lastMessage.identifier;
-		//NSNumber *maxIdentifier = firstMessage.identifier;
-		
 		[self reloadRetweetsSince:sinceIdentifier toMax:nil];
 	}
 }
@@ -409,10 +422,13 @@
 }
 
 - (void)didUpdateStatusSuccessfully {
+	networkIsReachable = YES;
+	
 	// Remove message text from compose screen.
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject:@"" forKey:@"messageContent"];
 	[defaults removeObjectForKey:@"inReplyTo"];
+	[defaults removeObjectForKey:@"originalRetweetContent"];
 	
 	// Reload timeline
 	[self startLoadingCurrentTimeline];
@@ -432,6 +448,8 @@
 }
 
 - (void) fave: (NSNumber*) messageIdentifier {
+	networkIsReachable = YES;
+
 	TwitterMessage *message = [twitter statusWithIdentifier: messageIdentifier];
 	if (message == nil) {
 		NSLog (@"Cannot find the message to fave (or unfave). id == %@", messageIdentifier);

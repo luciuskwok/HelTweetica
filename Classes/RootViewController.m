@@ -133,6 +133,11 @@
 	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
 	[twitter addUsers:action.users];
 	
+	// Remove the gap indicator for account user's own RTs.
+	if (action.loadedMessages.count > 0) {
+		[action.timeline.gaps removeObjectsInArray: action.loadedMessages];
+	}
+	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];	
 }
