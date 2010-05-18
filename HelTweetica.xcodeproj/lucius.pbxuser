@@ -43,10 +43,10 @@
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeArchitecturePreference = armv7;
-		activeBuildConfigurationName = Debug;
-		activeExecutable = E00C26131162D5F100F62B70 /* Dev */;
+		activeBuildConfigurationName = Release;
+		activeExecutable = E03570B61174E6BE004B9A0F /* AppStore */;
 		activeSDKPreference = iphoneos3.2;
-		activeTarget = 1D6058900D05DD3D006BFB54 /* Dev */;
+		activeTarget = E03570721174E6BE004B9A0F /* AppStore */;
 		addToTargets = (
 			E03570721174E6BE004B9A0F /* AppStore */,
 			1D6058900D05DD3D006BFB54 /* Dev */,
@@ -228,6 +228,12 @@
 			E08EE30811A27B00008BB12A /* PBXTextBookmark */ = E08EE30811A27B00008BB12A /* PBXTextBookmark */;
 			E08EE30911A27B00008BB12A /* PBXTextBookmark */ = E08EE30911A27B00008BB12A /* PBXTextBookmark */;
 			E08EE31311A27DC7008BB12A /* PBXTextBookmark */ = E08EE31311A27DC7008BB12A /* PBXTextBookmark */;
+			E08EE31611A2802C008BB12A /* PBXTextBookmark */ = E08EE31611A2802C008BB12A /* PBXTextBookmark */;
+			E08EE31711A2802D008BB12A /* PBXTextBookmark */ = E08EE31711A2802D008BB12A /* PBXTextBookmark */;
+			E08EE31C11A28212008BB12A /* PBXTextBookmark */ = E08EE31C11A28212008BB12A /* PBXTextBookmark */;
+			E08EE31D11A28212008BB12A /* PlistBookmark */ = E08EE31D11A28212008BB12A /* PlistBookmark */;
+			E08EE31E11A28212008BB12A /* PlistBookmark */ = E08EE31E11A28212008BB12A /* PlistBookmark */;
+			E08EE31F11A28212008BB12A /* PlistBookmark */ = E08EE31F11A28212008BB12A /* PlistBookmark */;
 			E09041B11179FD7200CE8CB9 = E09041B11179FD7200CE8CB9 /* PBXBookmark */;
 			E090501311A0E52000520190 = E090501311A0E52000520190 /* PlistBookmark */;
 			E09ED34F118AB8690024A4F1 = E09ED34F118AB8690024A4F1 /* PBXTextBookmark */;
@@ -1462,6 +1468,71 @@
 		vrLen = 1597;
 		vrLoc = 6834;
 	};
+	E08EE31611A2802C008BB12A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A41057116C40E40052BAE7 /* WebBrowserViewController.m */;
+		name = "WebBrowserViewController.m: 243";
+		rLen = 0;
+		rLoc = 9553;
+		rType = 0;
+		vrLen = 1100;
+		vrLoc = 6605;
+	};
+	E08EE31711A2802D008BB12A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A41057116C40E40052BAE7 /* WebBrowserViewController.m */;
+		name = "WebBrowserViewController.m: 243";
+		rLen = 0;
+		rLoc = 9553;
+		rType = 0;
+		vrLen = 1732;
+		vrLoc = 6209;
+	};
+	E08EE31C11A28212008BB12A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0A41057116C40E40052BAE7 /* WebBrowserViewController.m */;
+		name = "WebBrowserViewController.m: 243";
+		rLen = 0;
+		rLoc = 9553;
+		rType = 0;
+		vrLen = 1732;
+		vrLoc = 6209;
+	};
+	E08EE31D11A28212008BB12A /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E03570B71174E6BE004B9A0F /* AppStore-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/AppStore-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E08EE31E11A28212008BB12A /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* HelTweetica-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Info.plist";
+		rLen = 0;
+		rLoc = 0;
+	};
+	E08EE31F11A28212008BB12A /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* HelTweetica-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
 	E09041B11179FD7200CE8CB9 /* PBXBookmark */ = {
 		isa = PBXBookmark;
 		fRef = E0448843116EF16B008603EB /* Icon-72.png */;
@@ -1540,9 +1611,9 @@
 	};
 	E0A41057116C40E40052BAE7 /* WebBrowserViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {690, 4896}}";
-			sepNavSelRange = "{9513, 0}";
-			sepNavVisRange = "{6834, 1597}";
+			sepNavIntBoundsRect = "{{0, 0}, {690, 4992}}";
+			sepNavSelRange = "{9553, 0}";
+			sepNavVisRange = "{6209, 1732}";
 		};
 	};
 	E0A6A270119278200034D8E7 /* PBXTextBookmark */ = {
