@@ -296,6 +296,9 @@
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];
+	
+	// Save accounts and timeline caches.
+	[twitter save];
 }
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
