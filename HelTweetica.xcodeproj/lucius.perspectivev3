@@ -268,8 +268,7 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
-								<string>E0175BAB117BFAA1003F5970</string>
-								<string>E0175BA9117BFA4D003F5970</string>
+								<string>E0175BAA117BFA7F003F5970</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C77FABC04509CD000000102</string>
@@ -277,8 +276,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>4</integer>
-									<integer>2</integer>
+									<integer>8</integer>
+									<integer>6</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
@@ -319,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E00C26401162D98D00F62B70</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TimelineViewController.m</string>
+								<string>WebBrowserViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -327,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E00C26411162D98D00F62B70</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>TimelineViewController.m</string>
+										<string>WebBrowserViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E08EE2FC11A278AB008BB12A</string>
+										<string>E08EE30911A27B00008BB12A</string>
 										<key>history</key>
 										<array>
 											<string>E00C27F51163195700F62B70</string>
@@ -431,8 +430,6 @@
 											<string>E0D3E69A1194CE1C0098BFB6</string>
 											<string>E0D3E6B51194D67D0098BFB6</string>
 											<string>E0D3E6D01194DDC90098BFB6</string>
-											<string>E0D3E6D41194DDC90098BFB6</string>
-											<string>E0D3E6D51194DDC90098BFB6</string>
 											<string>E0D3E6D81194DDC90098BFB6</string>
 											<string>E0D3E6F11194E0220098BFB6</string>
 											<string>E001F42C1197A0940015449C</string>
@@ -475,7 +472,9 @@
 											<string>E08EE2F811A278AB008BB12A</string>
 											<string>E08EE2F911A278AB008BB12A</string>
 											<string>E08EE2FA11A278AB008BB12A</string>
-											<string>E08EE2FB11A278AB008BB12A</string>
+											<string>E08EE30611A27B00008BB12A</string>
+											<string>E08EE30711A27B00008BB12A</string>
+											<string>E08EE30811A27B00008BB12A</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -751,14 +750,14 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E002E34C11A0ED5000FA5A76</string>
+				<string>E08EE30A11A27B00008BB12A</string>
 				<string>1CCC7628064C1048000F2A68</string>
 				<string>1CCC7629064C1048000F2A68</string>
-				<string>E002E34D11A0ED5000FA5A76</string>
-				<string>E002E34E11A0ED5000FA5A76</string>
-				<string>E002E34F11A0ED5000FA5A76</string>
-				<string>E002E35011A0ED5000FA5A76</string>
-				<string>E002E35111A0ED5000FA5A76</string>
+				<string>E08EE30B11A27B00008BB12A</string>
+				<string>E08EE30C11A27B00008BB12A</string>
+				<string>E08EE30D11A27B00008BB12A</string>
+				<string>E08EE30E11A27B00008BB12A</string>
+				<string>E08EE30F11A27B00008BB12A</string>
 			</array>
 			<key>ToolbarConfigUserDefaultsMinorVersion</key>
 			<string>2</string>
@@ -792,6 +791,9 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>E08EE31011A27B00008BB12A</string>
+		<string>E08EE31111A27B00008BB12A</string>
+		<string>E08EE31211A27B00008BB12A</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica.xcodeproj</string>
 	</array>
 	<key>WindowString</key>

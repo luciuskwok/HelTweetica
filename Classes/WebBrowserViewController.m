@@ -184,6 +184,8 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSURL *currentURL = [webView.request URL];
+	if (currentURL.absoluteString.length == 0) 
+		currentURL = [request URL];
 	
 	if (actionSheet.tag == kInstapaperActionSheetTag) {
 		if (buttonIndex == 0) { // Save
@@ -236,6 +238,8 @@
 	NSString *instapaperUsername = [defaults objectForKey:@"instapaperUsername"];
 	NSString *instapaperPassword = [defaults objectForKey:@"instapaperPassword"];
 	NSURL *currentURL = [webView.request URL];
+	if (currentURL.absoluteString.length == 0) 
+		currentURL = [request URL];
 
 	[[Instapaper sharedInstapaper] addURL:currentURL withUsername:instapaperUsername password:instapaperPassword];
 }
