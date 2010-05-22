@@ -1,14 +1,19 @@
 //
 // Prefix header for all source files of the 'HelTweetica' target in the 'HelTweetica' project
 //
+
 #import <Availability.h>
+#import <TargetConditionals.h>
 
-#ifndef __IPHONE_3_0
-#warning "This project uses features only available in iPhone SDK 3.0 and later."
-#endif
+#ifdef TARGET_PROJECT_MAC
 
+	#import <Cocoa/Cocoa.h>
 
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-    #import <UIKit/UIKit.h>
+#else
+
+	#ifdef __OBJC__
+		#import <Foundation/Foundation.h>
+		#import <UIKit/UIKit.h>
+	#endif
+
 #endif

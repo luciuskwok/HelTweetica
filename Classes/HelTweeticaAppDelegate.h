@@ -23,7 +23,6 @@
     UIWindow *window;
     UINavigationController *navigationController;
 	Twitter *twitter;
-	
 	int networkActionCount;
 }
 

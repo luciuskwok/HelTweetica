@@ -297,36 +297,51 @@
 #pragma mark -
 
 - (NSString*) unescapeJSONString:(NSString*)jsonString {
-	NSMutableString *result = [NSMutableString stringWithString:jsonString];
+	NSScanner *scanner = [NSScanner scannerWithString:jsonString];
+	NSMutableString *result = [[[NSMutableString alloc] init] autorelease];
+	NSString *value;
+	NSCharacterSet *matchSet = [NSCharacterSet characterSetWithCharactersInString:@"\\"]; // Match a single backslash char
 	
-	// Unicode \u0000 to \uFFFF.
-	NSRange found;
-	NSRange unprocessed = NSMakeRange(0, [result length]);
-	NSString *regex = @"\\\\u[0-9A-Fa-f]{4,4}";
+	[scanner setCharactersToBeSkipped:nil];
 	
-	found = [result rangeOfString:regex options:NSRegularExpressionSearch range:unprocessed];
-	while (found.location != NSNotFound) {
-		NSString *hex = [result substringWithRange: NSMakeRange(found.location + 2, found.length - 2)];
-		NSScanner *scanner = [NSScanner scannerWithString:hex];
-		unsigned x = 0x20;
-		if ([scanner scanHexInt:&x]) {
-			unichar c = x;
-			[result replaceCharactersInRange:found withString: [NSString stringWithCharacters: &c length:1]];
+	while ([scanner isAtEnd] == NO) {
+		if ([scanner scanUpToCharactersFromSet:matchSet intoString:&value]) {
+			[result appendString: value];
 		}
-		unprocessed.location = found.location + 1;
-		unprocessed.length = [result length] - unprocessed.location;
-		found = [result rangeOfString:regex options:NSRegularExpressionSearch range:unprocessed];
+		if ([scanner scanString:@"\\u" intoString:nil]) { 
+			// Unicode char
+			if (scanner.scanLocation + 4 <= jsonString.length) {
+				NSString *hexString = [jsonString substringWithRange: NSMakeRange(scanner.scanLocation, 4)];
+				NSScanner *hexScanner = [NSScanner scannerWithString:hexString];
+				unsigned x = 0x20;
+				if ([hexScanner scanHexInt:&x]) {
+					unichar c = x;
+					[result appendString:[NSString stringWithCharacters: &c length:1]];
+				}
+				scanner.scanLocation = scanner.scanLocation + 4;
+			}
+			
+		} else if ([scanner scanString:@"\\\"" intoString:nil]) {
+			[result appendString:@"\""];
+		} else if ([scanner scanString:@"\\b" intoString:nil]) {
+			[result appendString:@"\b"];
+		} else if ([scanner scanString:@"\\f" intoString:nil]) {
+			[result appendString:@"\f"];
+		} else if ([scanner scanString:@"\\n" intoString:nil]) {
+			[result appendString:@"\n"];
+		} else if ([scanner scanString:@"\\r" intoString:nil]) {
+			[result appendString:@"\r"];
+		} else if ([scanner scanString:@"\\t" intoString:nil]) {
+			[result appendString:@"\t"];
+		} else if ([scanner scanString:@"\\/" intoString:nil]) {
+			[result appendString:@"/"];
+		} else if ([scanner scanString:@"\\\\" intoString:nil]) {
+			[result appendString:@"\\"];
+		} else if ([scanner scanCharactersFromSet:matchSet intoString:&value]) {
+			// Didn't match any of the above patterns, so treat as normal text.
+			[result appendString:value];
+		}
 	}
-	
-	// Static replacements
-	[result replaceOccurrencesOfString:@"\\b" withString:@"\b" options:0 range:NSMakeRange(0, [result length])];
-	[result replaceOccurrencesOfString:@"\\f" withString:@"\f" options:0 range:NSMakeRange(0, [result length])];
-	[result replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, [result length])];
-	[result replaceOccurrencesOfString:@"\\r" withString:@"\r" options:0 range:NSMakeRange(0, [result length])];
-	[result replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, [result length])];
-	[result replaceOccurrencesOfString:@"\\\"" withString:@"\"" options:0 range:NSMakeRange(0, [result length])];
-	[result replaceOccurrencesOfString:@"\\/" withString:@"/" options:0 range:NSMakeRange(0, [result length])];
-	[result replaceOccurrencesOfString:@"\\\\" withString:@"\\" options:0 range:NSMakeRange(0, [result length])];
 	
 	return [NSString stringWithString:result];
 }

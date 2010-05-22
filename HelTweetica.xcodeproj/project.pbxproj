@@ -202,6 +202,23 @@
 		E0B54FD1118C0D3A00FFED10 /* TwitterLoadListsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B54FCF118C0D3A00FFED10 /* TwitterLoadListsAction.m */; };
 		E0B55027118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B55026118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m */; };
 		E0B55028118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B55026118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m */; };
+		E0C8C07511A771790081A2C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C07411A771790081A2C7 /* Foundation.framework */; };
+		E0C8C0F011A771F70081A2C7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */; };
+		E0C8C0F411A7720A0081A2C7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C0F311A7720A0081A2C7 /* AppKit.framework */; };
+		E0C8C1AE11A7721A0081A2C7 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */; };
+		E0C8C1B311A773890081A2C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		E0C8C1BE11A774560081A2C7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0C8C1BD11A774560081A2C7 /* MainMenu.xib */; };
+		E0C8C1C211A774DE0081A2C7 /* MacAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C8C1C111A774DE0081A2C7 /* MacAppDelegate.m */; };
+		E0C8C1CD11A776530081A2C7 /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */; };
+		E0C8C1CE11A776540081A2C7 /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C26331162D91C00F62B70 /* Twitter.m */; };
+		E0C8C1CF11A776550081A2C7 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A348C116E8B7D0098CF12 /* TwitterAccount.m */; };
+		E0C8C1D011A776580081A2C7 /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E06DEF44116FD0FD00772680 /* TwitterList.m */; };
+		E0C8C1D111A7765A0081A2C7 /* TwitterMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0DF1272116453EB004FE7B9 /* TwitterMessage.m */; };
+		E0C8C1D211A7765C0081A2C7 /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */; };
+		E0C8C1D311A7765D0081A2C7 /* TwitterSavedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98E7A1191761200C9C997 /* TwitterSavedSearch.m */; };
+		E0C8C1D411A7765F0081A2C7 /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E08406D5118D4B6C00670BAB /* TwitterSearchJSONParser.m */; };
+		E0C8C1D511A776600081A2C7 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */; };
+		E0C8C1D611A776610081A2C7 /* TwitterUser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0840899118DE04E00670BAB /* TwitterUser.m */; };
 		E0CB31A0116691400086CEFE /* Analyze.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CB319E116691400086CEFE /* Analyze.m */; };
 		E0CB31A1116691400086CEFE /* Analyze.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0CB319F116691400086CEFE /* Analyze.xib */; };
 		E0CBCC42116DDBC80000C281 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0CBCC41116DDBC80000C281 /* action-4-on.png */; };
@@ -362,6 +379,15 @@
 		E0B55025118C137D00FFED10 /* TwitterLoadSavedSearchesAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoadSavedSearchesAction.h; sourceTree = "<group>"; };
 		E0B55026118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadSavedSearchesAction.m; sourceTree = "<group>"; };
 		E0B8B5FA11863778005BCA07 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
+		E0C8C06D11A770AA0081A2C7 /* Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0C8C06F11A770AA0081A2C7 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
+		E0C8C07411A771790081A2C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		E0C8C0F311A7720A0081A2C7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		E0C8C1BD11A774560081A2C7 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = Mac/MainMenu.xib; sourceTree = "<group>"; };
+		E0C8C1C011A774DE0081A2C7 /* MacAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacAppDelegate.h; path = Mac/MacAppDelegate.h; sourceTree = "<group>"; };
+		E0C8C1C111A774DE0081A2C7 /* MacAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MacAppDelegate.m; path = Mac/MacAppDelegate.m; sourceTree = "<group>"; };
 		E0CB319D116691400086CEFE /* Analyze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analyze.h; sourceTree = "<group>"; };
 		E0CB319E116691400086CEFE /* Analyze.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analyze.m; sourceTree = "<group>"; };
 		E0CB319F116691400086CEFE /* Analyze.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Analyze.xib; sourceTree = "<group>"; };
@@ -416,6 +442,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E0C8C06B11A770AA0081A2C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0C8C07511A771790081A2C7 /* Foundation.framework in Frameworks */,
+				E0C8C0F011A771F70081A2C7 /* Cocoa.framework in Frameworks */,
+				E0C8C0F411A7720A0081A2C7 /* AppKit.framework in Frameworks */,
+				E0C8C1AE11A7721A0081A2C7 /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -442,6 +479,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* HelTweetica.app */,
 				E03570B51174E6BE004B9A0F /* HelTweetica.app */,
+				E0C8C06D11A770AA0081A2C7 /* Mac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -453,7 +491,8 @@
 				E0E489BB11868ADA00EB658C /* Unit Tests */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				29B97323FDCFA39411CA2CEA /* iPhone Frameworks */,
+				E0C8C07311A771370081A2C7 /* Mac */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			name = CustomTemplate;
@@ -488,7 +527,7 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+		29B97323FDCFA39411CA2CEA /* iPhone Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
@@ -498,7 +537,7 @@
 				E036EF4F117B816B00D52BF6 /* AudioToolbox.framework */,
 				E036EF53117B817600D52BF6 /* AVFoundation.framework */,
 			);
-			name = Frameworks;
+			name = "iPhone Frameworks";
 			sourceTree = "<group>";
 		};
 		E0175BA9117BFA4D003F5970 /* Twitter */ = {
@@ -661,6 +700,21 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
+		E0C8C07311A771370081A2C7 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				E0C8C1C011A774DE0081A2C7 /* MacAppDelegate.h */,
+				E0C8C1C111A774DE0081A2C7 /* MacAppDelegate.m */,
+				E0C8C1BD11A774560081A2C7 /* MainMenu.xib */,
+				E0C8C07411A771790081A2C7 /* Foundation.framework */,
+				E0C8C0F311A7720A0081A2C7 /* AppKit.framework */,
+				E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */,
+				E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */,
+				E0C8C06F11A770AA0081A2C7 /* Mac-Info.plist */,
+			);
+			name = Mac;
+			sourceTree = "<group>";
+		};
 		E0DD53C6118E2D5F0042CF49 /* Toolbar images */ = {
 			isa = PBXGroup;
 			children = (
@@ -767,6 +821,23 @@
 			productReference = E03570B51174E6BE004B9A0F /* HelTweetica.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E0C8C06C11A770AA0081A2C7 /* Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0C8C07211A770AA0081A2C7 /* Build configuration list for PBXNativeTarget "Mac" */;
+			buildPhases = (
+				E0C8C06911A770AA0081A2C7 /* Resources */,
+				E0C8C06A11A770AA0081A2C7 /* Sources */,
+				E0C8C06B11A770AA0081A2C7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mac;
+			productName = Mac;
+			productReference = E0C8C06D11A770AA0081A2C7 /* Mac.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -788,6 +859,7 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Dev */,
 				E03570721174E6BE004B9A0F /* AppStore */,
+				E0C8C06C11A770AA0081A2C7 /* Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -920,6 +992,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E0C8C06911A770AA0081A2C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0C8C1BE11A774560081A2C7 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1026,6 +1106,25 @@
 				E0A98E7B1191761200C9C997 /* TwitterSavedSearch.m in Sources */,
 				E0D3E4E01193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */,
 				E0D3E6AE1194D4280098BFB6 /* TwitterTimeline.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0C8C06A11A770AA0081A2C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0C8C1B311A773890081A2C7 /* main.m in Sources */,
+				E0C8C1C211A774DE0081A2C7 /* MacAppDelegate.m in Sources */,
+				E0C8C1CD11A776530081A2C7 /* LKJSONParser.m in Sources */,
+				E0C8C1CE11A776540081A2C7 /* Twitter.m in Sources */,
+				E0C8C1CF11A776550081A2C7 /* TwitterAccount.m in Sources */,
+				E0C8C1D011A776580081A2C7 /* TwitterList.m in Sources */,
+				E0C8C1D111A7765A0081A2C7 /* TwitterMessage.m in Sources */,
+				E0C8C1D211A7765C0081A2C7 /* TwitterMessageJSONParser.m in Sources */,
+				E0C8C1D311A7765D0081A2C7 /* TwitterSavedSearch.m in Sources */,
+				E0C8C1D411A7765F0081A2C7 /* TwitterSearchJSONParser.m in Sources */,
+				E0C8C1D511A776600081A2C7 /* TwitterTimeline.m in Sources */,
+				E0C8C1D611A776610081A2C7 /* TwitterUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1150,6 +1249,62 @@
 			};
 			name = Release;
 		};
+		E0C8C07011A770AA0081A2C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREPROCESSOR_DEFINITIONS = "TARGET_PROJECT_MAC=1";
+				INFOPLIST_FILE = "Mac-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Mac;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		E0C8C07111A770AA0081A2C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREPROCESSOR_DEFINITIONS = "TARGET_PROJECT_MAC=1";
+				INFOPLIST_FILE = "Mac-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Mac;
+				SDKROOT = macosx10.6;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1176,6 +1331,15 @@
 			buildConfigurations = (
 				E03570B31174E6BE004B9A0F /* Debug */,
 				E03570B41174E6BE004B9A0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E0C8C07211A770AA0081A2C7 /* Build configuration list for PBXNativeTarget "Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0C8C07011A770AA0081A2C7 /* Debug */,
+				E0C8C07111A770AA0081A2C7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

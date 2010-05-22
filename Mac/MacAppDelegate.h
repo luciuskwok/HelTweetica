@@ -1,8 +1,8 @@
 //
-//  main.m
+//  MacAppDelegate.h
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 3/30/10.
+//  Created by Lucius Kwok on 5/21/10.
 
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
@@ -14,20 +14,23 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <Cocoa/Cocoa.h>
+#import <WebKit/WebKit.h>
+#import "Twitter.h"
 
-#ifdef TARGET_PROJECT_MAC
-	#import <Cocoa/Cocoa.h>
-#else
-	#import <UIKit/UIKit.h>
-#endif
 
-int main(int argc, char *argv[]) {
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-#ifdef TARGET_PROJECT_MAC
-    int retVal = NSApplicationMain(argc, (const char **) argv);	
-#else
-    int retVal = UIApplicationMain(argc, argv, nil, nil);
-#endif
-    [pool release];
-    return retVal;
+@interface MacAppDelegate : NSObject <NSApplicationDelegate> {
+    NSWindow *window;
+	WebView *webView;
+	Twitter *twitter;
+	int networkActionCount;
 }
+
+@property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet WebView *webView;
+@property (nonatomic, retain) Twitter *twitter;
+
+- (void) incrementNetworkActionCount;
+- (void) decrementNetworkActionCount;
+
+@end

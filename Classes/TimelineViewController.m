@@ -296,9 +296,6 @@
 	action.completionTarget= self;
 	action.completionAction = @selector(didReloadCurrentTimeline:);
 	[self startTwitterAction:action];
-	
-	// Save accounts and timeline caches.
-	[twitter save];
 }
 
 - (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
@@ -325,6 +322,9 @@
 		NSNumber *sinceIdentifier = lastMessage.identifier;
 		[self reloadRetweetsSince:sinceIdentifier toMax:nil];
 	}
+	
+	// Save accounts and timeline caches.
+	[twitter save];
 }
 
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
@@ -379,9 +379,14 @@
 	
 	// TODO: load account user's own RTs within the range from max_id in the action to since_id of last tweet in action.messages.
 	
+	// Limit the length of the timeline
+	[action.timeline limitTimelineLength:kMaxNumberOfMessagesInATimeline];
+	
 	// Finished loading, so update tweet area and remove loading spinner.
 	[self rewriteTweetArea];
 		
+	// Save accounts and timeline caches.
+	[twitter save];
 }
 
 

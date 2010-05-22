@@ -18,15 +18,19 @@
 #import "TwitterMessage.h"
 
 
-#define kAvatarSize 256.0f
 
 
 @implementation TwitterMessage
 @synthesize identifier, inReplyToStatusIdentifier, inReplyToUserIdentifier;
 @synthesize screenName, inReplyToScreenName, avatar, content, source, retweetedMessage;
-@synthesize createdDate, receivedDate, largeAvatar;
+@synthesize createdDate, receivedDate;
 @synthesize locked, favorite, direct;
+
+#ifndef TARGET_PROJECT_MAC
+#define kAvatarSize 256.0f
+@synthesize largeAvatar;
 @synthesize downloadConnection, downloadData;
+#endif
 
 
 - (void) dealloc {
@@ -41,10 +45,12 @@
 	[retweetedMessage release];
 	[createdDate release];
 	[receivedDate release];
+
+#ifndef TARGET_PROJECT_MAC
 	[largeAvatar release];
-	
 	[downloadConnection release];
 	[downloadData release];
+#endif
 	
 	[super dealloc];
 }
@@ -171,7 +177,7 @@
 	// Other values are usually taken from elsewhere, for example: the user dictionary embedded in the status update in timelines.
 }
 
-
+#ifndef TARGET_PROJECT_MAC
 #pragma mark All Stars
 // All Stars hack. (This is the wrong way to download images from URLs.)
 
@@ -278,5 +284,6 @@
 	self.downloadData = nil;
 	[pool release];
 }	
+#endif
 
 @end
