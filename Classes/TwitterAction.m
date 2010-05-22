@@ -34,7 +34,11 @@
 - (id) init {
 	self = [super init];
 	if (self) {
+#ifdef TARGET_PROJECT_MAC
+		appDelegate = [NSApp delegate];
+#else
 		appDelegate = [[UIApplication sharedApplication] delegate];
+#endif
 		parameters = [[NSMutableDictionary alloc] init];
 	}
 	return self;

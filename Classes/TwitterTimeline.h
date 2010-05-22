@@ -15,20 +15,46 @@
  */
 
 #import <Foundation/Foundation.h>
+//#import "Twitter.h"
 
-@class TwitterLoadTimelineAction;
+@class TwitterLoadTimelineAction, TwitterAction;
+@protocol TwitterTimelineDelegate;
 
 
 @interface TwitterTimeline : NSObject {
 	NSMutableArray *messages;
 	NSMutableArray *gaps;
+	BOOL noOlderMessages;
+
 	TwitterLoadTimelineAction *loadAction;
+	int defaultLoadCount;
+
+	//Twitter *twitter;
+	id <TwitterTimelineDelegate> delegate;
 }
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, retain) NSMutableArray *gaps;
+@property (assign) BOOL noOlderMessages;
+
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
+@property (assign) int defaultLoadCount;
+
+//@property (nonatomic, retain) Twitter *twitter;
+@property (assign) id delegate;
 
 - (void)removeMessageWithIdentifier:(NSNumber*)anIdentifier;
 - (void)limitTimelineLength:(int)count;
 
+- (void)reloadNewer;
+- (void)didReloadNewer:(TwitterLoadTimelineAction *)action;
+- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier;
+- (void)didReloadRetweets:(TwitterLoadTimelineAction *)action;
+- (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier;
+- (void) didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action;
+
+@end
+
+@protocol TwitterTimelineDelegate <NSObject>
+- (void)startTwitterAction:(TwitterAction *)action; // Callback to start a twitter action.
+- (void)timeline:(TwitterTimeline *)timeline didLoadWithAction:(TwitterLoadTimelineAction *)action; // Callback when twitter action finishes loading.
 @end

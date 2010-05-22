@@ -97,15 +97,17 @@
 	return html;
 }
 
-#pragma mark TwitterAction
+#pragma mark TwitterTimelineDelegate
 
-- (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
-	// Synchronize timeline with Twitter cache. Ignore favorites flag in Search results because they're always false.
+- (void) timeline:(TwitterTimeline *)timeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
+	// Synchronize timeline with Twitter cache.
 	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:NO];
 	[twitter addUsers:action.users];
+	[twitter save];
 	
-	// Finished loading, so update tweet area and remove loading spinner.
-	[self rewriteTweetArea];	
+	if (timeline == currentTimeline) {
+		[self rewriteTweetArea];	
+	}
 }
 
 #pragma mark IBAction

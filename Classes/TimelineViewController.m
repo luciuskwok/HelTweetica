@@ -95,11 +95,13 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+	webView.delegate = nil;
 	self.webView = nil;
 	self.composeButton = nil;
 }
 
 - (void)dealloc {
+	webView.delegate = nil;
 	[webView release];
 	[composeButton release];
 	
@@ -256,139 +258,38 @@
 
 - (void)reloadCurrentTimeline {
 	if (currentAccount == nil || currentAccount.xAuthToken == nil) {
-		[self setLoadingSpinnerVisibility:NO];
-		return; // No current account or not logged in.
+		[self setLoadingSpinnerVisibility:NO]; // No current account or not logged in.
+	} else {
+		currentTimeline.delegate = self;
+		[currentTimeline reloadNewer];
 	}
-	
-	NSMutableArray *messages = currentTimeline.messages;
-	TwitterLoadTimelineAction *action = currentTimeline.loadAction;
-	if (action == nil) return; // No action to reload.
-	
-	// Reset "since_id" and "max_id" parameters in case it was set from previous uses.
-	[action.parameters removeObjectForKey:@"max_id"];
-	[action.parameters removeObjectForKey:@"since_id"];
-	
-	if ([action.twitterMethod isEqualToString:@"favorites"] == NO) { // Only do this for non-Favorites timelines
-		// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
-		NSNumber *newerThan = nil;
-		
-		// Skip past retweets because account user's own RTs don't show up in the home timeline.
-		int messageIndex = 0;
-		TwitterMessage *message;
-		while (messageIndex < messages.count) {
-			message = [messages objectAtIndex:messageIndex];
-			messageIndex++;
-			if (message.retweetedMessage == nil) break;
-		}
-		// On exit, messageIndex points to the message one index after the first non-RT message.
-		
-		if (messageIndex < messages.count) {
-			message = [messages objectAtIndex:messageIndex];
-			newerThan = message.identifier;
-		}
-			
-		if (newerThan)
-			[action.parameters setObject:newerThan forKey:@"since_id"];
-	}
-	
-	// Prepare action and start it. 
-	action.timeline = currentTimeline;
-	action.completionTarget= self;
-	action.completionAction = @selector(didReloadCurrentTimeline:);
-	[self startTwitterAction:action];
 }
 
-- (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action {
+- (void) timeline:(TwitterTimeline *)timeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
 	// Synchronize timeline with Twitter cache.
 	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
 	[twitter addUsers:action.users];
-	
-	// Limit the length of the timeline
-	[action.timeline limitTimelineLength:kMaxNumberOfMessagesInATimeline];
-	
-	// Finished loading, so update tweet area and remove loading spinner.
-	[self rewriteTweetArea];	
-
-	// Also start an action to load RTs that the account's user has posted within the loaded timeline
-	TwitterMessage *lastMessage = nil;
-	if (action.loadedMessages.count > 1) {
-		// If any messages were loaded, load RTs that would be mixed in with these tweets.
-		lastMessage = [action.loadedMessages lastObject];
-	} else if (action.timeline.messages.count > 0) {
-		// If no messages were loaded, still load RTs since newest tweet.
-		lastMessage = [action.timeline.messages objectAtIndex:0];
-	}
-	if (lastMessage) {
-		NSNumber *sinceIdentifier = lastMessage.identifier;
-		[self reloadRetweetsSince:sinceIdentifier toMax:nil];
-	}
-	
-	// Save accounts and timeline caches.
 	[twitter save];
-}
 
-- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
-	// Subclasses should implement this method to load the correct RT timeline.
-	// This method loads RTs that are newer than the since_id and up to and incuding the max_id.
+	if (timeline == currentTimeline) {
+		[self rewriteTweetArea];	
+	}
 }
 
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier {
-	if (currentAccount == nil || currentAccount.xAuthToken == nil) {
-		return; // No current account or not logged in.
-	}
-	
-	TwitterLoadTimelineAction *action = currentTimeline.loadAction;
-	if (action == nil) return; // No action to reload.
-	
-	if (maxIdentifier) { // Load gap
-		// Replace "Load gap" link with a Loading message
-		NSString *element = [NSString stringWithFormat:@"gap-%@", [maxIdentifier stringValue]];
-		[self.webView setDocumentElement:element innerHTML:loadingHTML];
-	} else {
-		[self.webView setDocumentElement:@"footer" innerHTML:loadingHTML];
-
-		if ([currentTimeline.messages count] > 2) {
-			TwitterMessage *message = [currentTimeline.messages lastObject];
-			maxIdentifier = message.identifier;
+	if (currentAccount && currentAccount.xAuthToken) {
+		// Replace link to load the gap or load older with a Loading spinner
+		if (maxIdentifier) { 
+			// Load gap
+			NSString *element = [NSString stringWithFormat:@"gap-%@", [maxIdentifier stringValue]];
+			[self.webView setDocumentElement:element innerHTML:loadingHTML];
+		} else {
+			[self.webView setDocumentElement:@"footer" innerHTML:loadingHTML];
 		}
+		currentTimeline.delegate = self;
+		[currentTimeline loadOlderWithMaxIdentifier:maxIdentifier];
 	}
-	
-	if (maxIdentifier)
-		[action.parameters setObject:maxIdentifier forKey:@"max_id"];
-	
-	// Remove "since_id" parameter in case it was set from loading newer messages;
-	[action.parameters removeObjectForKey:@"since_id"];
-	
-	// Prepare action and start it. 
-	action.timeline = currentTimeline;
-	action.completionTarget= self;
-	action.completionAction = @selector(didLoadOlderInCurrentTimeline:);
-	[self startTwitterAction:action];
 }
-
-- (void) didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action {
-	if (action.newMessageCount > 0) {
-		// Synchronize timeline with Twitter cache.
-		[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
-		[twitter addUsers:action.users];
-	}
-	
-	if (action.newMessageCount <= 2) { // The one message is the one in the max_id.
-		noOlderMessages = YES;
-	}
-	
-	// TODO: load account user's own RTs within the range from max_id in the action to since_id of last tweet in action.messages.
-	
-	// Limit the length of the timeline
-	[action.timeline limitTimelineLength:kMaxNumberOfMessagesInATimeline];
-	
-	// Finished loading, so update tweet area and remove loading spinner.
-	[self rewriteTweetArea];
-		
-	// Save accounts and timeline caches.
-	[twitter save];
-}
-
 
 - (void) startLoadingCurrentTimeline {
 	suppressNetworkErrorAlerts = NO;
@@ -403,8 +304,7 @@
 	[refreshTimer invalidate];
 	refreshTimer = nil;
 	
-	// If there are actions already pending, reschedule refresh 
-	if ([actions count] == 0 && webViewHasValidHTML) {
+	if ([actions count] == 0 && webViewHasFinishedLoading) {
 		CGPoint scrollPosition = [self.webView scrollPosition];
 		if (scrollPosition.y == 0.0f && networkIsReachable && !currentPopover&& !currentAlert && !currentActionSheet) {
 			// Only reload from the network if the scroll position is at the top, the web view has been loaded, the network is reachable, and no popovers are showing.
@@ -415,6 +315,7 @@
 			[self rewriteTweetArea];
 		}
 	} else {
+		// If there are actions already pending, reschedule refresh 
 		refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
 	}
 }
@@ -851,7 +752,7 @@
 		result = loadingHTML;
 	} else if ([currentTimeline.messages count] == 0) {
 		result = @"<div class='status'>No messages.</div>";
-	} else if (noOlderMessages) {
+	} else if (currentTimeline.noOlderMessages) {
 		result = @"";
 	} else if ([currentTimeline.messages count] < maxTweetsShown) {
 		// Action to Load older messages 
@@ -955,7 +856,7 @@
 	unsigned int index = 0;
 	unsigned int wordLength = 0;
 	BOOL isInsideTag = NO;
-	unichar c;
+	unichar c, previousChar = 0;
 	while (index < s.length) {
 		c = [s characterAtIndex:index];
 		if (c == '<') {
@@ -992,7 +893,7 @@
 			}
 			
 			// #hashtag: action link to Search
-			if (c == '#') {
+			if (c == '#' && previousChar != '&') {
 				foundRange = [s rangeOfString: @"#[A-Za-z0-9_]*" options: NSRegularExpressionSearch range: NSMakeRange (index, s.length - index)];
 				if (foundRange.location != NSNotFound && foundRange.length >= 2) {
 					foundText = [s substringWithRange:foundRange];
@@ -1005,6 +906,7 @@
 			
 		}
 		
+		previousChar = c;
 		index++;
 	}
 	
@@ -1077,12 +979,13 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
 	[appDelegate incrementNetworkActionCount];
+	webViewHasValidHTML = YES;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
 	[appDelegate decrementNetworkActionCount];
-	if (!webViewHasValidHTML) {
-		webViewHasValidHTML = YES;
+	if (!webViewHasFinishedLoading) {
+		webViewHasFinishedLoading = YES;
 
 		// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
 		suppressNetworkErrorAlerts = YES;

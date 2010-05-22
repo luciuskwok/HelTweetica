@@ -15,11 +15,6 @@
  */
 
 
-// Constants
-#define kMaxNumberOfMessagesInATimeline 2000
-// When reloading a timeline, newly downloaded messages are merged with existing ones, sorted by identifier, and the oldest ones past this limit are trimmed off.
-#define kMaxMessageStaleness (2 * 60 * 60) 
-// When reloading a timeline, when the newest message in the app is older than this, the app reloads the entire timeline instead of requesting only status updates newer than the newest in the app. This is set to 2 hours. The value is in seconds.
 
 
 #import <UIKit/UIKit.h>
@@ -49,8 +44,8 @@
 	NSTimer *refreshTimer;
 	BOOL networkIsReachable;
 	BOOL webViewHasValidHTML;
+	BOOL webViewHasFinishedLoading;
 	BOOL suppressNetworkErrorAlerts;
-	BOOL noOlderMessages;
 
 	TwitterAccount *currentAccount;
 	TwitterTimeline *currentTimeline;
@@ -95,8 +90,7 @@
 - (void)twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error;
 
 - (void)reloadCurrentTimeline;
-- (void)didReloadCurrentTimeline:(TwitterLoadTimelineAction *)action;
-- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier;
+- (void)timeline:(TwitterTimeline *)timeline didLoadWithAction:(TwitterLoadTimelineAction *)action;
 - (void)startLoadingCurrentTimeline;
 - (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
 - (void)fave: (NSNumber*) messageIdentifier;
