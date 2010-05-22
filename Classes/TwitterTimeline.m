@@ -129,7 +129,7 @@
 	// Prepare action and start it. 
 	action.timeline = self;
 	action.completionTarget= self;
-	action.completionAction = @selector(didReloadCurrentTimeline:);
+	action.completionAction = @selector(didReloadNewer:);
 	[delegate startTwitterAction:action];
 }
 

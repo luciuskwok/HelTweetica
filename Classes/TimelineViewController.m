@@ -340,7 +340,7 @@
 	[defaults removeObjectForKey:@"originalRetweetContent"];
 	
 	// Reload timeline
-	[self startLoadingCurrentTimeline];
+	[self reloadCurrentTimeline];
 }
 
 - (void)didUpdateStatus:(TwitterUpdateStatusAction *)action {
