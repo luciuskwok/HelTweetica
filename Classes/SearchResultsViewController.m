@@ -131,7 +131,7 @@
 		saveButton.title = NSLocalizedString (@"Saved", @"button");
 		saveButton.enabled = NO;
 		// Clear cache of saved searches. Or add the search that was just saved.
-		[currentAccount.savedSearches removeAllObjects];
+		[timelineHTMLController.account.savedSearches removeAllObjects];
 	} else {
 		// Failure: allow user to re-save search.
 		saveButton.title = NSLocalizedString (@"Save Search", @"button");

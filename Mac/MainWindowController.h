@@ -1,8 +1,8 @@
 //
-//  MacAppDelegate.h
+//  MainWindowController.h
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/21/10.
+//  Created by Lucius Kwok on 5/22/10.
 
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
@@ -14,23 +14,38 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
-#import "Twitter.h"
+#import "AddAccount.h"
+#import "LKWebView.h"
 
 
-@interface MacAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
-	WebView *webView;
+@class Twitter, TwitterAccount;
+
+
+@interface MainWindowController : NSWindowController <AddAccountDelegate, NSToolbarDelegate> {
+	IBOutlet LKWebView *webView;
+	IBOutlet NSPopUpButton *accountsPopUp;
+
 	Twitter *twitter;
-	int networkActionCount;
+	TwitterAccount *currentAccount;
+	BOOL webViewHasValidHTML;
+	NSWindowController *currentSheet;
 }
 
-@property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet WebView *webView;
-@property (nonatomic, retain) Twitter *twitter;
+@property (assign) LKWebView *webView;
+@property (assign) NSPopUpButton *accountsPopUp;
 
-- (void) incrementNetworkActionCount;
-- (void) decrementNetworkActionCount;
+@property (nonatomic, retain) Twitter *twitter;
+@property (nonatomic, retain) TwitterAccount *currentAccount;
+@property (nonatomic, retain) NSWindowController *currentSheet;
+
+- (id)initWithTwitter:(Twitter*)aTwitter;
+- (void)initToolbar;
+
+- (IBAction)addAccount:(id)sender;
+- (IBAction)editAccounts:(id)sender;
+
 
 @end

@@ -24,10 +24,9 @@
 #import "SearchViewController.h"
 #import "ComposeViewController.h"
 #import "GoToUserViewController.h"
+#import "TimelineHTMLController.h"
 
-@class TwitterAction;
-@class TwitterTimeline;
-@class TwitterLoadTimelineAction;
+@class TwitterAction, TwitterLoadTimelineAction, TwitterTimeline;
 
 
 @interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, GoToUserViewControllerDelegate> {
@@ -37,41 +36,19 @@
 	HelTweeticaAppDelegate *appDelegate;
 
 	Twitter *twitter;
-	NSMutableArray *actions;
-	NSString *defaultLoadCount;
-	int maxTweetsShown;
+	TimelineHTMLController *timelineHTMLController;
 
-	NSTimer *refreshTimer;
-	BOOL networkIsReachable;
-	BOOL webViewHasValidHTML;
 	BOOL webViewHasFinishedLoading;
-	BOOL suppressNetworkErrorAlerts;
-
-	TwitterAccount *currentAccount;
-	TwitterTimeline *currentTimeline;
-	NSString *customPageTitle;
-	NSString *customTabName;
 	
 	UIPopoverController *currentPopover;
 	UIActionSheet *currentActionSheet;
 	UIAlertView *currentAlert;
-	
-	NSString *tweetRowTemplate;
-	NSString *tweetMentionRowTemplate;
-	NSString *tweetGapRowTemplate;
-	NSString *loadingHTML;
 }
 @property (nonatomic, retain) LKWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *composeButton;
 
 @property (nonatomic, retain) Twitter *twitter;
-@property (nonatomic, retain) NSMutableArray *actions;
-@property (nonatomic, retain) NSString *defaultLoadCount;
-
-@property (nonatomic, retain) TwitterAccount *currentAccount;
-@property (nonatomic, retain) TwitterTimeline *currentTimeline;
-@property (nonatomic, retain) NSString *customPageTitle;
-@property (nonatomic, retain) NSString *customTabName;
+@property (nonatomic, retain) TimelineHTMLController *timelineHTMLController;
 
 @property (nonatomic, retain) UIPopoverController *currentPopover;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
@@ -82,19 +59,10 @@
 - (IBAction) search: (id) sender;
 - (IBAction) goToUser:(id)sender;
 - (IBAction) reloadData: (id) sender;
+
+// Compose
 - (IBAction) compose: (id) sender;
-
-// Twitter actions
-- (void)startTwitterAction:(TwitterAction*)action;
-- (void)handleTwitterStatusCode:(int)code;
-- (void)twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error;
-
-- (void)reloadCurrentTimeline;
-- (void)timeline:(TwitterTimeline *)timeline didLoadWithAction:(TwitterLoadTimelineAction *)action;
-- (void)startLoadingCurrentTimeline;
-- (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
-- (void)fave: (NSNumber*) messageIdentifier;
-- (void)retweet:(NSNumber*)messageIdentifier;
+- (void)retweet:(NSNumber*)identifier;
 - (void)replyToMessage: (NSNumber*)identifier;
 - (void)directMessageWithTweet:(NSNumber*)identifier;
 
@@ -107,20 +75,6 @@
 - (void) showUserPage:(NSString*)screenName;
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier;
 - (void) showWebBrowserWithURLRequest:(NSURLRequest*)request;
-
-// Web view updating
-- (void) reloadWebView;
-- (void) setLoadingSpinnerVisibility: (BOOL) isVisible;
-- (void) rewriteTweetArea;
-- (NSString *)webPageTemplate; // Subclasses should override this to provide their own HTML template.
-- (NSString *)tweetAreaHTML;
-- (NSString *)tweetRowTemplateForRow:(int)row;
-- (NSString *)tweetRowHTMLForRow:(int)row;
-- (NSString *)tweetAreaFooterHTML;
-- (NSString *)timeStringSinceNow: (NSDate*) date;
-- (void)replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template;
-- (NSString *)htmlFormattedString:(NSString*)string;
-
 
 // Web view delegate methods
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;

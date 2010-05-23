@@ -14,24 +14,45 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-#import <UIKit/UIKit.h>
 #import "Twitter.h"
 
+#ifdef TARGET_PROJECT_MAC
 
-@interface HelTweeticaAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    UINavigationController *navigationController;
-	Twitter *twitter;
-	int networkActionCount;
-}
+	#import <Cocoa/Cocoa.h>
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-@property (nonatomic, retain) Twitter *twitter;
+	@interface HelTweeticaAppDelegate : NSObject <NSApplicationDelegate> {
+		Twitter *twitter;
+		int networkActionCount;
+		NSMutableSet *mainWindows;
+	}
 
-- (void) incrementNetworkActionCount;
-- (void) decrementNetworkActionCount;
+	@property (nonatomic, retain) Twitter *twitter;
 
-@end
+	- (IBAction)newMainWindow:(id)sender;
 
+	- (void)incrementNetworkActionCount;
+	- (void)decrementNetworkActionCount;
+
+	@end
+
+#else
+
+	#import <UIKit/UIKit.h>
+
+	@interface HelTweeticaAppDelegate : NSObject <UIApplicationDelegate> {
+		UIWindow *window;
+		UINavigationController *navigationController;
+		Twitter *twitter;
+		int networkActionCount;
+	}
+
+	@property (nonatomic, retain) IBOutlet UIWindow *window;
+	@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+	@property (nonatomic, retain) Twitter *twitter;
+
+	- (void) incrementNetworkActionCount;
+	- (void) decrementNetworkActionCount;
+
+	@end
+
+#endif

@@ -27,10 +27,9 @@
 	self = [super initWithNibName:@"Conversation" bundle:nil];
 	if (self) {
 		self.selectedMessageIdentifier = anIdentifier;
-		self.customPageTitle = NSLocalizedString (@"The <b>Conversation</b>", @"title");
-		self.currentTimeline = [[[TwitterTimeline alloc] init] autorelease];
-		maxTweetsShown = 1000; // Allow for a larger limit for searches.
-		currentTimeline.gaps = nil; // Ignore gaps
+		timelineHTMLController.customPageTitle = NSLocalizedString (@"The <b>Conversation</b>", @"title");
+		timelineHTMLController.timeline = [[[TwitterTimeline alloc] init] autorelease];
+		timelineHTMLController.timeline.gaps = nil; // Ignore gaps
 		[self loadMessage:anIdentifier];
 		
 		// Special template to highlight the selected message. tweet-row-highlighted-template.html
@@ -72,12 +71,12 @@
 	// Check if message is already loaded
 	TwitterMessage *message = [twitter statusWithIdentifier:messageIdentifier];
 	if (message) {
-		[currentTimeline.messages addObject:message];
+		[timelineHTMLController.timeline.messages addObject:message];
 		[self loadInReplyToMessage: message];
 	} else {
 		NSString *twitterMethod = [NSString stringWithFormat:@"statuses/show/%@", messageIdentifier];
 		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:twitterMethod] autorelease];
-		action.timeline = currentTimeline;
+		action.timeline = timelineHTMLController.timeline;
 		action.completionAction = @selector(didLoadMessage:);
 		action.completionTarget = self;
 		[self startTwitterAction:action];
@@ -106,8 +105,8 @@
 	[twitter addUsers:action.users];
 	
 	// Load next message in conversation.
-	if (!loadingComplete && currentTimeline.messages.count > 0) {
-		TwitterMessage *lastMessage = [currentTimeline.messages lastObject];
+	if (!loadingComplete && timelineHTMLController.timeline.messages.count > 0) {
+		TwitterMessage *lastMessage = [timelineHTMLController.timeline.messages lastObject];
 		[self loadInReplyToMessage: lastMessage];
 		if (webViewHasValidHTML) 
 			[self rewriteTweetArea];	
@@ -175,7 +174,7 @@
 }
 
 - (NSString *)tweetRowTemplateForRow:(int)row {
-	TwitterMessage *message = [currentTimeline.messages objectAtIndex:row];
+	TwitterMessage *message = [timelineHTMLController.timeline.messages objectAtIndex:row];
 	if ([message.identifier isEqualToNumber:selectedMessageIdentifier])
 		return highlightedTweetRowTemplate;
 	return tweetRowTemplate;
@@ -192,7 +191,7 @@
 		result = @"<div class='status'>Protected message.</div>";
 	} else if (messageNotFound) {
 		result = @"<div class='status'>Message was deleted.</div>";
-	} else if (currentTimeline.messages.count == 0) {
+	} else if (timelineHTMLController.timeline.messages.count == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	}
 	

@@ -18,6 +18,20 @@
 
 @implementation LKWebView
 
+- (void)loadHTMLString:(NSString *)string {
+	// Use the app bundle as the base URL
+	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
+	NSURL *baseURL = [NSURL fileURLWithPath:mainBundle];
+	
+#ifdef TARGET_PROJECT_MAC
+	// Load HTML into main frame
+	WebFrame *webFrame = [self mainFrame];
+	[webFrame loadHTMLString:string baseURL:baseURL];
+#else
+	[self loadHTMLString:string baseURL:baseURL];
+#endif
+}
+
 - (NSString*) javascriptSafeString:(NSString*)string {
 	NSScanner *scanner = [NSScanner scannerWithString:string];
 	NSMutableString *result = [[[NSMutableString alloc] init] autorelease];
@@ -62,23 +76,24 @@
 }
 
 - (CGPoint) scrollPosition {
-	CGPoint position = CGPointMake(-1, -1);
 	NSString *jsResult;
 	NSScanner *scanner;
+	double x = -1.0;
+	double y = -1.0;
 	
 	jsResult = [self stringByEvaluatingJavaScriptFromString:@"window.pageXOffset;"];
 	if (jsResult.length > 0) {
 		scanner = [NSScanner scannerWithString:jsResult];
-		[scanner scanFloat:&position.x];
+		[scanner scanDouble: &x];
 	}
 
 	jsResult = [self stringByEvaluatingJavaScriptFromString:@"window.pageYOffset;"];
 	if (jsResult.length > 0) {
 		scanner = [NSScanner scannerWithString:jsResult];
-		[scanner scanFloat:&position.y];
+		[scanner scanDouble: &y];
 	}
 	
-	return position;
+	return CGPointMake (x, y);
 }
 
 @end

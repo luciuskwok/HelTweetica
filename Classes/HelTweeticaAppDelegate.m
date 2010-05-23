@@ -16,18 +16,76 @@
 
 
 #import "HelTweeticaAppDelegate.h"
-#import "RootViewController.h"
 #import "Twitter.h"
 
-
+#ifdef TARGET_PROJECT_MAC
+#import "MainWindowController.h"
+#endif
 
 @implementation HelTweeticaAppDelegate
 
+
+#ifdef TARGET_PROJECT_MAC
+#pragma mark Mac version
+
+@synthesize twitter;
+
+- (void)dealloc {
+	[twitter release];
+	[mainWindows release];
+	[super dealloc];
+}
+
+- (void)awakeFromNib {
+	twitter = [[Twitter alloc] init];
+	mainWindows = [[NSMutableArray alloc] init];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	[self newMainWindow:nil];
+	
+	// Listen for window closing notifications
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:nil];
+}
+
+- (IBAction)newMainWindow:(id)sender {
+	// Create and show the main window
+	MainWindowController *controller = [[[MainWindowController alloc] initWithTwitter:twitter] autorelease];
+	[controller showWindow:nil];
+	[mainWindows addObject: controller];
+}
+
+- (void)windowWillClose:(NSNotification*)notification {
+	NSWindow *aWindow = [notification object];
+	id controller = [[[aWindow windowController] retain] autorelease];
+	[mainWindows removeObject: controller];
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification {
+	[twitter save];
+}
+
+// TODO: add a network activity spinner
+- (void) incrementNetworkActionCount {
+	networkActionCount++;
+	//[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
+- (void) decrementNetworkActionCount {
+	networkActionCount--;
+	if (networkActionCount <= 0) {
+		networkActionCount = 0;
+		//[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	}
+}
+
+#else
+#pragma mark -
+#pragma mark iPhone version
+
 @synthesize window, navigationController, twitter;
 
-
-#pragma mark -
-#pragma mark Application lifecycle
 
 - (void)awakeFromNib {
 	twitter = [[Twitter alloc] init];
@@ -68,5 +126,8 @@
 }
 
 
+#endif
+
 @end
+
 

@@ -27,7 +27,6 @@
 		E00C26CB1162E93E00F62B70 /* tab-off.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C71162E93E00F62B70 /* tab-off.png */; };
 		E00C26CC1162E93E00F62B70 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C81162E93E00F62B70 /* tab.png */; };
 		E00C26CD1162E93E00F62B70 /* style-ipad.css in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C91162E93E00F62B70 /* style-ipad.css */; };
-		E00C281711631B6F00F62B70 /* functions.js in Resources */ = {isa = PBXBuildFile; fileRef = E00C27DA11630B7900F62B70 /* functions.js */; };
 		E0175C62117C1C87003F5970 /* AllStarsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0904272117A21BC00CE8CB9 /* AllStarsViewController.xib */; };
 		E0175C63117C1C97003F5970 /* AllStarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */; };
 		E0175C6F117C1CB4003F5970 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E036EF4F117B816B00D52BF6 /* AudioToolbox.framework */; };
@@ -50,7 +49,6 @@
 		E03570791174E6BE004B9A0F /* tab-off.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C71162E93E00F62B70 /* tab-off.png */; };
 		E035707A1174E6BE004B9A0F /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C81162E93E00F62B70 /* tab.png */; };
 		E035707B1174E6BE004B9A0F /* style-ipad.css in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C91162E93E00F62B70 /* style-ipad.css */; };
-		E035707C1174E6BE004B9A0F /* functions.js in Resources */ = {isa = PBXBuildFile; fileRef = E00C27DA11630B7900F62B70 /* functions.js */; };
 		E035707D1174E6BE004B9A0F /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13AE11646FB7004FE7B9 /* reload.png */; };
 		E035707E1174E6BE004B9A0F /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13D611647B0B004FE7B9 /* Icon.png */; };
 		E035707F1174E6BE004B9A0F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13E711647FAD004FE7B9 /* Default.png */; };
@@ -144,7 +142,6 @@
 		E0840936118E161C00670BAB /* verified.png in Resources */ = {isa = PBXBuildFile; fileRef = E0840934118E161C00670BAB /* verified.png */; };
 		E0840998118E246900670BAB /* UserPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0840996118E246900670BAB /* UserPageViewController.m */; };
 		E0840999118E246900670BAB /* UserPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0840997118E246900670BAB /* UserPage.xib */; };
-		E084099A118E246900670BAB /* UserPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0840996118E246900670BAB /* UserPageViewController.m */; };
 		E084099B118E246900670BAB /* UserPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0840997118E246900670BAB /* UserPage.xib */; };
 		E08646461166F6FB00844FCE /* spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = E08646451166F6FB00844FCE /* spinner.gif */; };
 		E0904273117A21BC00CE8CB9 /* AllStarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */; };
@@ -174,7 +171,6 @@
 		E0A8F1E0116D902B00DF2BDB /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */; };
 		E0A98A331190B7ED00C9C997 /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */; };
 		E0A98A341190B7ED00C9C997 /* Conversation.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A321190B7ED00C9C997 /* Conversation.xib */; };
-		E0A98A351190B7ED00C9C997 /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */; };
 		E0A98A361190B7ED00C9C997 /* Conversation.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A321190B7ED00C9C997 /* Conversation.xib */; };
 		E0A98A681190BE9C00C9C997 /* basic-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* basic-template.html */; };
 		E0A98A691190BE9C00C9C997 /* basic-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* basic-template.html */; };
@@ -186,7 +182,6 @@
 		E0A98B7F1190E0E100C9C997 /* GoToUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98B7B1190E0E100C9C997 /* GoToUser.xib */; };
 		E0A98C7B11913A1300C9C997 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */; };
 		E0A98C7C11913A1300C9C997 /* SearchResults.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98C7A11913A1300C9C997 /* SearchResults.xib */; };
-		E0A98C7D11913A1300C9C997 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */; };
 		E0A98C7E11913A1300C9C997 /* SearchResults.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0A98C7A11913A1300C9C997 /* SearchResults.xib */; };
 		E0A98E6D1191732100C9C997 /* TwitterSavedSearchAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98E6C1191732100C9C997 /* TwitterSavedSearchAction.m */; };
 		E0A98E6E1191732100C9C997 /* TwitterSavedSearchAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98E6C1191732100C9C997 /* TwitterSavedSearchAction.m */; };
@@ -208,7 +203,6 @@
 		E0C8C1AE11A7721A0081A2C7 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */; };
 		E0C8C1B311A773890081A2C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		E0C8C1BE11A774560081A2C7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0C8C1BD11A774560081A2C7 /* MainMenu.xib */; };
-		E0C8C1C211A774DE0081A2C7 /* MacAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C8C1C111A774DE0081A2C7 /* MacAppDelegate.m */; };
 		E0C8C1CD11A776530081A2C7 /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A8F1DF116D902B00DF2BDB /* LKJSONParser.m */; };
 		E0C8C1CE11A776540081A2C7 /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E00C26331162D91C00F62B70 /* Twitter.m */; };
 		E0C8C1CF11A776550081A2C7 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A348C116E8B7D0098CF12 /* TwitterAccount.m */; };
@@ -219,9 +213,62 @@
 		E0C8C1D411A7765F0081A2C7 /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E08406D5118D4B6C00670BAB /* TwitterSearchJSONParser.m */; };
 		E0C8C1D511A776600081A2C7 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */; };
 		E0C8C1D611A776610081A2C7 /* TwitterUser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0840899118DE04E00670BAB /* TwitterUser.m */; };
+		E0C8C24811A782DB0081A2C7 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
+		E0C8C24911A782DB0081A2C7 /* TwitterFavoriteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E01864ED1184C0240021995D /* TwitterFavoriteAction.m */; };
+		E0C8C24A11A782DC0081A2C7 /* TwitterFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F937119013E600C7A479 /* TwitterFriendshipsAction.m */; };
+		E0C8C24B11A782DC0081A2C7 /* TwitterLoadListsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B54FCF118C0D3A00FFED10 /* TwitterLoadListsAction.m */; };
+		E0C8C24C11A782DD0081A2C7 /* TwitterLoadSavedSearchesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B55026118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m */; };
+		E0C8C24D11A782DE0081A2C7 /* TwitterLoadTimelineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B54F18118BFC9E00FFED10 /* TwitterLoadTimelineAction.m */; };
+		E0C8C24E11A782DF0081A2C7 /* TwitterLoginAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B54E77118BF0BA00FFED10 /* TwitterLoginAction.m */; };
+		E0C8C24F11A782E00081A2C7 /* TwitterRetweetAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E018656D1184CC680021995D /* TwitterRetweetAction.m */; };
+		E0C8C25011A782E10081A2C7 /* TwitterSavedSearchAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98E6C1191732100C9C997 /* TwitterSavedSearchAction.m */; };
+		E0C8C25111A782E20081A2C7 /* TwitterSearchAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E084039F118C93F600670BAB /* TwitterSearchAction.m */; };
+		E0C8C25211A782E30081A2C7 /* TwitterShowFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D6F9B81190230800C7A479 /* TwitterShowFriendshipsAction.m */; };
+		E0C8C25311A782E30081A2C7 /* TwitterUpdateStatusAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E01865481184C8980021995D /* TwitterUpdateStatusAction.m */; };
+		E0C8C25411A782E40081A2C7 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
+		E0C8C25D11A787460081A2C7 /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC9A231163CA7A0027C422 /* OAuthClient.m */; };
+		E0C8C26011A789550081A2C7 /* LKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B2088C118BDC1F00843A89 /* LKWebView.m */; };
+		E0C8C28D11A799D50081A2C7 /* style-ipad.css in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C91162E93E00F62B70 /* style-ipad.css */; };
+		E0C8C28E11A799D50081A2C7 /* main-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E03F91D7118F7BEA00D3A76B /* main-template.html */; };
+		E0C8C28F11A799D50081A2C7 /* basic-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* basic-template.html */; };
+		E0C8C29011A799D50081A2C7 /* load-gap-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E006304D119DF570009F477B /* load-gap-template.html */; };
+		E0C8C29111A799D50081A2C7 /* tweet-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E03F90DE118F58DF00D3A76B /* tweet-row-template.html */; };
+		E0C8C29211A799D50081A2C7 /* tweet-row-highlighted-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A6A35D1192969F0034D8E7 /* tweet-row-highlighted-template.html */; };
+		E0C8C29311A799D50081A2C7 /* tweet-row-mention-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0377D7811A05B69007B0177 /* tweet-row-mention-template.html */; };
+		E0C8C29411A799D50081A2C7 /* user-info-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E03F91DA118F7CFC00D3A76B /* user-info-template.html */; };
+		E0C8C29511A799D50081A2C7 /* user-page-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0DD541C118E43070042CF49 /* user-page-template.html */; };
+		E0C8C29611A799D50081A2C7 /* action-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41034116C204C0052BAE7 /* action-1.png */; };
+		E0C8C29711A799D50081A2C7 /* action-2.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41035116C204C0052BAE7 /* action-2.png */; };
+		E0C8C29811A799D50081A2C7 /* action-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41036116C204C0052BAE7 /* action-3.png */; };
+		E0C8C29911A799D50081A2C7 /* action-4.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41037116C204C0052BAE7 /* action-4.png */; };
+		E0C8C29A11A799D50081A2C7 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0CBCC41116DDBC80000C281 /* action-4-on.png */; };
+		E0C8C29B11A799D50081A2C7 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41184116C6D430052BAE7 /* lock.png */; };
+		E0C8C29C11A799D50081A2C7 /* profile-image-proxy.png in Resources */ = {isa = PBXBuildFile; fileRef = E04934B2118E74A800BCA128 /* profile-image-proxy.png */; };
+		E0C8C29D11A799D50081A2C7 /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DF13AE11646FB7004FE7B9 /* reload.png */; };
+		E0C8C29E11A799D50081A2C7 /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3382116E4CCE0098CF12 /* retweet.png */; };
+		E0C8C29F11A799D50081A2C7 /* spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = E08646451166F6FB00844FCE /* spinner.gif */; };
+		E0C8C2A011A799D50081A2C7 /* tab-bkgnd.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C61162E93E00F62B70 /* tab-bkgnd.png */; };
+		E0C8C2A111A799D50081A2C7 /* tab-off.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C71162E93E00F62B70 /* tab-off.png */; };
+		E0C8C2A211A799D50081A2C7 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = E00C26C81162E93E00F62B70 /* tab.png */; };
+		E0C8C2A311A799D50081A2C7 /* verified.png in Resources */ = {isa = PBXBuildFile; fileRef = E0840934118E161C00670BAB /* verified.png */; };
+		E0C8C2B111A7A0C50081A2C7 /* HelTweeticaAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* HelTweeticaAppDelegate.m */; };
+		E0C8C4EE11A7B3730081A2C7 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C8C4ED11A7B3730081A2C7 /* MainWindowController.m */; };
+		E0C8C4F411A7B7150081A2C7 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0C8C4F311A7B7150081A2C7 /* MainWindow.xib */; };
+		E0C8C5E511A7C9EE0081A2C7 /* AddAccount.m in Resources */ = {isa = PBXBuildFile; fileRef = E0C8C5E411A7C9EE0081A2C7 /* AddAccount.m */; };
+		E0C8C5F111A7CB1F0081A2C7 /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0C8C5F011A7CB1F0081A2C7 /* AddAccount.xib */; };
+		E0C8C5FD11A7CEF50081A2C7 /* AddAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C8C5E411A7C9EE0081A2C7 /* AddAccount.m */; };
 		E0CB31A0116691400086CEFE /* Analyze.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CB319E116691400086CEFE /* Analyze.m */; };
 		E0CB31A1116691400086CEFE /* Analyze.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0CB319F116691400086CEFE /* Analyze.xib */; };
 		E0CBCC42116DDBC80000C281 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0CBCC41116DDBC80000C281 /* action-4-on.png */; };
+		E0CE87E611A86AAF00AE85FE /* TimelineHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */; };
+		E0CE87E711A86AAF00AE85FE /* TimelineHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */; };
+		E0CE87E811A86AAF00AE85FE /* TimelineHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */; };
+		E0CE88F411A90B5200AE85FE /* UserPageHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */; };
+		E0CE88F511A90B5200AE85FE /* UserPageHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */; };
+		E0CE88F611A90B5200AE85FE /* UserPageHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */; };
+		E0CE895611A912F500AE85FE /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */; };
+		E0CE895711A912F800AE85FE /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */; };
+		E0CE895811A912FA00AE85FE /* UserPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0840996118E246900670BAB /* UserPageViewController.m */; };
 		E0D3E4E01193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
 		E0D3E4E11193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
 		E0D3E6AE1194D4280098BFB6 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */; };
@@ -379,19 +426,27 @@
 		E0B55025118C137D00FFED10 /* TwitterLoadSavedSearchesAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoadSavedSearchesAction.h; sourceTree = "<group>"; };
 		E0B55026118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadSavedSearchesAction.m; sourceTree = "<group>"; };
 		E0B8B5FA11863778005BCA07 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
-		E0C8C06D11A770AA0081A2C7 /* Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0C8C06D11A770AA0081A2C7 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0C8C06F11A770AA0081A2C7 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		E0C8C07411A771790081A2C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		E0C8C0F311A7720A0081A2C7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		E0C8C1BD11A774560081A2C7 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = Mac/MainMenu.xib; sourceTree = "<group>"; };
-		E0C8C1C011A774DE0081A2C7 /* MacAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacAppDelegate.h; path = Mac/MacAppDelegate.h; sourceTree = "<group>"; };
-		E0C8C1C111A774DE0081A2C7 /* MacAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MacAppDelegate.m; path = Mac/MacAppDelegate.m; sourceTree = "<group>"; };
+		E0C8C4EC11A7B3730081A2C7 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainWindowController.h; path = Mac/MainWindowController.h; sourceTree = "<group>"; };
+		E0C8C4ED11A7B3730081A2C7 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowController.m; path = Mac/MainWindowController.m; sourceTree = "<group>"; };
+		E0C8C4F311A7B7150081A2C7 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Mac/MainWindow.xib; sourceTree = "<group>"; };
+		E0C8C5E311A7C9EE0081A2C7 /* AddAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddAccount.h; path = Mac/AddAccount.h; sourceTree = "<group>"; };
+		E0C8C5E411A7C9EE0081A2C7 /* AddAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddAccount.m; path = Mac/AddAccount.m; sourceTree = "<group>"; };
+		E0C8C5F011A7CB1F0081A2C7 /* AddAccount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AddAccount.xib; path = Mac/AddAccount.xib; sourceTree = "<group>"; };
 		E0CB319D116691400086CEFE /* Analyze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analyze.h; sourceTree = "<group>"; };
 		E0CB319E116691400086CEFE /* Analyze.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analyze.m; sourceTree = "<group>"; };
 		E0CB319F116691400086CEFE /* Analyze.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Analyze.xib; sourceTree = "<group>"; };
 		E0CBCC41116DDBC80000C281 /* action-4-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-4-on.png"; path = "Resources/action-4-on.png"; sourceTree = "<group>"; };
+		E0CE87E411A86AAF00AE85FE /* TimelineHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineHTMLController.h; sourceTree = "<group>"; };
+		E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineHTMLController.m; sourceTree = "<group>"; };
+		E0CE88F211A90B5200AE85FE /* UserPageHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPageHTMLController.h; sourceTree = "<group>"; };
+		E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPageHTMLController.m; sourceTree = "<group>"; };
 		E0D3E4DE1193CDB20098BFB6 /* TwitterUserInfoAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUserInfoAction.h; sourceTree = "<group>"; };
 		E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserInfoAction.m; sourceTree = "<group>"; };
 		E0D3E6AC1194D4280098BFB6 /* TwitterTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTimeline.h; sourceTree = "<group>"; };
@@ -465,6 +520,7 @@
 				E04935D9118EB2E300BCA128 /* User Page */,
 				E0175BAA117BFA7F003F5970 /* WebBrowser */,
 				E036EF69117B859B00D52BF6 /* AllStars */,
+				E0CE88F111A90B3300AE85FE /* HTML Controllers */,
 				E0175BA9117BFA4D003F5970 /* Twitter */,
 				E01865461184C87F0021995D /* TwitterActions */,
 				E0DF0EA91163DC82004FE7B9 /* OAuthClient */,
@@ -479,7 +535,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* HelTweetica.app */,
 				E03570B51174E6BE004B9A0F /* HelTweetica.app */,
-				E0C8C06D11A770AA0081A2C7 /* Mac.app */,
+				E0C8C06D11A770AA0081A2C7 /* HelTweetica.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -703,8 +759,12 @@
 		E0C8C07311A771370081A2C7 /* Mac */ = {
 			isa = PBXGroup;
 			children = (
-				E0C8C1C011A774DE0081A2C7 /* MacAppDelegate.h */,
-				E0C8C1C111A774DE0081A2C7 /* MacAppDelegate.m */,
+				E0C8C4EC11A7B3730081A2C7 /* MainWindowController.h */,
+				E0C8C4ED11A7B3730081A2C7 /* MainWindowController.m */,
+				E0C8C4F311A7B7150081A2C7 /* MainWindow.xib */,
+				E0C8C5E311A7C9EE0081A2C7 /* AddAccount.h */,
+				E0C8C5E411A7C9EE0081A2C7 /* AddAccount.m */,
+				E0C8C5F011A7CB1F0081A2C7 /* AddAccount.xib */,
 				E0C8C1BD11A774560081A2C7 /* MainMenu.xib */,
 				E0C8C07411A771790081A2C7 /* Foundation.framework */,
 				E0C8C0F311A7720A0081A2C7 /* AppKit.framework */,
@@ -713,6 +773,17 @@
 				E0C8C06F11A770AA0081A2C7 /* Mac-Info.plist */,
 			);
 			name = Mac;
+			sourceTree = "<group>";
+		};
+		E0CE88F111A90B3300AE85FE /* HTML Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E0CE87E411A86AAF00AE85FE /* TimelineHTMLController.h */,
+				E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */,
+				E0CE88F211A90B5200AE85FE /* UserPageHTMLController.h */,
+				E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */,
+			);
+			name = "HTML Controllers";
 			sourceTree = "<group>";
 		};
 		E0DD53C6118E2D5F0042CF49 /* Toolbar images */ = {
@@ -835,7 +906,7 @@
 			);
 			name = Mac;
 			productName = Mac;
-			productReference = E0C8C06D11A770AA0081A2C7 /* Mac.app */;
+			productReference = E0C8C06D11A770AA0081A2C7 /* HelTweetica.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -877,7 +948,6 @@
 				E00C26CB1162E93E00F62B70 /* tab-off.png in Resources */,
 				E00C26CC1162E93E00F62B70 /* tab.png in Resources */,
 				E00C26CD1162E93E00F62B70 /* style-ipad.css in Resources */,
-				E00C281711631B6F00F62B70 /* functions.js in Resources */,
 				E0DF13AF11646FB7004FE7B9 /* reload.png in Resources */,
 				E0DF13D711647B0B004FE7B9 /* Icon.png in Resources */,
 				E0DF13E811647FAD004FE7B9 /* Default.png in Resources */,
@@ -941,7 +1011,6 @@
 				E03570791174E6BE004B9A0F /* tab-off.png in Resources */,
 				E035707A1174E6BE004B9A0F /* tab.png in Resources */,
 				E035707B1174E6BE004B9A0F /* style-ipad.css in Resources */,
-				E035707C1174E6BE004B9A0F /* functions.js in Resources */,
 				E035707D1174E6BE004B9A0F /* reload.png in Resources */,
 				E035707E1174E6BE004B9A0F /* Icon.png in Resources */,
 				E035707F1174E6BE004B9A0F /* Default.png in Resources */,
@@ -997,6 +1066,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0C8C1BE11A774560081A2C7 /* MainMenu.xib in Resources */,
+				E0C8C28D11A799D50081A2C7 /* style-ipad.css in Resources */,
+				E0C8C28E11A799D50081A2C7 /* main-template.html in Resources */,
+				E0C8C28F11A799D50081A2C7 /* basic-template.html in Resources */,
+				E0C8C29011A799D50081A2C7 /* load-gap-template.html in Resources */,
+				E0C8C29111A799D50081A2C7 /* tweet-row-template.html in Resources */,
+				E0C8C29211A799D50081A2C7 /* tweet-row-highlighted-template.html in Resources */,
+				E0C8C29311A799D50081A2C7 /* tweet-row-mention-template.html in Resources */,
+				E0C8C29411A799D50081A2C7 /* user-info-template.html in Resources */,
+				E0C8C29511A799D50081A2C7 /* user-page-template.html in Resources */,
+				E0C8C29611A799D50081A2C7 /* action-1.png in Resources */,
+				E0C8C29711A799D50081A2C7 /* action-2.png in Resources */,
+				E0C8C29811A799D50081A2C7 /* action-3.png in Resources */,
+				E0C8C29911A799D50081A2C7 /* action-4.png in Resources */,
+				E0C8C29A11A799D50081A2C7 /* action-4-on.png in Resources */,
+				E0C8C29B11A799D50081A2C7 /* lock.png in Resources */,
+				E0C8C29C11A799D50081A2C7 /* profile-image-proxy.png in Resources */,
+				E0C8C29D11A799D50081A2C7 /* reload.png in Resources */,
+				E0C8C29E11A799D50081A2C7 /* retweet.png in Resources */,
+				E0C8C29F11A799D50081A2C7 /* spinner.gif in Resources */,
+				E0C8C2A011A799D50081A2C7 /* tab-bkgnd.png in Resources */,
+				E0C8C2A111A799D50081A2C7 /* tab-off.png in Resources */,
+				E0C8C2A211A799D50081A2C7 /* tab.png in Resources */,
+				E0C8C2A311A799D50081A2C7 /* verified.png in Resources */,
+				E0C8C4F411A7B7150081A2C7 /* MainWindow.xib in Resources */,
+				E0C8C5E511A7C9EE0081A2C7 /* AddAccount.m in Resources */,
+				E0C8C5F111A7CB1F0081A2C7 /* AddAccount.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1042,17 +1137,19 @@
 				E08403A1118C93F600670BAB /* TwitterSearchAction.m in Sources */,
 				E08406D7118D4B6C00670BAB /* TwitterSearchJSONParser.m in Sources */,
 				E084089B118DE04E00670BAB /* TwitterUser.m in Sources */,
-				E084099A118E246900670BAB /* UserPageViewController.m in Sources */,
 				E0493617118EBE3900BCA128 /* TimelineViewController.m in Sources */,
 				E0D6F939119013E600C7A479 /* TwitterFriendshipsAction.m in Sources */,
 				E0D6F9BA1190230800C7A479 /* TwitterShowFriendshipsAction.m in Sources */,
-				E0A98A351190B7ED00C9C997 /* ConversationViewController.m in Sources */,
 				E0A98B7E1190E0E100C9C997 /* GoToUserViewController.m in Sources */,
-				E0A98C7D11913A1300C9C997 /* SearchResultsViewController.m in Sources */,
 				E0A98E6E1191732100C9C997 /* TwitterSavedSearchAction.m in Sources */,
 				E0A98E7C1191761200C9C997 /* TwitterSavedSearch.m in Sources */,
 				E0D3E4E11193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */,
 				E0D3E6AF1194D4280098BFB6 /* TwitterTimeline.m in Sources */,
+				E0CE87E811A86AAF00AE85FE /* TimelineHTMLController.m in Sources */,
+				E0CE88F511A90B5200AE85FE /* UserPageHTMLController.m in Sources */,
+				E0CE895611A912F500AE85FE /* SearchResultsViewController.m in Sources */,
+				E0CE895711A912F800AE85FE /* ConversationViewController.m in Sources */,
+				E0CE895811A912FA00AE85FE /* UserPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1106,6 +1203,8 @@
 				E0A98E7B1191761200C9C997 /* TwitterSavedSearch.m in Sources */,
 				E0D3E4E01193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */,
 				E0D3E6AE1194D4280098BFB6 /* TwitterTimeline.m in Sources */,
+				E0CE87E711A86AAF00AE85FE /* TimelineHTMLController.m in Sources */,
+				E0CE88F411A90B5200AE85FE /* UserPageHTMLController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1114,7 +1213,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0C8C1B311A773890081A2C7 /* main.m in Sources */,
-				E0C8C1C211A774DE0081A2C7 /* MacAppDelegate.m in Sources */,
 				E0C8C1CD11A776530081A2C7 /* LKJSONParser.m in Sources */,
 				E0C8C1CE11A776540081A2C7 /* Twitter.m in Sources */,
 				E0C8C1CF11A776550081A2C7 /* TwitterAccount.m in Sources */,
@@ -1125,6 +1223,26 @@
 				E0C8C1D411A7765F0081A2C7 /* TwitterSearchJSONParser.m in Sources */,
 				E0C8C1D511A776600081A2C7 /* TwitterTimeline.m in Sources */,
 				E0C8C1D611A776610081A2C7 /* TwitterUser.m in Sources */,
+				E0C8C24811A782DB0081A2C7 /* TwitterAction.m in Sources */,
+				E0C8C24911A782DB0081A2C7 /* TwitterFavoriteAction.m in Sources */,
+				E0C8C24A11A782DC0081A2C7 /* TwitterFriendshipsAction.m in Sources */,
+				E0C8C24B11A782DC0081A2C7 /* TwitterLoadListsAction.m in Sources */,
+				E0C8C24C11A782DD0081A2C7 /* TwitterLoadSavedSearchesAction.m in Sources */,
+				E0C8C24D11A782DE0081A2C7 /* TwitterLoadTimelineAction.m in Sources */,
+				E0C8C24E11A782DF0081A2C7 /* TwitterLoginAction.m in Sources */,
+				E0C8C24F11A782E00081A2C7 /* TwitterRetweetAction.m in Sources */,
+				E0C8C25011A782E10081A2C7 /* TwitterSavedSearchAction.m in Sources */,
+				E0C8C25111A782E20081A2C7 /* TwitterSearchAction.m in Sources */,
+				E0C8C25211A782E30081A2C7 /* TwitterShowFriendshipsAction.m in Sources */,
+				E0C8C25311A782E30081A2C7 /* TwitterUpdateStatusAction.m in Sources */,
+				E0C8C25411A782E40081A2C7 /* TwitterUserInfoAction.m in Sources */,
+				E0C8C25D11A787460081A2C7 /* OAuthClient.m in Sources */,
+				E0C8C26011A789550081A2C7 /* LKWebView.m in Sources */,
+				E0C8C2B111A7A0C50081A2C7 /* HelTweeticaAppDelegate.m in Sources */,
+				E0C8C4EE11A7B3730081A2C7 /* MainWindowController.m in Sources */,
+				E0C8C5FD11A7CEF50081A2C7 /* AddAccount.m in Sources */,
+				E0CE87E611A86AAF00AE85FE /* TimelineHTMLController.m in Sources */,
+				E0CE88F611A90B5200AE85FE /* UserPageHTMLController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1265,6 +1383,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "TARGET_PROJECT_MAC=1";
 				INFOPLIST_FILE = "Mac-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -1272,7 +1391,7 @@
 					AppKit,
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = Mac;
+				PRODUCT_NAME = HelTweetica;
 				SDKROOT = macosx10.6;
 			};
 			name = Debug;
@@ -1299,7 +1418,7 @@
 					AppKit,
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = Mac;
+				PRODUCT_NAME = HelTweetica;
 				SDKROOT = macosx10.6;
 				ZERO_LINK = NO;
 			};

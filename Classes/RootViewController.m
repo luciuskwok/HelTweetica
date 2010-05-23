@@ -16,6 +16,7 @@
 
 
 #import "RootViewController.h"
+
 #import "TwitterAccount.h"
 #import "TwitterTimeline.h"
 #import "TwitterMessage.h"
@@ -37,11 +38,6 @@
 @implementation RootViewController
 @synthesize accountsButton;
 
-
-#define kTimelineIdentifier @"Timeline"
-#define kMentionsIdentifier @"Mentions"
-#define kDirectMessagesIdentifier @"Direct"
-#define kFavoritesIdentifier @"Favorites"
 
 - (void)dealloc {
 	[accountsButton release];
@@ -66,80 +62,11 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *currentAccountScreenName = [defaults objectForKey: @"currentAccount"];
 	if (currentAccountScreenName) {
-		self.currentAccount = [twitter accountWithScreenName:currentAccountScreenName];
+		timelineHTMLController.account = [twitter accountWithScreenName:currentAccountScreenName];
 	} else {
 		if (twitter.accounts.count > 0) 
-			self.currentAccount = [twitter.accounts objectAtIndex: 0];
+			timelineHTMLController.account = [twitter.accounts objectAtIndex: 0];
 	}
-}
-
-#pragma mark Twitter timeline selection
-
-- (void) selectHomeTimeline {
-	self.customTabName = kTimelineIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-	
-	self.currentTimeline = currentAccount.homeTimeline;
-	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
-	[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
-}
-
-- (void) selectMentionsTimeline {
-	self.customTabName = kMentionsIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-	
-	self.currentTimeline = currentAccount.mentions;
-	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
-	[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
-}
-
-- (void) selectDirectMessageTimeline {
-	self.customTabName = kDirectMessagesIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-	
-	self.currentTimeline = currentAccount.directMessages;
-	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
-	[currentTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
-}
-
-- (void) selectFavoritesTimeline {
-	self.customTabName = kFavoritesIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-	
-	self.currentTimeline = currentAccount.favorites;
-	currentTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
-	// Favorites always loads 20 per page. Cannot change the count.
-}
-
-- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
-	if ([currentTimeline.loadAction.twitterMethod isEqualToString:@"statuses/home_timeline"]) {
-		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/retweeted_by_me"] autorelease];
-		if (sinceIdentifier) 
-			[action.parameters setObject:sinceIdentifier forKey:@"since_id"];
-		if (maxIdentifier) 
-			[action.parameters setObject:maxIdentifier forKey:@"max_id"];
-		[action.parameters setObject:defaultLoadCount forKey:@"count"];
-		
-		// Prepare action and start it. 
-		action.timeline = currentTimeline;
-		action.completionTarget= self;
-		action.completionAction = @selector(didReloadRetweets:);
-		[self startTwitterAction:action];
-	}
-}
-
-- (void)didReloadRetweets:(TwitterLoadTimelineAction *)action {
-	// Synchronize timeline with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
-	[twitter addUsers:action.users];
-	
-	// Remove the gap indicator for account user's own RTs.
-	if (action.loadedMessages.count > 0) {
-		[action.timeline.gaps removeObjectsInArray: action.loadedMessages];
-	}
-	
-	// Finished loading, so update tweet area and remove loading spinner.
-	[self rewriteTweetArea];	
 }
 
 - (AccountsViewController*) showAccounts:(id)sender {
@@ -153,36 +80,7 @@
 
 #pragma mark WebView updating
 
-- (NSString*) currentAccountHTML {
-	return [NSString stringWithFormat:@"<a href='action:user/%@'>%@</a>", currentAccount.screenName, currentAccount.screenName];
-}
-
-- (NSString*) tabAreaHTML {
-	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
-	
-	int selectedTab = 0;
-	if ([customTabName isEqualToString: kTimelineIdentifier] || (customTabName == nil)) {
-		selectedTab = 1;
-	} else if ([customTabName isEqualToString: kMentionsIdentifier]) {
-		selectedTab = 2;
-	} else if ([customTabName isEqualToString: kDirectMessagesIdentifier]) {
-		selectedTab = 3;
-	} else if ([customTabName isEqualToString: kFavoritesIdentifier]) {
-		selectedTab = 4;
-	} else {
-		selectedTab = 5;
-	}
-	
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Timeline';\">Timeline</div>", (selectedTab == 1)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Mentions';\">Mentions</div>", (selectedTab == 2)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Direct';\">Direct</div>", (selectedTab == 3)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Favorites';\">Favorites</div>", (selectedTab == 4)? @"" : @"de"];
-	if (selectedTab == 5)
-		[html appendFormat:@"<div class='tab selected'>%@</div>", customTabName];
-	
-	return html;
-}
-
+/*
 - (void) rewriteTabArea {
 	if (webViewHasValidHTML)
 		[self.webView setDocumentElement:@"tab_area" innerHTML:[self tabAreaHTML]];
@@ -192,29 +90,9 @@
 	[self rewriteTabArea];
 	[super rewriteTweetArea];
 }
+*/
 
-- (NSString*) webPageTemplate {
-	// Load main template
-	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"main-template.html"];
-	NSError *error = nil;
-	NSMutableString *html  = [NSMutableString stringWithContentsOfFile:templateFile encoding:NSUTF8StringEncoding error:&error];
-
-	// Replace custom tags with HTML
-	NSString *currentAccountHTML = @"";
-	NSString *tabAreaHTML = @"";
-	
-	if (currentAccount.screenName != nil) {
-		currentAccountHTML = [self currentAccountHTML];
-		tabAreaHTML = [self tabAreaHTML];
-	}
-	
-	// Replace custom tags with HTML
-	[html replaceOccurrencesOfString:@"<currentAccountHTML/>" withString:currentAccountHTML options:0 range:NSMakeRange(0, html.length)];
-	[html replaceOccurrencesOfString:@"<tabAreaHTML/>" withString:tabAreaHTML options:0 range:NSMakeRange(0, html.length)];
-	
-	return html;
-}
+#pragma mark TimelineHTMLController delegate
 
 #pragma mark UIWebView delegate methods
 
@@ -226,26 +104,12 @@
 		NSString *actionName = [url resourceSpecifier];
 		
 		// Tabs
-		if ([actionName isEqualToString:kTimelineIdentifier]) { // Home Timeline
-			[self selectHomeTimeline];
-			[self startLoadingCurrentTimeline];
-			return NO;
-		} else if ([actionName isEqualToString:kMentionsIdentifier]) { // Mentions
-			[self selectMentionsTimeline];
-			[self startLoadingCurrentTimeline];
-			return NO;
-		} else if ([actionName isEqualToString:kDirectMessagesIdentifier]) { // Direct Messages
-			[self selectDirectMessageTimeline];
-			[self startLoadingCurrentTimeline];
-			return NO;
-		} else if ([actionName isEqualToString:kFavoritesIdentifier]) { // Favorites
-			[self selectFavoritesTimeline];
-			[self startLoadingCurrentTimeline];
-			return NO;
-		} else if ([actionName hasPrefix:@"login"]) { // Log in
+		if ([actionName hasPrefix:@"login"]) { // Log in
 			[self login:accountsButton];
-			return NO;
+		} else {
+			[timelineHTMLController handleWebAction:actionName];
 		}
+		return NO;
 	}
 	
 	return [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
@@ -258,24 +122,23 @@
 #pragma mark Popover delegate methods
 
 - (void) didSelectAccount:(TwitterAccount*)anAccount {
-	self.currentAccount = anAccount;
+	timelineHTMLController.account = anAccount;
 	[self closeAllPopovers];
-	if (webViewHasValidHTML) {
-		[self.webView setDocumentElement:@"current_account" innerHTML:[self currentAccountHTML]];
+	if (timelineHTMLController.webViewHasValidHTML) {
+		[self.webView setDocumentElement:@"current_account" innerHTML:[timelineHTMLController currentAccountHTML]];
 		[self.webView scrollToTop];
 	}
-	[self selectHomeTimeline];
-	[self startLoadingCurrentTimeline];
+	[timelineHTMLController selectHomeTimeline];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: self.currentAccount.screenName forKey: @"currentAccount"];
+	[defaults setObject: timelineHTMLController.account.screenName forKey: @"currentAccount"];
 }
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void) viewDidLoad {
-	[self selectHomeTimeline];	
+	[timelineHTMLController selectHomeTimeline];	
 	[super viewDidLoad];
 }
 
@@ -286,11 +149,10 @@
 
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	if (currentAccount == nil) {
+	if (timelineHTMLController.account == nil) {
 		[self login: accountsButton];
 	} else {
-		[refreshTimer invalidate];
-		refreshTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
+		[timelineHTMLController scheduleRefreshTimer];
 	}
 }
 
@@ -311,9 +173,9 @@
 
 - (IBAction) lists: (id) sender {
 	if ([self closeAllPopovers] == NO) {
-		ListsViewController *lists = [[[ListsViewController alloc] initWithAccount:currentAccount] autorelease];
-		lists.currentLists = currentAccount.lists;
-		lists.currentSubscriptions = currentAccount.listSubscriptions;
+		ListsViewController *lists = [[[ListsViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
+		lists.currentLists = timelineHTMLController.account.lists;
+		lists.currentSubscriptions = timelineHTMLController.account.listSubscriptions;
 		lists.delegate = self;
 		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
 	}
@@ -321,7 +183,7 @@
 
 - (IBAction) allstars: (id) sender {
 	if ([self closeAllPopovers] == NO) {
-		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:currentAccount.homeTimeline.messages] autorelease];
+		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:timelineHTMLController.account.homeTimeline.messages] autorelease];
 		[self presentModalViewController:controller animated:YES];
 		[controller startDelayedShuffleModeAfterInterval:kDelayBeforeEnteringShuffleMode];
 	}
@@ -330,7 +192,7 @@
 - (IBAction) analyze: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		Analyze *c = [[[Analyze alloc] init] autorelease];
-		c.timeline = currentAccount.homeTimeline.messages;
+		c.timeline = timelineHTMLController.account.homeTimeline.messages;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			[self presentPopoverFromItem:sender viewController:c];
 		} else {

@@ -22,17 +22,10 @@
 
 @interface UserPageViewController : TimelineViewController {
 	IBOutlet UIToolbar *topToolbar;
-	TwitterUser *user;
-	BOOL unauthorized;
-	BOOL notFound;
-	
-	NSString *highlightedTweetRowTemplate;
 }
 @property (nonatomic, retain) UIToolbar *topToolbar;
-@property (nonatomic, retain) TwitterUser *user;
 
 - (id)initWithTwitterUser:(TwitterUser*)aUser;
-- (void)selectUserTimeline:(NSString*)screenName;
 - (IBAction)lists: (id) sender;
 - (IBAction)follow:(id)sender;
 
