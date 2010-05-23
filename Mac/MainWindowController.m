@@ -62,7 +62,8 @@
 
 - (void)windowDidLoad {
 	[self initToolbar];
-
+	[self reloadAccountsMenu];
+	
 	timelineHTMLController.webView = self.webView;
 	[timelineHTMLController selectHomeTimeline];
 	[timelineHTMLController loadWebView];
@@ -86,6 +87,11 @@
 	// Insert
 	for (TwitterAccount *account  in twitter.accounts) {
 		[accountsMenu addItemWithTitle:account.screenName action:@selector(selectAccount:) keyEquivalent:@""];
+		if (account == timelineHTMLController.account) {
+			// Put checkmark next to current account
+			NSMenuItem *item = [accountsPopUp lastItem];
+			[item setState:NSOnState];
+		}
 	}
 }
 
@@ -116,6 +122,14 @@
 	[defaults setObject: anAccount.screenName forKey: @"currentAccount"];
 	
 	[self reloadAccountsMenu];
+}
+
+- (IBAction)selectAccount:(id)sender {
+	NSString *screenName = [sender title];
+	TwitterAccount *account = [twitter accountWithScreenName:screenName];
+	
+	if (account) 
+		[self didLoginToAccount:account];
 }
 
 #pragma mark Toolbar 

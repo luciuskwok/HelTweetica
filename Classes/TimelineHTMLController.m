@@ -761,52 +761,113 @@
 	}
 }
 
-- (NSString*)htmlFormattedString:(NSString*)string {
-
-#ifdef TARGET_PROJECT_MAC
-
-	return string;
-
-#else
+- (NSString *)stringWithLinksToURLsWithPrefix:(NSString *)prefix inString:(NSString *)string {
+	NSMutableString *result = [NSMutableString string];
+	NSScanner *scanner = [NSScanner scannerWithString:string];
+	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"];
+	[scanner setCharactersToBeSkipped:nil];
+	NSString *scanned;
 	
-	NSMutableString *s = [NSMutableString stringWithString:string];
-	
-	
-	NSString *foundText, *insertText;
-	NSRange foundRange;
-	
-	// Find URLs beginning with http: https*://[^ \t\r\n\v\f]*
-	NSRange unprocessed = NSMakeRange(0, s.length);
-	NSString *urlText, *linkText;
-	while (unprocessed.location < s.length) {
-		foundRange = [s rangeOfString: @"https*://[^ \t\r\n]*" options: NSRegularExpressionSearch range: unprocessed];
-		if (foundRange.location == NSNotFound) break;
-		
-		// Replace URLs with link text
-		urlText = [s substringWithRange: foundRange];
-		linkText = [urlText substringFromIndex: [urlText hasPrefix:@"https"] ? 8 : 7];
-		if ([linkText length] > 29) {
-			linkText = [NSString stringWithFormat: @"%@...", [linkText substringToIndex:26]];
-			insertText = [NSString stringWithFormat: @"<a href='%@'>%@</a>", urlText, linkText];
-		} else {	
-			insertText = [NSString stringWithFormat: @"<a href='%@'>%@</a>", urlText, linkText];
+	while ([scanner isAtEnd] == NO) {
+		if ([scanner scanUpToString:prefix intoString:&scanned]) 
+			[result appendString:scanned];
+		if ([scanner scanUpToCharactersFromSet:nonURLSet intoString:&scanned]) {
+			// Replace URLs with link text
+			NSString *linkText = [scanned substringFromIndex: [scanned hasPrefix:@"https"] ? 8 : 7];
+			if ([linkText length] > 29) {
+				linkText = [NSString stringWithFormat: @"%@...", [linkText substringToIndex:26]];
+			}
+			[result appendFormat: @"<a href='%@'>%@</a>", scanned, linkText];
 		}
-		[s replaceCharactersInRange: foundRange withString: insertText];
-		
-		unprocessed.location = foundRange.location + [insertText length];
-		unprocessed.length = s.length - unprocessed.location;
 	}
+	return result;
+}
+
+/*
+- (NSString *)stringWithAction:(NSString*)action prefix:(NSString *)prefix removePrefix:(BOOL)removePrefix inString:(NSString *)string {
+	NSMutableString *result = [NSMutableString string];
+	NSScanner *scanner = [NSScanner scannerWithString:string];
+	NSCharacterSet *endSet = [NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyz_0123456789"];
+	[scanner setCharactersToBeSkipped:nil];
+	NSString *scanned;
+	
+	while ([scanner isAtEnd] == NO) {
+		if ([scanner scanUpToString:prefix intoString:&scanned]) 
+			[result appendString:scanned];
+		if ([scanner scanUpToCharactersFromSet:endSet intoString:&scanned]) {
+			NSString *linkText = scanned;
+			if ([linkText length] > 30)
+				linkText = [NSString stringWithFormat: @"%@...", [linkText substringToIndex:28]];
+			if (removePrefix && [scanned hasPrefix:prefix])
+				scanned = [scanned substringFromIndex:prefix.length];
+			[result appendFormat: @"<a href='action:%@/%@'>%@</a>", action, scanned, linkText];
+		}
+	}
+	return result;
+}
+
+- (NSString *)stringWithActionLinksInString:(NSString *)string {
+	string = [self stringWithAction:@"user" prefix:@"@" removePrefix:YES inString:string];
+	string = [self stringWithAction:@"search" prefix:@"#" removePrefix:NO inString:string];
+	return string;
+}
+ */
+
+- (NSString *)wordInString:(NSString *)string startingAtIndex:(unsigned int)index {
+	if (index >= string.length) return nil;
+	
+	NSScanner *scanner = [NSScanner scannerWithString:[string substringFromIndex:index]];
+	NSCharacterSet *wordSet = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789"];
+	[scanner setCharactersToBeSkipped:nil];
+	NSString *result = nil;
+	if ([scanner scanCharactersFromSet:wordSet intoString:&result])
+		return result;
+	return nil;
+}
+
+- (NSString *)htmlFormattedString:(NSString *)string {
+	
+	// Add link tags to URLs
+	string = [self stringWithLinksToURLsWithPrefix:@"http://" inString:string];
+	string = [self stringWithLinksToURLsWithPrefix:@"https://" inString:string];
+	
+	/* 
+	// Process text outside of HTML tags.
+	NSMutableString *result = [NSMutableString string];
+	NSScanner *htmlScanner = [NSScanner scannerWithString:string];
+	[htmlScanner setCharactersToBeSkipped:nil];
+	NSString *scanned;
+	while ([htmlScanner isAtEnd] == NO) {
+		if ([htmlScanner scanUpToString:@"<" intoString:&scanned]) {
+			// Process text up to tag
+			[result appendString:[self stringWithActionLinksInString:scanned]];
+		}
+		if ([htmlScanner scanUpToString:@">" intoString:&scanned]) {
+			// Copy tag whole
+			[result appendString:scanned];
+		}
+		if ([htmlScanner scanString:@">" intoString:nil]) {
+			// Close the tag
+			[result appendString:@">"];
+		}
+	}
+	 */
+	
+
+	// Move to a mutable string
+	NSMutableString *result = [NSMutableString stringWithString:string];
 	
 	// Replace newlines and carriage returns with <br>
-	[s replaceOccurrencesOfString:@"\r\n" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
-	[s replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
-	[s replaceOccurrencesOfString:@"\r" withString:@"<br>" options:0 range:NSMakeRange(0, s.length)];
+	[result replaceOccurrencesOfString:@"\r\n" withString:@"<br>" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"\r" withString:@"<br>" options:0 range:NSMakeRange(0, result.length)];
 	
-	// Replace tabs with a non-breaking space followed by a norma space
-	[s replaceOccurrencesOfString:@"\t" withString:@"&nbsp; " options:0 range:NSMakeRange(0, s.length)];
+	// Replace tabs with a non-breaking space followed by a normal space
+	[result replaceOccurrencesOfString:@"\t" withString:@"&nbsp; " options:0 range:NSMakeRange(0, result.length)];
 	
 	// Remove NULs
-	[s replaceOccurrencesOfString:@"\0" withString:@"" options:0 range:NSMakeRange(0, s.length)];
+	[result replaceOccurrencesOfString:@"\0" withString:@"" options:0 range:NSMakeRange(0, result.length)];
+	
 	
 	// Process letters outside of HTML tags. Break up long words with soft hyphens and detect @user strings.
 	NSCharacterSet *whitespace = [NSCharacterSet whitespaceCharacterSet];
@@ -814,8 +875,8 @@
 	unsigned int wordLength = 0;
 	BOOL isInsideTag = NO;
 	unichar c, previousChar = 0;
-	while (index < s.length) {
-		c = [s characterAtIndex:index];
+	while (index < result.length) {
+		c = [result characterAtIndex:index];
 		if (c == '<') {
 			isInsideTag = YES;
 		} else if (c == '>') {
@@ -832,31 +893,31 @@
 		if (isInsideTag == NO) {
 			// Break up words longer than 20 chars
 			if (wordLength >= 20) {
-				[s replaceCharactersInRange:NSMakeRange(index, 0) withString:@"&shy;"]; // soft hyphen.
+				[result replaceCharactersInRange:NSMakeRange(index, 0) withString:@"&shy;"]; // soft hyphen.
 				index += 5;
 				wordLength = 10; // Reset to 10 so that every 10 chars over 20, it gets a soft hyphen.
 			}
 			
+			NSString *foundWord, *insertHTML;
+			
 			// @username: action link to User Page
 			if (c == '@') {
-				foundRange = [s rangeOfString: @"@[A-Za-z0-9_]*" options: NSRegularExpressionSearch range: NSMakeRange (index, s.length - index)];
-				if (foundRange.location != NSNotFound && foundRange.length >= 2) {
-					foundText = [s substringWithRange: NSMakeRange (foundRange.location + 1, foundRange.length - 1)];
-					insertText = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", foundText, foundText];
-					[s replaceCharactersInRange: foundRange withString: insertText];
-					index += insertText.length;
+				foundWord = [self wordInString:result startingAtIndex:index+1];
+				if (foundWord.length > 0) {
+					insertHTML = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", foundWord, foundWord];
+					[result replaceCharactersInRange: NSMakeRange(index, foundWord.length+1) withString: insertHTML];
+					index += insertHTML.length;
 					wordLength = 0;
 				}
 			}
 			
 			// #hashtag: action link to Search
 			if (c == '#' && previousChar != '&') {
-				foundRange = [s rangeOfString: @"#[A-Za-z0-9_]*" options: NSRegularExpressionSearch range: NSMakeRange (index, s.length - index)];
-				if (foundRange.location != NSNotFound && foundRange.length >= 2) {
-					foundText = [s substringWithRange:foundRange];
-					insertText = [NSString stringWithFormat: @"<a href='action:search/%@'>%@</a>", foundText, foundText];
-					[s replaceCharactersInRange: foundRange withString: insertText];
-					index += insertText.length;
+				foundWord = [self wordInString:result startingAtIndex:index+1];
+				if (foundWord.length > 0) {
+					insertHTML = [NSString stringWithFormat: @"<a href='action:search/#%@'>#%@</a>", foundWord, foundWord];
+					[result replaceCharactersInRange: NSMakeRange(index, foundWord.length+1) withString: insertHTML];
+					index += insertHTML.length;
 					wordLength = 0;
 				}
 			}
@@ -867,10 +928,7 @@
 		index++;
 	}
 	
-	return s;
-
-#endif
-	
+	return result;
 }	
 
 @end

@@ -17,6 +17,7 @@
 
 #import "HelTweeticaAppDelegate.h"
 #import "Twitter.h"
+#import "TwitterAccount.h"
 
 #ifdef TARGET_PROJECT_MAC
 #import "MainWindowController.h"
@@ -42,7 +43,7 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[self newMainWindow:nil];
+	[self newMainWindowWithAccount:nil];
 	
 	// Listen for window closing notifications
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -50,8 +51,25 @@
 }
 
 - (IBAction)newMainWindow:(id)sender {
+	[self newMainWindowWithAccount:nil];
+}
+
+- (void)newMainWindowWithAccount:(TwitterAccount*)account {
+	if (account == nil) {
+		// Use default account
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		NSString *currentAccountScreenName = [defaults objectForKey: @"currentAccount"];
+		if (currentAccountScreenName) {
+			account = [twitter accountWithScreenName:currentAccountScreenName];
+		} else {
+			if (twitter.accounts.count > 0) 
+				account = [twitter.accounts objectAtIndex: 0];
+		}
+	}
+	
 	// Create and show the main window
 	MainWindowController *controller = [[[MainWindowController alloc] initWithTwitter:twitter] autorelease];
+	controller.timelineHTMLController.account = account;
 	[controller showWindow:nil];
 	[mainWindows addObject: controller];
 }

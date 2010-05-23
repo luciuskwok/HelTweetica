@@ -1,0 +1,245 @@
+﻿body { 
+	margin: 0px; 
+	padding: 0px; 
+	font-size: 14px; 
+	font-family: Helvetica, Arial, sans-serif; 
+	line-height: 16px; 
+	background-color: #888; 
+	color: #333; 
+	width: auto;
+}
+a {color: #448; text-decoration: none; }
+p { margin: 0px 0px 20px 0px; }
+
+.artboard { padding: 0px; width: 100%; overflow: hidden; }
+.toolbar_padding { padding: 0px 0px 0px 0px; }
+
+.login { 
+	padding: 0px; 
+	margin: 32px;
+	font-size: 32px; 
+	font-weight: bold;
+	line-height: 48px; 
+	color: #888;
+}
+
+.title { color: #DDD; padding: 10px 5px 10px 5px; }
+.title a { color: #DDD; }
+
+.current_account { 
+	font-size: 28px; font-weight: bold; line-height: 28px; 
+}
+
+.tabs { 
+	background-image:url('tab-bkgnd.png'); 
+	padding: 0px 1px 0px 1px; 
+}
+
+.tab { 
+	margin: 0px 0px 0px 1px;
+	padding: 9px 0px 0px 0px;
+	width: 88px;
+	height: 23px;
+	text-align: center;
+	font-size: 12px; 
+	font-weight: bold;
+	display: inline-block; 
+	-webkit-user-select: none;
+}
+
+.spinner { 
+	float: right; 
+	margin: 5px;
+	padding: 4px 10px 4px 10px;
+	-webkit-border-radius: 8px;
+	background-color: #fff;
+	-webkit-box-shadow: 0px 4px 8px #666; 
+	color: #666; font-size: 15px; font-style: italic;
+	outline: 0px dotted #0f0;
+}
+.spinner_image {
+	margin: 0px 0px -6px 5px;
+	width: 24px;
+	height: 24px;
+}
+
+.selected { background-image:url('tab.png'); color: #444; }
+.deselected { background-image:url('tab-off.png'); color: #666; }
+
+.page_title {
+	margin: 15px 0px 15px 0px;
+	font-size: 24px; 
+	line-height: 24px;
+	color: #888;
+}
+.page_title b {
+	font-weight: bold;
+	color: #444;
+}
+
+.tweet_area { 
+	padding: 10px; margin: 0px;
+	background-color: #ffffff; 
+	-webkit-box-shadow: 0px 8px 8px #666; 
+	width: auto; 
+}
+
+.tweet_table { 
+	display: table;
+	padding: 0px; margin: 0px;
+	width: 100%; 
+}
+
+.tweet_row { 
+	display: table-row; 
+	margin: 0px; padding: 0px;
+	overflow: hidden; 
+	width: 100%; 
+}
+
+.tweet_avatar { 
+	display: table-cell; 
+	width: 48px;
+	padding: 5px 5px 5px 0px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+}
+.avatar_img { 
+	width: 48px; height: 48px; 
+	padding: 0px; 
+	-webkit-border-radius: 10px; 
+}
+.tweet_content { 
+	display: table-cell; 
+	overflow: hidden;
+	vertical-align: top;
+	padding: 5px 5px 4px 5px; 
+	border-bottom: 1px solid #ccc;
+}
+.screen_name { font-weight: bold; color: #000; }
+.time { 
+	color: #888; 
+	font-size: 10px;
+	line-height: 12px; 
+	font-style: italic; 
+}
+.time a { color: #88A; }
+.load_older { 
+	font-weight: bold; 
+	text-align: center; 
+	margin: 10px; 
+	padding: 10px 0px 10px 0px; 
+}
+
+.tweet_actions {
+	display: table-cell; 
+	width: 60px;
+	min-width: 60px;
+	padding: 0px 0px 0px 0px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+}
+
+.status {
+	text-align: center;
+	margin: 16px;
+	font-size: 32px; 
+	font-weight: bold;
+	color: #BBB;
+}
+.status_spinner_image {
+	margin: -5px 0px -5px 0px;
+	width: 32px;
+	height: 32px;
+	opacity: 0.5;
+}
+
+.hidden_stars {
+	width: 1px; height: 1px; overflow: hidden; display: none;
+}
+
+.user_info_area {
+	display: table-row;
+	margin: 0px;
+	padding: 10px;
+	width: 100%;
+}
+.user_large_avatar {
+	display: table-cell;
+	vertical-align: top;
+	text-align: left;
+	width: 250px;
+	padding: 0px 0px 10px 10px;
+	border-bottom: 1px solid #ccc;
+}
+.user_large_avatar img {
+	max-width: 250px; max-height: 250px;
+	min-width: 96px; min-height: 96px;
+	-webkit-border-radius: 20px; 
+}
+.user_info_block {
+	display: table-cell;
+	vertical-align: top;
+	width: 100%;
+	padding: 0px 10px 10px 0px;
+	border-bottom: 1px solid #ccc;
+}
+.user_info_table {
+	display: table;
+}
+.user_info_row {
+	display: table-row;
+}
+.user_info_key_cell {
+	display: table-cell;
+	width: 70px;
+	text-align: right;
+	font-size: 15px;
+	color: #888;
+	padding: 0px 10px 0px 0px;
+}
+.user_info_value_cell {
+	display: table-cell;
+	padding: 0px 0px 10px 0px;
+}
+.user_screen_name {
+	font-size: 35px;
+	font-weight: bold;
+	line-height: 40px; 
+	color: #888;
+}
+.user_screen_name a { color: #888; }
+.user_verified {
+	margin: 0px 0px -4px 0px;
+}
+.user_full_name {
+	font-size: 25px;
+	font-weight: bold;
+	line-height: 30px; 
+	color: #444;
+}
+.user_web {
+	font-weight: bold;
+}
+.user_number_value {
+	padding: 0px;
+	width: 90px;
+	text-align: left;
+	font-weight: bold;
+	color: #444;
+}
+.user_number_key {
+	padding: 0px;
+	width: 90px;
+	text-align: left;
+}
+
+.highlighted_tweet_row {
+	font-size: 25px;
+	line-height: 30px;
+	background: #FFB;
+}
+
+.mention_tweet_row {
+	background: #E0E8FF;
+}

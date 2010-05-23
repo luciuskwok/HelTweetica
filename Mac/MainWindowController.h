@@ -50,6 +50,8 @@
 - (id)initWithTwitter:(Twitter*)aTwitter;
 - (void)initToolbar;
 
+// Accounts
+- (void)reloadAccountsMenu;
 - (IBAction)addAccount:(id)sender;
 - (IBAction)editAccounts:(id)sender;
 

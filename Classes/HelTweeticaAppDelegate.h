@@ -18,41 +18,44 @@
 
 #ifdef TARGET_PROJECT_MAC
 
-	#import <Cocoa/Cocoa.h>
+#import <Cocoa/Cocoa.h>
+@class TwitterAccount;
 
-	@interface HelTweeticaAppDelegate : NSObject <NSApplicationDelegate> {
-		Twitter *twitter;
-		int networkActionCount;
-		NSMutableSet *mainWindows;
-	}
+@interface HelTweeticaAppDelegate : NSObject <NSApplicationDelegate> {
+	Twitter *twitter;
+	int networkActionCount;
+	NSMutableSet *mainWindows;
+}
 
-	@property (nonatomic, retain) Twitter *twitter;
+@property (nonatomic, retain) Twitter *twitter;
 
-	- (IBAction)newMainWindow:(id)sender;
+- (IBAction)newMainWindow:(id)sender;
 
-	- (void)incrementNetworkActionCount;
-	- (void)decrementNetworkActionCount;
+- (void)incrementNetworkActionCount;
+- (void)decrementNetworkActionCount;
 
-	@end
+- (void)newMainWindowWithAccount:(TwitterAccount*)account;
+
+@end
 
 #else
 
-	#import <UIKit/UIKit.h>
+#import <UIKit/UIKit.h>
 
-	@interface HelTweeticaAppDelegate : NSObject <UIApplicationDelegate> {
-		UIWindow *window;
-		UINavigationController *navigationController;
-		Twitter *twitter;
-		int networkActionCount;
-	}
+@interface HelTweeticaAppDelegate : NSObject <UIApplicationDelegate> {
+	UIWindow *window;
+	UINavigationController *navigationController;
+	Twitter *twitter;
+	int networkActionCount;
+}
 
-	@property (nonatomic, retain) IBOutlet UIWindow *window;
-	@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-	@property (nonatomic, retain) Twitter *twitter;
+@property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@property (nonatomic, retain) Twitter *twitter;
 
-	- (void) incrementNetworkActionCount;
-	- (void) decrementNetworkActionCount;
+- (void) incrementNetworkActionCount;
+- (void) decrementNetworkActionCount;
 
-	@end
+@end
 
 #endif
