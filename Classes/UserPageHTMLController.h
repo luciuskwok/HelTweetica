@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TimelineHTMLController.h"
-@class TwitterUser;
+#import "TwitterUser.h"
 
 
 @interface UserPageHTMLController : TimelineHTMLController {
@@ -19,9 +19,22 @@
 }
 @property (nonatomic, retain) TwitterUser *user;
 
-- (void)selectUserTimeline:(NSString*)screenName;
+// Timeline selection
+- (void)selectUserTimeline:(NSString *)screenName;
+- (void)selectFavoritesTimeline:(NSString *)screenName;
+
+// TwitterAction
+- (void)loadUserInfo;
+- (void)loadFriendStatus:(NSString*)screenName;
+- (void)follow;
+- (void)unfollow;
 
 // HTML
 - (NSString *)userInfoHTML;
 
+@end
+
+
+@protocol UserPageHTMLControllerDelegate <NSObject> 
+- (void)didUpdateFriendshipStatusWithAccountFollowsUser:(BOOL)accountFollowsUser userFollowsAccount:(BOOL)userFollowsAccount;
 @end

@@ -78,22 +78,6 @@
 	return accountsController;
 }
 
-#pragma mark WebView updating
-
-/*
-- (void) rewriteTabArea {
-	if (webViewHasValidHTML)
-		[self.webView setDocumentElement:@"tab_area" innerHTML:[self tabAreaHTML]];
-}
-
-- (void) rewriteTweetArea {
-	[self rewriteTabArea];
-	[super rewriteTweetArea];
-}
-*/
-
-#pragma mark TimelineHTMLController delegate
-
 #pragma mark UIWebView delegate methods
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -106,17 +90,11 @@
 		// Tabs
 		if ([actionName hasPrefix:@"login"]) { // Log in
 			[self login:accountsButton];
-		} else {
-			[timelineHTMLController handleWebAction:actionName];
+			return NO;
 		}
-		return NO;
 	}
 	
 	return [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)aWebView {
-	[super webViewDidFinishLoad:aWebView];
 }
 
 #pragma mark Popover delegate methods
@@ -151,8 +129,6 @@
 	[super viewDidAppear:animated];
 	if (timelineHTMLController.account == nil) {
 		[self login: accountsButton];
-	} else {
-		[timelineHTMLController scheduleRefreshTimer];
 	}
 }
 

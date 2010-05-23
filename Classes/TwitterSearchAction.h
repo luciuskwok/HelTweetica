@@ -22,6 +22,6 @@
 }
 @property (nonatomic, copy) NSString *query;
 
-- (id)initWithQuery:(NSString *)aQuery count:(NSString*)count;
+- (id)initWithQuery:(NSString *)aQuery count:(NSNumber*)count;
 
 @end

@@ -17,26 +17,24 @@
 #import "TwitterTimeline.h"
 #import "TwitterSearchAction.h"
 #import "TwitterSavedSearchAction.h"
+#import "SearchResultsHTMLController.h"
 
 
 @implementation SearchResultsViewController
 @synthesize saveButton, query;
 
 
-// Designated initializer. Uses aMessage as the head of a chain of replies, and gets each status in the reply chain.
+// Designated initializer.
 - (id)initWithQuery:(NSString*)aQuery {
 	self = [super initWithNibName:@"SearchResults" bundle:nil];
 	if (self) {
 		self.query = aQuery;
-		self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:query]];
-		self.customTabName = NSLocalizedString (@"Results", @"tab");
-		self.defaultLoadCount = @"50"; // Limit number of tweets to request.
-		maxTweetsShown = 1000; // Allow for a larger limit for searches.
 		
-		// Timeline
-		self.currentTimeline = [[[TwitterTimeline alloc] init] autorelease]; // Always start with an empty array of messages for Search.
-		currentTimeline.loadAction = [[[TwitterSearchAction alloc] initWithQuery:query count:defaultLoadCount] autorelease];
-		[self reloadCurrentTimeline];
+		// Replace HTML controller with specific one for User Pages
+		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery] autorelease];
+		controller.twitter = twitter;
+		controller.delegate = self;
+		self.timelineHTMLController = controller;
 	}
 	return self;
 }
@@ -53,13 +51,10 @@
 }
 
 - (void)viewDidLoad {
- 	// Start search
-	[self reloadCurrentTimeline];
-	
 	// If this is a saved search, disable the save button
 	// Filter set by search term
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"query LIKE[cd] %@", query];
-	NSArray *filteredResults = [currentAccount.savedSearches filteredArrayUsingPredicate:predicate];
+	NSArray *filteredResults = [timelineHTMLController.account.savedSearches filteredArrayUsingPredicate:predicate];
 	if (filteredResults.count != 0) {
 		saveButton.title = NSLocalizedString (@"Saved", @"button");
 		saveButton.enabled = NO;
@@ -73,43 +68,6 @@
 	self.saveButton = nil;
 }
 
-#pragma mark HTML formatting
-
-- (NSString *)htmlSafeString:(NSString *)string {
-	NSMutableString *result = [NSMutableString stringWithString:string];
-	[result replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:0 range:NSMakeRange(0, result.length)];
-	return result;
-}
-
-- (NSString*) webPageTemplate {
-	// Load main template
-	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"basic-template.html"];
-	NSError *error = nil;
-	NSMutableString *html  = [NSMutableString stringWithContentsOfFile:templateFile encoding:NSUTF8StringEncoding error:&error];
-	if (error) { NSLog (@"Error loading conversation-template.html: %@", [error localizedDescription]); }
-	
-	// Add any customization here.
-	
-	return html;
-}
-
-#pragma mark TwitterTimelineDelegate
-
-- (void) timeline:(TwitterTimeline *)timeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
-	// Synchronize timeline with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:NO];
-	[twitter addUsers:action.users];
-	[twitter save];
-	
-	if (timeline == currentTimeline) {
-		[self rewriteTweetArea];	
-	}
-}
-
 #pragma mark IBAction
 
 - (IBAction)saveSearch:(id)sender {
@@ -121,7 +79,7 @@
 	TwitterSavedSearchAction *action = [[[TwitterSavedSearchAction alloc] initWithCreateQuery:query] autorelease];
 	action.completionTarget = self;
 	action.completionAction = @selector(didSaveSearch:);
-	[self startTwitterAction: action];
+	[timelineHTMLController startTwitterAction: action];
 }
 
 - (void)didSaveSearch:(TwitterSavedSearchAction *)action {

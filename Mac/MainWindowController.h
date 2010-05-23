@@ -19,9 +19,10 @@
 #import <WebKit/WebKit.h>
 #import "AddAccount.h"
 #import "LKWebView.h"
+#import "TimelineHTMLController.h"
 
 
-@class Twitter, TwitterAccount;
+@class Twitter, HelTweeticaAppDelegate;
 
 
 @interface MainWindowController : NSWindowController <AddAccountDelegate, NSToolbarDelegate> {
@@ -29,8 +30,12 @@
 	IBOutlet NSPopUpButton *accountsPopUp;
 
 	Twitter *twitter;
-	TwitterAccount *currentAccount;
-	BOOL webViewHasValidHTML;
+	TimelineHTMLController *timelineHTMLController;
+	
+	BOOL webViewHasFinishedLoading;
+
+	HelTweeticaAppDelegate *appDelegate;
+
 	NSWindowController *currentSheet;
 }
 
@@ -38,7 +43,8 @@
 @property (assign) NSPopUpButton *accountsPopUp;
 
 @property (nonatomic, retain) Twitter *twitter;
-@property (nonatomic, retain) TwitterAccount *currentAccount;
+@property (nonatomic, retain) TimelineHTMLController *timelineHTMLController;
+
 @property (nonatomic, retain) NSWindowController *currentSheet;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;

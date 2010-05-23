@@ -199,7 +199,6 @@
 		E0B55028118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B55026118C137D00FFED10 /* TwitterLoadSavedSearchesAction.m */; };
 		E0C8C07511A771790081A2C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C07411A771790081A2C7 /* Foundation.framework */; };
 		E0C8C0F011A771F70081A2C7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */; };
-		E0C8C0F411A7720A0081A2C7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C0F311A7720A0081A2C7 /* AppKit.framework */; };
 		E0C8C1AE11A7721A0081A2C7 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */; };
 		E0C8C1B311A773890081A2C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		E0C8C1BE11A774560081A2C7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0C8C1BD11A774560081A2C7 /* MainMenu.xib */; };
@@ -266,9 +265,15 @@
 		E0CE88F411A90B5200AE85FE /* UserPageHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */; };
 		E0CE88F511A90B5200AE85FE /* UserPageHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */; };
 		E0CE88F611A90B5200AE85FE /* UserPageHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */; };
-		E0CE895611A912F500AE85FE /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */; };
-		E0CE895711A912F800AE85FE /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */; };
-		E0CE895811A912FA00AE85FE /* UserPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0840996118E246900670BAB /* UserPageViewController.m */; };
+		E0CE897811A915D200AE85FE /* UserPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0840996118E246900670BAB /* UserPageViewController.m */; };
+		E0CE89C611A91E0D00AE85FE /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98A311190B7ED00C9C997 /* ConversationViewController.m */; };
+		E0CE89CF11A91EFD00AE85FE /* ConversationHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE89CE11A91EFD00AE85FE /* ConversationHTMLController.m */; };
+		E0CE89D011A91EFD00AE85FE /* ConversationHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE89CE11A91EFD00AE85FE /* ConversationHTMLController.m */; };
+		E0CE89D111A91EFD00AE85FE /* ConversationHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE89CE11A91EFD00AE85FE /* ConversationHTMLController.m */; };
+		E0CE8A7911A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */; };
+		E0CE8A7A11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */; };
+		E0CE8A7B11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */; };
+		E0CE8A9011A92E5E00AE85FE /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */; };
 		E0D3E4E01193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
 		E0D3E4E11193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
 		E0D3E6AE1194D4280098BFB6 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */; };
@@ -430,7 +435,6 @@
 		E0C8C06F11A770AA0081A2C7 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		E0C8C07411A771790081A2C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		E0C8C0F311A7720A0081A2C7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		E0C8C1BD11A774560081A2C7 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = Mac/MainMenu.xib; sourceTree = "<group>"; };
 		E0C8C4EC11A7B3730081A2C7 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainWindowController.h; path = Mac/MainWindowController.h; sourceTree = "<group>"; };
@@ -447,6 +451,10 @@
 		E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineHTMLController.m; sourceTree = "<group>"; };
 		E0CE88F211A90B5200AE85FE /* UserPageHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPageHTMLController.h; sourceTree = "<group>"; };
 		E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPageHTMLController.m; sourceTree = "<group>"; };
+		E0CE89CD11A91EFD00AE85FE /* ConversationHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationHTMLController.h; sourceTree = "<group>"; };
+		E0CE89CE11A91EFD00AE85FE /* ConversationHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationHTMLController.m; sourceTree = "<group>"; };
+		E0CE8A7711A92C6C00AE85FE /* SearchResultsHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsHTMLController.h; sourceTree = "<group>"; };
+		E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsHTMLController.m; sourceTree = "<group>"; };
 		E0D3E4DE1193CDB20098BFB6 /* TwitterUserInfoAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUserInfoAction.h; sourceTree = "<group>"; };
 		E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserInfoAction.m; sourceTree = "<group>"; };
 		E0D3E6AC1194D4280098BFB6 /* TwitterTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTimeline.h; sourceTree = "<group>"; };
@@ -503,7 +511,6 @@
 			files = (
 				E0C8C07511A771790081A2C7 /* Foundation.framework in Frameworks */,
 				E0C8C0F011A771F70081A2C7 /* Cocoa.framework in Frameworks */,
-				E0C8C0F411A7720A0081A2C7 /* AppKit.framework in Frameworks */,
 				E0C8C1AE11A7721A0081A2C7 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -515,9 +522,9 @@
 			isa = PBXGroup;
 			children = (
 				E0175BAB117BFAA1003F5970 /* RootView */,
-				E0A98C77119139FF00C9C997 /* Search */,
 				E0A98A2F1190B7D400C9C997 /* Conversation */,
 				E04935D9118EB2E300BCA128 /* User Page */,
+				E0A98C77119139FF00C9C997 /* Search */,
 				E0175BAA117BFA7F003F5970 /* WebBrowser */,
 				E036EF69117B859B00D52BF6 /* AllStars */,
 				E0CE88F111A90B3300AE85FE /* HTML Controllers */,
@@ -649,8 +656,6 @@
 				28C286DF0D94DF7D0034E888 /* RootViewController.h */,
 				28C286E00D94DF7D0034E888 /* RootViewController.m */,
 				28F335F01007B36200424DE2 /* RootViewController.xib */,
-				E0B2088B118BDC1F00843A89 /* LKWebView.h */,
-				E0B2088C118BDC1F00843A89 /* LKWebView.m */,
 				E06A34C4116E96C60098CF12 /* AccountsViewController.h */,
 				E06A34C5116E96C60098CF12 /* AccountsViewController.m */,
 				E06A34C6116E96C60098CF12 /* Accounts.xib */,
@@ -767,7 +772,6 @@
 				E0C8C5F011A7CB1F0081A2C7 /* AddAccount.xib */,
 				E0C8C1BD11A774560081A2C7 /* MainMenu.xib */,
 				E0C8C07411A771790081A2C7 /* Foundation.framework */,
-				E0C8C0F311A7720A0081A2C7 /* AppKit.framework */,
 				E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */,
 				E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */,
 				E0C8C06F11A770AA0081A2C7 /* Mac-Info.plist */,
@@ -780,8 +784,14 @@
 			children = (
 				E0CE87E411A86AAF00AE85FE /* TimelineHTMLController.h */,
 				E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */,
+				E0CE89CD11A91EFD00AE85FE /* ConversationHTMLController.h */,
+				E0CE89CE11A91EFD00AE85FE /* ConversationHTMLController.m */,
 				E0CE88F211A90B5200AE85FE /* UserPageHTMLController.h */,
 				E0CE88F311A90B5200AE85FE /* UserPageHTMLController.m */,
+				E0CE8A7711A92C6C00AE85FE /* SearchResultsHTMLController.h */,
+				E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */,
+				E0B2088B118BDC1F00843A89 /* LKWebView.h */,
+				E0B2088C118BDC1F00843A89 /* LKWebView.m */,
 			);
 			name = "HTML Controllers";
 			sourceTree = "<group>";
@@ -1147,9 +1157,11 @@
 				E0D3E6AF1194D4280098BFB6 /* TwitterTimeline.m in Sources */,
 				E0CE87E811A86AAF00AE85FE /* TimelineHTMLController.m in Sources */,
 				E0CE88F511A90B5200AE85FE /* UserPageHTMLController.m in Sources */,
-				E0CE895611A912F500AE85FE /* SearchResultsViewController.m in Sources */,
-				E0CE895711A912F800AE85FE /* ConversationViewController.m in Sources */,
-				E0CE895811A912FA00AE85FE /* UserPageViewController.m in Sources */,
+				E0CE897811A915D200AE85FE /* UserPageViewController.m in Sources */,
+				E0CE89C611A91E0D00AE85FE /* ConversationViewController.m in Sources */,
+				E0CE89D011A91EFD00AE85FE /* ConversationHTMLController.m in Sources */,
+				E0CE8A7A11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */,
+				E0CE8A9011A92E5E00AE85FE /* SearchResultsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1217,8 @@
 				E0D3E6AE1194D4280098BFB6 /* TwitterTimeline.m in Sources */,
 				E0CE87E711A86AAF00AE85FE /* TimelineHTMLController.m in Sources */,
 				E0CE88F411A90B5200AE85FE /* UserPageHTMLController.m in Sources */,
+				E0CE89CF11A91EFD00AE85FE /* ConversationHTMLController.m in Sources */,
+				E0CE8A7911A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1243,6 +1257,8 @@
 				E0C8C5FD11A7CEF50081A2C7 /* AddAccount.m in Sources */,
 				E0CE87E611A86AAF00AE85FE /* TimelineHTMLController.m in Sources */,
 				E0CE88F611A90B5200AE85FE /* UserPageHTMLController.m in Sources */,
+				E0CE89D111A91EFD00AE85FE /* ConversationHTMLController.m in Sources */,
+				E0CE8A7B11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

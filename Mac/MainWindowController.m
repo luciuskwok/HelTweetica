@@ -16,6 +16,8 @@
 
 
 #import "MainWindowController.h"
+#import "HelTweeticaAppDelegate.h"
+
 #import "Twitter.h"
 #import "TwitterAccount.h"
 
@@ -31,19 +33,29 @@
 
 
 @implementation MainWindowController
-@synthesize webView, accountsPopUp, twitter, currentAccount, currentSheet;
+@synthesize webView, accountsPopUp, twitter, timelineHTMLController, currentSheet;
 
 - (id)initWithTwitter:(Twitter*)aTwitter {
 	self = [super initWithWindowNibName:@"MainWindow"];
 	if (self) {
 		self.twitter = aTwitter;
+		
+		appDelegate = [NSApp delegate];
+		
+		// Timeline HTML Controller generates the HTML from a timeline
+		self.timelineHTMLController = [[[TimelineHTMLController alloc] init] autorelease];
+		timelineHTMLController.twitter = aTwitter;
+		timelineHTMLController.delegate = self;
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[twitter release];
+	[timelineHTMLController release];
+	
 	[currentSheet release];
+	
 	[super dealloc];
 }
 
@@ -51,11 +63,9 @@
 - (void)windowDidLoad {
 	[self initToolbar];
 
-	// Create HTML to display
-	NSMutableString *html = [NSMutableString string];
-	[html appendString:@"<b>Some</b> text."];
-	
-	[webView loadHTMLString:html];
+	timelineHTMLController.webView = self.webView;
+	[timelineHTMLController selectHomeTimeline];
+	[timelineHTMLController loadWebView];
 }	
 
 - (BOOL)windowShouldClose {
@@ -64,7 +74,7 @@
 
 #pragma mark Accounts
 
-#define kAccountsMenuPresetItems 3
+#define kAccountsMenuPresetItems 4
 
 - (void)reloadAccountsMenu {
 	// Remove all items after separator and insert screen names of all accounts.
@@ -94,16 +104,18 @@
 }
 
 - (void)didLoginToAccount:(TwitterAccount*)anAccount {
-	self.currentAccount = anAccount;
-	if (webViewHasValidHTML) {
-		//[webView setDocumentElement:@"current_account" innerHTML:[self currentAccountHTML]];
-		[webView scrollToTop];
+	timelineHTMLController.account = anAccount;
+	
+	if (timelineHTMLController.webViewHasValidHTML) {
+		[self.webView setDocumentElement:@"current_account" innerHTML:[timelineHTMLController currentAccountHTML]];
+		[self.webView scrollToTop];
 	}
-	//[self selectHomeTimeline];
-	//[self startLoadingCurrentTimeline];
+	[timelineHTMLController selectHomeTimeline];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: self.currentAccount.screenName forKey: @"currentAccount"];
+	[defaults setObject: anAccount.screenName forKey: @"currentAccount"];
+	
+	[self reloadAccountsMenu];
 }
 
 #pragma mark Toolbar 
@@ -192,8 +204,27 @@
 
 #pragma mark WebFrameLoadDelegate
 
+- (void)webView:(WebView *)sender didStartProvisionalLoadForFrame:(WebFrame *)frame {
+	[appDelegate incrementNetworkActionCount];
+	timelineHTMLController.webViewHasValidHTML = YES;
+}
+
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
-	webViewHasValidHTML = YES;
+	[appDelegate decrementNetworkActionCount];
+	timelineHTMLController.webViewHasValidHTML = YES;
+	
+	if (!webViewHasFinishedLoading) {
+		webViewHasFinishedLoading = YES;
+		
+		// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
+		timelineHTMLController.suppressNetworkErrorAlerts = YES;
+		[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
+	}
+	
+	// Hide Loading spinner if there are no actions
+	if (timelineHTMLController.actions.count == 0) {
+		[timelineHTMLController setLoadingSpinnerVisibility:NO];
+	}
 }
 
 @end

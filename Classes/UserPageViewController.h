@@ -16,14 +16,17 @@
 
 #import <UIKit/UIKit.h>
 #import "TimelineViewController.h"
+#import "UserPageHTMLController.h"
 
 @class TwitterUser;
 
 
-@interface UserPageViewController : TimelineViewController {
+@interface UserPageViewController : TimelineViewController <UserPageHTMLControllerDelegate> {
 	IBOutlet UIToolbar *topToolbar;
+	TwitterUser *user;
 }
 @property (nonatomic, retain) UIToolbar *topToolbar;
+@property (nonatomic, retain) TwitterUser *user;
 
 - (id)initWithTwitterUser:(TwitterUser*)aUser;
 - (IBAction)lists: (id) sender;

@@ -7,9 +7,11 @@
 //
 
 #import "UserPageHTMLController.h"
-#import "Twitter.h"
-#import "TwitterUser.h"
+
 #import "TwitterLoadTimelineAction.h"
+#import "TwitterFriendshipsAction.h"
+#import "TwitterShowFriendshipsAction.h"
+#import "TwitterUserInfoAction.h"
 
 
 @implementation UserPageHTMLController
@@ -19,9 +21,9 @@
 	self = [super init];
 	if (self) {
 		// Special template to highlight the selected message. tweet-row-highlighted-template.html
-		NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
 		NSError *error = nil;
-		highlightedTweetRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-highlighted-template.html"] encoding:NSUTF8StringEncoding error:&error];
+		NSString *filePath = [[NSBundle mainBundle] pathForResource:@"tweet-row-highlighted-template" ofType:@"html"];
+		highlightedTweetRowTemplate = [[NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error] retain];
 		if (error != nil)
 			NSLog (@"Error loading tweet-row-highlighted-template.html: %@", [error localizedDescription]);
 	}
@@ -37,7 +39,7 @@
 
 #pragma mark Timeline selection
 
-- (void)selectUserTimeline:(NSString*)screenName {
+- (void)selectUserTimeline:(NSString *)screenName {
 	if (screenName == nil) {
 		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
 		return;
@@ -48,9 +50,10 @@
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
+	[self loadTimeline: timeline];
 }
 
-- (void)selectFavoritesTimeline:(NSString*)screenName {
+- (void)selectFavoritesTimeline:(NSString *)screenName {
 	if (screenName == nil) return;
 	
 	self.customPageTitle = [NSString stringWithFormat:@"%@&rsquo;s <b>favorites</b>", user.screenName];
@@ -58,6 +61,7 @@
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	// Favorites always loads 20 per page. Cannot change the count.
+	[self loadTimeline: timeline];
 }
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
@@ -74,16 +78,87 @@
 	}
 }
 
+#pragma mark TwitterAction
+
+- (void)loadUserInfo {
+	TwitterUserInfoAction *action = [[[TwitterUserInfoAction alloc] initWithScreenName:user.screenName] autorelease];
+	action.completionAction = @selector(didLoadUserInfo:);
+	action.completionTarget = self;
+	[self startTwitterAction:action];
+}
+
+- (void)didLoadUserInfo:(id)action {
+	// TODO: set user in Twitter singleton and in this class.
+}
+
+- (void)loadFriendStatus:(NSString*)screenName {
+	TwitterShowFriendshipsAction *action = [[[TwitterShowFriendshipsAction alloc] initWithTarget:screenName] autorelease];
+	action.completionAction = @selector(didLoadFriendStatus:);
+	action.completionTarget = self;
+	[self startTwitterAction:action];
+}
+
+- (void)didLoadFriendStatus:(TwitterShowFriendshipsAction *)action {
+	if (action.valid) {
+		id <UserPageHTMLControllerDelegate> userPageDelegate = (<UserPageHTMLControllerDelegate>) delegate;
+		if ([userPageDelegate respondsToSelector:@selector(didUpdateFriendshipStatusWithAccountFollowsUser:userFollowsAccount:)])
+			[userPageDelegate didUpdateFriendshipStatusWithAccountFollowsUser:action.sourceFollowsTarget userFollowsAccount:action.targetFollowsSource];
+	}
+}
+
+- (void)follow {
+	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:YES] autorelease];
+	action.completionAction = @selector(didFollow:);
+	action.completionTarget = self;
+	//suppressNetworkErrorAlerts = NO;
+	[self startTwitterAction:action];
+}
+
+- (void)didFollow:(id)action {
+	[self loadFriendStatus: user.screenName];
+}
+
+- (void)unfollow {
+	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:NO] autorelease];
+	action.completionAction = @selector(didUnfollow:);
+	action.completionTarget = self;
+	[self startTwitterAction:action];
+}
+
+- (void)didUnfollow:(id)action {
+	[self loadFriendStatus: user.screenName];
+}
+
+- (void)handleTwitterStatusCode:(int)code {
+	// For user pages, a status code of 401 indicates that the currentAccount isn't authorized to view this user's page
+	switch (code) {
+		case 401:
+			unauthorized = YES;
+			break;
+		case 404:
+			notFound = YES;
+			break;
+		default:
+			[super handleTwitterStatusCode:code];
+			break;
+	}
+	
+	if (code >= 400) {
+		[self invalidateRefreshTimer];
+		[self rewriteTweetArea];
+	}
+}
 
 #pragma mark HTML
 
 - (NSString*) webPageTemplate {
 	// Load main template
-	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"user-page-template.html"];
 	NSError *error = nil;
-	NSMutableString *html  = [NSMutableString stringWithContentsOfFile:templateFile encoding:NSUTF8StringEncoding error:&error];
-	
+	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"user-page-template" ofType:@"html"];
+	NSMutableString *html = [NSMutableString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil)
+		NSLog (@"Error loading user-page-template.html: %@", [error localizedDescription]);
+
 	// Replace custom tags with HTML
 	NSString *userInfoAreaHTML = [self userInfoHTML];
 	[html replaceOccurrencesOfString:@"<userInfoAreaHTML/>" withString:userInfoAreaHTML options:0 range:NSMakeRange(0, html.length)];
@@ -124,11 +199,12 @@
 - (NSString *)userInfoHTML {
 	// Load HTML template and replace variables with values.
 	
-	// Load
-	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"user-info-template.html"];
+	// Load template
 	NSError *error = nil;
-	NSMutableString *html  = [NSMutableString stringWithContentsOfFile:templateFile encoding:NSUTF8StringEncoding error:&error];
+	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"user-info-template" ofType:@"html"];
+	NSMutableString *html = [NSMutableString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil)
+		NSLog (@"Error loading user-info-template.html: %@", [error localizedDescription]);
 	
 	// Prepare variables
 	NSString *profileImageURL = @"profile-image-proxy.png";

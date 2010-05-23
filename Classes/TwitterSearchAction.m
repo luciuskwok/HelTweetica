@@ -22,7 +22,7 @@
 @synthesize query;
 
 
-- (id)initWithQuery:(NSString *)aQuery count:(NSString*)count {
+- (id)initWithQuery:(NSString *)aQuery count:(NSNumber*)count {
 	self = [super init];
 	if (self) {
 		self.query = aQuery;

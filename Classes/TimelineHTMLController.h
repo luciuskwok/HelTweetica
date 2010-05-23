@@ -7,11 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TwitterTimeline.h"
 #import "LKWebView.h"
 
+#import "Twitter.h"
+#import "TwitterAccount.h"
+#import "TwitterTimeline.h"
+#import "TwitterMessage.h"
+#import "TwitterList.h"
 
-@class Twitter, TwitterAccount, TwitterList;
+
 @class TwitterAction, TwitterLoadTimelineAction;
 @protocol TimelineHTMLControllerDelegate;
 
@@ -59,9 +63,12 @@
 @property (assign) BOOL webViewHasValidHTML;
 @property (assign) BOOL isLoading;
 @property (assign) BOOL noInternetConnection;
+@property (assign) BOOL suppressNetworkErrorAlerts;
+
+@property (assign) id delegate;
 
 // Timeline selection
-- (void) selectHomeTimeline;
+- (void)selectHomeTimeline;
 - (void)selectMentionsTimeline;
 - (void)selectDirectMessageTimeline;
 - (void)selectFavoritesTimeline;
@@ -85,7 +92,9 @@
 - (void)loadWebView;
 - (void)setLoadingSpinnerVisibility:(BOOL)isVisible;
 - (void)rewriteTweetArea;
-- (void)handleWebAction:(NSString*)action;
+
+// Web actions
+- (BOOL)handleWebAction:(NSString*)action;
 - (NSNumber*)number64WithString:(NSString*)string;
 
 // Refresh timer

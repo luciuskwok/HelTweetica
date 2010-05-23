@@ -21,9 +21,6 @@
 #import "WebBrowserViewController.h"
 
 #import "TwitterLoadTimelineAction.h"
-#import "TwitterFriendshipsAction.h"
-#import "TwitterShowFriendshipsAction.h"
-#import "TwitterUserInfoAction.h"
 
 #import "UserPageHTMLController.h"
 
@@ -34,16 +31,19 @@
 
 
 @implementation UserPageViewController
-@synthesize topToolbar;
+@synthesize topToolbar, user;
 
 
 - (id)initWithTwitterUser:(TwitterUser*)aUser {
 	self = [super initWithNibName:@"UserPage" bundle:nil];
 	if (self) {
+		self.user = aUser;
+		
 		// Replace HTML controller with specific one for User Pages
 		UserPageHTMLController *controller = [[[UserPageHTMLController alloc] init] autorelease];
 		controller.twitter = twitter;
 		controller.user = aUser;
+		controller.delegate = self;
 		self.timelineHTMLController = controller;
 	}
 	return self;
@@ -51,6 +51,7 @@
 
 - (void)dealloc {
 	[topToolbar release];
+	[user release];
 	[super dealloc];
 }
 
@@ -61,20 +62,13 @@
 }
 
 
-#pragma mark TwitterActions
+#pragma mark UserPageHTMLController delegate
 
-- (void)loadFriendStatus:(NSString*)screenName {
-	TwitterShowFriendshipsAction *action = [[[TwitterShowFriendshipsAction alloc] initWithTarget:screenName] autorelease];
-	action.completionAction = @selector(didLoadFriendStatus:);
-	action.completionTarget = self;
-	[self startTwitterAction:action];
-}
-
-- (void)didLoadFriendStatus:(TwitterShowFriendshipsAction *)action {
+- (void)didUpdateFriendshipStatusWithAccountFollowsUser:(BOOL)accountFollowsUser userFollowsAccount:(BOOL)userFollowsAccount {
 	// Insert follow/unfollow button in toolbar
 	
-	SEL buttonAction = action.sourceFollowsTarget ? @selector(unfollow:) : @selector(follow:);
-	NSString *buttonTitle = action.sourceFollowsTarget ? NSLocalizedString (@"Unfollow", @"button") : NSLocalizedString (@"Follow", @"button");
+	SEL buttonAction = accountFollowsUser ? @selector(unfollow:) : @selector(follow:);
+	NSString *buttonTitle = accountFollowsUser ? NSLocalizedString (@"Unfollow", @"button") : NSLocalizedString (@"Follow", @"button");
 	NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.topToolbar.items];
 	
 	// Remove any existing Follow/Unfollow buttons
@@ -88,7 +82,7 @@
 	}
 	
 	// Only add button if the friend status is valid
-	if (action.valid && !	[currentAccount.screenName isEqualToString:user.screenName]) {
+	if (![timelineHTMLController.account.screenName isEqualToString:user.screenName]) {
 		index = toolbarItems.count - kFollowButtonPositionFromEnd; // Position two from end
 		UIBarButtonItem *followButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered target:self action:buttonAction] autorelease];
 		followButton.tag = kFollowButtonTag;
@@ -98,32 +92,11 @@
 	[topToolbar setItems:toolbarItems animated:YES];
 }
 
-- (void)handleTwitterStatusCode:(int)code {
-	// For user pages, a status code of 401 indicates that the currentAccount isn't authorized to view this user's page
-	switch (code) {
-		case 401:
-			unauthorized = YES;
-			break;
-		case 404:
-			notFound = YES;
-			break;
-		default:
-			[super handleTwitterStatusCode:code];
-			break;
-	}
-	
-	if (code >= 400) {
-		[refreshTimer invalidate];
-		refreshTimer = nil;
-		[self rewriteTweetArea];
-	}
-}
-
 #pragma mark IBActions
 
 - (IBAction) lists: (id) sender {
 	if ([self closeAllPopovers] == NO) {
-		ListsViewController *lists = [[[ListsViewController alloc] initWithAccount:currentAccount] autorelease];
+		ListsViewController *lists = [[[ListsViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
 		lists.screenName = self.user.screenName;
 		lists.currentLists = self.user.lists;
 		lists.currentSubscriptions = self.user.listSubscriptions;
@@ -133,39 +106,13 @@
 }
 
 - (IBAction)follow:(id)sender {
-	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:YES] autorelease];
-	action.completionAction = @selector(didFollow:);
-	action.completionTarget = self;
-	suppressNetworkErrorAlerts = NO;
-	[self startTwitterAction:action];
-}
-
-- (void)didFollow:(id)action {
-	[self loadFriendStatus: user.screenName];
+	UserPageHTMLController *htmlController = (UserPageHTMLController *)timelineHTMLController;
+	[htmlController follow];
 }
 
 - (IBAction)unfollow:(id)sender {
-	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:NO] autorelease];
-	action.completionAction = @selector(didUnfollow:);
-	action.completionTarget = self;
-	[self startTwitterAction:action];
-}
-
-- (void)didUnfollow:(id)action {
-	[self loadFriendStatus: user.screenName];
-}
-
-#pragma mark User info loading
-
-- (void) loadUserInfo {
-	TwitterUserInfoAction *action = [[[TwitterUserInfoAction alloc] initWithScreenName:user.screenName] autorelease];
-	action.completionAction = @selector(didLoadUserInfo:);
-	action.completionTarget = self;
-	[self startTwitterAction:action];
-}
-
-- (void)didLoadUserInfo:(id)action {
-	// TODO: set user in Twitter singleton and in this class.
+	UserPageHTMLController *htmlController = (UserPageHTMLController *)timelineHTMLController;
+	[htmlController unfollow];
 }
 
 
@@ -176,22 +123,20 @@
 	NSURL *url = [request URL];
 	
 	if ([[url scheme] isEqualToString:@"action"]) {
-		//TwitterAccount *account = [twitter currentAccount];
 		NSString *actionName = [url resourceSpecifier];
+		UserPageHTMLController *htmlController = (UserPageHTMLController *)self.timelineHTMLController;
 		
 		// Tabs
 		if ([actionName hasPrefix:@"user"]) { // Home Timeline
 			NSString *screenName = [actionName lastPathComponent];
 			if ([screenName caseInsensitiveCompare:user.screenName] == NSOrderedSame) {
-				[self selectUserTimeline:user.screenName];
-				[self startLoadingCurrentTimeline];
+				[htmlController selectUserTimeline:user.screenName];
 			} else {
 				[self showUserPage:screenName];
 			}
 			return NO;
 		} else if ([actionName isEqualToString:@"favorites"]) { // Favorites
-			[self selectFavoritesTimeline:user.screenName];
-			[self startLoadingCurrentTimeline];
+			[htmlController selectFavoritesTimeline:user.screenName];
 			return NO;
 		}
 	}
@@ -207,16 +152,16 @@
 		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
 	
 	// Download the latest tweets from this user.
-	suppressNetworkErrorAlerts = YES;
-	[self selectUserTimeline:user.screenName];
-	[self reloadCurrentTimeline];
+	//suppressNetworkErrorAlerts = YES;
+	UserPageHTMLController *htmlController = (UserPageHTMLController *)timelineHTMLController;
+	[htmlController selectUserTimeline:user.screenName];
 	
 	// Get the following/follower status, but only if it's a different user from the account.
-	if ([currentAccount.screenName isEqualToString:user.screenName] == NO) 
-		[self loadFriendStatus: user.screenName];
+	if ([timelineHTMLController.account.screenName isEqualToString:user.screenName] == NO) 
+		[htmlController loadFriendStatus:user.screenName];
 	
 	// Get the latest user info
-	[self loadUserInfo];
+	[htmlController loadUserInfo];
 	
 	[super viewDidLoad];
 	//screenNameButton.title = user.screenName;

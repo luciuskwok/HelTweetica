@@ -8,10 +8,6 @@
 
 #import "TimelineHTMLController.h"
 
-#import "Twitter.h"
-#import "TwitterAccount.h"
-#import "TwitterMessage.h"
-#import "TwitterList.h"
 
 #import "TwitterAction.h"
 #import "TwitterFavoriteAction.h"
@@ -36,34 +32,38 @@
 
 @implementation TimelineHTMLController
 @synthesize webView, twitter, account, timeline, actions;
-@synthesize webViewHasValidHTML, isLoading, noInternetConnection;
+@synthesize webViewHasValidHTML, isLoading, noInternetConnection, suppressNetworkErrorAlerts;
 @synthesize customPageTitle, customTabName, defaultLoadCount;
+@synthesize delegate;
 
 
 - (id)init {
 	self = [super init];
 	if (self) {
 		
-		
 		// Load the HTML templates.
-		NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-		NSError *error = nil;
+		NSBundle *mainBundle = [NSBundle mainBundle];
+		NSError *error;
+		NSString *filePath;
 		
 		// Tweet row template
 		error = nil;
-		tweetRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-template.html"] encoding:NSUTF8StringEncoding error:&error];
+		filePath = [mainBundle pathForResource:@"tweet-row-template" ofType:@"html"];
+		tweetRowTemplate = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
 		if (error != nil)
 			NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
 		
 		// Mention row template
 		error = nil;
-		tweetMentionRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"tweet-row-mention-template.html"] encoding:NSUTF8StringEncoding error:&error];
+		filePath = [mainBundle pathForResource:@"tweet-row-mention-template" ofType:@"html"];
+		tweetMentionRowTemplate = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
 		if (error != nil)
 			NSLog (@"Error loading tweet-row-mention-template.html: %@", [error localizedDescription]);
 		
 		// Gap row template
 		error = nil;
-		tweetGapRowTemplate = [[NSString alloc] initWithContentsOfFile:[mainBundle stringByAppendingPathComponent:@"load-gap-template.html"] encoding:NSUTF8StringEncoding error:&error];
+		filePath = [mainBundle pathForResource:@"load-gap-template" ofType:@"html"];
+		tweetGapRowTemplate = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
 		if (error != nil)
 			NSLog (@"Error loading load-gap-template.html: %@", [error localizedDescription]);
 		
@@ -71,11 +71,11 @@
 		loadingHTML = [@"<div class='status'><img class='status_spinner_image' src='spinner.gif'> Loading...</div>"retain];
 
 		// Misc
+		isLoading = YES;
 		maxTweetsShown = kDefaultMaxTweetsShown; 
 		self.defaultLoadCount = [NSNumber numberWithInt:50]; // String to pass in the count, per_page, and rpp parameters.
 		self.actions = [NSMutableArray array]; // List of currently active network connections
 		
-
 	}
 	return self;
 }
@@ -144,7 +144,7 @@
 }
 
 - (void)startLoadingCurrentTimeline {
-	//	timelineHTMLController.suppressNetworkErrorAlerts = NO;
+	suppressNetworkErrorAlerts = NO;
 	if (noInternetConnection == NO) {
 		[self loadTimeline:timeline];
 	}
@@ -157,6 +157,7 @@
 	if (account == nil || account.xAuthToken == nil) {
 		[self setLoadingSpinnerVisibility:NO]; // No current account or not logged in.
 	} else {
+		isLoading = YES;
 		self.timeline = aTimeline;
 		timeline.delegate = self;
 		[timeline reloadNewer];
@@ -173,6 +174,7 @@
 		} else {
 			[self.webView setDocumentElement:@"footer" innerHTML:loadingHTML];
 		}
+		isLoading = YES;
 		timeline.delegate = self;
 		[timeline loadOlderWithMaxIdentifier:maxIdentifier];
 	}
@@ -183,6 +185,7 @@
 	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
 	[twitter addUsers:action.users];
 	[twitter save];
+	isLoading = NO;
 	
 	if (timeline == aTimeline) {
 		[self rewriteTweetArea];	
@@ -191,7 +194,7 @@
 
 
 - (void)loadList:(TwitterList*)list {
-	self.timeline = list.statuses;
+	TwitterTimeline *listTimeline = list.statuses;
 	
 	// Style the page title
 	NSString *pageTitle = list.fullName;
@@ -204,9 +207,12 @@
 	
 	// Create Twitter action to load list statuses into the timeline.
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
-	timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
-	[timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"per_page"];
+	listTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
+	[listTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"per_page"];
 	suppressNetworkErrorAlerts = NO;
+	
+	// Load timeline
+	[self loadTimeline: listTimeline];
 	
 	// Rewrite and scroll web view
 	[self rewriteTweetArea];	
@@ -245,6 +251,8 @@
 #pragma mark TwitterAction delegate methods
 
 - (void) showNetworkErrorAlertForStatusCode:(int)statusCode {
+	if (suppressNetworkErrorAlerts) return;
+	
 	// Show alert with error code and message.
 	NSString *title, *message;
 	
@@ -286,9 +294,12 @@
 }
 
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
-	NSString *title = NSLocalizedString (@"Network error", @"Alert");
-	if ([delegate respondsToSelector:@selector(showAlertWithTitle:message:)])
-		[delegate showAlertWithTitle:title message:[error localizedDescription]];
+	if (suppressNetworkErrorAlerts == NO) {
+		NSString *title = NSLocalizedString (@"Network error", @"Alert");
+		if ([delegate respondsToSelector:@selector(showAlertWithTitle:message:)])
+			[delegate showAlertWithTitle:title message:[error localizedDescription]];
+	}
+	
 	[self removeTwitterAction: action];
 	noInternetConnection = YES;
 }
@@ -388,6 +399,9 @@
 	[html replaceOccurrencesOfString:@"<tabAreaHTML/>" withString:tabAreaHTML options:0 range:NSMakeRange(0, html.length)];
 	
 	[self.webView loadHTMLString:html];
+	
+	// Start refresh timer so that the timestamps are always accurate
+	[self scheduleRefreshTimer];
 }
 
 - (void)setLoadingSpinnerVisibility:(BOOL)isVisible {
@@ -414,7 +428,10 @@
 	[self scheduleRefreshTimer];
 }
 
-- (void)handleWebAction:(NSString*)action {
+#pragma mark Web actions
+
+- (BOOL)handleWebAction:(NSString*)action {
+	BOOL handled = YES;
 	NSNumber *messageIdentifier = [self number64WithString:[action lastPathComponent]];
 	
 	// Select a timeline
@@ -429,13 +446,16 @@
 	}
 	
 	// Other actions
-	if ([action hasPrefix:@"fave"]) { // Add message to favorites or remove from favorites
+	else if ([action hasPrefix:@"fave"]) { // Add message to favorites or remove from favorites
 		[self fave:messageIdentifier];
 	} else if ([action hasPrefix:@"loadOlder"]) { // Load older
 		[self loadOlderWithMaxIdentifier:nil];
 	} else if ([action hasPrefix:@"loadGap"]) { // Load gap
 		[self loadOlderWithMaxIdentifier:messageIdentifier];
+	} else {
+		handled = NO;
 	}
+	return handled;
 }
 
 - (NSNumber*)number64WithString:(NSString*)string {
@@ -486,10 +506,11 @@
 
 - (NSString *)webPageTemplate {
 	// Load main template
-	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSString *templateFile = [mainBundle stringByAppendingPathComponent:@"main-template.html"];
 	NSError *error = nil;
-	NSString *html  = [NSString stringWithContentsOfFile:templateFile encoding:NSUTF8StringEncoding error:&error];
+	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"main-template" ofType:@"html"];
+	NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
+	if (error != nil)
+		NSLog (@"Error loading main-template.html: %@", [error localizedDescription]);
 	return html;
 }
 

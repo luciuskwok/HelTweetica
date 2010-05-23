@@ -48,7 +48,7 @@
 	[descriptor release];
 	
 	NSString *html = [self renderedHTMLWithAnalysis:analysis];
-	NSURL *baseURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] bundlePath]];
+	NSURL *baseURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] resourcePath]];
 	[self.webView loadHTMLString:html baseURL:baseURL];
 }
 

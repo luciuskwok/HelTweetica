@@ -20,8 +20,8 @@
 
 - (void)loadHTMLString:(NSString *)string {
 	// Use the app bundle as the base URL
-	NSString *mainBundle = [[NSBundle mainBundle] bundlePath];
-	NSURL *baseURL = [NSURL fileURLWithPath:mainBundle];
+	NSString *basePath = [[NSBundle mainBundle] resourcePath];
+	NSURL *baseURL = [NSURL fileURLWithPath:basePath];
 	
 #ifdef TARGET_PROJECT_MAC
 	// Load HTML into main frame

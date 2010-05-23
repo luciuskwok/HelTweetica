@@ -53,6 +53,7 @@
 	// Timeline HTML Controller generates the HTML from a timeline
 	self.timelineHTMLController = [[[TimelineHTMLController alloc] init] autorelease];
 	timelineHTMLController.twitter = twitter;
+	timelineHTMLController.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -130,7 +131,7 @@
 }
 
 - (IBAction) reloadData: (id) sender {
-	//timelineHTMLController.suppressNetworkErrorAlerts = NO;
+	timelineHTMLController.suppressNetworkErrorAlerts = NO;
 	[self.webView scrollToTop];
 	[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
 }
@@ -319,6 +320,8 @@
 			[self searchForQuery:[[actionName lastPathComponent] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		} else if ([actionName hasPrefix:@"conversation"]) { // Show more info on the tweet
 			[self showConversationWithMessageIdentifier:messageIdentifier];
+		} else {
+			[timelineHTMLController handleWebAction:actionName];
 		}
 		
 		return NO;
@@ -356,7 +359,7 @@
 		webViewHasFinishedLoading = YES;
 
 		// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
-		//timelineHTMLController.suppressNetworkErrorAlerts = YES;
+		timelineHTMLController.suppressNetworkErrorAlerts = YES;
 		[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
 	}
 	
