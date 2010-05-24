@@ -16,10 +16,10 @@
 
 
 #import "MainWindowController.h"
-
 #import "UserWindowController.h"
-#import "HelTweeticaAppDelegate.h"
+#import "ConversationWindowController.h"
 
+#import "HelTweeticaAppDelegate.h"
 #import "Twitter.h"
 #import "TwitterAccount.h"
 
@@ -348,6 +348,10 @@
 }	
 
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
+	// Create and show the user window
+	ConversationWindowController *controller = [[[ConversationWindowController alloc] initWithTwitter:HTMLController.twitter account:HTMLController.account messageIdentifier:identifier] autorelease];
+	[controller showWindow:nil];
+	[appDelegate.windowControllers addObject:controller];
 }
 
 #pragma mark WebView policy delegate

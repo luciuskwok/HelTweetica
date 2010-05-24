@@ -1,8 +1,8 @@
 //
-//  AddAccount.h
+//  ConversationWindowController.m
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/22/10.
+//  Created by Lucius Kwok on 5/24/10.
 
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
@@ -14,29 +14,44 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-@class Twitter;
-@class TwitterAccount;
-@protocol AddAccountDelegate;
+#import "ConversationWindowController.h"
+#import "ConversationHTMLController.h"
 
-@interface AddAccount : NSWindowController {
-	IBOutlet NSTextField *usernameField;
-	IBOutlet NSSecureTextField *passwordField;
-	Twitter *twitter;
-	id <AddAccountDelegate> delegate;
+
+@implementation ConversationWindowController
+
+
+- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account messageIdentifier:(NSNumber*)messageIdentifier {
+	self = [super initWithWindowNibName:@"ConversationWindow"];
+	if (self) {
+		appDelegate = [NSApp delegate];
+		
+		// Timeline HTML Controller generates the HTML from a timeline
+		ConversationHTMLController *controller = [[[ConversationHTMLController alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
+		self.HTMLController = controller;
+		controller.twitter = aTwitter;
+		controller.account = account;
+		controller.selectedMessageIdentifier = messageIdentifier;
+		controller.delegate = self;
+		[controller loadMessage:messageIdentifier];
+	}
+	return self;
 }
-@property (assign) NSTextField *usernameField;
-@property (assign) NSSecureTextField *passwordField;
-@property (assign) id delegate;
 
-- (id)initWithTwitter:(Twitter*)aTwitter;
-- (void)askInWindow:(NSWindow *)window modalDelegate:(id)del didEndSelector:(SEL)sel;
+- (void)dealloc {
+	[super dealloc];
+}
 
-- (IBAction)ok:(id)sender;
-- (IBAction)cancel:(id)sender;
+- (void)windowDidLoad {
+	HTMLController.webView = self.webView;
+	[HTMLController loadWebView];
+}	
 
-@end
+- (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
+	// Select the tapped message
+	ConversationHTMLController *controller= (ConversationHTMLController *)HTMLController;
+	controller.selectedMessageIdentifier = identifier;
+	[controller rewriteTweetArea];
+}
 
-@protocol AddAccountDelegate <NSObject>
-- (void)didLoginToAccount:(TwitterAccount*)anAccount;
 @end

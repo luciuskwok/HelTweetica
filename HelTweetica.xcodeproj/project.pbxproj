@@ -39,6 +39,8 @@
 		E018656F1184CC680021995D /* TwitterRetweetAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E018656D1184CC680021995D /* TwitterRetweetAction.m */; };
 		E01B9182117B5E60001949B6 /* shuffle.png in Resources */ = {isa = PBXBuildFile; fileRef = E01B9181117B5E60001949B6 /* shuffle.png */; };
 		E01B9183117B5E60001949B6 /* shuffle.png in Resources */ = {isa = PBXBuildFile; fileRef = E01B9181117B5E60001949B6 /* shuffle.png */; };
+		E027026D11AB2846008EEED5 /* ConversationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E027026C11AB2846008EEED5 /* ConversationWindowController.m */; };
+		E027027B11AB2A49008EEED5 /* ConversationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E027027A11AB2A49008EEED5 /* ConversationWindow.xib */; };
 		E02B294B1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
 		E02B294C1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
 		E03570741174E6BE004B9A0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
@@ -341,6 +343,9 @@
 		E018656C1184CC680021995D /* TwitterRetweetAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterRetweetAction.h; sourceTree = "<group>"; };
 		E018656D1184CC680021995D /* TwitterRetweetAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterRetweetAction.m; sourceTree = "<group>"; };
 		E01B9181117B5E60001949B6 /* shuffle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shuffle.png; path = Resources/shuffle.png; sourceTree = "<group>"; };
+		E027026B11AB2846008EEED5 /* ConversationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConversationWindowController.h; path = Mac/ConversationWindowController.h; sourceTree = "<group>"; };
+		E027026C11AB2846008EEED5 /* ConversationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConversationWindowController.m; path = Mac/ConversationWindowController.m; sourceTree = "<group>"; };
+		E027027A11AB2A49008EEED5 /* ConversationWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ConversationWindow.xib; path = Mac/ConversationWindow.xib; sourceTree = "<group>"; };
 		E02B29491184A13F0037F359 /* TwitterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAction.h; sourceTree = "<group>"; };
 		E02B294A1184A13F0037F359 /* TwitterAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAction.m; sourceTree = "<group>"; };
 		E03570B51174E6BE004B9A0F /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -904,12 +909,15 @@
 				E0C8C4EC11A7B3730081A2C7 /* MainWindowController.h */,
 				E0C8C4ED11A7B3730081A2C7 /* MainWindowController.m */,
 				E0C8C4F311A7B7150081A2C7 /* MainWindow.xib */,
-				E0F1F8BA11AA67A3000DD4F0 /* UserWindowController.h */,
-				E0F1F8BB11AA67A3000DD4F0 /* UserWindowController.m */,
-				E0F1FBEA11AA7107000DD4F0 /* UserWindow.xib */,
 				E0C8C5E311A7C9EE0081A2C7 /* AddAccount.h */,
 				E0C8C5E411A7C9EE0081A2C7 /* AddAccount.m */,
 				E0C8C5F011A7CB1F0081A2C7 /* AddAccount.xib */,
+				E0F1F8BA11AA67A3000DD4F0 /* UserWindowController.h */,
+				E0F1F8BB11AA67A3000DD4F0 /* UserWindowController.m */,
+				E0F1FBEA11AA7107000DD4F0 /* UserWindow.xib */,
+				E027026B11AB2846008EEED5 /* ConversationWindowController.h */,
+				E027026C11AB2846008EEED5 /* ConversationWindowController.m */,
+				E027027A11AB2A49008EEED5 /* ConversationWindow.xib */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1169,6 +1177,7 @@
 				E0F1FAA611AA6BA7000DD4F0 /* mac-toolbar-mentions.png in Resources */,
 				E0F1FBD611AA6EC4000DD4F0 /* Icon.icns in Resources */,
 				E0F1FBEB11AA7107000DD4F0 /* UserWindow.xib in Resources */,
+				E027027B11AB2A49008EEED5 /* ConversationWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1327,6 +1336,7 @@
 				E0CE89D111A91EFD00AE85FE /* ConversationHTMLController.m in Sources */,
 				E0CE8A7B11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */,
 				E0F1F8BC11AA67A3000DD4F0 /* UserWindowController.m in Sources */,
+				E027026D11AB2846008EEED5 /* ConversationWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

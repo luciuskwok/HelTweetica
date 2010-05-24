@@ -1,8 +1,8 @@
 //
-//  AddAccount.h
+//  ConversationWindowController.h
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/22/10.
+//  Created by Lucius Kwok on 5/24/10.
 
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
@@ -15,28 +15,14 @@
  */
 
 #import <Cocoa/Cocoa.h>
-@class Twitter;
-@class TwitterAccount;
-@protocol AddAccountDelegate;
+#import "MainWindowController.h"
 
-@interface AddAccount : NSWindowController {
-	IBOutlet NSTextField *usernameField;
-	IBOutlet NSSecureTextField *passwordField;
-	Twitter *twitter;
-	id <AddAccountDelegate> delegate;
+@class Twitter, TwitterAccount;
+
+@interface ConversationWindowController : MainWindowController {
 }
-@property (assign) NSTextField *usernameField;
-@property (assign) NSSecureTextField *passwordField;
-@property (assign) id delegate;
 
-- (id)initWithTwitter:(Twitter*)aTwitter;
-- (void)askInWindow:(NSWindow *)window modalDelegate:(id)del didEndSelector:(SEL)sel;
+- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account messageIdentifier:(NSNumber*)messageIdentifier;
 
-- (IBAction)ok:(id)sender;
-- (IBAction)cancel:(id)sender;
 
-@end
-
-@protocol AddAccountDelegate <NSObject>
-- (void)didLoginToAccount:(TwitterAccount*)anAccount;
 @end
