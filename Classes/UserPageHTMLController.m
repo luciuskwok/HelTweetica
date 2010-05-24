@@ -51,6 +51,13 @@
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 	[self loadTimeline: timeline];
+
+	// Show loading spinner or old tweets
+	[self rewriteTweetArea];
+	
+	// Notify delegate that a different timeline was selected.
+	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
+		[delegate didSelectTimeline:timeline];
 }
 
 - (void)selectFavoritesTimeline:(NSString *)screenName {
@@ -62,6 +69,14 @@
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	// Favorites always loads 20 per page. Cannot change the count.
 	[self loadTimeline: timeline];
+	
+	// Show loading spinner or old tweets
+	[self rewriteTweetArea];
+	
+	// Notify delegate that a different timeline was selected.
+	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
+		[delegate didSelectTimeline:timeline];
+	
 }
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {

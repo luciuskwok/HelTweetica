@@ -29,17 +29,17 @@
 #ifdef TARGET_PROJECT_MAC
 #pragma mark Mac version
 
-@synthesize twitter;
+@synthesize twitter, windowControllers;
 
 - (void)dealloc {
 	[twitter release];
-	[mainWindows release];
+	[windowControllers release];
 	[super dealloc];
 }
 
 - (void)awakeFromNib {
 	twitter = [[Twitter alloc] init];
-	mainWindows = [[NSMutableArray alloc] init];
+	windowControllers = [[NSMutableSet alloc] init];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -68,16 +68,15 @@
 	}
 	
 	// Create and show the main window
-	MainWindowController *controller = [[[MainWindowController alloc] initWithTwitter:twitter] autorelease];
-	controller.timelineHTMLController.account = account;
+	MainWindowController *controller = [[[MainWindowController alloc] initWithTwitter:twitter account:account] autorelease];
 	[controller showWindow:nil];
-	[mainWindows addObject: controller];
+	[windowControllers addObject:controller];
 }
 
 - (void)windowWillClose:(NSNotification*)notification {
 	NSWindow *aWindow = [notification object];
 	id controller = [[[aWindow windowController] retain] autorelease];
-	[mainWindows removeObject: controller];
+	[windowControllers removeObject: controller];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

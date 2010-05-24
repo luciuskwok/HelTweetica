@@ -16,6 +16,8 @@
 
 
 #import "MainWindowController.h"
+
+#import "UserWindowController.h"
 #import "HelTweeticaAppDelegate.h"
 
 #import "Twitter.h"
@@ -24,39 +26,36 @@
 #import "TwitterLoadListsAction.h"
 
 
-#define LKToolbarAccounts @"Accounts"
-#define LKToolbarFriends @"Friends"
-#define LKToolbarSearch @"Search"
-#define LKToolbarLists @"Lists"
-#define LKToolbarReload @"Reload"
-#define LKToolbarAnalyze @"Analyze"
-#define LKToolbarCompose @"Compose"
-
-
-
 @implementation MainWindowController
-@synthesize webView, accountsPopUp, timelineSegmentedControl, usersPopUp, listsPopUp, searchField;
-@synthesize twitter, timelineHTMLController, currentSheet;
+@synthesize webView;
+@synthesize usersPopUp, timelineSegmentedControl, listsPopUp, searchField;
+@synthesize HTMLController, lists, subscriptions, currentSheet;
 
 
-- (id)initWithTwitter:(Twitter*)aTwitter {
+- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account {
 	self = [super initWithWindowNibName:@"MainWindow"];
 	if (self) {
-		self.twitter = aTwitter;
-		
 		appDelegate = [NSApp delegate];
 		
 		// Timeline HTML Controller generates the HTML from a timeline
-		self.timelineHTMLController = [[[TimelineHTMLController alloc] init] autorelease];
-		timelineHTMLController.twitter = aTwitter;
-		timelineHTMLController.delegate = self;
+		self.HTMLController = [[[TimelineHTMLController alloc] init] autorelease];
+		HTMLController.twitter = aTwitter;
+		HTMLController.delegate = self;
+		HTMLController.account = account;
+		
+		self.lists = account.lists;
+		self.subscriptions = account.listSubscriptions;
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[twitter release];
-	[timelineHTMLController release];
+	HTMLController.delegate = nil;
+	[HTMLController invalidateRefreshTimer];
+	[HTMLController release];
+	
+	[lists release];
+	[subscriptions release];
 	
 	[currentSheet release];
 	
@@ -65,50 +64,64 @@
 
 
 - (void)windowDidLoad {
-	timelineHTMLController.webView = self.webView;
-	[timelineHTMLController selectHomeTimeline];
-	[timelineHTMLController loadWebView];
+	HTMLController.webView = self.webView;
+	[HTMLController selectHomeTimeline];
+	[HTMLController loadWebView];
 
 	// Set window title to account name
-	NSString *screenName = timelineHTMLController.account.screenName;
+	NSString *screenName = HTMLController.account.screenName;
 	if (screenName) 
 		[[self window] setTitle:screenName];
 
-	[self reloadAccountsMenu];
 	[self reloadUsersMenu];
 	[self reloadListsMenu];
 	
 	// Start loading lists
 	[self loadListsOfUser:nil];
+	
+	// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
+	HTMLController.suppressNetworkErrorAlerts = YES;
+	[HTMLController loadTimeline:HTMLController.timeline];
+	
 }	
 
 - (BOOL)windowShouldClose {
 	return YES;
 }
 
-#pragma mark Accounts
-#define kAccountsMenuPresetItems 4
+#pragma mark Users
+#define kUsersMenuPresetItems 7
 
-- (void)reloadAccountsMenu {
+- (void)reloadUsersMenu {
 	// Remove all items after separator and insert screen names of all accounts.
-	NSMenu *accountsMenu = accountsPopUp.menu;
-	while (accountsMenu.numberOfItems > kAccountsMenuPresetItems) {
-		[accountsMenu removeItemAtIndex:kAccountsMenuPresetItems];
+	while (usersPopUp.menu.numberOfItems > kUsersMenuPresetItems) {
+		[usersPopUp.menu removeItemAtIndex:kUsersMenuPresetItems];
 	}
 	
 	// Insert
-	for (TwitterAccount *account  in twitter.accounts) {
-		[accountsMenu addItemWithTitle:account.screenName action:@selector(selectAccount:) keyEquivalent:@""];
-		if (account == timelineHTMLController.account) {
+	for (TwitterAccount *account  in HTMLController.twitter.accounts) {
+		NSMenuItem *item = [[[NSMenuItem alloc] init] autorelease];
+		item.title = account.screenName;
+		item.action = @selector(selectAccount:);
+		item.representedObject = account;
+		if (account == HTMLController.account) {
 			// Put checkmark next to current account
-			NSMenuItem *item = [accountsPopUp lastItem];
 			[item setState:NSOnState];
 		}
+		
+		[usersPopUp.menu addItem:item];
 	}
 }
 
+- (IBAction)goToUser:(id)sender {
+}
+
+- (IBAction)myProfile:(id)sender {
+	[self showUserPage:HTMLController.account.screenName];
+}
+
 - (IBAction)addAccount:(id)sender {
-	AddAccount* sheet = [[[AddAccount alloc] initWithTwitter:twitter] autorelease];
+	AddAccount* sheet = [[[AddAccount alloc] initWithTwitter:HTMLController.twitter] autorelease];
 	sheet.delegate = self;
 	[sheet askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
 	self.currentSheet = sheet;
@@ -122,39 +135,34 @@
 }
 
 - (void)didLoginToAccount:(TwitterAccount*)anAccount {
-	timelineHTMLController.account = anAccount;
+	HTMLController.account = anAccount;
 	
 	// Set window title to account name
 	[[self window] setTitle:anAccount.screenName];
 	
-	if (timelineHTMLController.webViewHasValidHTML) {
-		//[self.webView setDocumentElement:@"current_account" innerHTML:[timelineHTMLController currentAccountHTML]];
+	if (HTMLController.webViewHasValidHTML) {
+		//[self.webView setDocumentElement:@"current_account" innerHTML:[HTMLController currentAccountHTML]];
 		[self.webView scrollToTop];
 	}
-	[timelineHTMLController selectHomeTimeline];
+	[HTMLController selectHomeTimeline];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: anAccount.screenName forKey: @"currentAccount"];
 	
-	[self reloadAccountsMenu];
 	[self reloadUsersMenu];
 	[self reloadListsMenu];
 	[self loadListsOfUser:nil];
 }
 
 - (IBAction)selectAccount:(id)sender {
-	NSString *screenName = [sender title];
-	TwitterAccount *account = [twitter accountWithScreenName:screenName];
-	
+	TwitterAccount *account = [sender representedObject];
 	if (account) 
 		[self didLoginToAccount:account];
 }
 
-#pragma mark Users
-#define kUsersMenuPresetItems 3
-
+/*
 - (void)reloadUsersMenu {
-	TwitterAccount *account = timelineHTMLController.account;
+	TwitterAccount *account = HTMLController.account;
 	if (account == nil) return;
 	
 	// Remove all items.
@@ -175,14 +183,13 @@
 
 - (IBAction)selectUser:(id)sender {
 }
+*/
 
 #pragma mark Lists
 #define kListsMenuPresetItems 1
 
 - (void)reloadListsMenu {
 	NSMenuItem *menuItem;
-	TwitterAccount *account = timelineHTMLController.account;
-	if (account == nil) return;
 
 	// Remove all items.
 	while (listsPopUp.menu.numberOfItems > kListsMenuPresetItems) {
@@ -190,7 +197,7 @@
 	}
 	
 	// Insert lists
-	for (TwitterList *list in account.lists) {
+	for (TwitterList *list in lists) {
 		menuItem = [[[NSMenuItem alloc] init] autorelease];
 		menuItem.title = [list.fullName substringFromIndex:1];
 		menuItem.action = @selector(selectList:);
@@ -199,12 +206,12 @@
 	}
 	
 	// Separator
-	if (account.lists.count > 0 && account.listSubscriptions.count > 0) {
+	if (lists.count > 0 && subscriptions.count > 0) {
 		[listsPopUp.menu addItem:[NSMenuItem separatorItem]];
 	}
 	
 	// Insert subscriptions
-	for (TwitterList *list in account.listSubscriptions) {
+	for (TwitterList *list in subscriptions) {
 		menuItem = [[[NSMenuItem alloc] init] autorelease];
 		menuItem.title = [list.fullName substringFromIndex:1];
 		menuItem.action = @selector(selectList:);
@@ -213,15 +220,15 @@
 	}
 	
 	// Empty menu
-	if (account.lists.count == 0 && account.listSubscriptions.count == 0) {
+	if (lists.count == 0 && subscriptions.count == 0) {
 		[listsPopUp.menu addItemWithTitle:@"No lists" action:@selector(disabledMenuItem:) keyEquivalent:@""];
 	}
 	
 }
 
 - (IBAction)selectList:(id)sender {
-	TwitterList *list = [sender representedObject];
-	[timelineHTMLController loadList:list];
+	TwitterList *aList = [sender representedObject];
+	[HTMLController loadList:aList];
 }
 
 - (void)loadListsOfUser:(NSString*)userOrNil {
@@ -229,23 +236,23 @@
 	TwitterLoadListsAction *listsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
 	listsAction.completionTarget= self;
 	listsAction.completionAction = @selector(didLoadLists:);
-	[timelineHTMLController startTwitterAction:listsAction];
+	[HTMLController startTwitterAction:listsAction];
 	
 	// Load lists that user subscribes to.
 	TwitterLoadListsAction *subscriptionsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
 	subscriptionsAction.completionTarget= self;
 	subscriptionsAction.completionAction = @selector(didLoadListSubscriptions:);
-	[timelineHTMLController startTwitterAction:subscriptionsAction];
+	[HTMLController startTwitterAction:subscriptionsAction];
 }
 
 - (void)didLoadLists:(TwitterLoadListsAction *)action {
 	// Keep the old list objects that match new ones because it caches the status updates
-	[timelineHTMLController.account synchronizeExisting:timelineHTMLController.account.lists withNew:action.lists];
+	[HTMLController.account synchronizeExisting:lists withNew:action.lists];
 	[self reloadListsMenu];
 }
 
 - (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
-	[timelineHTMLController.account synchronizeExisting: timelineHTMLController.account.listSubscriptions withNew:action.lists];
+	[HTMLController.account synchronizeExisting: subscriptions withNew:action.lists];
 	[self reloadListsMenu];
 }
 
@@ -256,16 +263,16 @@
 	int index = [sender selectedSegment];
 	switch (index) {
 		case 0:
-			[timelineHTMLController selectHomeTimeline];
+			[self homeTimeline:nil];
 			break;
 		case 1:
-			[timelineHTMLController selectMentionsTimeline];
+			[self mentions:nil];
 			break;
 		case 2:
-			[timelineHTMLController selectDirectMessageTimeline];
+			[self directMessages:nil];
 			break;
 		case 3:
-			[timelineHTMLController selectFavoritesTimeline];
+			[self favorites:nil];
 			break;
 		default:
 			break;
@@ -273,27 +280,27 @@
 }
 
 - (IBAction)homeTimeline:(id)sender {
-	[timelineHTMLController selectHomeTimeline];
+	HTMLController.customPageTitle = nil;
+	[HTMLController selectHomeTimeline];
 }
 
 - (IBAction)mentions:(id)sender {
-	[timelineHTMLController selectMentionsTimeline];
+	HTMLController.customPageTitle = [NSString stringWithFormat:@"@%@ <b>Mentions</b>", HTMLController.account.screenName];
+	[HTMLController selectMentionsTimeline];
 }
 
 - (IBAction)directMessages:(id)sender {
-	[timelineHTMLController selectDirectMessageTimeline];
+	HTMLController.customPageTitle = @"<b>Direct</b> Messages";
+	[HTMLController selectDirectMessageTimeline];
 }
 
 - (IBAction)favorites:(id)sender {
-	[timelineHTMLController selectFavoritesTimeline];
+	HTMLController.customPageTitle = @"Your <b>Favorites</b>";
+	[HTMLController selectFavoritesTimeline];
 }
 
 - (IBAction)refresh:(id)sender {
-	[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
-}
-
-- (IBAction)myProfile:(id)sender {
-	//[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
+	[HTMLController loadTimeline:HTMLController.timeline];
 }
 
 - (IBAction)disabledMenuItem:(id)sender {
@@ -307,50 +314,40 @@
 #pragma mark Web actions
 
 - (void)retweet:(NSNumber*)identifier {
-	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	TwitterMessage *message = [HTMLController.twitter statusWithIdentifier: identifier];
 	if (message == nil) return;
 }
 
 - (void) replyToMessage: (NSNumber*)identifier {
-	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	TwitterMessage *message = [HTMLController.twitter statusWithIdentifier: identifier];
 	if (message == nil) return;
 }
 
 - (void) directMessageWithTweet:(NSNumber*)identifier {
-	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	TwitterMessage *message = [HTMLController.twitter statusWithIdentifier: identifier];
 	if (message == nil) return;
 }
 
 - (void) showUserPage:(NSString*)screenName {
+	// Use a custom timeline showing the user's tweets, but with a big header showing the user's info.
+	TwitterUser *user = [HTMLController.twitter userWithScreenName:screenName];
+	if (user == nil) {
+		// Create an empty user and add it to the Twitter set
+		user = [[[TwitterUser alloc] init] autorelease];
+		user.screenName = screenName;
+		user.identifier = [NSNumber numberWithInt: -1]; // -1 signifies that user info has not been loaded
+	}
+	
+	// Create and show the user window
+	UserWindowController *controller = [[[UserWindowController alloc] initWithTwitter:HTMLController.twitter account:HTMLController.account user:user] autorelease];
+	[controller showWindow:nil];
+	[appDelegate.windowControllers addObject:controller];
 }
 
 - (void) searchForQuery:(NSString*)query {
 }	
 
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
-}
-
-#pragma mark TimelineHTMLController delegate
-
-- (void)didSelectTimeline:(TwitterTimeline *)timeline {
-	int index = -1;
-	if (timeline == timelineHTMLController.account.homeTimeline) {
-		index = 0;
-	} else if (timeline == timelineHTMLController.account.mentions) {
-		index = 1;
-	} else if (timeline == timelineHTMLController.account.directMessages) {
-		index = 2;
-	} else if (timeline == timelineHTMLController.account.favorites) {
-		index = 3;
-	}
-	if (index >= 0) {
-		[timelineSegmentedControl setSelectedSegment:index];
-	} else {
-		// Deselect
-		index = [timelineSegmentedControl selectedSegment];
-		if (index >= 0)
-			[timelineSegmentedControl setSelected:NO forSegment:index];
-	}
 }
 
 #pragma mark WebView policy delegate
@@ -362,9 +359,11 @@
 	// Handle Actions ourselves
 	if ([scheme isEqualToString:@"action"]) {
 		NSString *actionName = [[request URL] resourceSpecifier];
-		NSNumber *messageIdentifier = [timelineHTMLController number64WithString:[actionName lastPathComponent]];
+		NSNumber *messageIdentifier = [HTMLController number64WithString:[actionName lastPathComponent]];
 		
-		if ([actionName hasPrefix:@"retweet"]) { // Retweet message
+		if ([actionName hasPrefix:@"login"]) { // Log in
+			[self addAccount:nil];
+		} else if ([actionName hasPrefix:@"retweet"]) { // Retweet message
 			[self retweet: messageIdentifier];
 		} else if ([actionName hasPrefix:@"reply"]) { // Public reply to the sender
 			[self replyToMessage:messageIdentifier];
@@ -378,11 +377,11 @@
 			[self showConversationWithMessageIdentifier:messageIdentifier];
 		} else {
 			// handleWebAction: returns a BOOL to indicate whether or not it handled the action, but it's not needed here.
-			[timelineHTMLController handleWebAction:actionName];
+			[HTMLController handleWebAction:actionName];
 		}
 		[listener ignore];
 	}
-		
+	
 	// Open links in default browser
 	else if ([scheme hasPrefix:@"http"]) {
 		[[NSWorkspace sharedWorkspace] openURL: [request URL]];
@@ -395,25 +394,35 @@
 #pragma mark WebFrameLoadDelegate
 
 - (void)webView:(WebView *)sender didStartProvisionalLoadForFrame:(WebFrame *)frame {
-	[appDelegate incrementNetworkActionCount];
-	timelineHTMLController.webViewHasValidHTML = YES;
+	//[appDelegate incrementNetworkActionCount];
+	HTMLController.webViewHasValidHTML = YES;
 }
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
-	[appDelegate decrementNetworkActionCount];
-	timelineHTMLController.webViewHasValidHTML = YES;
-	
-	if (!webViewHasFinishedLoading) {
-		webViewHasFinishedLoading = YES;
-		
-		// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
-		timelineHTMLController.suppressNetworkErrorAlerts = YES;
-		[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
+	//[appDelegate decrementNetworkActionCount];
+	HTMLController.webViewHasValidHTML = YES;
+}
+
+#pragma mark TimelineHTMLController delegate
+
+- (void)didSelectTimeline:(TwitterTimeline *)timeline {
+	int index = -1;
+	if (timeline == HTMLController.account.homeTimeline) {
+		index = 0;
+	} else if (timeline == HTMLController.account.mentions) {
+		index = 1;
+	} else if (timeline == HTMLController.account.directMessages) {
+		index = 2;
+	} else if (timeline == HTMLController.account.favorites) {
+		index = 3;
 	}
-	
-	// Hide Loading spinner if there are no actions
-	if (timelineHTMLController.actions.count == 0) {
-		[timelineHTMLController setLoadingSpinnerVisibility:NO];
+	if (index >= 0) {
+		[timelineSegmentedControl setSelectedSegment:index];
+	} else {
+		// Deselect
+		index = [timelineSegmentedControl selectedSegment];
+		if (index >= 0)
+			[timelineSegmentedControl setSelected:NO forSegment:index];
 	}
 }
 

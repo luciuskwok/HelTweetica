@@ -105,8 +105,6 @@
 
 - (void)selectHomeTimeline {
 	self.customTabName = kTimelineIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-	
 	self.timeline = account.homeTimeline;
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
@@ -115,8 +113,6 @@
 
 - (void)selectMentionsTimeline {
 	self.customTabName = kMentionsIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-	
 	self.timeline = account.mentions;
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
@@ -125,8 +121,6 @@
 
 - (void)selectDirectMessageTimeline {
 	self.customTabName = kDirectMessagesIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-	
 	self.timeline = account.directMessages;
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
@@ -135,8 +129,6 @@
 
 - (void)selectFavoritesTimeline {
 	self.customTabName = kFavoritesIdentifier;
-	self.customPageTitle = nil; // Reset the custom page title.
-	
 	self.timeline = account.favorites;
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	// Favorites always loads 20 per page. Cannot change the count.
@@ -265,7 +257,10 @@
 	// Show alert with error code and message.
 	NSString *title, *message;
 	
-	if (statusCode == 401) { // Unauthorized
+	if (statusCode == 400) { // Bad request, or rate limit exceeded
+		title = NSLocalizedString (@"Rate limit exceeded", @"Alert");
+		message = NSLocalizedString (@"Please wait and try again later. (400)", @"Alert");
+	} else if (statusCode == 401) { // Unauthorized
 		title = NSLocalizedString (@"Unable to log in", @"Alert");
 		message = NSLocalizedString (@"The Twitter username or password is incorrect. (401 Unauthorized)", @"Alert");
 	} else if (statusCode == 403) { // The request is understood, but it has been refused.
@@ -445,12 +440,16 @@
 	
 	// Select a timeline
 	if ([action isEqualToString:kTimelineIdentifier]) { // Home Timeline
+		self.customPageTitle = nil; // Reset the custom page title.
 		[self selectHomeTimeline];
 	} else if ([action isEqualToString:kMentionsIdentifier]) { // Mentions
+		self.customPageTitle = nil; // Reset the custom page title.
 		[self selectMentionsTimeline];
 	} else if ([action isEqualToString:kDirectMessagesIdentifier]) { // Direct Messages
+		self.customPageTitle = nil; // Reset the custom page title.
 		[self selectDirectMessageTimeline];
 	} else if ([action isEqualToString:kFavoritesIdentifier]) { // Favorites
+		self.customPageTitle = nil; // Reset the custom page title.
 		[self selectFavoritesTimeline];
 	}
 	
@@ -557,16 +556,17 @@
 - (NSString*) tweetAreaHTML {
 	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
 	
-	[html appendString:@"<div class='tweet_table'> "];
 	
 	// Page Title for Lists and Search
 	if (customPageTitle) {
 		// Put the title inside a regular tweet table row.
-		[html appendString:@"<div class='tweet_row'><div class='tweet_avatar'></div><div class='tweet_content'>"];
+		[html appendString:@"<div class='tweet_table'><div class='tweet_row'><div class='tweet_avatar'></div><div class='tweet_content'>"];
 		[html appendFormat:@"<div class='page_title'>%@</div>", customPageTitle];
-		[html appendString:@"</div><div class='tweet_actions'> </div></div>"];
+		[html appendString:@"</div></div></div>"];
 	}
 	
+	[html appendString:@"<div class='tweet_table'> "];
+
 	NSArray *messages = timeline.messages; 
 	int displayedCount = (messages.count < maxTweetsShown) ? messages.count : maxTweetsShown;
 	

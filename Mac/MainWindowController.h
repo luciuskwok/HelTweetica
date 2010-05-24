@@ -16,56 +16,50 @@
 
 
 #import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
 #import "AddAccount.h"
-#import "LKWebView.h"
 #import "TimelineHTMLController.h"
+#import "LKWebView.h"
 
 
 @class Twitter, HelTweeticaAppDelegate;
 
 
-@interface MainWindowController : NSWindowController <AddAccountDelegate, NSToolbarDelegate> {
+@interface MainWindowController : NSWindowController <AddAccountDelegate> {
 	IBOutlet LKWebView *webView;
-	IBOutlet NSPopUpButton *accountsPopUp;
-	IBOutlet NSSegmentedControl *timelineSegmentedControl;
 	IBOutlet NSPopUpButton *usersPopUp;
+	IBOutlet NSSegmentedControl *timelineSegmentedControl;
 	IBOutlet NSPopUpButton *listsPopUp;
 	IBOutlet NSSearchField *searchField;
 
-	Twitter *twitter;
-	TimelineHTMLController *timelineHTMLController;
-	
-	BOOL webViewHasFinishedLoading;
-
 	HelTweeticaAppDelegate *appDelegate;
-
+	TimelineHTMLController *HTMLController;
+	NSMutableArray *lists;
+	NSMutableArray *subscriptions;
+	
 	NSWindowController *currentSheet;
 }
 
 @property (assign) LKWebView *webView;
-@property (assign) NSPopUpButton *accountsPopUp;
-@property (assign) NSSegmentedControl *timelineSegmentedControl;
 @property (assign) NSPopUpButton *usersPopUp;
+@property (assign) NSSegmentedControl *timelineSegmentedControl;
 @property (assign) NSPopUpButton *listsPopUp;
 @property (assign) NSSearchField *searchField;
 
-@property (nonatomic, retain) Twitter *twitter;
-@property (nonatomic, retain) TimelineHTMLController *timelineHTMLController;
+@property (nonatomic, retain) TimelineHTMLController *HTMLController;
+@property (nonatomic, retain) NSMutableArray *lists;
+@property (nonatomic, retain) NSMutableArray *subscriptions;
 
 @property (nonatomic, retain) NSWindowController *currentSheet;
 
-- (id)initWithTwitter:(Twitter*)aTwitter;
-
-// Accounts
-- (void)reloadAccountsMenu;
-- (IBAction)addAccount:(id)sender;
-- (IBAction)editAccounts:(id)sender;
-- (IBAction)selectAccount:(id)sender;
+- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account;
 
 // Users
 - (void)reloadUsersMenu;
-- (IBAction)selectUser:(id)sender;
+- (IBAction)goToUser:(id)sender;
+- (IBAction)myProfile:(id)sender;
+- (IBAction)addAccount:(id)sender;
+- (IBAction)editAccounts:(id)sender;
+- (IBAction)selectAccount:(id)sender;
 
 // Lists
 - (void)reloadListsMenu;
@@ -79,5 +73,9 @@
 - (IBAction)directMessages:(id)sender;
 - (IBAction)favorites:(id)sender;
 - (IBAction)refresh:(id)sender;
+
+// Web actions
+- (void) showUserPage:(NSString*)screenName;
+
 
 @end

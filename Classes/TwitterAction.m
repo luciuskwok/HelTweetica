@@ -112,7 +112,8 @@
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];
 	isLoading = YES;
 	
-	// Retain delegate until the NSURLConnection returns with a finished or error callback
+	// Retain completionTarget and delegate until the NSURLConnection returns with a finished or error callback
+	[completionTarget retain];
 	[delegate retain];
 	[appDelegate incrementNetworkActionCount];
 }
@@ -191,6 +192,7 @@
 		[completionTarget performSelector:completionAction withObject:self];
 	}
 	
+	[completionTarget release];
 	[delegate release];
 	self.connection = nil;
 	self.receivedData = nil;
@@ -206,6 +208,7 @@
 	if ([delegate respondsToSelector:@selector(twitterAction:didFailWithError:)])
 		[delegate twitterAction:self didFailWithError:error];
 
+	[completionTarget release];
 	[delegate release];
 	self.connection = nil;
 	self.receivedData = nil;

@@ -297,6 +297,10 @@
 		E0F1F83611AA5178000DD4F0 /* mac-toolbar-direct.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F83311AA5178000DD4F0 /* mac-toolbar-direct.png */; };
 		E0F1F83711AA5178000DD4F0 /* mac-toolbar-home.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F83411AA5178000DD4F0 /* mac-toolbar-home.png */; };
 		E0F1F83811AA5178000DD4F0 /* mac-toolbar-star.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F83511AA5178000DD4F0 /* mac-toolbar-star.png */; };
+		E0F1F8BC11AA67A3000DD4F0 /* UserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1F8BB11AA67A3000DD4F0 /* UserWindowController.m */; };
+		E0F1FAA611AA6BA7000DD4F0 /* mac-toolbar-mentions.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1FAA511AA6BA7000DD4F0 /* mac-toolbar-mentions.png */; };
+		E0F1FBD611AA6EC4000DD4F0 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = E0F1FBD511AA6EC4000DD4F0 /* Icon.icns */; };
+		E0F1FBEB11AA7107000DD4F0 /* UserWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0F1FBEA11AA7107000DD4F0 /* UserWindow.xib */; };
 		E0FC9A241163CA7A0027C422 /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC9A231163CA7A0027C422 /* OAuthClient.m */; };
 /* End PBXBuildFile section */
 
@@ -487,6 +491,11 @@
 		E0F1F83311AA5178000DD4F0 /* mac-toolbar-direct.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-direct.png"; path = "Mac/mac-toolbar-direct.png"; sourceTree = "<group>"; };
 		E0F1F83411AA5178000DD4F0 /* mac-toolbar-home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-home.png"; path = "Mac/mac-toolbar-home.png"; sourceTree = "<group>"; };
 		E0F1F83511AA5178000DD4F0 /* mac-toolbar-star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-star.png"; path = "Mac/mac-toolbar-star.png"; sourceTree = "<group>"; };
+		E0F1F8BA11AA67A3000DD4F0 /* UserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserWindowController.h; path = Mac/UserWindowController.h; sourceTree = "<group>"; };
+		E0F1F8BB11AA67A3000DD4F0 /* UserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserWindowController.m; path = Mac/UserWindowController.m; sourceTree = "<group>"; };
+		E0F1FAA511AA6BA7000DD4F0 /* mac-toolbar-mentions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-mentions.png"; path = "Mac/mac-toolbar-mentions.png"; sourceTree = "<group>"; };
+		E0F1FBD511AA6EC4000DD4F0 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Icon.icns; path = Mac/Icon.icns; sourceTree = "<group>"; };
+		E0F1FBEA11AA7107000DD4F0 /* UserWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = UserWindow.xib; path = Mac/UserWindow.xib; sourceTree = "<group>"; };
 		E0FC9A221163CA7A0027C422 /* OAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthClient.h; sourceTree = "<group>"; };
 		E0FC9A231163CA7A0027C422 /* OAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthClient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -778,23 +787,9 @@
 		E0C8C07311A771370081A2C7 /* Mac */ = {
 			isa = PBXGroup;
 			children = (
-				E0C8C4EC11A7B3730081A2C7 /* MainWindowController.h */,
-				E0C8C4ED11A7B3730081A2C7 /* MainWindowController.m */,
-				E0C8C4F311A7B7150081A2C7 /* MainWindow.xib */,
-				E0F1F83411AA5178000DD4F0 /* mac-toolbar-home.png */,
-				E0F1F83311AA5178000DD4F0 /* mac-toolbar-direct.png */,
-				E0F1F83511AA5178000DD4F0 /* mac-toolbar-star.png */,
-				E0F1F6F411AA10D5000DD4F0 /* mac-toolbar-lists.png */,
-				E0F1F6EF11AA1030000DD4F0 /* mac-toolbar-user.png */,
-				E0C8C5E311A7C9EE0081A2C7 /* AddAccount.h */,
-				E0C8C5E411A7C9EE0081A2C7 /* AddAccount.m */,
-				E0C8C5F011A7CB1F0081A2C7 /* AddAccount.xib */,
-				E0C8C1BD11A774560081A2C7 /* MainMenu.xib */,
-				E0F1F5E311A9B5DD000DD4F0 /* style.css */,
-				E0F1F7C011AA2FFD000DD4F0 /* main-template.html */,
-				E0C8C07411A771790081A2C7 /* Foundation.framework */,
-				E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */,
-				E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */,
+				E0F1FAAD11AA6E8A000DD4F0 /* Classes */,
+				E0F1FAAC11AA6E81000DD4F0 /* Resources */,
+				E0F1FAAE11AA6EAF000DD4F0 /* Frameworks */,
 				E0C8C06F11A770AA0081A2C7 /* Mac-Info.plist */,
 			);
 			name = Mac;
@@ -884,6 +879,49 @@
 				E0A8F16D116D799900DF2BDB /* test.json */,
 			);
 			name = "Unit Tests";
+			sourceTree = "<group>";
+		};
+		E0F1FAAC11AA6E81000DD4F0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E0F1FBD511AA6EC4000DD4F0 /* Icon.icns */,
+				E0C8C1BD11A774560081A2C7 /* MainMenu.xib */,
+				E0F1F83411AA5178000DD4F0 /* mac-toolbar-home.png */,
+				E0F1FAA511AA6BA7000DD4F0 /* mac-toolbar-mentions.png */,
+				E0F1F83311AA5178000DD4F0 /* mac-toolbar-direct.png */,
+				E0F1F83511AA5178000DD4F0 /* mac-toolbar-star.png */,
+				E0F1F6F411AA10D5000DD4F0 /* mac-toolbar-lists.png */,
+				E0F1F6EF11AA1030000DD4F0 /* mac-toolbar-user.png */,
+				E0F1F5E311A9B5DD000DD4F0 /* style.css */,
+				E0F1F7C011AA2FFD000DD4F0 /* main-template.html */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		E0F1FAAD11AA6E8A000DD4F0 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E0C8C4EC11A7B3730081A2C7 /* MainWindowController.h */,
+				E0C8C4ED11A7B3730081A2C7 /* MainWindowController.m */,
+				E0C8C4F311A7B7150081A2C7 /* MainWindow.xib */,
+				E0F1F8BA11AA67A3000DD4F0 /* UserWindowController.h */,
+				E0F1F8BB11AA67A3000DD4F0 /* UserWindowController.m */,
+				E0F1FBEA11AA7107000DD4F0 /* UserWindow.xib */,
+				E0C8C5E311A7C9EE0081A2C7 /* AddAccount.h */,
+				E0C8C5E411A7C9EE0081A2C7 /* AddAccount.m */,
+				E0C8C5F011A7CB1F0081A2C7 /* AddAccount.xib */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		E0F1FAAE11AA6EAF000DD4F0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0C8C07411A771790081A2C7 /* Foundation.framework */,
+				E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */,
+				E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1128,6 +1166,9 @@
 				E0F1F83611AA5178000DD4F0 /* mac-toolbar-direct.png in Resources */,
 				E0F1F83711AA5178000DD4F0 /* mac-toolbar-home.png in Resources */,
 				E0F1F83811AA5178000DD4F0 /* mac-toolbar-star.png in Resources */,
+				E0F1FAA611AA6BA7000DD4F0 /* mac-toolbar-mentions.png in Resources */,
+				E0F1FBD611AA6EC4000DD4F0 /* Icon.icns in Resources */,
+				E0F1FBEB11AA7107000DD4F0 /* UserWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1285,6 +1326,7 @@
 				E0CE88F611A90B5200AE85FE /* UserPageHTMLController.m in Sources */,
 				E0CE89D111A91EFD00AE85FE /* ConversationHTMLController.m in Sources */,
 				E0CE8A7B11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */,
+				E0F1F8BC11AA67A3000DD4F0 /* UserWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

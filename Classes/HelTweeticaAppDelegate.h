@@ -24,10 +24,11 @@
 @interface HelTweeticaAppDelegate : NSObject <NSApplicationDelegate> {
 	Twitter *twitter;
 	int networkActionCount;
-	NSMutableSet *mainWindows;
+	NSMutableSet *windowControllers;
 }
 
 @property (nonatomic, retain) Twitter *twitter;
+@property (nonatomic, retain) NSMutableSet *windowControllers;
 
 - (IBAction)newMainWindow:(id)sender;
 
