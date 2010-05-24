@@ -8,7 +8,7 @@
 	color: #333; 
 	width: auto;
 }
-a {color: #448; text-decoration: none; }
+a {color: #66C; text-decoration: none; }
 p { margin: 0px 0px 20px 0px; }
 
 .artboard { padding: 0px; width: 100%; overflow: hidden; }
@@ -67,7 +67,7 @@ p { margin: 0px 0px 20px 0px; }
 .deselected { background-image:url('tab-off.png'); color: #666; }
 
 .page_title {
-	margin: 15px 0px 15px 0px;
+	margin: 5px 0px 15px 0px;
 	font-size: 24px; 
 	line-height: 24px;
 	color: #888;
@@ -78,7 +78,7 @@ p { margin: 0px 0px 20px 0px; }
 }
 
 .tweet_area { 
-	padding: 10px; margin: 0px;
+	padding: 5px; margin: 0px;
 	background-color: #ffffff; 
 	-webkit-box-shadow: 0px 8px 8px #666; 
 	width: auto; 
@@ -100,7 +100,7 @@ p { margin: 0px 0px 20px 0px; }
 .tweet_avatar { 
 	display: table-cell; 
 	width: 48px;
-	padding: 5px 5px 5px 0px;
+	padding: 5px;
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
 }
@@ -117,6 +117,7 @@ p { margin: 0px 0px 20px 0px; }
 	border-bottom: 1px solid #ccc;
 }
 .screen_name { font-weight: bold; color: #000; }
+.screen_name a { color: #226; }
 .time { 
 	color: #888; 
 	font-size: 10px;

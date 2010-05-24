@@ -149,6 +149,10 @@
 		[self loadTimeline:timeline];
 	}
 	[self rewriteTweetArea];
+	
+	// Notify delegate that a different timeline was selected.
+	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
+		[delegate didSelectTimeline:timeline];
 }
 
 #pragma mark Loading
@@ -217,6 +221,11 @@
 	// Rewrite and scroll web view
 	[self rewriteTweetArea];	
 	[self.webView scrollToTop];
+
+	// Notify delegate that a different timeline was selected.
+	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
+		[delegate didSelectTimeline:timeline];
+
 }
 
 #pragma mark TwitterAction

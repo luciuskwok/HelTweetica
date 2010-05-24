@@ -80,7 +80,8 @@
 	[encoder encodeObject:receivedDate forKey:@"receivedDate"];
 }
 
-#pragma mark -
+
+#pragma mark NSSet and debugging
 
 - (NSString*) description {
 	return [NSString stringWithFormat: @"\"%@\" (%@): %@", name, slug, description];

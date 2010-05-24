@@ -118,4 +118,5 @@
 
 @protocol TimelineHTMLControllerDelegate <NSObject> 
 - (void)showAlertWithTitle:(NSString *)aTitle message:(NSString *)aMessage;
+- (void)didSelectTimeline:(TwitterTimeline *)timeline;
 @end

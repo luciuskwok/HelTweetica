@@ -135,33 +135,16 @@
 	}
 }
 
-- (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {
-	NSSet *oldSet = [NSSet setWithArray: existingLists];
-	
-	// Remove all old objects and insert new objects, reusing old ones if they match.
-	[existingLists removeAllObjects];
-	int index;
-	TwitterList *oldList, *newList;
-	for (index = 0; index < newLists.count; index++) {
-		newList = [newLists objectAtIndex: index];
-		oldList = [oldSet member:newList]; // If the set of old lists includes an identical member from the new lists, replace the entry in the new lists with the old one.
-		if (oldList)
-			newList = oldList;
-		newList.receivedDate = [NSDate date];
-		[existingLists addObject: newList];
-	}
-}
-
 - (void)didLoadLists:(TwitterLoadListsAction *)action {
 	// Keep the old list objects that match new ones because it caches the status updates
-	[self synchronizeExisting: currentLists withNew:action.lists];
+	[account synchronizeExisting: currentLists withNew:action.lists];
 	[self setContentSize];
 	[self.tableView reloadData];
 	//[self.tableView flashScrollIndicators];
 }
 
 - (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
-	[self synchronizeExisting: currentSubscriptions withNew:action.lists];
+	[account synchronizeExisting: currentSubscriptions withNew:action.lists];
 	[self setContentSize];
 	[self.tableView reloadData];
 	//[self.tableView flashScrollIndicators];

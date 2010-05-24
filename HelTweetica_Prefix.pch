@@ -1,22 +1,9 @@
 //
-// Prefix header for all source files of the 'HelTweetica' target in the 'HelTweetica' project
+// Prefix header for all source files of the 'Dev' and 'AppStore' targets in the 'HelTweetica' project
 //
 
 #import <Availability.h>
-#import <TargetConditionals.h>
-
-#ifdef TARGET_PROJECT_MAC
-
-	#import <Cocoa/Cocoa.h>
-
-
-#else
-
-	#ifdef __OBJC__
-		#import <Foundation/Foundation.h>
-		#import <UIKit/UIKit.h>
-	#endif
-
-
-
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+	#import <UIKit/UIKit.h>
 #endif

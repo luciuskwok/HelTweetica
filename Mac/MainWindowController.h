@@ -28,6 +28,10 @@
 @interface MainWindowController : NSWindowController <AddAccountDelegate, NSToolbarDelegate> {
 	IBOutlet LKWebView *webView;
 	IBOutlet NSPopUpButton *accountsPopUp;
+	IBOutlet NSSegmentedControl *timelineSegmentedControl;
+	IBOutlet NSPopUpButton *usersPopUp;
+	IBOutlet NSPopUpButton *listsPopUp;
+	IBOutlet NSSearchField *searchField;
 
 	Twitter *twitter;
 	TimelineHTMLController *timelineHTMLController;
@@ -41,6 +45,10 @@
 
 @property (assign) LKWebView *webView;
 @property (assign) NSPopUpButton *accountsPopUp;
+@property (assign) NSSegmentedControl *timelineSegmentedControl;
+@property (assign) NSPopUpButton *usersPopUp;
+@property (assign) NSPopUpButton *listsPopUp;
+@property (assign) NSSearchField *searchField;
 
 @property (nonatomic, retain) Twitter *twitter;
 @property (nonatomic, retain) TimelineHTMLController *timelineHTMLController;
@@ -48,12 +56,28 @@
 @property (nonatomic, retain) NSWindowController *currentSheet;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;
-- (void)initToolbar;
 
 // Accounts
 - (void)reloadAccountsMenu;
 - (IBAction)addAccount:(id)sender;
 - (IBAction)editAccounts:(id)sender;
+- (IBAction)selectAccount:(id)sender;
 
+// Users
+- (void)reloadUsersMenu;
+- (IBAction)selectUser:(id)sender;
+
+// Lists
+- (void)reloadListsMenu;
+- (IBAction)selectList:(id)sender;
+- (void)loadListsOfUser:(NSString*)userOrNil;
+
+// Actions
+- (IBAction)selectTimelineWithSegmentedControl:(id)sender;
+- (IBAction)homeTimeline:(id)sender;
+- (IBAction)mentions:(id)sender;
+- (IBAction)directMessages:(id)sender;
+- (IBAction)favorites:(id)sender;
+- (IBAction)refresh:(id)sender;
 
 @end

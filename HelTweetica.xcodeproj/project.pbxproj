@@ -227,7 +227,6 @@
 		E0C8C25411A782E40081A2C7 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
 		E0C8C25D11A787460081A2C7 /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC9A231163CA7A0027C422 /* OAuthClient.m */; };
 		E0C8C26011A789550081A2C7 /* LKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B2088C118BDC1F00843A89 /* LKWebView.m */; };
-		E0C8C28E11A799D50081A2C7 /* main-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E03F91D7118F7BEA00D3A76B /* main-template.html */; };
 		E0C8C28F11A799D50081A2C7 /* basic-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0A98A671190BE9C00C9C997 /* basic-template.html */; };
 		E0C8C29011A799D50081A2C7 /* load-gap-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E006304D119DF570009F477B /* load-gap-template.html */; };
 		E0C8C29111A799D50081A2C7 /* tweet-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E03F90DE118F58DF00D3A76B /* tweet-row-template.html */; };
@@ -292,6 +291,12 @@
 		E0F04C7911723DBF00AAA38E /* Search.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0F04C7711723DBF00AAA38E /* Search.xib */; };
 		E0F04DFC11737F2A00AAA38E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0F04DFB11737F2A00AAA38E /* MessageUI.framework */; };
 		E0F1F5E411A9B5DD000DD4F0 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F5E311A9B5DD000DD4F0 /* style.css */; };
+		E0F1F6F011AA1030000DD4F0 /* mac-toolbar-user.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F6EF11AA1030000DD4F0 /* mac-toolbar-user.png */; };
+		E0F1F6F511AA10D5000DD4F0 /* mac-toolbar-lists.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F6F411AA10D5000DD4F0 /* mac-toolbar-lists.png */; };
+		E0F1F7C111AA2FFD000DD4F0 /* main-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F7C011AA2FFD000DD4F0 /* main-template.html */; };
+		E0F1F83611AA5178000DD4F0 /* mac-toolbar-direct.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F83311AA5178000DD4F0 /* mac-toolbar-direct.png */; };
+		E0F1F83711AA5178000DD4F0 /* mac-toolbar-home.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F83411AA5178000DD4F0 /* mac-toolbar-home.png */; };
+		E0F1F83811AA5178000DD4F0 /* mac-toolbar-star.png in Resources */ = {isa = PBXBuildFile; fileRef = E0F1F83511AA5178000DD4F0 /* mac-toolbar-star.png */; };
 		E0FC9A241163CA7A0027C422 /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC9A231163CA7A0027C422 /* OAuthClient.m */; };
 /* End PBXBuildFile section */
 
@@ -475,6 +480,13 @@
 		E0F04C7711723DBF00AAA38E /* Search.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Search.xib; sourceTree = "<group>"; };
 		E0F04DFB11737F2A00AAA38E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		E0F1F5E311A9B5DD000DD4F0 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = style.css; path = Mac/style.css; sourceTree = "<group>"; };
+		E0F1F6EF11AA1030000DD4F0 /* mac-toolbar-user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-user.png"; path = "Mac/mac-toolbar-user.png"; sourceTree = "<group>"; };
+		E0F1F6F411AA10D5000DD4F0 /* mac-toolbar-lists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-lists.png"; path = "Mac/mac-toolbar-lists.png"; sourceTree = "<group>"; };
+		E0F1F7C011AA2FFD000DD4F0 /* main-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "main-template.html"; path = "Mac/main-template.html"; sourceTree = "<group>"; };
+		E0F1F81911AA47E0000DD4F0 /* HelTweetica_Mac_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweetica_Mac_Prefix.pch; sourceTree = "<group>"; };
+		E0F1F83311AA5178000DD4F0 /* mac-toolbar-direct.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-direct.png"; path = "Mac/mac-toolbar-direct.png"; sourceTree = "<group>"; };
+		E0F1F83411AA5178000DD4F0 /* mac-toolbar-home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-home.png"; path = "Mac/mac-toolbar-home.png"; sourceTree = "<group>"; };
+		E0F1F83511AA5178000DD4F0 /* mac-toolbar-star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-star.png"; path = "Mac/mac-toolbar-star.png"; sourceTree = "<group>"; };
 		E0FC9A221163CA7A0027C422 /* OAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthClient.h; sourceTree = "<group>"; };
 		E0FC9A231163CA7A0027C422 /* OAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthClient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -566,6 +578,7 @@
 			isa = PBXGroup;
 			children = (
 				28A0AAE50D9B0CCF005BE974 /* HelTweetica_Prefix.pch */,
+				E0F1F81911AA47E0000DD4F0 /* HelTweetica_Mac_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -768,11 +781,17 @@
 				E0C8C4EC11A7B3730081A2C7 /* MainWindowController.h */,
 				E0C8C4ED11A7B3730081A2C7 /* MainWindowController.m */,
 				E0C8C4F311A7B7150081A2C7 /* MainWindow.xib */,
+				E0F1F83411AA5178000DD4F0 /* mac-toolbar-home.png */,
+				E0F1F83311AA5178000DD4F0 /* mac-toolbar-direct.png */,
+				E0F1F83511AA5178000DD4F0 /* mac-toolbar-star.png */,
+				E0F1F6F411AA10D5000DD4F0 /* mac-toolbar-lists.png */,
+				E0F1F6EF11AA1030000DD4F0 /* mac-toolbar-user.png */,
 				E0C8C5E311A7C9EE0081A2C7 /* AddAccount.h */,
 				E0C8C5E411A7C9EE0081A2C7 /* AddAccount.m */,
 				E0C8C5F011A7CB1F0081A2C7 /* AddAccount.xib */,
 				E0C8C1BD11A774560081A2C7 /* MainMenu.xib */,
 				E0F1F5E311A9B5DD000DD4F0 /* style.css */,
+				E0F1F7C011AA2FFD000DD4F0 /* main-template.html */,
 				E0C8C07411A771790081A2C7 /* Foundation.framework */,
 				E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */,
 				E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */,
@@ -1078,7 +1097,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0C8C1BE11A774560081A2C7 /* MainMenu.xib in Resources */,
-				E0C8C28E11A799D50081A2C7 /* main-template.html in Resources */,
 				E0C8C28F11A799D50081A2C7 /* basic-template.html in Resources */,
 				E0C8C29011A799D50081A2C7 /* load-gap-template.html in Resources */,
 				E0C8C29111A799D50081A2C7 /* tweet-row-template.html in Resources */,
@@ -1104,6 +1122,12 @@
 				E0C8C5E511A7C9EE0081A2C7 /* AddAccount.m in Resources */,
 				E0C8C5F111A7CB1F0081A2C7 /* AddAccount.xib in Resources */,
 				E0F1F5E411A9B5DD000DD4F0 /* style.css in Resources */,
+				E0F1F6F011AA1030000DD4F0 /* mac-toolbar-user.png in Resources */,
+				E0F1F6F511AA10D5000DD4F0 /* mac-toolbar-lists.png in Resources */,
+				E0F1F7C111AA2FFD000DD4F0 /* main-template.html in Resources */,
+				E0F1F83611AA5178000DD4F0 /* mac-toolbar-direct.png in Resources */,
+				E0F1F83711AA5178000DD4F0 /* mac-toolbar-home.png in Resources */,
+				E0F1F83811AA5178000DD4F0 /* mac-toolbar-star.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1389,15 +1413,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = HelTweetica_Mac_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "TARGET_PROJECT_MAC=1";
 				INFOPLIST_FILE = "Mac-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -1405,8 +1429,6 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
-					"-framework",
-					AppKit,
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = HelTweetica;
@@ -1424,16 +1446,14 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = HelTweetica_Mac_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "TARGET_PROJECT_MAC=1";
 				INFOPLIST_FILE = "Mac-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
-					"-framework",
-					AppKit,
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = HelTweetica;

@@ -116,4 +116,21 @@
 	[self.favorites removeMessageWithIdentifier:identifier];
 }
 
+- (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {
+	NSSet *oldSet = [NSSet setWithArray: existingLists];
+	
+	// Remove all old objects and insert new objects, reusing old ones if they match.
+	[existingLists removeAllObjects];
+	int index;
+	TwitterList *oldList, *newList;
+	for (index = 0; index < newLists.count; index++) {
+		newList = [newLists objectAtIndex: index];
+		oldList = [oldSet member:newList]; // If the set of old lists includes an identical member from the new lists, replace the entry in the new lists with the old one.
+		if (oldList)
+			newList = oldList;
+		newList.receivedDate = [NSDate date];
+		[existingLists addObject: newList];
+	}
+}
+
 @end

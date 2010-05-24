@@ -21,6 +21,8 @@
 #import "Twitter.h"
 #import "TwitterAccount.h"
 
+#import "TwitterLoadListsAction.h"
+
 
 #define LKToolbarAccounts @"Accounts"
 #define LKToolbarFriends @"Friends"
@@ -33,7 +35,9 @@
 
 
 @implementation MainWindowController
-@synthesize webView, accountsPopUp, twitter, timelineHTMLController, currentSheet;
+@synthesize webView, accountsPopUp, timelineSegmentedControl, usersPopUp, listsPopUp, searchField;
+@synthesize twitter, timelineHTMLController, currentSheet;
+
 
 - (id)initWithTwitter:(Twitter*)aTwitter {
 	self = [super initWithWindowNibName:@"MainWindow"];
@@ -61,12 +65,21 @@
 
 
 - (void)windowDidLoad {
-	[self initToolbar];
-	[self reloadAccountsMenu];
-	
 	timelineHTMLController.webView = self.webView;
 	[timelineHTMLController selectHomeTimeline];
 	[timelineHTMLController loadWebView];
+
+	// Set window title to account name
+	NSString *screenName = timelineHTMLController.account.screenName;
+	if (screenName) 
+		[[self window] setTitle:screenName];
+
+	[self reloadAccountsMenu];
+	[self reloadUsersMenu];
+	[self reloadListsMenu];
+	
+	// Start loading lists
+	[self loadListsOfUser:nil];
 }	
 
 - (BOOL)windowShouldClose {
@@ -74,7 +87,6 @@
 }
 
 #pragma mark Accounts
-
 #define kAccountsMenuPresetItems 4
 
 - (void)reloadAccountsMenu {
@@ -112,8 +124,11 @@
 - (void)didLoginToAccount:(TwitterAccount*)anAccount {
 	timelineHTMLController.account = anAccount;
 	
+	// Set window title to account name
+	[[self window] setTitle:anAccount.screenName];
+	
 	if (timelineHTMLController.webViewHasValidHTML) {
-		[self.webView setDocumentElement:@"current_account" innerHTML:[timelineHTMLController currentAccountHTML]];
+		//[self.webView setDocumentElement:@"current_account" innerHTML:[timelineHTMLController currentAccountHTML]];
 		[self.webView scrollToTop];
 	}
 	[timelineHTMLController selectHomeTimeline];
@@ -122,6 +137,9 @@
 	[defaults setObject: anAccount.screenName forKey: @"currentAccount"];
 	
 	[self reloadAccountsMenu];
+	[self reloadUsersMenu];
+	[self reloadListsMenu];
+	[self loadListsOfUser:nil];
 }
 
 - (IBAction)selectAccount:(id)sender {
@@ -132,88 +150,246 @@
 		[self didLoginToAccount:account];
 }
 
-#pragma mark Toolbar 
+#pragma mark Users
+#define kUsersMenuPresetItems 3
 
-- (void)initToolbar {
-	//[[accountsPopUp cell] setControlSize: NSSmallControlSize];
+- (void)reloadUsersMenu {
+	TwitterAccount *account = timelineHTMLController.account;
+	if (account == nil) return;
 	
-	// Create toolbar
-	NSToolbar	*toolbar = [[NSToolbar alloc] initWithIdentifier:@"Main"];
-	[toolbar setAllowsUserCustomization:YES];
-	[toolbar setAutosavesConfiguration:YES];
-	[toolbar setDisplayMode:NSToolbarDisplayModeIconOnly];
-	[toolbar setDelegate: self];
-	[[self window] setToolbar: toolbar];
-	[toolbar release];
-	// End toolbar
+	// Remove all items.
+	while (usersPopUp.menu.numberOfItems > kUsersMenuPresetItems) {
+		[usersPopUp.menu removeItemAtIndex:kUsersMenuPresetItems];
+	}
+
+	// Sort users by screen name
+	NSMutableArray *allUsers = [NSMutableArray arrayWithArray:[twitter.users allObjects]];
+	NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"screenName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
+	[allUsers sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
 	
+	// Insert users
+	for (TwitterUser *user in allUsers) {
+		[usersPopUp.menu addItemWithTitle:user.screenName action:@selector(selectUser:) keyEquivalent:@""];
+	}
 }
 
-- (NSToolbarItem *)toolbarItemWithIdentifier:(NSString*)itemIdentifier label:(NSString*)label toolTip:(NSString*)toolTip view:(NSView*)view {
-	NSToolbarItem *toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier] autorelease];
-	[toolbarItem setLabel:NSLocalizedString (label, @"")];
-	[toolbarItem setPaletteLabel:NSLocalizedString (label, @"")];
-	[toolbarItem setToolTip:NSLocalizedString (toolTip, @"")];
-	
-	// Custom view
-	NSSize size = [view frame].size;
-	[toolbarItem setView: view];
-	[toolbarItem setMaxSize: size];
-	[toolbarItem setMinSize: size];
-	
-	return toolbarItem;
+- (IBAction)selectUser:(id)sender {
 }
 
-- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag {
-    NSToolbarItem *toolbarItem = nil;
-	//NSMenuItem *menuItem = nil;
-	//NSString *s;
-	
-    if ([itemIdentifier isEqual:LKToolbarAccounts]) {
-		toolbarItem = [self toolbarItemWithIdentifier:itemIdentifier label:@"Accounts" toolTip:@"Your Twitter accounts." view:accountsPopUp];
-		//menuItem = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Accounts", @"") action:@selector(accounts:) keyEquivalent:@""] autorelease];
-		//[menuItem setTarget:self];
-		//[toolbarItem setMenuFormRepresentation:menuItem];
+#pragma mark Lists
+#define kListsMenuPresetItems 1
 
+- (void)reloadListsMenu {
+	NSMenuItem *menuItem;
+	TwitterAccount *account = timelineHTMLController.account;
+	if (account == nil) return;
+
+	// Remove all items.
+	while (listsPopUp.menu.numberOfItems > kListsMenuPresetItems) {
+		[listsPopUp.menu removeItemAtIndex:kListsMenuPresetItems];
 	}
 	
-	return toolbarItem;
+	// Insert lists
+	for (TwitterList *list in account.lists) {
+		menuItem = [[[NSMenuItem alloc] init] autorelease];
+		menuItem.title = [list.fullName substringFromIndex:1];
+		menuItem.action = @selector(selectList:);
+		menuItem.representedObject = list;
+		[listsPopUp.menu addItem:menuItem];
+	}
+	
+	// Separator
+	if (account.lists.count > 0 && account.listSubscriptions.count > 0) {
+		[listsPopUp.menu addItem:[NSMenuItem separatorItem]];
+	}
+	
+	// Insert subscriptions
+	for (TwitterList *list in account.listSubscriptions) {
+		menuItem = [[[NSMenuItem alloc] init] autorelease];
+		menuItem.title = [list.fullName substringFromIndex:1];
+		menuItem.action = @selector(selectList:);
+		menuItem.representedObject = list;
+		[listsPopUp.menu addItem:menuItem];
+	}
+	
+	// Empty menu
+	if (account.lists.count == 0 && account.listSubscriptions.count == 0) {
+		[listsPopUp.menu addItemWithTitle:@"No lists" action:@selector(disabledMenuItem:) keyEquivalent:@""];
+	}
+	
 }
 
-- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar {
-	return [NSArray arrayWithObjects: 
-			LKToolbarAccounts,
-			LKToolbarFriends,
-			LKToolbarSearch,
-			LKToolbarLists,
-			LKToolbarReload,
-			LKToolbarAnalyze,
-			LKToolbarCompose,
-			NSToolbarCustomizeToolbarItemIdentifier,
-			NSToolbarFlexibleSpaceItemIdentifier,
-			NSToolbarSpaceItemIdentifier,
-			NSToolbarSeparatorItemIdentifier,
-			nil];
+- (IBAction)selectList:(id)sender {
+	TwitterList *list = [sender representedObject];
+	[timelineHTMLController loadList:list];
 }
 
-- (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar {
-	return [NSArray arrayWithObjects: 
-			LKToolbarAccounts,
-			NSToolbarSeparatorItemIdentifier,
-			LKToolbarFriends,
-			LKToolbarSearch,
-			LKToolbarLists,
-			NSToolbarFlexibleSpaceItemIdentifier,
-			LKToolbarReload,
-			LKToolbarAnalyze,
-			NSToolbarSeparatorItemIdentifier,
-			LKToolbarCompose,
-			nil];
+- (void)loadListsOfUser:(NSString*)userOrNil {
+	// Load user's own lists.
+	TwitterLoadListsAction *listsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
+	listsAction.completionTarget= self;
+	listsAction.completionAction = @selector(didLoadLists:);
+	[timelineHTMLController startTwitterAction:listsAction];
+	
+	// Load lists that user subscribes to.
+	TwitterLoadListsAction *subscriptionsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
+	subscriptionsAction.completionTarget= self;
+	subscriptionsAction.completionAction = @selector(didLoadListSubscriptions:);
+	[timelineHTMLController startTwitterAction:subscriptionsAction];
 }
 
-- (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar {
-	return [NSArray arrayWithObjects: 
-			nil];
+- (void)didLoadLists:(TwitterLoadListsAction *)action {
+	// Keep the old list objects that match new ones because it caches the status updates
+	[timelineHTMLController.account synchronizeExisting:timelineHTMLController.account.lists withNew:action.lists];
+	[self reloadListsMenu];
+}
+
+- (void)didLoadListSubscriptions:(TwitterLoadListsAction *)action {
+	[timelineHTMLController.account synchronizeExisting: timelineHTMLController.account.listSubscriptions withNew:action.lists];
+	[self reloadListsMenu];
+}
+
+
+#pragma mark Actions
+
+- (IBAction)selectTimelineWithSegmentedControl:(id)sender {
+	int index = [sender selectedSegment];
+	switch (index) {
+		case 0:
+			[timelineHTMLController selectHomeTimeline];
+			break;
+		case 1:
+			[timelineHTMLController selectMentionsTimeline];
+			break;
+		case 2:
+			[timelineHTMLController selectDirectMessageTimeline];
+			break;
+		case 3:
+			[timelineHTMLController selectFavoritesTimeline];
+			break;
+		default:
+			break;
+	}
+}
+
+- (IBAction)homeTimeline:(id)sender {
+	[timelineHTMLController selectHomeTimeline];
+}
+
+- (IBAction)mentions:(id)sender {
+	[timelineHTMLController selectMentionsTimeline];
+}
+
+- (IBAction)directMessages:(id)sender {
+	[timelineHTMLController selectDirectMessageTimeline];
+}
+
+- (IBAction)favorites:(id)sender {
+	[timelineHTMLController selectFavoritesTimeline];
+}
+
+- (IBAction)refresh:(id)sender {
+	[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
+}
+
+- (IBAction)myProfile:(id)sender {
+	//[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
+}
+
+- (IBAction)disabledMenuItem:(id)sender {
+	// Do nothing
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+	return (menuItem.action != @selector(disabledMenuItem:));
+}
+
+#pragma mark Web actions
+
+- (void)retweet:(NSNumber*)identifier {
+	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	if (message == nil) return;
+}
+
+- (void) replyToMessage: (NSNumber*)identifier {
+	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	if (message == nil) return;
+}
+
+- (void) directMessageWithTweet:(NSNumber*)identifier {
+	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	if (message == nil) return;
+}
+
+- (void) showUserPage:(NSString*)screenName {
+}
+
+- (void) searchForQuery:(NSString*)query {
+}	
+
+- (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
+}
+
+#pragma mark TimelineHTMLController delegate
+
+- (void)didSelectTimeline:(TwitterTimeline *)timeline {
+	int index = -1;
+	if (timeline == timelineHTMLController.account.homeTimeline) {
+		index = 0;
+	} else if (timeline == timelineHTMLController.account.mentions) {
+		index = 1;
+	} else if (timeline == timelineHTMLController.account.directMessages) {
+		index = 2;
+	} else if (timeline == timelineHTMLController.account.favorites) {
+		index = 3;
+	}
+	if (index >= 0) {
+		[timelineSegmentedControl setSelectedSegment:index];
+	} else {
+		// Deselect
+		index = [timelineSegmentedControl selectedSegment];
+		if (index >= 0)
+			[timelineSegmentedControl setSelected:NO forSegment:index];
+	}
+}
+
+#pragma mark WebView policy delegate
+
+- (void)webView:(WebView *)sender decidePolicyForNavigationAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request frame:(WebFrame *)frame decisionListener:(id)listener {
+	
+	NSString *scheme = [[request URL] scheme];
+	
+	// Handle Actions ourselves
+	if ([scheme isEqualToString:@"action"]) {
+		NSString *actionName = [[request URL] resourceSpecifier];
+		NSNumber *messageIdentifier = [timelineHTMLController number64WithString:[actionName lastPathComponent]];
+		
+		if ([actionName hasPrefix:@"retweet"]) { // Retweet message
+			[self retweet: messageIdentifier];
+		} else if ([actionName hasPrefix:@"reply"]) { // Public reply to the sender
+			[self replyToMessage:messageIdentifier];
+		} else if ([actionName hasPrefix:@"dm"]) { // Direct message the sender
+			[self directMessageWithTweet:messageIdentifier];
+		} else if ([actionName hasPrefix:@"user"]) { // Show user page
+			[self showUserPage:[actionName lastPathComponent]];
+		} else if ([actionName hasPrefix:@"search"]) { // Show search page
+			[self searchForQuery:[[actionName lastPathComponent] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+		} else if ([actionName hasPrefix:@"conversation"]) { // Show more info on the tweet
+			[self showConversationWithMessageIdentifier:messageIdentifier];
+		} else {
+			// handleWebAction: returns a BOOL to indicate whether or not it handled the action, but it's not needed here.
+			[timelineHTMLController handleWebAction:actionName];
+		}
+		[listener ignore];
+	}
+		
+	// Open links in default browser
+	else if ([scheme hasPrefix:@"http"]) {
+		[[NSWorkspace sharedWorkspace] openURL: [request URL]];
+		[listener ignore];
+	} else {
+		[listener use];
+	}
 }
 
 #pragma mark WebFrameLoadDelegate

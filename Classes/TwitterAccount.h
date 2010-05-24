@@ -51,6 +51,7 @@
 
 @property (nonatomic, retain) NSMutableArray *savedSearches;
 
-- (void) removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier;
+- (void)removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier;
+- (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists;
 
 @end
