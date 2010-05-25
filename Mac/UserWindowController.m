@@ -81,6 +81,7 @@
 	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 	controller.user = user;
 	[controller selectUserTimeline:aScreenName];
+	[controller rewriteUserInfoArea];
 	self.lists = user.lists;
 	self.subscriptions = user.listSubscriptions;
 	

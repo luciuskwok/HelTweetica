@@ -11,7 +11,7 @@
 			<string key="com.apple.WebKitIBPlugin">762</string>
 		</dictionary>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="65"/>
+			<integer value="1"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -59,6 +59,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {150, 22}}</string>
 								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSearchFieldCell" key="NSCell" id="301561050">
 									<int key="NSCellFlags">343014976</int>
@@ -151,6 +152,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {40, 25}}</string>
 								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="175467686">
 									<int key="NSCellFlags">-2076049856</int>
@@ -273,7 +275,6 @@
 										</array>
 										<reference key="NSMenuFont" ref="121697570"/>
 									</object>
-									<int key="NSSelectedIndex">7</int>
 									<bool key="NSPullDown">YES</bool>
 									<int key="NSPreferredEdge">1</int>
 									<bool key="NSUsesItemFromMenu">YES</bool>
@@ -304,6 +305,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{9, 14}, {30, 25}}</string>
 								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="353216410">
 									<int key="NSCellFlags">-2080244224</int>
@@ -346,6 +348,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{14, 14}, {30, 25}}</string>
 								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="990774373">
 									<int key="NSCellFlags">-2080244224</int>
@@ -388,6 +391,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {109, 25}}</string>
 								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="621442292">
 									<int key="NSCellFlags">-2080244224</int>
@@ -463,6 +467,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {40, 25}}</string>
 								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="963197471">
 									<int key="NSCellFlags">-2076049856</int>
@@ -655,8 +660,8 @@
 						</object>
 					</dictionary>
 					<array key="NSToolbarIBAllowedItems">
-						<reference ref="287032698"/>
 						<reference ref="125870244"/>
+						<reference ref="287032698"/>
 						<reference ref="974147359"/>
 						<reference ref="1024986648"/>
 						<reference ref="289024415"/>
@@ -668,6 +673,7 @@
 					</array>
 					<array class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<reference ref="287032698"/>
+						<reference ref="492555371"/>
 						<reference ref="125870244"/>
 						<reference ref="974147359"/>
 						<reference ref="1024986648"/>
@@ -1317,7 +1323,7 @@
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="3.CustomClassName">LKWebView</string>
 				<string key="3.IBPluginDependency">com.apple.WebKitIBPlugin</string>
-				<string key="48.IBEditorWindowLastContentRect">{{301, 618}, {616, 227}}</string>
+				<string key="48.IBEditorWindowLastContentRect">{{301, 845}, {616, 0}}</string>
 				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="48.designableToolbarIdentifier">MainToolbar</string>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

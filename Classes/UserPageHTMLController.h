@@ -30,6 +30,7 @@
 // Timeline selection
 - (void)selectUserTimeline:(NSString *)screenName;
 - (void)selectFavoritesTimeline:(NSString *)screenName;
+- (void)rewriteUserInfoArea;
 
 // TwitterAction
 - (void)loadUserInfo;

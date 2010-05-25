@@ -95,10 +95,12 @@
 	if (aUser != nil) {
 		// Switch to instance of TwitterUser from the shared twitter instance.
 		self.user = aUser;
-		
-		// Rewrite user_area div
-		[self.webView setDocumentElement:@"user_info_area" innerHTML:[self userInfoHTML]];
+		[self rewriteUserInfoArea];
 	}
+}
+
+- (void)rewriteUserInfoArea {
+	[self.webView setDocumentElement:@"user_info_area" innerHTML:[self userInfoHTML]];
 }
 
 #pragma mark TwitterAction
