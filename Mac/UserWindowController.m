@@ -38,7 +38,7 @@
 		controller.user = user;
 		controller.delegate = self;
 		[controller selectUserTimeline:user.screenName];
-		self.HTMLController = controller;
+		self.htmlController = controller;
 
 		self.lists = user.lists;
 		self.subscriptions = user.listSubscriptions;
@@ -51,10 +51,10 @@
 }
 
 - (void)windowDidLoad {
-	HTMLController.webView = self.webView;
-	[HTMLController loadWebView];
+	htmlController.webView = self.webView;
+	[htmlController loadWebView];
 	
-	UserPageHTMLController *controller = (UserPageHTMLController *)HTMLController;
+	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 
 	if (controller.user.screenName == nil)
 		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
@@ -88,7 +88,7 @@
 	
 	if ([[[request URL] scheme] isEqualToString:@"action"]) {
 		NSString *actionName = [[request URL] resourceSpecifier];
-		UserPageHTMLController *controller = (UserPageHTMLController *)HTMLController;
+		UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 		
 		// Tabs
 		if ([actionName hasPrefix:@"user"]) { // Home Timeline
@@ -115,7 +115,7 @@
 #pragma mark UserPageHTMLController delegate
 
 - (void)didSelectTimeline:(TwitterTimeline *)timeline {
-	UserPageHTMLController *controller = (UserPageHTMLController *)HTMLController;
+	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 	int index = -1;
 	if (timeline == controller.user.statuses) {
 		index = 0;
@@ -156,22 +156,22 @@
 }
 
 - (IBAction)homeTimeline:(id)sender {
-	UserPageHTMLController *controller = (UserPageHTMLController *)HTMLController;
+	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 	[controller selectUserTimeline:controller.user.screenName];
 }
 
 - (IBAction)favorites:(id)sender {
-	UserPageHTMLController *controller = (UserPageHTMLController *)HTMLController;
+	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 	[controller selectFavoritesTimeline:controller.user.screenName];
 }
 
 - (IBAction)follow:(id)sender {
-	UserPageHTMLController *controller = (UserPageHTMLController *)HTMLController;
+	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 	[controller follow];
 }
 
 - (IBAction)unfollow:(id)sender {
-	UserPageHTMLController *controller = (UserPageHTMLController *)HTMLController;
+	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 	[controller unfollow];
 }
 

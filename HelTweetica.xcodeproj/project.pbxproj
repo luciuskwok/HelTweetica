@@ -41,6 +41,8 @@
 		E01B9183117B5E60001949B6 /* shuffle.png in Resources */ = {isa = PBXBuildFile; fileRef = E01B9181117B5E60001949B6 /* shuffle.png */; };
 		E027026D11AB2846008EEED5 /* ConversationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E027026C11AB2846008EEED5 /* ConversationWindowController.m */; };
 		E027027B11AB2A49008EEED5 /* ConversationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E027027A11AB2A49008EEED5 /* ConversationWindow.xib */; };
+		E02702D211AB3391008EEED5 /* SearchWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E02702D111AB3391008EEED5 /* SearchWindowController.m */; };
+		E02702D411AB340E008EEED5 /* SearchWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E02702D311AB340E008EEED5 /* SearchWindow.xib */; };
 		E02B294B1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
 		E02B294C1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
 		E03570741174E6BE004B9A0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
@@ -346,6 +348,9 @@
 		E027026B11AB2846008EEED5 /* ConversationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConversationWindowController.h; path = Mac/ConversationWindowController.h; sourceTree = "<group>"; };
 		E027026C11AB2846008EEED5 /* ConversationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConversationWindowController.m; path = Mac/ConversationWindowController.m; sourceTree = "<group>"; };
 		E027027A11AB2A49008EEED5 /* ConversationWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ConversationWindow.xib; path = Mac/ConversationWindow.xib; sourceTree = "<group>"; };
+		E02702D011AB3391008EEED5 /* SearchWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchWindowController.h; path = Mac/SearchWindowController.h; sourceTree = "<group>"; };
+		E02702D111AB3391008EEED5 /* SearchWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchWindowController.m; path = Mac/SearchWindowController.m; sourceTree = "<group>"; };
+		E02702D311AB340E008EEED5 /* SearchWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SearchWindow.xib; path = Mac/SearchWindow.xib; sourceTree = "<group>"; };
 		E02B29491184A13F0037F359 /* TwitterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAction.h; sourceTree = "<group>"; };
 		E02B294A1184A13F0037F359 /* TwitterAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAction.m; sourceTree = "<group>"; };
 		E03570B51174E6BE004B9A0F /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -918,6 +923,9 @@
 				E027026B11AB2846008EEED5 /* ConversationWindowController.h */,
 				E027026C11AB2846008EEED5 /* ConversationWindowController.m */,
 				E027027A11AB2A49008EEED5 /* ConversationWindow.xib */,
+				E02702D011AB3391008EEED5 /* SearchWindowController.h */,
+				E02702D111AB3391008EEED5 /* SearchWindowController.m */,
+				E02702D311AB340E008EEED5 /* SearchWindow.xib */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1178,6 +1186,7 @@
 				E0F1FBD611AA6EC4000DD4F0 /* Icon.icns in Resources */,
 				E0F1FBEB11AA7107000DD4F0 /* UserWindow.xib in Resources */,
 				E027027B11AB2A49008EEED5 /* ConversationWindow.xib in Resources */,
+				E02702D411AB340E008EEED5 /* SearchWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1337,6 +1346,7 @@
 				E0CE8A7B11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */,
 				E0F1F8BC11AA67A3000DD4F0 /* UserWindowController.m in Sources */,
 				E027026D11AB2846008EEED5 /* ConversationWindowController.m in Sources */,
+				E02702D211AB3391008EEED5 /* SearchWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

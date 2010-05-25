@@ -30,9 +30,10 @@
 	IBOutlet NSSegmentedControl *timelineSegmentedControl;
 	IBOutlet NSPopUpButton *listsPopUp;
 	IBOutlet NSSearchField *searchField;
+	IBOutlet NSMenu *searchMenu;
 
 	HelTweeticaAppDelegate *appDelegate;
-	TimelineHTMLController *HTMLController;
+	TimelineHTMLController *htmlController;
 	NSMutableArray *lists;
 	NSMutableArray *subscriptions;
 	
@@ -44,14 +45,23 @@
 @property (assign) NSSegmentedControl *timelineSegmentedControl;
 @property (assign) NSPopUpButton *listsPopUp;
 @property (assign) NSSearchField *searchField;
+@property (assign) NSMenu *searchMenu;
 
-@property (nonatomic, retain) TimelineHTMLController *HTMLController;
+@property (nonatomic, retain) TimelineHTMLController *htmlController;
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *subscriptions;
 
 @property (nonatomic, retain) NSWindowController *currentSheet;
 
 - (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account;
+
+// Timelines
+- (IBAction)selectTimelineWithSegmentedControl:(id)sender;
+- (IBAction)homeTimeline:(id)sender;
+- (IBAction)mentions:(id)sender;
+- (IBAction)directMessages:(id)sender;
+- (IBAction)favorites:(id)sender;
+- (IBAction)refresh:(id)sender;
 
 // Users
 - (void)reloadUsersMenu;
@@ -66,13 +76,11 @@
 - (IBAction)selectList:(id)sender;
 - (void)loadListsOfUser:(NSString*)userOrNil;
 
-// Actions
-- (IBAction)selectTimelineWithSegmentedControl:(id)sender;
-- (IBAction)homeTimeline:(id)sender;
-- (IBAction)mentions:(id)sender;
-- (IBAction)directMessages:(id)sender;
-- (IBAction)favorites:(id)sender;
-- (IBAction)refresh:(id)sender;
+// Search
+- (void)reloadSearchMenu;
+- (IBAction)search:(id)sender;
+- (void) searchForQuery:(NSString*)query;
+- (void)loadSavedSearches;
 
 // Web actions
 - (void) showUserPage:(NSString*)screenName;

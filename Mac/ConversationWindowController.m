@@ -28,7 +28,7 @@
 		
 		// Timeline HTML Controller generates the HTML from a timeline
 		ConversationHTMLController *controller = [[[ConversationHTMLController alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
-		self.HTMLController = controller;
+		self.htmlController = controller;
 		controller.twitter = aTwitter;
 		controller.account = account;
 		controller.selectedMessageIdentifier = messageIdentifier;
@@ -43,13 +43,13 @@
 }
 
 - (void)windowDidLoad {
-	HTMLController.webView = self.webView;
-	[HTMLController loadWebView];
+	htmlController.webView = self.webView;
+	[htmlController loadWebView];
 }	
 
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
 	// Select the tapped message
-	ConversationHTMLController *controller= (ConversationHTMLController *)HTMLController;
+	ConversationHTMLController *controller= (ConversationHTMLController *)htmlController;
 	controller.selectedMessageIdentifier = identifier;
 	[controller rewriteTweetArea];
 }
