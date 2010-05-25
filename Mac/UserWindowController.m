@@ -23,62 +23,85 @@
 
 
 @implementation UserWindowController
-@synthesize followButton;
+@synthesize followButton, screenName;
 
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account user:(TwitterUser*)user {
+- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)anAccount screenName:(NSString*)aScreenName {
 	self = [super initWithWindowNibName:@"UserWindow"];
 	if (self) {
 		appDelegate = [NSApp delegate];
+		self.screenName = aScreenName;
 		
 		// Timeline HTML Controller generates the HTML from a timeline
 		UserPageHTMLController *controller = [[[UserPageHTMLController alloc] init] autorelease];
 		controller.twitter = aTwitter;
-		controller.account = account;
-		controller.user = user;
+		controller.account = anAccount;
 		controller.delegate = self;
-		[controller selectUserTimeline:user.screenName];
 		self.htmlController = controller;
-
-		self.lists = user.lists;
-		self.subscriptions = user.listSubscriptions;
 }
 	return self;
 }
 
 - (void)dealloc {
+	[screenName release];
 	[super dealloc];
 }
 
 - (void)windowDidLoad {
+	if (screenName) {
+		[self loadUserWithScreenName:screenName];
+	} else {
+		[searchField becomeFirstResponder];
+	}
+
 	htmlController.webView = self.webView;
 	[htmlController loadWebView];
-	
-	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
+}
 
-	if (controller.user.screenName == nil)
-		NSLog (@"-[UserPageViewController selectUserTimeline:] screenName should not be nil.");
+- (void)loadUserWithScreenName:(NSString*)aScreenName {
+	if (aScreenName == nil) return;
 	
-	// Download the latest tweets from this user.
+	self.screenName = aScreenName;
+	
+	// Set up window and toolbar.
+	[[self window] setTitle:aScreenName];
 	[timelineSegmentedControl setSelectedSegment:0];
+	[followButton setTitle:@"—"];
+	[followButton setEnabled:NO];
 	
-	// Get the following/follower status, but only if it's a different user from the account.
-	if ([controller.account.screenName isEqualToString:controller.user.screenName] == NO) 
-		[controller loadFriendStatus:controller.user.screenName];
-	
-	// Get the latest user info
-	[controller loadUserInfo];
+	// Load user from Twitter cache. If user was not found in cache, create a temporary user object.
+	TwitterUser *user = [htmlController.twitter userWithScreenName:aScreenName];
+	if (user == nil) {
+		user = [[[TwitterUser alloc] init] autorelease];
+		user.screenName = aScreenName;
+		user.identifier = [NSNumber numberWithInt: -1]; // -1 signifies that user info has not been loaded
+	}
 
-	// Set window title to user name
-	NSString *screenName = controller.user.screenName;
-	if (screenName) 
-		[[self window] setTitle:screenName];
+	// Set up HTML controller.
+	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
+	controller.user = user;
+	[controller selectUserTimeline:aScreenName];
+	self.lists = user.lists;
+	self.subscriptions = user.listSubscriptions;
 	
+	// Load the following/follower status for users other than the account's own.
+	if ([controller.account.screenName isEqualToString:aScreenName] == NO) 
+		[controller loadFriendStatus:aScreenName];
+	
+	// Load the latest user info.
+	[controller loadUserInfo];
+	
+	// Load user's lists.
 	[self reloadListsMenu];
-	
-	// Start loading lists
 	[self loadListsOfUser:controller.user.screenName];
 }
+
+- (void)searchForQuery:(NSString*)aQuery {
+	// Go to username instead of searching Twitter content.
+	self.screenName = aQuery;
+	[self loadUserWithScreenName:aQuery];
+}	
+
 
 #pragma mark WebView policy delegate
 
@@ -92,11 +115,11 @@
 		
 		// Tabs
 		if ([actionName hasPrefix:@"user"]) { // Home Timeline
-			NSString *screenName = [actionName lastPathComponent];
-			if ([screenName caseInsensitiveCompare:controller.user.screenName] == NSOrderedSame) {
-				[controller selectUserTimeline:controller.user.screenName];
+			NSString *aScreenName = [actionName lastPathComponent];
+			if ([aScreenName caseInsensitiveCompare:controller.user.screenName] == NSOrderedSame) {
+				[controller selectUserTimeline:aScreenName];
 			} else {
-				[self showUserPage:screenName];
+				[self showUserPage:aScreenName];
 			}
 			handled = YES;
 		} else if ([actionName isEqualToString:@"favorites"]) { // Favorites

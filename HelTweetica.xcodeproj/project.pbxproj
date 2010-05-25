@@ -43,6 +43,7 @@
 		E027027B11AB2A49008EEED5 /* ConversationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E027027A11AB2A49008EEED5 /* ConversationWindow.xib */; };
 		E02702D211AB3391008EEED5 /* SearchWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E02702D111AB3391008EEED5 /* SearchWindowController.m */; };
 		E02702D411AB340E008EEED5 /* SearchWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E02702D311AB340E008EEED5 /* SearchWindow.xib */; };
+		E027045C11AB5D43008EEED5 /* mac-toolbar-compose.png in Resources */ = {isa = PBXBuildFile; fileRef = E027045B11AB5D43008EEED5 /* mac-toolbar-compose.png */; };
 		E02B294B1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
 		E02B294C1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
 		E03570741174E6BE004B9A0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
@@ -351,6 +352,7 @@
 		E02702D011AB3391008EEED5 /* SearchWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchWindowController.h; path = Mac/SearchWindowController.h; sourceTree = "<group>"; };
 		E02702D111AB3391008EEED5 /* SearchWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchWindowController.m; path = Mac/SearchWindowController.m; sourceTree = "<group>"; };
 		E02702D311AB340E008EEED5 /* SearchWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SearchWindow.xib; path = Mac/SearchWindow.xib; sourceTree = "<group>"; };
+		E027045B11AB5D43008EEED5 /* mac-toolbar-compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-toolbar-compose.png"; path = "Mac/mac-toolbar-compose.png"; sourceTree = "<group>"; };
 		E02B29491184A13F0037F359 /* TwitterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAction.h; sourceTree = "<group>"; };
 		E02B294A1184A13F0037F359 /* TwitterAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAction.m; sourceTree = "<group>"; };
 		E03570B51174E6BE004B9A0F /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -902,6 +904,7 @@
 				E0F1F83511AA5178000DD4F0 /* mac-toolbar-star.png */,
 				E0F1F6F411AA10D5000DD4F0 /* mac-toolbar-lists.png */,
 				E0F1F6EF11AA1030000DD4F0 /* mac-toolbar-user.png */,
+				E027045B11AB5D43008EEED5 /* mac-toolbar-compose.png */,
 				E0F1F5E311A9B5DD000DD4F0 /* style.css */,
 				E0F1F7C011AA2FFD000DD4F0 /* main-template.html */,
 			);
@@ -1187,6 +1190,7 @@
 				E0F1FBEB11AA7107000DD4F0 /* UserWindow.xib in Resources */,
 				E027027B11AB2A49008EEED5 /* ConversationWindow.xib in Resources */,
 				E02702D411AB340E008EEED5 /* SearchWindow.xib in Resources */,
+				E027045C11AB5D43008EEED5 /* mac-toolbar-compose.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

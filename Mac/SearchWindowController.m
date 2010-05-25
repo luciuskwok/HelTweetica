@@ -28,11 +28,16 @@
 		controller.account = anAccount;
 		controller.delegate = self;
 		self.htmlController = controller;
+	
+		// Listen for changes to Saved Searches list
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[query release];
     [super dealloc];
 }
@@ -50,6 +55,9 @@
 	if (filteredResults.count != 0) {
 		saveButton.title = NSLocalizedString (@"Saved", @"button");
 		[saveButton setEnabled: NO];
+	} else {
+		saveButton.title = NSLocalizedString (@"Save Search", @"button");
+		[saveButton setEnabled: YES];
 	}
 
 	// Reload web view
@@ -69,8 +77,8 @@
 	// Override this method so that searches appear in the same window instead of creating a new one.
 
 	// Put the query in the search box
-	if ([query isEqualToString: [searchField stringValue]] == NO) {
-		[searchField setStringValue:query];
+	if ([aQuery isEqualToString: [searchField stringValue]] == NO) {
+		[searchField setStringValue:aQuery];
 	}
 	
 	// Copy credentials from old query to new one.
@@ -113,8 +121,7 @@
 		// Success
 		saveButton.title = NSLocalizedString (@"Saved", @"button");
 		[saveButton setEnabled: NO];
-		// Clear cache of saved searches. Or add the search that was just saved.
-		[htmlController.account.savedSearches removeAllObjects];
+		[self loadSavedSearches];
 	} else {
 		// Failure: allow user to re-save search.
 		saveButton.title = NSLocalizedString (@"Save Search", @"button");

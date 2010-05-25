@@ -193,20 +193,20 @@ p { margin: 0px 0px 20px 0px; }
 }
 .user_info_key_cell {
 	display: table-cell;
-	width: 70px;
+	width: 60px;
 	text-align: right;
-	font-size: 12px;
+	font-size: 11px;
 	color: #888;
-	padding: 0px 10px 0px 0px;
+	padding: 0px 5px 0px 0px;
 }
 .user_info_value_cell {
 	display: table-cell;
 	padding: 0px 0px 10px 0px;
 }
 .user_screen_name {
-	font-size: 35px;
+	font-size: 28px;
 	font-weight: bold;
-	line-height: 40px; 
+	line-height: 32px; 
 	color: #888;
 }
 .user_screen_name a { color: #888; }
@@ -214,9 +214,9 @@ p { margin: 0px 0px 20px 0px; }
 	margin: 0px 0px -4px 0px;
 }
 .user_full_name {
-	font-size: 25px;
+	font-size: 21px;
 	font-weight: bold;
-	line-height: 30px; 
+	line-height: 24px; 
 	color: #444;
 }
 .user_web {
@@ -236,8 +236,8 @@ p { margin: 0px 0px 20px 0px; }
 }
 
 .highlighted_tweet_row {
-	font-size: 25px;
-	line-height: 30px;
+	font-size: 21px;
+	line-height: 24px;
 	background: #FFB;
 }
 

@@ -48,11 +48,16 @@
 		
 		self.lists = account.lists;
 		self.subscriptions = account.listSubscriptions;
+		
+		// Listen for changes to Saved Searches list
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	htmlController.delegate = nil;
 	[htmlController invalidateRefreshTimer];
 	[htmlController release];
@@ -142,7 +147,7 @@
 
 
 #pragma mark Users
-#define kUsersMenuPresetItems 7
+#define kUsersMenuPresetItems 8
 
 - (void)reloadUsersMenu {
 	// Remove all items after separator and insert screen names of all accounts.
@@ -155,6 +160,7 @@
 		NSMenuItem *item = [[[NSMenuItem alloc] init] autorelease];
 		item.title = account.screenName;
 		item.action = @selector(selectAccount:);
+		item.indentationLevel = 1;
 		item.representedObject = account;
 		if (account == htmlController.account) {
 			// Put checkmark next to current account
@@ -166,6 +172,7 @@
 }
 
 - (IBAction)goToUser:(id)sender {
+	[self showUserPage:nil];
 }
 
 - (IBAction)myProfile:(id)sender {
@@ -357,14 +364,14 @@
 	}
 }
 
-- (void)searchForQuery:(NSString*)query {
+- (void)searchForQuery:(NSString*)aQuery {
 	// Put the query in the search box
-	if ([query isEqualToString: [searchField stringValue]] == NO) {
-		[searchField setStringValue:query];
+	if ([aQuery isEqualToString: [searchField stringValue]] == NO) {
+		[searchField setStringValue:aQuery];
 	}
 	
 	// Create and show the Search Results window
-	SearchWindowController *controller = [[[SearchWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account query:query] autorelease];
+	SearchWindowController *controller = [[[SearchWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account query:aQuery] autorelease];
 	[controller showWindow:nil];
 	[appDelegate.windowControllers addObject:controller];
 	
@@ -380,7 +387,17 @@
 
 - (void)didLoadSavedSearches:(TwitterLoadSavedSearchesAction *)action {
 	htmlController.account.savedSearches = action.savedSearches;
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"savedSearchesDidChange" object:self];
+}
+
+- (void)savedSearchesDidChange:(NSNotification*)notification {
 	[self reloadSearchMenu];
+}
+
+#pragma mark Compose
+
+- (IBAction)compose:(id)sender {
+	
 }
 
 #pragma mark Disabled menu item
@@ -411,17 +428,8 @@
 }
 
 - (void) showUserPage:(NSString*)screenName {
-	// Use a custom timeline showing the user's tweets, but with a big header showing the user's info.
-	TwitterUser *user = [htmlController.twitter userWithScreenName:screenName];
-	if (user == nil) {
-		// Create an empty user and add it to the Twitter set
-		user = [[[TwitterUser alloc] init] autorelease];
-		user.screenName = screenName;
-		user.identifier = [NSNumber numberWithInt: -1]; // -1 signifies that user info has not been loaded
-	}
-	
 	// Create and show the user window
-	UserWindowController *controller = [[[UserWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account user:user] autorelease];
+	UserWindowController *controller = [[[UserWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account screenName:screenName] autorelease];
 	[controller showWindow:nil];
 	[appDelegate.windowControllers addObject:controller];
 }

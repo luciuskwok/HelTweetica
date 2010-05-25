@@ -221,6 +221,7 @@
 
 - (NSString *)userInfoHTML {
 	// Load HTML template and replace variables with values.
+	if (user == nil) return @"";
 	
 	// Load template
 	NSError *error = nil;
@@ -285,7 +286,9 @@
 - (NSString*) tweetAreaFooterHTML {
 	NSString *result = @"";
 	
-	if (unauthorized) {
+	if (user == nil) {
+		result = @"<div class='status'>Type in a user name above.</div>";
+	} else if (unauthorized) {
 		result = @"<div class='status'>Protected user.</div>";
 	} else if (notFound) {
 		result = @"<div class='status'>No such user.</div>";

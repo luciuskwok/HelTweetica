@@ -82,6 +82,12 @@
 - (void) searchForQuery:(NSString*)query;
 - (void)loadSavedSearches;
 
+// Compose
+- (IBAction)compose:(id)sender;
+
+// Disabled menu item
+- (IBAction)disabledMenuItem:(id)sender;
+
 // Web actions
 - (void) showUserPage:(NSString*)screenName;
 

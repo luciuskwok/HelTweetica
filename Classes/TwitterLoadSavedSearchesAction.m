@@ -44,6 +44,9 @@
 		parser.delegate = self;
 		[parser parse];
 		[parser release];
+	} else {
+		NSString *errorDescription = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+		NSLog (@"HTTP Status Code %d.\n%@", statusCode, errorDescription);
 	}
 }
 

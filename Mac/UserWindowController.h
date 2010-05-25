@@ -22,11 +22,13 @@
 
 @interface UserWindowController : MainWindowController {
 	IBOutlet NSButton *followButton;
+	NSString *screenName;
 }
 
 @property (assign) NSButton *followButton;
+@property (nonatomic, retain) NSString *screenName;
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account user:(TwitterUser*)aUser;
-
+- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)anAccount screenName:(NSString*)aScreenName;
+- (void)loadUserWithScreenName:(NSString*)aScreenName;
 
 @end
