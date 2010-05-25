@@ -17,6 +17,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AddAccount.h"
+#import "Compose.h"
 #import "TimelineHTMLController.h"
 #import "LKWebView.h"
 
@@ -24,7 +25,7 @@
 @class Twitter, HelTweeticaAppDelegate;
 
 
-@interface MainWindowController : NSWindowController <AddAccountDelegate> {
+@interface MainWindowController : NSWindowController <AddAccountDelegate, ComposeDelegate> {
 	IBOutlet LKWebView *webView;
 	IBOutlet NSPopUpButton *usersPopUp;
 	IBOutlet NSSegmentedControl *timelineSegmentedControl;

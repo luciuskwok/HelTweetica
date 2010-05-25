@@ -75,8 +75,11 @@
 
 - (void)windowWillClose:(NSNotification*)notification {
 	NSWindow *aWindow = [notification object];
-	id controller = [[[aWindow windowController] retain] autorelease];
-	[windowControllers removeObject: controller];
+	id controller = [aWindow windowController];
+	if (controller) {
+		[[controller retain] autorelease];
+		[windowControllers removeObject: controller];
+	}
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

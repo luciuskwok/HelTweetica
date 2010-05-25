@@ -98,6 +98,10 @@
 	return YES;
 }
 
+- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	self.currentSheet = nil;
+}
+
 
 #pragma mark Timelines
 
@@ -184,10 +188,6 @@
 	sheet.delegate = self;
 	[sheet askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
 	self.currentSheet = sheet;
-}
-
-- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	self.currentSheet = nil;
 }
 
 - (IBAction)editAccounts:(id)sender {
@@ -397,8 +397,84 @@
 #pragma mark Compose
 
 - (IBAction)compose:(id)sender {
-	
+	Compose* compose = [[[Compose alloc] init] autorelease];
+	[compose loadFromUserDefaults];
+	compose.delegate = self;
+	[compose askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
+	self.currentSheet = compose;
 }
+
+- (void)retweet:(NSNumber*)identifier {
+	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
+	if (message == nil) return;
+	
+	Compose* compose = [[[Compose alloc] init] autorelease];
+	[compose loadFromUserDefaults];
+	compose.delegate = self;
+	if (message != nil) {
+		// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
+		compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.screenName, message.content];
+		compose.originalRetweetContent = compose.messageContent;
+		compose.inReplyTo = identifier;
+	}
+	
+	[compose askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
+	self.currentSheet = compose;
+}
+
+- (void)replyToMessage: (NSNumber*)identifier {
+	Compose* compose = [[[Compose alloc] init] autorelease];
+	[compose loadFromUserDefaults];
+	compose.delegate = self;
+	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
+	
+	// Insert @username in beginning of message. This preserves any other people being replied to.
+	if (message != nil) {
+		NSString *replyUsername = message.screenName;
+		if (compose.messageContent != nil) {
+			compose.messageContent = [NSString stringWithFormat:@"@%@ %@", replyUsername, compose.messageContent];
+		} else {
+			compose.messageContent = [NSString stringWithFormat:@"@%@ ", replyUsername];
+		}
+		compose.inReplyTo = identifier;
+		compose.originalRetweetContent = nil;
+		compose.newStyleRetweet = NO;
+	}
+	
+	[compose askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
+	self.currentSheet = compose;
+}
+
+- (void)directMessageWithTweet:(NSNumber*)identifier {
+	Compose* compose = [[[Compose alloc] init] autorelease];
+	[compose loadFromUserDefaults];
+	compose.delegate = self;
+	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
+	
+	// Insert d username in beginnig of message. This preserves any other people being replied to.
+	if (message != nil) {
+		NSString *replyUsername = message.screenName;
+		if (compose.messageContent != nil) {
+			compose.messageContent = [NSString stringWithFormat:@"d %@ %@", replyUsername, compose.messageContent];
+		} else {
+			compose.messageContent = [NSString stringWithFormat:@"d %@ ", replyUsername];
+		}
+		compose.inReplyTo = identifier;
+		compose.originalRetweetContent = nil;
+	}
+	
+	[compose askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
+	self.currentSheet = compose;
+}
+
+- (void) compose:(Compose*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo {
+	[htmlController updateStatus:text inReplyTo:inReplyTo];
+}
+
+- (void) compose:(Compose*)aCompose didRetweetMessage:(NSNumber*)identifier {
+	[htmlController retweet:identifier];
+}
+
 
 #pragma mark Disabled menu item
 
@@ -411,21 +487,6 @@
 }
 
 #pragma mark Web actions
-
-- (void)retweet:(NSNumber*)identifier {
-	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
-	if (message == nil) return;
-}
-
-- (void) replyToMessage: (NSNumber*)identifier {
-	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
-	if (message == nil) return;
-}
-
-- (void) directMessageWithTweet:(NSNumber*)identifier {
-	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
-	if (message == nil) return;
-}
 
 - (void) showUserPage:(NSString*)screenName {
 	// Create and show the user window

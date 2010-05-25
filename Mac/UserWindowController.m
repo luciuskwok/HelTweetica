@@ -161,6 +161,7 @@
 	followButton.title = accountFollowsUser ? NSLocalizedString (@"Unfollow", @"button") : NSLocalizedString (@"Follow", @"button");
 	followButton.target = self;
 	followButton.action = accountFollowsUser ? @selector(unfollow:) : @selector(follow:);
+	[followButton setEnabled: YES];
 }
 
 #pragma mark Actions
