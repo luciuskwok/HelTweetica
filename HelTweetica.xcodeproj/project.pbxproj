@@ -1526,7 +1526,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = HelTweetica;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -1551,7 +1551,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = HelTweetica;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 				ZERO_LINK = NO;
 			};
 			name = Release;

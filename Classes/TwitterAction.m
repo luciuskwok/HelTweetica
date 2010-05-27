@@ -103,11 +103,14 @@
 	[self cancel];
 	
 	// OAuth Authorization
-	OAuthClient *oauth = [[[OAuthClient alloc] initWithClientKey:kConsumerKey clientSecret:kConsumerSecret] autorelease];
-	[oauth setUserKey:consumerToken userSecret: consumerSecret];
-	NSString *authorization = [oauth authorizationHeaderWithURLRequest: request];
-	[request setValue: authorization forHTTPHeaderField:@"Authorization"];
-	
+	if (consumerToken) {
+		OAuthClient *oauth = [[[OAuthClient alloc] initWithClientKey:kConsumerKey clientSecret:kConsumerSecret] autorelease];
+		if (consumerToken.length > 0)
+			[oauth setUserKey:consumerToken userSecret: consumerSecret];
+		NSString *authorization = [oauth authorizationHeaderWithURLRequest: request];
+		[request setValue: authorization forHTTPHeaderField:@"Authorization"];
+	}
+		
 	// Create the download connection
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];
 	isLoading = YES;

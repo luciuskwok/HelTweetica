@@ -21,7 +21,7 @@
 #import <Cocoa/Cocoa.h>
 @class TwitterAccount, PreferencesController;
 
-@interface HelTweeticaAppDelegate : NSObject <NSApplicationDelegate> {
+@interface HelTweeticaAppDelegate : NSObject {
 	Twitter *twitter;
 	int networkActionCount;
 	NSMutableSet *windowControllers;

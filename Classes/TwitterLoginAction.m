@@ -44,6 +44,9 @@
 	NSString *postBody = [NSString stringWithFormat:@"x_auth_username=%@&x_auth_password=%@&x_auth_mode=client_auth", encodedUsername, encodedPassword];
 	[request setHTTPBody: [postBody dataUsingEncoding:NSUTF8StringEncoding]];
 	
+	// Set consumer token to empty string so it uses OAuth but doesn't include it in the parameters
+	self.consumerToken = @"";
+	
 	[self startURLRequest:request];
 }
 

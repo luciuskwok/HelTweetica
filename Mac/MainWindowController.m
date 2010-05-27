@@ -133,7 +133,12 @@
 }
 
 - (IBAction)mentions:(id)sender {
-	htmlController.customPageTitle = [NSString stringWithFormat:@"@%@ <b>Mentions</b>", htmlController.account.screenName];
+	if (htmlController.account.screenName) {
+		htmlController.customPageTitle = [NSString stringWithFormat:@"@%@ <b>Mentions</b>", htmlController.account.screenName];
+	} else {
+		htmlController.customPageTitle = @"Your <b>Mentions</b>";
+	}
+
 	[htmlController selectMentionsTimeline];
 }
 
@@ -323,17 +328,20 @@
 }
 
 - (void)loadListsOfUser:(NSString*)userOrNil {
+	// Load Lists from Twitter, if logged in.
+	if (htmlController.account.xAuthToken) {
 	// Load user's own lists.
-	TwitterLoadListsAction *listsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
-	listsAction.completionTarget= self;
-	listsAction.completionAction = @selector(didLoadLists:);
-	[htmlController startTwitterAction:listsAction];
-	
-	// Load lists that user subscribes to.
-	TwitterLoadListsAction *subscriptionsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
-	subscriptionsAction.completionTarget= self;
-	subscriptionsAction.completionAction = @selector(didLoadListSubscriptions:);
-	[htmlController startTwitterAction:subscriptionsAction];
+		TwitterLoadListsAction *listsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
+		listsAction.completionTarget= self;
+		listsAction.completionAction = @selector(didLoadLists:);
+		[htmlController startTwitterAction:listsAction];
+		
+		// Load lists that user subscribes to.
+		TwitterLoadListsAction *subscriptionsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
+		subscriptionsAction.completionTarget= self;
+		subscriptionsAction.completionAction = @selector(didLoadListSubscriptions:);
+		[htmlController startTwitterAction:subscriptionsAction];
+	}
 }
 
 - (void)didLoadLists:(TwitterLoadListsAction *)action {
@@ -407,11 +415,13 @@
 }	
 
 - (void)loadSavedSearches {
-	// Load Saved Searches from Twitter
-	TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didLoadSavedSearches:);
-	[htmlController startTwitterAction:action];
+	// Load Saved Searches from Twitter, if logged in.
+	if (htmlController.account.xAuthToken) {
+		TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
+		action.completionTarget= self;
+		action.completionAction = @selector(didLoadSavedSearches:);
+		[htmlController startTwitterAction:action];
+	}
 }
 
 - (void)didLoadSavedSearches:(TwitterLoadSavedSearchesAction *)action {

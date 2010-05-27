@@ -158,30 +158,24 @@
 #pragma mark Loading
 
 - (void)loadTimeline:(TwitterTimeline*)aTimeline {
-	if (account == nil || account.xAuthToken == nil) {
-		[self setLoadingSpinnerVisibility:NO]; // No current account or not logged in.
-	} else {
-		isLoading = YES;
-		self.timeline = aTimeline;
-		timeline.delegate = self;
-		[timeline reloadNewer];
-	}
+	isLoading = YES;
+	self.timeline = aTimeline;
+	timeline.delegate = self;
+	[timeline reloadNewer];
 }
 
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier {
-	if (account && account.xAuthToken) {
-		// Replace link to load the gap or load older with a Loading spinner
-		if (maxIdentifier) { 
-			// Load gap
-			NSString *element = [NSString stringWithFormat:@"gap-%@", [maxIdentifier stringValue]];
-			[self.webView setDocumentElement:element innerHTML:loadingHTML];
-		} else {
-			[self.webView setDocumentElement:@"footer" innerHTML:loadingHTML];
-		}
-		isLoading = YES;
-		timeline.delegate = self;
-		[timeline loadOlderWithMaxIdentifier:maxIdentifier];
+	// Replace link to load the gap or load older with a Loading spinner
+	if (maxIdentifier) { 
+		// Load gap
+		NSString *element = [NSString stringWithFormat:@"gap-%@", [maxIdentifier stringValue]];
+		[self.webView setDocumentElement:element innerHTML:loadingHTML];
+	} else {
+		[self.webView setDocumentElement:@"footer" innerHTML:loadingHTML];
 	}
+	isLoading = YES;
+	timeline.delegate = self;
+	[timeline loadOlderWithMaxIdentifier:maxIdentifier];
 }
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
@@ -395,7 +389,7 @@
 	NSMutableString *html = [NSMutableString stringWithString:template];
 	
 	// Use the timeline HTML controller to create the HTML content.
-	NSString *tweetAreaHTML = @"<div class='login'>Hi.<br><a href='action:login'>Please log in.</a></div>";
+	NSString *tweetAreaHTML = @"<div class='login'><a href='action:login'>Please log in.</a></div>";
 	NSString *currentAccountHTML = @"";
 	NSString *tabAreaHTML = @"";
 	
@@ -713,6 +707,8 @@
 	
 	if (noInternetConnection) {
 		result = @"<div class='status'>No Internet connection.</div>";
+	} else if (account.xAuthToken == nil) {
+		result = @"<div class='status'><a href='action:login'>Please log in.</a></div>";
 	} else if (isLoading) { // (actions.count > 0 || !webViewHasValidHTML)
 		result = loadingHTML;
 	} else if ([timeline.messages count] == 0) {
