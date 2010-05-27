@@ -904,11 +904,11 @@
 		}
 		
 		if (isInsideTag == NO) {
-			// Break up words longer than 20 chars
-			if (wordLength >= 20) {
+			// Break up words longer than 13 chars
+			if (wordLength >= 13) {
 				[result replaceCharactersInRange:NSMakeRange(index, 0) withString:@"&shy;"]; // soft hyphen.
 				index += 5;
-				wordLength = 10; // Reset to 10 so that every 10 chars over 20, it gets a soft hyphen.
+				wordLength = 7; // Reset to 7 so that every 5 chars over 13, it gets a soft hyphen.
 			}
 			
 			NSString *foundWord, *insertHTML;

@@ -205,20 +205,7 @@
 }
 
 - (NSString*)webURLHTML:(NSString*)url {
-	NSMutableString *visibleText = [NSMutableString stringWithString:url];
-	
-	// Remove http[s]:// prefix
-	if ([visibleText hasPrefix:@"http://"]) 
-		[visibleText deleteCharactersInRange:NSMakeRange(0, 7)];
-	else if ([visibleText hasPrefix:@"https://"])
-		[visibleText deleteCharactersInRange:NSMakeRange(0, 8)];
-	
-	// Limit length
-	if (visibleText.length > 35) {
-		[visibleText replaceCharactersInRange:NSMakeRange(35, visibleText.length - 35) withString:@"..."];
-	}
-	
-	return [NSString stringWithFormat:@"<a href='%@'>%@</a>", url, visibleText];
+	return [self htmlFormattedString:url];
 }	
 
 - (NSString *)userInfoHTML {
