@@ -55,9 +55,11 @@
 							<string key="NSToolbarItemPaletteLabel">Search</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSearchField" key="NSToolbarItemView" id="191625987">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {150, 22}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSearchFieldCell" key="NSCell" id="301561050">
 									<int key="NSCellFlags">343014976</int>
@@ -146,9 +148,11 @@
 							<string key="NSToolbarItemPaletteLabel">Users</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSPopUpButton" key="NSToolbarItemView" id="548932020">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {40, 25}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="175467686">
 									<int key="NSCellFlags">-2076049856</int>
@@ -157,6 +161,10 @@
 									<reference key="NSControlView" ref="548932020"/>
 									<int key="NSButtonFlags">-2034220801</int>
 									<int key="NSButtonFlags2">163</int>
+									<object class="NSCustomResource" key="NSNormalImage" id="510513683">
+										<string key="NSClassName">NSImage</string>
+										<string key="NSResourceName">mac-toolbar-user</string>
+									</object>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">400</int>
@@ -169,10 +177,7 @@
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
 										<int key="NSState">1</int>
-										<object class="NSCustomResource" key="NSImage" id="488929264">
-											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">mac-toolbar-user</string>
-										</object>
+										<reference key="NSImage" ref="510513683"/>
 										<object class="NSCustomResource" key="NSOnImage" id="150681764">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">NSMenuCheckmark</string>
@@ -278,7 +283,7 @@
 									<int key="NSArrowPosition">2</int>
 								</object>
 							</object>
-							<reference key="NSToolbarItemImage" ref="488929264"/>
+							<reference key="NSToolbarItemImage" ref="510513683"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{40, 25}</string>
@@ -297,9 +302,11 @@
 							<string key="NSToolbarItemPaletteLabel">Refresh</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSButton" key="NSToolbarItemView" id="718669829">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{9, 14}, {30, 25}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="353216410">
 									<int key="NSCellFlags">-2080244224</int>
@@ -338,9 +345,11 @@
 							<string key="NSToolbarItemPaletteLabel">Compose</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSButton" key="NSToolbarItemView" id="903624347">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{14, 14}, {30, 25}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="990774373">
 									<int key="NSCellFlags">-2080244224</int>
@@ -379,9 +388,11 @@
 							<string key="NSToolbarItemPaletteLabel">Timeline</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="573069468">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {109, 25}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="621442292">
 									<int key="NSCellFlags">-2080244224</int>
@@ -453,9 +464,11 @@
 							<string key="NSToolbarItemPaletteLabel">Lists</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSPopUpButton" key="NSToolbarItemView" id="67842180">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {40, 25}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="963197471">
 									<int key="NSCellFlags">-2076049856</int>
@@ -655,8 +668,8 @@
 						<reference ref="289024415"/>
 						<reference ref="744418649"/>
 						<reference ref="492555371"/>
-						<reference ref="889164206"/>
 						<reference ref="630883978"/>
+						<reference ref="889164206"/>
 						<reference ref="855157371"/>
 					</array>
 					<array class="NSMutableArray" key="NSToolbarIBDefaultItems">
@@ -666,6 +679,7 @@
 						<reference ref="974147359"/>
 						<reference ref="1024986648"/>
 						<reference ref="630883978"/>
+						<reference ref="289024415"/>
 						<reference ref="744418649"/>
 					</array>
 					<array class="NSMutableArray" key="NSToolbarIBSelectableItems"/>
@@ -1311,7 +1325,7 @@
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="3.CustomClassName">LKWebView</string>
 				<string key="3.IBPluginDependency">com.apple.WebKitIBPlugin</string>
-				<string key="48.IBEditorWindowLastContentRect">{{301, 845}, {616, 0}}</string>
+				<string key="48.IBEditorWindowLastContentRect">{{-54, 713}, {616, 0}}</string>
 				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="48.designableToolbarIdentifier">MainToolbar</string>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

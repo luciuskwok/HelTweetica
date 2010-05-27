@@ -574,11 +574,11 @@
 	
 	// Template for tweet_row
 	
-	NSAutoreleasePool *pool;
+	//NSAutoreleasePool *pool;
 	for (int index=0; index<displayedCount; index++) {
-		pool = [[NSAutoreleasePool alloc] init];
+		//pool = [[NSAutoreleasePool alloc] init];
 		[html appendString: [self tweetRowHTMLForRow:index]];
-		[pool release];
+		//[pool release];
 	}
 	
 	[html appendString:@"</div> "]; // Close tweet_table

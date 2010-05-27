@@ -48,6 +48,17 @@
 		[self updateCharacterCount];
 	}
 	
+	// Text field
+	[textField becomeFirstResponder];
+	NSText *text = textField.currentEditor;
+	
+	// Move insertion point to end of string.
+	[text setSelectedRange: NSMakeRange (text.string.length, 0)];
+	
+	// Enable Continous Spelling
+	NSTextView *textView = (NSTextView *)[self.window firstResponder];
+	[textView setContinuousSpellCheckingEnabled:YES];
+	
 	// Retweet style
 	if (originalRetweetContent != nil) {
 		[self setNewStyleRetweet:newStyleRetweet];
