@@ -603,7 +603,7 @@
 	TwitterMessage *message = [timeline.messages objectAtIndex:row];
 	if (message.retweetedMessage)
 		message = message.retweetedMessage;
-	NSRange foundRange = [message.content rangeOfString:screenName];
+	NSRange foundRange = [message.content rangeOfString:screenName options:NSCaseInsensitiveSearch];
 	if (foundRange.location != NSNotFound) 
 		return tweetMentionRowTemplate;
 	
