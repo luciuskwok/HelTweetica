@@ -49,8 +49,10 @@
 		self.lists = account.lists;
 		self.subscriptions = account.listSubscriptions;
 		
-		// Listen for changes to Saved Searches list
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
+		// Listen for changes to Twitter state data
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
+		[nc addObserver:self selector:@selector(accountsDidChange:) name:@"accountsDidChange" object:nil];
 	}
 	return self;
 }
@@ -161,11 +163,7 @@
 	
 	// Insert
 	for (TwitterAccount *account  in htmlController.twitter.accounts) {
-		NSMenuItem *item = [[[NSMenuItem alloc] init] autorelease];
-		item.title = account.screenName;
-		item.action = @selector(selectAccount:);
-		item.indentationLevel = 1;
-		item.representedObject = account;
+		NSMenuItem *item = [self menuItemWithTitle:account.screenName action:@selector(selectAccount:) representedObject:account indentationLevel:1];
 		if (account == htmlController.account) {
 			// Put checkmark next to current account
 			[item setState:NSOnState];
@@ -173,6 +171,10 @@
 		
 		[usersPopUp.menu addItem:item];
 	}
+}
+
+- (void)accountsDidChange:(NSNotification*)notification {
+	[self reloadUsersMenu];
 }
 
 - (IBAction)goToUser:(id)sender {
@@ -184,13 +186,11 @@
 }
 
 - (IBAction)addAccount:(id)sender {
-	AddAccount* sheet = [[[AddAccount alloc] initWithTwitter:htmlController.twitter] autorelease];
-	sheet.delegate = self;
-	[sheet askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
-	self.currentSheet = sheet;
+	[self showLoginWithScreenName:nil];
 }
 
 - (IBAction)editAccounts:(id)sender {
+	[appDelegate showPreferences:sender];
 }
 
 - (void)didLoginToAccount:(TwitterAccount*)anAccount {
@@ -204,20 +204,44 @@
 		[self.webView scrollToTop];
 	}
 	[htmlController selectHomeTimeline];
+	htmlController.customPageTitle = nil;
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: anAccount.screenName forKey: @"currentAccount"];
 	
 	[self reloadUsersMenu];
 	[self reloadListsMenu];
+	[self reloadSearchMenu];
+	
+	// Start loading lists and saved searches
 	[self loadListsOfUser:nil];
+	[self loadSavedSearches];
+}
+
+- (void)loginFailedWithAccount:(TwitterAccount*)anAccount {
+	[self showAlertWithTitle:@"Login failed." message:@"The username or password was not correct."];
 }
 
 - (IBAction)selectAccount:(id)sender {
 	TwitterAccount *account = [sender representedObject];
-	if (account) 
-		[self didLoginToAccount:account];
+	if (account) {
+		// Check if logged in, else ask for password again
+		if (account.xAuthToken) {
+			[self didLoginToAccount:account];
+		} else {
+			[self showLoginWithScreenName:account.screenName];
+		}
+	}
 }
+
+- (void)showLoginWithScreenName:(NSString*)screenName {
+	AddAccount* sheet = [[[AddAccount alloc] initWithTwitter:htmlController.twitter] autorelease];
+	sheet.screenName = screenName;
+	sheet.delegate = self;
+	[sheet askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
+	self.currentSheet = sheet;
+}
+
 
 /*
 - (void)reloadUsersMenu {
@@ -250,19 +274,23 @@
 
 - (void)reloadListsMenu {
 	NSMenuItem *menuItem;
-
+	NSString *menuTitle;
+	
 	// Remove all items.
 	while (listsPopUp.menu.numberOfItems > kListsMenuPresetItems) {
 		[listsPopUp.menu removeItemAtIndex:kListsMenuPresetItems];
 	}
 	
 	// Insert lists
-	for (TwitterList *list in lists) {
-		menuItem = [[[NSMenuItem alloc] init] autorelease];
-		menuItem.title = [list.fullName substringFromIndex:1];
-		menuItem.action = @selector(selectList:);
-		menuItem.representedObject = list;
+	if (lists.count > 0) {
+		menuTitle = NSLocalizedString (@"Lists", @"menu");
+		menuItem = [self menuItemWithTitle:menuTitle action:@selector(disabledMenuItem:) representedObject:nil indentationLevel:0];
 		[listsPopUp.menu addItem:menuItem];
+			
+		for (TwitterList *list in lists) {
+			menuItem = [self menuItemWithTitle:[list.fullName substringFromIndex:1] action:@selector(selectList:) representedObject:list indentationLevel:1];
+			[listsPopUp.menu addItem:menuItem];
+		}
 	}
 	
 	// Separator
@@ -271,12 +299,15 @@
 	}
 	
 	// Insert subscriptions
-	for (TwitterList *list in subscriptions) {
-		menuItem = [[[NSMenuItem alloc] init] autorelease];
-		menuItem.title = [list.fullName substringFromIndex:1];
-		menuItem.action = @selector(selectList:);
-		menuItem.representedObject = list;
+	if (subscriptions.count > 0) {
+		menuTitle = NSLocalizedString (@"List Subscriptions", @"menu");
+		menuItem = [self menuItemWithTitle:menuTitle action:@selector(disabledMenuItem:) representedObject:nil indentationLevel:0];
 		[listsPopUp.menu addItem:menuItem];
+		
+		for (TwitterList *list in subscriptions) {
+			menuItem = [self menuItemWithTitle:[list.fullName substringFromIndex:1] action:@selector(selectList:) representedObject:list indentationLevel:1];
+			[listsPopUp.menu addItem:menuItem];
+		}
 	}
 	
 	// Empty menu
@@ -332,24 +363,22 @@
 	
 	// Insert saved searches
 	for (TwitterSavedSearch *query in htmlController.account.savedSearches) {
-		menuItem = [[[NSMenuItem alloc] init] autorelease];
-		menuItem.title = query.query;
-		menuItem.target = self;
-		menuItem.action = @selector(search:);
-		menuItem.representedObject = query.query;
-		menuItem.indentationLevel = 1;
+		menuItem = [self menuItemWithTitle:query.query action:@selector(search:) representedObject:query.query indentationLevel:1];
 		[searchMenu addItem:menuItem];
 	}
 	
 	// Empty menu
 	if (htmlController.account.savedSearches.count == 0) {
-		menuItem = [[[NSMenuItem alloc] init] autorelease];
-		menuItem.title = @"No saved searches";
-		menuItem.action = @selector(disabledMenuItem:);
-		menuItem.indentationLevel = 1;
+		menuItem = [self menuItemWithTitle:@"No saved searches" action:@selector(disabledMenuItem:) representedObject:nil indentationLevel:1];
 		[searchMenu addItem:menuItem];
 	}
 	
+	// Update the menu in the search field
+	[[searchField cell] setSearchMenuTemplate: searchMenu];
+}
+
+- (void)savedSearchesDidChange:(NSNotification*)notification {
+	[self reloadSearchMenu];
 }
 
 - (IBAction)search:(id)sender {
@@ -373,7 +402,7 @@
 	// Create and show the Search Results window
 	SearchWindowController *controller = [[[SearchWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account query:aQuery] autorelease];
 	[controller showWindow:nil];
-	[appDelegate.windowControllers addObject:controller];
+	[appDelegate addWindowController:controller];
 	
 }	
 
@@ -388,10 +417,6 @@
 - (void)didLoadSavedSearches:(TwitterLoadSavedSearchesAction *)action {
 	htmlController.account.savedSearches = action.savedSearches;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"savedSearchesDidChange" object:self];
-}
-
-- (void)savedSearchesDidChange:(NSNotification*)notification {
-	[self reloadSearchMenu];
 }
 
 #pragma mark Compose
@@ -476,7 +501,7 @@
 }
 
 
-#pragma mark Disabled menu item
+#pragma mark Misc menu items
 
 - (IBAction)disabledMenuItem:(id)sender {
 	// Do nothing
@@ -486,20 +511,30 @@
 	return (menuItem.action != @selector(disabledMenuItem:));
 }
 
+- (NSMenuItem*)menuItemWithTitle:(NSString *)title action:(SEL)action representedObject:(id)representedObject indentationLevel:(int)indentationLevel {
+	NSMenuItem *menuItem = [[[NSMenuItem alloc] init] autorelease];
+	menuItem.title = title;
+	menuItem.target = self;
+	menuItem.action = action;
+	menuItem.representedObject = representedObject;
+	menuItem.indentationLevel = indentationLevel;
+	return menuItem;
+}	
+
 #pragma mark Web actions
 
 - (void) showUserPage:(NSString*)screenName {
 	// Create and show the user window
 	UserWindowController *controller = [[[UserWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account screenName:screenName] autorelease];
 	[controller showWindow:nil];
-	[appDelegate.windowControllers addObject:controller];
+	[appDelegate addWindowController:controller];
 }
 
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
 	// Create and show the Conversation window
 	ConversationWindowController *controller = [[[ConversationWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account messageIdentifier:identifier] autorelease];
 	[controller showWindow:nil];
-	[appDelegate.windowControllers addObject:controller];
+	[appDelegate addWindowController:controller];
 }
 
 #pragma mark WebView policy delegate
@@ -577,5 +612,24 @@
 			[timelineSegmentedControl setSelected:NO forSegment:index];
 	}
 }
+
+#pragma mark Alert
+
+- (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage {
+	if (self.currentSheet == nil) { // Don't show another alert if one is already up.
+		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+		[alert addButtonWithTitle:@"OK"];
+		[alert setMessageText:aTitle];
+		[alert setInformativeText:aMessage];
+		[alert setAlertStyle:NSWarningAlertStyle];
+		[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+		self.currentSheet = alert;
+	}
+}
+
+-  (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	self.currentSheet = nil;
+}
+
 
 @end

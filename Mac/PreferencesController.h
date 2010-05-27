@@ -1,8 +1,8 @@
 //
-//  AddAccount.h
+//  PreferencesController.h
 //  HelTweetica
 //
-//  Created by Lucius Kwok on 5/22/10.
+//  Created by Lucius Kwok on 5/26/10.
 
 /*
  Copyright (c) 2010, Felt Tip Inc. All rights reserved.
@@ -15,31 +15,26 @@
  */
 
 #import <Cocoa/Cocoa.h>
-@class Twitter;
-@class TwitterAccount;
-@protocol AddAccountDelegate;
+#import "Twitter.h"
 
-@interface AddAccount : NSWindowController {
-	IBOutlet NSTextField *usernameField;
-	IBOutlet NSSecureTextField *passwordField;
+
+@interface PreferencesController : NSWindowController {
+	IBOutlet NSTableView *tableView;
 	Twitter *twitter;
-	NSString *screenName;
-	id <AddAccountDelegate> delegate;
+	NSWindowController *currentSheet;
+	NSImage *alertImage;
 }
-@property (assign) NSTextField *usernameField;
-@property (assign) NSSecureTextField *passwordField;
-@property (nonatomic, retain) NSString *screenName;
-@property (assign) id delegate;
+@property (assign) NSTableView *tableView;
+@property (nonatomic, retain) Twitter *twitter;
+@property (nonatomic, retain) NSWindowController *currentSheet;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;
-- (void)askInWindow:(NSWindow *)window modalDelegate:(id)del didEndSelector:(SEL)sel;
 
-- (IBAction)ok:(id)sender;
-- (IBAction)cancel:(id)sender;
+// Actions
+- (IBAction)add:(id)sender;
+- (IBAction)remove:(id)sender;
 
-@end
+// Alert
+- (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage;
 
-@protocol AddAccountDelegate <NSObject>
-- (void)didLoginToAccount:(TwitterAccount*)anAccount;
-- (void)loginFailedWithAccount:(TwitterAccount*)anAccount;
 @end

@@ -127,6 +127,9 @@
 		E04934B4118E74A800BCA128 /* profile-image-proxy.png in Resources */ = {isa = PBXBuildFile; fileRef = E04934B2118E74A800BCA128 /* profile-image-proxy.png */; };
 		E0493617118EBE3900BCA128 /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */; };
 		E0493618118EBE3900BCA128 /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0493616118EBE3900BCA128 /* TimelineViewController.m */; };
+		E04B285E11AE0652002D889F /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04B285D11AE0652002D889F /* PreferencesController.m */; };
+		E04B286011AE0668002D889F /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = E04B285F11AE0668002D889F /* Preferences.xib */; };
+		E04B295C11AE2DCF002D889F /* alert.png in Resources */ = {isa = PBXBuildFile; fileRef = E04B295B11AE2DCF002D889F /* alert.png */; };
 		E04BD349116C97C2004BFF3D /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */; };
 		E06A3383116E4CCE0098CF12 /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A3382116E4CCE0098CF12 /* retweet.png */; };
 		E06A348D116E8B7D0098CF12 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A348C116E8B7D0098CF12 /* TwitterAccount.m */; };
@@ -381,6 +384,10 @@
 		E04934B2118E74A800BCA128 /* profile-image-proxy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "profile-image-proxy.png"; path = "Resources/profile-image-proxy.png"; sourceTree = "<group>"; };
 		E0493615118EBE3900BCA128 /* TimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineViewController.h; sourceTree = "<group>"; };
 		E0493616118EBE3900BCA128 /* TimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineViewController.m; sourceTree = "<group>"; };
+		E04B285C11AE0652002D889F /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferencesController.h; path = Mac/PreferencesController.h; sourceTree = "<group>"; };
+		E04B285D11AE0652002D889F /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PreferencesController.m; path = Mac/PreferencesController.m; sourceTree = "<group>"; };
+		E04B285F11AE0668002D889F /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Preferences.xib; path = Mac/Preferences.xib; sourceTree = "<group>"; };
+		E04B295B11AE2DCF002D889F /* alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = alert.png; path = Mac/alert.png; sourceTree = "<group>"; };
 		E04BD347116C97C2004BFF3D /* TwitterMessageJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessageJSONParser.h; sourceTree = "<group>"; };
 		E04BD348116C97C2004BFF3D /* TwitterMessageJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessageJSONParser.m; sourceTree = "<group>"; };
 		E06A3382116E4CCE0098CF12 /* retweet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = retweet.png; path = Resources/retweet.png; sourceTree = "<group>"; };
@@ -905,6 +912,7 @@
 			children = (
 				E0F1FBD511AA6EC4000DD4F0 /* Icon.icns */,
 				E0C8C1BD11A774560081A2C7 /* MainMenu.xib */,
+				E04B295B11AE2DCF002D889F /* alert.png */,
 				E02705C411ABBF9C008EEED5 /* mac-clear.png */,
 				E0F1F83411AA5178000DD4F0 /* mac-toolbar-home.png */,
 				E0F1FAA511AA6BA7000DD4F0 /* mac-toolbar-mentions.png */,
@@ -940,6 +948,9 @@
 				E02702D011AB3391008EEED5 /* SearchWindowController.h */,
 				E02702D111AB3391008EEED5 /* SearchWindowController.m */,
 				E02702D311AB340E008EEED5 /* SearchWindow.xib */,
+				E04B285C11AE0652002D889F /* PreferencesController.h */,
+				E04B285D11AE0652002D889F /* PreferencesController.m */,
+				E04B285F11AE0668002D889F /* Preferences.xib */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1204,6 +1215,8 @@
 				E027045C11AB5D43008EEED5 /* mac-toolbar-compose.png in Resources */,
 				E02705B811ABBA20008EEED5 /* Compose.xib in Resources */,
 				E02705C511ABBF9C008EEED5 /* mac-clear.png in Resources */,
+				E04B286011AE0668002D889F /* Preferences.xib in Resources */,
+				E04B295C11AE2DCF002D889F /* alert.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1365,6 +1378,7 @@
 				E027026D11AB2846008EEED5 /* ConversationWindowController.m in Sources */,
 				E02702D211AB3391008EEED5 /* SearchWindowController.m in Sources */,
 				E02705B611ABB9F8008EEED5 /* Compose.m in Sources */,
+				E04B285E11AE0652002D889F /* PreferencesController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

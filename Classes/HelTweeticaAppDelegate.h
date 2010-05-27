@@ -19,23 +19,27 @@
 #ifdef TARGET_PROJECT_MAC
 
 #import <Cocoa/Cocoa.h>
-@class TwitterAccount;
+@class TwitterAccount, PreferencesController;
 
 @interface HelTweeticaAppDelegate : NSObject <NSApplicationDelegate> {
 	Twitter *twitter;
 	int networkActionCount;
 	NSMutableSet *windowControllers;
+	PreferencesController *preferences;
 }
 
 @property (nonatomic, retain) Twitter *twitter;
-@property (nonatomic, retain) NSMutableSet *windowControllers;
 
+// Windows
 - (IBAction)newMainWindow:(id)sender;
+- (void)newMainWindowWithAccount:(TwitterAccount*)account;
+- (IBAction)showPreferences:(id)sender;
+- (void)addWindowController:(id)controller;
 
+// Networking
 - (void)incrementNetworkActionCount;
 - (void)decrementNetworkActionCount;
 
-- (void)newMainWindowWithAccount:(TwitterAccount*)account;
 
 @end
 

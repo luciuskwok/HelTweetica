@@ -21,19 +21,21 @@
 
 #ifdef TARGET_PROJECT_MAC
 #import "MainWindowController.h"
+#import "PreferencesController.h"
 #endif
 
-@implementation HelTweeticaAppDelegate
 
+@implementation HelTweeticaAppDelegate
 
 #ifdef TARGET_PROJECT_MAC
 #pragma mark Mac version
 
-@synthesize twitter, windowControllers;
+@synthesize twitter;
 
 - (void)dealloc {
 	[twitter release];
 	[windowControllers release];
+	[preferences release];
 	[super dealloc];
 }
 
@@ -49,6 +51,12 @@
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:nil];
 }
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification {
+	[twitter save];
+}
+
+#pragma mark Windows
 
 - (IBAction)newMainWindow:(id)sender {
 	[self newMainWindowWithAccount:nil];
@@ -76,15 +84,27 @@
 - (void)windowWillClose:(NSNotification*)notification {
 	NSWindow *aWindow = [notification object];
 	id controller = [aWindow windowController];
-	if (controller) {
+	
+	if ([controller isKindOfClass: [MainWindowController class]]) {
 		[[controller retain] autorelease];
 		[windowControllers removeObject: controller];
+	} else if (controller == preferences) {
+		[[preferences window] orderOut:nil];
 	}
 }
 
-- (void)applicationWillTerminate:(NSNotification *)aNotification {
-	[twitter save];
+- (IBAction)showPreferences:(id)sender {
+	if (preferences == nil) {
+		preferences = [[PreferencesController alloc] initWithTwitter:twitter];
+	}
+	[preferences showWindow:nil];
 }
+
+- (void)addWindowController:(id)controller {
+	[windowControllers addObject:controller];
+}
+
+#pragma mark Networking
 
 // TODO: add a network activity spinner
 - (void) incrementNetworkActionCount {

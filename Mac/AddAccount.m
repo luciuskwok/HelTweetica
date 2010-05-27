@@ -21,7 +21,7 @@
 
 
 @implementation AddAccount
-@synthesize usernameField, passwordField, delegate;
+@synthesize usernameField, passwordField, screenName, delegate;
 
 
 - (id)initWithTwitter:(Twitter*)aTwitter {
@@ -36,19 +36,27 @@
 	[super dealloc];
 }
 
+- (void)windowDidLoad {
+	if (screenName) {
+		[usernameField setStringValue:screenName];
+		[passwordField becomeFirstResponder];
+	}
+}
+
 #pragma mark Login view controller delegate
 
-- (void) loginWithScreenName:(NSString*)screenName password:(NSString*)password {
+- (void) loginWithScreenName:(NSString*)aScreenName password:(NSString*)password {
 	// Create an account for this username if one doesn't already exist
-	TwitterAccount *account = [twitter accountWithScreenName: screenName];
+	TwitterAccount *account = [twitter accountWithScreenName: aScreenName];
 	if (account == nil) {
 		account = [[[TwitterAccount alloc] init] autorelease];
-		account.screenName = screenName;
+		account.screenName = aScreenName;
 		[twitter.accounts addObject: account];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"accountsDidChange" object:nil];
 	}
 	
 	// Create and send the login action.
-	TwitterLoginAction *action = [[[TwitterLoginAction alloc] initWithUsername:screenName password:password] autorelease];
+	TwitterLoginAction *action = [[[TwitterLoginAction alloc] initWithUsername:aScreenName password:password] autorelease];
 	action.completionTarget= self;
 	action.completionAction = @selector(didLogin:);
 	
@@ -60,9 +68,9 @@
 }
 
 - (void) didLogin:(TwitterLoginAction *)action {
+	TwitterAccount *account = [twitter accountWithScreenName: action.username];
 	if (action.token) {
 		// Save the login information for the account.
-		TwitterAccount *account = [twitter accountWithScreenName: action.username];
 		[account setXAuthToken: action.token];
 		[account setXAuthSecret: action.secret];
 		[account setScreenName: action.username]; // To make sure the uppercase/lowercase letters are correct.
@@ -71,8 +79,9 @@
 		if ([delegate respondsToSelector:@selector(didLoginToAccount:)])
 			[delegate didLoginToAccount:account];
 	} else {
-		// TODO: Login was not successful, so report the error.
-		//NSString *title = NSLocalizedString (@"Login failed: Username or password was incorrect.", @"status");
+		// Tell delegate that login failed
+		if ([delegate respondsToSelector:@selector(loginFailedWithAccount:)])
+			[delegate loginFailedWithAccount:account];
 	}
 }
 
@@ -98,9 +107,12 @@
 	
 	if (user.length > 0 && pass.length > 0) {
 		[self loginWithScreenName:user password:pass];
+		[self endSheetWithReturnCode:1];
+	} else if (user.length == 0) {
+		[usernameField becomeFirstResponder];
+	} else {
+		[passwordField becomeFirstResponder];
 	}
-	
-	[self endSheetWithReturnCode:1];
 }
 
 - (IBAction)cancel:(id)sender {

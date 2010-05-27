@@ -162,7 +162,7 @@ p { margin: 0px 0px 20px 0px; }
 .user_info_area {
 	display: block;
 	margin: 0px;
-	padding: 10px;
+	padding: 10px 10px 0px 10px;
 	width: 100%;
 }
 .user_large_avatar {
@@ -170,7 +170,7 @@ p { margin: 0px 0px 20px 0px; }
 	float: right;
 	vertical-align: top;
 	text-align: left;
-	padding: 0px 0px 10px 10px;
+	padding: 0px 20px 10px 10px;
 }
 .user_large_avatar img {
 	max-width: 250px; max-height: 250px;
@@ -181,7 +181,7 @@ p { margin: 0px 0px 20px 0px; }
 	display: block;
 	vertical-align: top;
 	width: auto;
-	padding: 0px 10px 10px 0px;
+	padding: 0px 10px 0px 0px;
 }
 .user_info_table {
 	display: table;
@@ -191,7 +191,7 @@ p { margin: 0px 0px 20px 0px; }
 }
 .user_info_key_cell {
 	display: table-cell;
-	width: 60px;
+	width: 48px;
 	text-align: right;
 	font-size: 11px;
 	color: #888;

@@ -38,7 +38,7 @@
 	NSMutableArray *lists;
 	NSMutableArray *subscriptions;
 	
-	NSWindowController *currentSheet;
+	id currentSheet;
 }
 
 @property (assign) LKWebView *webView;
@@ -52,7 +52,7 @@
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *subscriptions;
 
-@property (nonatomic, retain) NSWindowController *currentSheet;
+@property (nonatomic, retain) id currentSheet;
 
 - (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account;
 
@@ -71,6 +71,7 @@
 - (IBAction)addAccount:(id)sender;
 - (IBAction)editAccounts:(id)sender;
 - (IBAction)selectAccount:(id)sender;
+- (void)showLoginWithScreenName:(NSString*)screenName;
 
 // Lists
 - (void)reloadListsMenu;
@@ -86,11 +87,14 @@
 // Compose
 - (IBAction)compose:(id)sender;
 
-// Disabled menu item
+// Misc menu items
 - (IBAction)disabledMenuItem:(id)sender;
+- (NSMenuItem*)menuItemWithTitle:(NSString *)title action:(SEL)action representedObject:(id)representedObject indentationLevel:(int)indentation;
 
 // Web actions
 - (void) showUserPage:(NSString*)screenName;
 
+// Alert
+- (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage;
 
 @end
