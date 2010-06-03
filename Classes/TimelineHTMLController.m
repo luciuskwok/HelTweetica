@@ -608,6 +608,9 @@
 	TwitterMessage *message = [timeline.messages objectAtIndex:row];
 	TwitterMessage *retweeterMessage = nil;
 	
+	// Skip messages with invalid identifiers
+	if ([message.identifier compare:[NSNumber numberWithInt:10000]] == NSOrderedAscending) return @"";
+	
 	// Swap retweeted message with root message
 	if (message.retweetedMessage != nil) {
 		retweeterMessage = message;
