@@ -78,9 +78,10 @@
 			}
 		}
 		
-		// Sort by identifier, descending.
-		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
-		[timeline.messages sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
+		// Sort by date, then by identifier, descending.
+		NSSortDescriptor *createdDateDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO] autorelease];
+		NSSortDescriptor *identifierDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
+		[timeline.messages sortUsingDescriptors: [NSArray arrayWithObjects: createdDateDescriptor, identifierDescriptor, nil]];
 	}
 }
 
