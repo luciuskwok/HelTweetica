@@ -130,7 +130,17 @@
 - (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
 	NSSet *filteredSet = [statuses filteredSetUsingPredicate:predicate];
-	return [filteredSet anyObject];
+	TwitterMessage *message = [filteredSet anyObject];
+	
+	// Check for retweets
+	if (filteredSet.count == 0) {
+		predicate = [NSPredicate predicateWithFormat:@"retweetedMessage.identifier == %@", identifier];
+		filteredSet = [statuses filteredSetUsingPredicate:predicate];
+		message = [filteredSet anyObject];
+		return message.retweetedMessage;
+	}
+	
+	return message;
 }
 
 - (NSSet*) statusesInReplyToStatusIdentifier:(NSNumber*)identifier {
