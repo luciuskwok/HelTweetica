@@ -49,6 +49,9 @@
 		E02705C511ABBF9C008EEED5 /* mac-clear.png in Resources */ = {isa = PBXBuildFile; fileRef = E02705C411ABBF9C008EEED5 /* mac-clear.png */; };
 		E02B294B1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
 		E02B294C1184A13F0037F359 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B294A1184A13F0037F359 /* TwitterAction.m */; };
+		E02D6D6C11B8AD380003805F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E02D6D6B11B8AD380003805F /* Sparkle.framework */; };
+		E02D6D7B11B8B26B0003805F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E02D6D6B11B8AD380003805F /* Sparkle.framework */; };
+		E02D6D8111B8BFF00003805F /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = E02D6D8011B8BFF00003805F /* dsa_pub.pem */; };
 		E03570741174E6BE004B9A0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		E03570751174E6BE004B9A0F /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
 		E03570761174E6BE004B9A0F /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = E00C26281162D90800F62B70 /* Login.xib */; };
@@ -315,6 +318,19 @@
 		E0FC9A241163CA7A0027C422 /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC9A231163CA7A0027C422 /* OAuthClient.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		E02D6D7911B8AFAC0003805F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E02D6D7B11B8B26B0003805F /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* HelTweeticaAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweeticaAppDelegate.h; sourceTree = "<group>"; };
@@ -365,6 +381,8 @@
 		E02705C411ABBF9C008EEED5 /* mac-clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mac-clear.png"; path = "Mac/mac-clear.png"; sourceTree = "<group>"; };
 		E02B29491184A13F0037F359 /* TwitterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAction.h; sourceTree = "<group>"; };
 		E02B294A1184A13F0037F359 /* TwitterAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAction.m; sourceTree = "<group>"; };
+		E02D6D6B11B8AD380003805F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Mac/Sparkle.framework; sourceTree = "<group>"; };
+		E02D6D8011B8BFF00003805F /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Mac/dsa_pub.pem; sourceTree = "<group>"; };
 		E03570B51174E6BE004B9A0F /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03570B71174E6BE004B9A0F /* AppStore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppStore-Info.plist"; sourceTree = "<group>"; };
 		E036EF3A117B7F3300D52BF6 /* SoundEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffects.h; sourceTree = "<group>"; };
@@ -560,6 +578,7 @@
 				E0C8C07511A771790081A2C7 /* Foundation.framework in Frameworks */,
 				E0C8C0F011A771F70081A2C7 /* Cocoa.framework in Frameworks */,
 				E0C8C1AE11A7721A0081A2C7 /* WebKit.framework in Frameworks */,
+				E02D6D6C11B8AD380003805F /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -923,6 +942,7 @@
 				E027045B11AB5D43008EEED5 /* mac-toolbar-compose.png */,
 				E0F1F5E311A9B5DD000DD4F0 /* style.css */,
 				E0F1F7C011AA2FFD000DD4F0 /* main-template.html */,
+				E02D6D8011B8BFF00003805F /* dsa_pub.pem */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -958,6 +978,7 @@
 		E0F1FAAE11AA6EAF000DD4F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E02D6D6B11B8AD380003805F /* Sparkle.framework */,
 				E0C8C07411A771790081A2C7 /* Foundation.framework */,
 				E0C8C0EF11A771F70081A2C7 /* Cocoa.framework */,
 				E0C8C1AD11A7721A0081A2C7 /* WebKit.framework */,
@@ -1009,6 +1030,7 @@
 				E0C8C06911A770AA0081A2C7 /* Resources */,
 				E0C8C06A11A770AA0081A2C7 /* Sources */,
 				E0C8C06B11A770AA0081A2C7 /* Frameworks */,
+				E02D6D7911B8AFAC0003805F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1217,6 +1239,7 @@
 				E02705C511ABBF9C008EEED5 /* mac-clear.png in Resources */,
 				E04B286011AE0668002D889F /* Preferences.xib in Resources */,
 				E04B295C11AE2DCF002D889F /* alert.png in Resources */,
+				E02D6D8111B8BFF00003805F /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1510,6 +1533,10 @@
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Mac\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -1538,6 +1565,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Mac\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;

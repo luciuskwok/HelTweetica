@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.1</string>
 	<key>CFBundleVersion</key>
-	<string>A02</string>
+	<string>1.0.1</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -28,5 +28,9 @@
 	<string>Icon.icns</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>©2010 Felt Tip Inc. All rights reserved.</string>
+	<key>SUFeedURL</key>
+	<string>http://www.felttip.com/heltweetica/appcast.xml</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
 </dict>
 </plist>
