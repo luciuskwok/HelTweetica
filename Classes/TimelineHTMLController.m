@@ -30,7 +30,7 @@
 
 
 // Constants
-#define kDefaultMaxTweetsShown 300
+#define kDefaultMaxTweetsShown 200
 #define kTimelineIdentifier @"Timeline"
 #define kMentionsIdentifier @"Mentions"
 #define kDirectMessagesIdentifier @"Direct"
@@ -416,6 +416,7 @@
 }
 
 - (void)rewriteTweetArea {
+	
 	if (webViewHasValidHTML) {
 		// Replace tab area HTML with current tab
 		if (customTabName != nil) {
