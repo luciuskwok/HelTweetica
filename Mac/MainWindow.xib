@@ -55,11 +55,9 @@
 							<string key="NSToolbarItemPaletteLabel">Search</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSearchField" key="NSToolbarItemView" id="191625987">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {150, 22}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSearchFieldCell" key="NSCell" id="301561050">
 									<int key="NSCellFlags">343014976</int>
@@ -148,11 +146,9 @@
 							<string key="NSToolbarItemPaletteLabel">Users</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSPopUpButton" key="NSToolbarItemView" id="548932020">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {40, 25}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="175467686">
 									<int key="NSCellFlags">-2076049856</int>
@@ -161,10 +157,6 @@
 									<reference key="NSControlView" ref="548932020"/>
 									<int key="NSButtonFlags">-2034220801</int>
 									<int key="NSButtonFlags2">163</int>
-									<object class="NSCustomResource" key="NSNormalImage" id="510513683">
-										<string key="NSClassName">NSImage</string>
-										<string key="NSResourceName">mac-toolbar-user</string>
-									</object>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">400</int>
@@ -177,7 +169,10 @@
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
 										<int key="NSState">1</int>
-										<reference key="NSImage" ref="510513683"/>
+										<object class="NSCustomResource" key="NSImage" id="901164597">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">mac-toolbar-user</string>
+										</object>
 										<object class="NSCustomResource" key="NSOnImage" id="150681764">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">NSMenuCheckmark</string>
@@ -283,7 +278,7 @@
 									<int key="NSArrowPosition">2</int>
 								</object>
 							</object>
-							<reference key="NSToolbarItemImage" ref="510513683"/>
+							<reference key="NSToolbarItemImage" ref="901164597"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{40, 25}</string>
@@ -302,11 +297,9 @@
 							<string key="NSToolbarItemPaletteLabel">Refresh</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSButton" key="NSToolbarItemView" id="718669829">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{9, 14}, {30, 25}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="353216410">
 									<int key="NSCellFlags">-2080244224</int>
@@ -345,11 +338,9 @@
 							<string key="NSToolbarItemPaletteLabel">Compose</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSButton" key="NSToolbarItemView" id="903624347">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{14, 14}, {30, 25}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="990774373">
 									<int key="NSCellFlags">-2080244224</int>
@@ -388,11 +379,9 @@
 							<string key="NSToolbarItemPaletteLabel">Timeline</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="573069468">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {109, 25}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="621442292">
 									<int key="NSCellFlags">-2080244224</int>
@@ -464,11 +453,9 @@
 							<string key="NSToolbarItemPaletteLabel">Lists</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSPopUpButton" key="NSToolbarItemView" id="67842180">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {40, 25}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="963197471">
 									<int key="NSCellFlags">-2076049856</int>
@@ -477,10 +464,6 @@
 									<reference key="NSControlView" ref="67842180"/>
 									<int key="NSButtonFlags">-2034220801</int>
 									<int key="NSButtonFlags2">163</int>
-									<object class="NSCustomResource" key="NSNormalImage" id="806211898">
-										<string key="NSClassName">NSImage</string>
-										<string key="NSResourceName">mac-toolbar-lists</string>
-									</object>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">400</int>
@@ -493,7 +476,10 @@
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
 										<int key="NSState">1</int>
-										<reference key="NSImage" ref="806211898"/>
+										<object class="NSCustomResource" key="NSImage" id="259308555">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">mac-toolbar-lists</string>
+										</object>
 										<reference key="NSOnImage" ref="150681764"/>
 										<reference key="NSMixedImage" ref="986665450"/>
 										<string key="NSAction">_popUpItemAction:</string>
@@ -547,7 +533,7 @@
 									<int key="NSArrowPosition">2</int>
 								</object>
 							</object>
-							<reference key="NSToolbarItemImage" ref="806211898"/>
+							<reference key="NSToolbarItemImage" ref="259308555"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{40, 25}</string>
@@ -720,7 +706,9 @@
 								<dictionary class="NSMutableDictionary" key="Values">
 									<integer value="12" key="WebKitDefaultFixedFontSize"/>
 									<integer value="12" key="WebKitDefaultFontSize"/>
+									<boolean value="NO" key="WebKitJavaEnabled"/>
 									<integer value="1" key="WebKitMinimumFontSize"/>
+									<boolean value="NO" key="WebKitPluginsEnabled"/>
 								</dictionary>
 							</object>
 							<bool key="UseBackForwardList">NO</bool>
@@ -1546,6 +1534,20 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSURLDownload.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">Sparkle.framework/Headers/SUAppcast.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">Sparkle.framework/Headers/SUUpdater.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

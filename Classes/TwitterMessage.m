@@ -125,16 +125,22 @@
 
 - (NSDate*) dateWithTwitterStatusString: (NSString*) string {
 	// Twitter and Search use two different date formats, which differ by a comma at character 4.
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	NSString *template;
 	if ([string characterAtIndex:3] == ',') {
 		// Twitter Search API format
-		[formatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
+		template = @"EEE, dd MMM yyyy HH:mm:ss ZZ"; // Mon, 25 Jan 2010 00:46:47 +0000 
 	} else {
 		// Twitter API default format
-		[formatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; // Mon Jan 25 00:46:47 +0000 2010
+		template = @"EEE MMM dd HH:mm:ss ZZ yyyy"; // Mon Jan 25 00:46:47 +0000 2010
 	}
+	
+	NSString *localeIdentifier = [NSLocale canonicalLocaleIdentifierFromString:@"en_US"];
+	NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:localeIdentifier] autorelease];
+	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+	[formatter setLocale: usLocale];
+	[formatter setDateFormat:template];
+	
 	NSDate *result = [formatter dateFromString:string];
-	[formatter release];
 	return result;
 }
 
