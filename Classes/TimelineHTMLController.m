@@ -30,11 +30,11 @@
 
 
 // Constants
-#define kDefaultMaxTweetsShown 200
-#define kTimelineIdentifier @"Timeline"
-#define kMentionsIdentifier @"Mentions"
-#define kDirectMessagesIdentifier @"Direct"
-#define kFavoritesIdentifier @"Favorites"
+enum { kDefaultMaxTweetsShown = 120 };
+static NSString *kTimelineIdentifier = @"Timeline";
+static NSString *kMentionsIdentifier = @"Mentions";
+static NSString *kDirectMessagesIdentifier = @"Direct";
+static NSString *kFavoritesIdentifier = @"Favorites";
 
 
 
@@ -186,6 +186,9 @@
 	isLoading = NO;
 	
 	if (timeline == aTimeline) {
+		// Both reloading methods seem to block the main thread while images load over the network. It might be the number of URL connections being made at once that's causing this.
+		//[self loadWebView];
+		
 		[self rewriteTweetArea];	
 	}
 }

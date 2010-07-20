@@ -17,8 +17,8 @@
 
 #import "InstapaperSettingsViewController.h"
 
-#define kInstapaperUsernameKey @"instapaperUsername"
-#define kInstapaperPasswordKey @"instapaperPassword"
+static NSString *kInstapaperUsernameKey = @"instapaperUsername";
+static NSString *kInstapaperPasswordKey = @"instapaperPassword";
 
 
 @implementation InstapaperSettingsViewController

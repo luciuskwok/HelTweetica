@@ -21,8 +21,10 @@
 #import "HelTweeticaAppDelegate.h"
 
 
-#define kInstapaperActionSheetTag 1
-#define kActionActionSheetTag 2
+enum {
+	kInstapaperActionSheetTag = 1,
+	kActionActionSheetTag = 2
+};
 
 
 @interface WebBrowserViewController (PrivateMethods)

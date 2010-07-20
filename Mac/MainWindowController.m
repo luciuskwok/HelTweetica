@@ -72,7 +72,15 @@
 	[super dealloc];
 }
 
+
 - (void)windowDidLoad {
+	// Set up additional web view preferences that aren't set up in IB.
+	[self.webView setPreferencesIdentifier:@"HelTweeticaWebPrefs"];
+	WebPreferences *prefs = self.webView.preferences;
+	[prefs setUsesPageCache:NO];
+	[prefs setCacheModel:WebCacheModelDocumentViewer];
+	[prefs setPrivateBrowsingEnabled:YES];
+	
 	htmlController.webView = self.webView;
 	[htmlController selectHomeTimeline];
 	[htmlController loadWebView];
@@ -158,9 +166,10 @@
 
 
 #pragma mark Users
-#define kUsersMenuPresetItems 8
 
 - (void)reloadUsersMenu {
+	const int kUsersMenuPresetItems = 8;
+	
 	// Remove all items after separator and insert screen names of all accounts.
 	while (usersPopUp.menu.numberOfItems > kUsersMenuPresetItems) {
 		[usersPopUp.menu removeItemAtIndex:kUsersMenuPresetItems];
@@ -275,11 +284,11 @@
 
 
 #pragma mark Lists
-#define kListsMenuPresetItems 1
 
 - (void)reloadListsMenu {
 	NSMenuItem *menuItem;
 	NSString *menuTitle;
+	const int kListsMenuPresetItems = 1;
 	
 	// Remove all items.
 	while (listsPopUp.menu.numberOfItems > kListsMenuPresetItems) {
@@ -357,9 +366,9 @@
 
 
 #pragma mark Search
-#define kSavedSearchesItemTag 2000
 
 - (void)reloadSearchMenu {
+	const int kSavedSearchesItemTag = 2000;
 	NSMenuItem *menuItem;
 	int savedSearchesItemIndex = [searchMenu indexOfItemWithTag:kSavedSearchesItemTag];
 	if (savedSearchesItemIndex < 0) return;

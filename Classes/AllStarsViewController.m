@@ -21,14 +21,15 @@
 #import "SoundEffects.h"
 
 
-#define kPreviewTopMargin 24.0
-#define kPreviewLeftMargin 13.0
-#define kPreviewCellSpacing 6.0
-#define kPreviewCellSize 120.0
-#define kPreviewImageInset 8.0
-#define kMaximumNumberOfAvatarsToShow 96
-#define kShuffleTargetAdvanceInterval 1.0
-#define kDurationMessageIsShown 10.0
+const float kPreviewTopMargin = 24.0;
+const float kPreviewLeftMargin = 13.0;
+const float kPreviewCellSpacing = 6.0;
+const float kPreviewCellSize = 120.0;
+const float kPreviewImageInset = 8.0;
+const float kShuffleTargetAdvanceInterval = 1.0;
+const float kDurationMessageIsShown = 10.0;
+enum { kMaximumNumberOfAvatarsToShow = 96 };
+
 
 @interface AllStarsViewController (PrivateMethods)
 - (BOOL) screenName:(NSString*)screenName existsInArray:(NSArray*)array;

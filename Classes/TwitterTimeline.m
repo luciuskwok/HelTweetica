@@ -20,7 +20,7 @@
 
 
 // Constants
-#define kMaxNumberOfMessagesInATimeline 2000
+enum { kMaxNumberOfMessagesInATimeline = 2000 };
 // When reloading a timeline, newly downloaded messages are merged with existing ones, sorted by identifier, and the oldest ones past this limit are trimmed off.
 
 

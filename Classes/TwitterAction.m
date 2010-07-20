@@ -110,6 +110,9 @@
 		NSString *authorization = [oauth authorizationHeaderWithURLRequest: request];
 		[request setValue: authorization forHTTPHeaderField:@"Authorization"];
 	}
+	
+	// Cache policy
+	[request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 		
 	// Create the download connection
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];

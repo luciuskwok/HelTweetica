@@ -28,7 +28,7 @@
 #import "TwitterLoadTimelineAction.h"
 
 
-#define kDelayBeforeEnteringShuffleMode 60.0
+const float kDelayBeforeEnteringShuffleMode = 60.0;
 
 
 @interface RootViewController (PrivateMethods)

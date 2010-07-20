@@ -26,8 +26,10 @@
 
 
 // Tag used to identify Follow/Unfollow button in Toolbar
-#define kFollowButtonTag 69
-#define kFollowButtonPositionFromEnd 2
+enum {
+	kFollowButtonTag = 69,
+	kFollowButtonPositionFromEnd = 2
+};
 
 
 @implementation UserPageViewController

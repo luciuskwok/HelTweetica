@@ -27,7 +27,7 @@
 @synthesize locked, favorite, direct;
 
 #ifndef TARGET_PROJECT_MAC
-#define kAvatarSize 256.0f
+const float kAvatarSize = 256.0f;
 @synthesize largeAvatar;
 @synthesize downloadConnection, downloadData;
 #endif

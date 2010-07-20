@@ -23,7 +23,7 @@
 @synthesize delegate;
 
 
-#define kTwitterCharacterMax 140
+enum { kTwitterCharacterMax = 140 };
 
 
 - (id)init {
