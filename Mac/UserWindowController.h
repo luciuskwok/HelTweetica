@@ -28,7 +28,7 @@
 @property (assign) NSButton *followButton;
 @property (nonatomic, retain) NSString *screenName;
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)anAccount screenName:(NSString*)aScreenName;
+- (id)initWithScreenName:(NSString*)aScreenName;
 - (void)loadUserWithScreenName:(NSString*)aScreenName;
 
 @end

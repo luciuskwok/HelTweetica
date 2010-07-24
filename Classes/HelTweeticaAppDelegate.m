@@ -30,7 +30,7 @@
 #ifdef TARGET_PROJECT_MAC
 #pragma mark Mac version
 
-@synthesize twitter;
+@synthesize twitter, windowControllers;
 
 - (void)dealloc {
 	[twitter release];
@@ -45,7 +45,21 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[self newMainWindowWithAccount:nil];
+	// Reload previous window states
+	NSData *windowState = [[NSUserDefaults standardUserDefaults] objectForKey:@"windowState"];
+	if (windowState) {
+		NS_DURING 
+		{
+			self.windowControllers = [NSKeyedUnarchiver unarchiveObjectWithData:windowState];
+		}
+		NS_HANDLER
+		{
+			windowState = nil;
+		}
+		NS_ENDHANDLER
+	}
+	if (windowState == nil)
+		[self newMainWindowWithAccount:nil];
 	
 	// Listen for window closing notifications
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -54,6 +68,20 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
 	[twitter save];
+	
+	// Save window positions
+	int index = 1;
+	for (MainWindowController *controller in windowControllers) {
+		// Window frame
+		NSString *frameName = [NSString stringWithFormat:@"OpenWindow%d", index];
+		[controller.window setFrameAutosaveName:frameName];
+		[controller.window saveFrameUsingName:frameName];
+		index++;
+	}
+	
+	// Save window states for next launch.
+	NSData *windowState = [NSKeyedArchiver archivedDataWithRootObject:windowControllers];
+	[[NSUserDefaults standardUserDefaults] setObject:windowState forKey:@"windowState"];
 }
 
 #pragma mark Windows
@@ -76,7 +104,8 @@
 	}
 	
 	// Create and show the main window
-	MainWindowController *controller = [[[MainWindowController alloc] initWithTwitter:twitter account:account] autorelease];
+	MainWindowController *controller = [[[MainWindowController alloc] init] autorelease];
+	[controller setAccount:account];
 	[controller showWindow:nil];
 	[windowControllers addObject:controller];
 }

@@ -20,9 +20,10 @@
 @class Twitter, TwitterAccount;
 
 @interface ConversationWindowController : MainWindowController {
+	NSNumber *messageIdentifier;
 }
+@property (nonatomic, retain) NSNumber *messageIdentifier;
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account messageIdentifier:(NSNumber*)messageIdentifier;
-
+- (void)loadConversation;
 
 @end

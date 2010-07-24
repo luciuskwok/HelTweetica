@@ -35,19 +35,15 @@
 @synthesize htmlController, lists, subscriptions, currentSheet;
 
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account {
+- (id)init {
 	self = [super initWithWindowNibName:@"MainWindow"];
 	if (self) {
 		appDelegate = [NSApp delegate];
 		
 		// Timeline HTML Controller generates the HTML from a timeline
 		self.htmlController = [[[TimelineHTMLController alloc] init] autorelease];
-		htmlController.twitter = aTwitter;
+		htmlController.twitter = appDelegate.twitter;
 		htmlController.delegate = self;
-		htmlController.account = account;
-		
-		self.lists = account.lists;
-		self.subscriptions = account.listSubscriptions;
 		
 		// Listen for changes to Twitter state data
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -72,6 +68,38 @@
 	[super dealloc];
 }
 
+- (void)setAccount:(TwitterAccount *)anAccount {
+	htmlController.account = anAccount;
+	self.lists = anAccount.lists;
+	self.subscriptions = anAccount.listSubscriptions;
+}
+
+- (void)setAccountWithScreenName:(NSString*)screenName {
+	TwitterAccount *account = [htmlController.twitter accountWithScreenName:screenName];
+	if (account == nil) {
+		if (htmlController.twitter.accounts.count > 0) 
+			account = [htmlController.twitter.accounts objectAtIndex:0];
+	}
+	[self setAccount:account];
+}	
+
+#pragma mark NSCoder
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [self init];
+	if (self) {
+		[self setAccountWithScreenName: [aDecoder decodeObjectForKey:@"accountScreenName"]];
+		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:htmlController.account.screenName forKey:@"accountScreenName"];
+	[aCoder encodeObject:[self.window frameAutosaveName ] forKey:@"windowFrameAutosaveName"];
+}
+
+#pragma mark Window 
 
 - (void)windowDidLoad {
 	// Set up additional web view preferences that aren't set up in IB.
@@ -111,7 +139,6 @@
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	self.currentSheet = nil;
 }
-
 
 #pragma mark Timelines
 
@@ -417,7 +444,8 @@
 	}
 	
 	// Create and show the Search Results window
-	SearchWindowController *controller = [[[SearchWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account query:aQuery] autorelease];
+	SearchWindowController *controller = [[[SearchWindowController alloc] initWithQuery:aQuery] autorelease];
+	[controller setAccount:htmlController.account];
 	[controller showWindow:nil];
 	[appDelegate addWindowController:controller];
 	
@@ -544,14 +572,17 @@
 
 - (void) showUserPage:(NSString*)screenName {
 	// Create and show the user window
-	UserWindowController *controller = [[[UserWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account screenName:screenName] autorelease];
+	UserWindowController *controller = [[[UserWindowController alloc] initWithScreenName:screenName] autorelease];
+	[controller setAccount:htmlController.account];
 	[controller showWindow:nil];
 	[appDelegate addWindowController:controller];
 }
 
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
 	// Create and show the Conversation window
-	ConversationWindowController *controller = [[[ConversationWindowController alloc] initWithTwitter:htmlController.twitter account:htmlController.account messageIdentifier:identifier] autorelease];
+	ConversationWindowController *controller = [[[ConversationWindowController alloc] init] autorelease];
+	[controller setAccount:htmlController.account];
+	controller.messageIdentifier = identifier;
 	[controller showWindow:nil];
 	[appDelegate addWindowController:controller];
 }

@@ -29,6 +29,7 @@
 }
 
 @property (nonatomic, retain) Twitter *twitter;
+@property (nonatomic, retain) NSMutableSet *windowControllers;
 
 // Windows
 - (IBAction)newMainWindow:(id)sender;

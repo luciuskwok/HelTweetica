@@ -54,7 +54,9 @@
 
 @property (nonatomic, retain) id currentSheet;
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account;
+// Set up
+- (void)setAccount:(TwitterAccount *)anAccount;
+- (void)setAccountWithScreenName:(NSString*)screenName;
 
 // Timelines
 - (IBAction)selectTimelineWithSegmentedControl:(id)sender;

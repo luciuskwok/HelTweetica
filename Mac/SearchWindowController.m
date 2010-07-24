@@ -25,15 +25,13 @@
 @implementation SearchWindowController
 @synthesize saveButton, query;
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)anAccount query:(NSString*)aQuery {
+- (id)initWithQuery:(NSString*)aQuery {
 	self = [super initWithWindowNibName:@"SearchWindow"];
 	if (self) {
 		appDelegate = [NSApp delegate];
 		self.query = aQuery;
 		
 		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery] autorelease];
-		controller.twitter = aTwitter;
-		controller.account = anAccount;
 		controller.delegate = self;
 		self.htmlController = controller;
 	
@@ -47,8 +45,27 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[query release];
-    [super dealloc];
+	[super dealloc];
 }
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	NSString *account = [aDecoder decodeObjectForKey:@"accountScreenName"];
+	NSString *aQuery = [aDecoder decodeObjectForKey:@"query"];
+	
+	self = [self initWithQuery:aQuery];
+	if (self) {
+		[self setAccountWithScreenName: account];
+		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:htmlController.account.screenName forKey:@"accountScreenName"];
+	[aCoder encodeObject:query forKey:@"query"];
+	[aCoder encodeObject:[self.window frameAutosaveName ] forKey:@"windowFrameAutosaveName"];
+}
+
 
 - (void)setUpWindowForQuery:(NSString*)aQuery {
 	// Set window title

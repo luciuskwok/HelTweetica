@@ -26,7 +26,7 @@
 @synthesize followButton, screenName;
 
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)anAccount screenName:(NSString*)aScreenName {
+- (id)initWithScreenName:(NSString*)aScreenName {
 	self = [super initWithWindowNibName:@"UserWindow"];
 	if (self) {
 		appDelegate = [NSApp delegate];
@@ -34,11 +34,9 @@
 		
 		// Timeline HTML Controller generates the HTML from a timeline
 		UserPageHTMLController *controller = [[[UserPageHTMLController alloc] init] autorelease];
-		controller.twitter = aTwitter;
-		controller.account = anAccount;
 		controller.delegate = self;
 		self.htmlController = controller;
-}
+	}
 	return self;
 }
 
@@ -46,6 +44,33 @@
 	[screenName release];
 	[super dealloc];
 }
+
+- (void)setAccount:(TwitterAccount *)anAccount {
+	// Override MainWindowController's method because lists and list subscriptions should be loaded for the screen name being shown.
+	htmlController.account = anAccount;
+}
+
+#pragma mark NSCoder
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	NSString *account = [aDecoder decodeObjectForKey:@"accountScreenName"];
+	NSString *lookup = [aDecoder decodeObjectForKey:@"lookupScreenName"];
+	
+	self = [self initWithScreenName:lookup];
+	if (self) {
+		[self setAccountWithScreenName: account];
+		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:htmlController.account.screenName forKey:@"accountScreenName"];
+	[aCoder encodeObject:screenName forKey:@"lookupScreenName"];
+	[aCoder encodeObject:[self.window frameAutosaveName ] forKey:@"windowFrameAutosaveName"];
+}
+
+#pragma mark Window
 
 - (void)windowDidLoad {
 	if (screenName) {

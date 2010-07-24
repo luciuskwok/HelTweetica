@@ -19,30 +19,52 @@
 
 
 @implementation ConversationWindowController
+@synthesize messageIdentifier;
 
-
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)account messageIdentifier:(NSNumber*)messageIdentifier {
+- (id)init {
 	self = [super initWithWindowNibName:@"ConversationWindow"];
 	if (self) {
 		appDelegate = [NSApp delegate];
 		
 		// Timeline HTML Controller generates the HTML from a timeline
-		ConversationHTMLController *controller = [[[ConversationHTMLController alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
+		ConversationHTMLController *controller = [[[ConversationHTMLController alloc] initWithMessageIdentifier:nil] autorelease];
 		self.htmlController = controller;
-		controller.twitter = aTwitter;
-		controller.account = account;
-		controller.selectedMessageIdentifier = messageIdentifier;
 		controller.delegate = self;
-		[controller loadMessage:messageIdentifier];
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[messageIdentifier release];
 	[super dealloc];
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	NSString *account = [aDecoder decodeObjectForKey:@"accountScreenName"];
+	
+	self = [self init];
+	if (self) {
+		[self setAccountWithScreenName: account];
+		self.messageIdentifier = [aDecoder decodeObjectForKey:@"messageIdentifier"];
+		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:htmlController.account.screenName forKey:@"accountScreenName"];
+	[aCoder encodeObject:messageIdentifier forKey:@"messageIdentifier"];
+	[aCoder encodeObject:[self.window frameAutosaveName ] forKey:@"windowFrameAutosaveName"];
+}
+
+- (void)loadConversation {
+	ConversationHTMLController *controller = (ConversationHTMLController *)htmlController;
+	controller.selectedMessageIdentifier = messageIdentifier;
+	[controller loadMessage:messageIdentifier];
+}
+
 - (void)windowDidLoad {
+	[self loadConversation];
 	htmlController.webView = self.webView;
 	[htmlController loadWebView];
 }	
@@ -50,6 +72,7 @@
 - (void) showConversationWithMessageIdentifier:(NSNumber*)identifier {
 	// Select the tapped message
 	ConversationHTMLController *controller= (ConversationHTMLController *)htmlController;
+	self.messageIdentifier = identifier;
 	controller.selectedMessageIdentifier = identifier;
 	[controller rewriteTweetArea];
 }

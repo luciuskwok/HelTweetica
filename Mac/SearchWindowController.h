@@ -27,7 +27,7 @@
 @property (nonatomic, retain) NSString *query;
 
 
-- (id)initWithTwitter:(Twitter*)aTwitter account:(TwitterAccount*)anAccount query:(NSString*)aQuery;
+- (id)initWithQuery:(NSString*)aQuery;
 - (IBAction)saveSearch:(id)sender;
 
 @end
