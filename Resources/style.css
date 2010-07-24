@@ -101,6 +101,7 @@ p { margin: 0px 0px 20px 0px; }
 .tweet_avatar { 
 	display: table-cell; 
 	width: 50px;
+	height: 50px;
 	padding: 5px 10px 5px 10px;
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
