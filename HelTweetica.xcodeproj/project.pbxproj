@@ -169,6 +169,7 @@
 		E0904392117A4D2C00CE8CB9 /* scanner_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = E0904391117A4D2C00CE8CB9 /* scanner_frame.png */; };
 		E0904393117A4D2C00CE8CB9 /* scanner_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = E0904391117A4D2C00CE8CB9 /* scanner_frame.png */; };
 		E0904FE911A0DF0100520190 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0904FE811A0DF0100520190 /* Entitlements.plist */; };
+		E0904FEA11A0DF0100520190 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0904FE811A0DF0100520190 /* Entitlements.plist */; };
 		E0A41038116C204C0052BAE7 /* action-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41034116C204C0052BAE7 /* action-1.png */; };
 		E0A41039116C204C0052BAE7 /* action-2.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41035116C204C0052BAE7 /* action-2.png */; };
 		E0A4103A116C204C0052BAE7 /* action-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A41036116C204C0052BAE7 /* action-3.png */; };
@@ -343,7 +344,7 @@
 		28C286E00D94DF7D0034E888 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		28F335F01007B36200424DE2 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RootViewController.xib; path = ../Resources/RootViewController.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iPhone-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* HelTweetica-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "HelTweetica-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		E006304D119DF570009F477B /* load-gap-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "load-gap-template.html"; path = "Resources/load-gap-template.html"; sourceTree = "<group>"; };
 		E00C26281162D90800F62B70 /* Login.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Login.xib; path = ../Resources/Login.xib; sourceTree = "<group>"; };
 		E00C26291162D90800F62B70 /* Compose.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Compose.xib; path = ../Resources/Compose.xib; sourceTree = "<group>"; };
@@ -383,7 +384,7 @@
 		E02D6D6B11B8AD380003805F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Mac/Sparkle.framework; sourceTree = "<group>"; };
 		E02D6D8011B8BFF00003805F /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Mac/dsa_pub.pem; sourceTree = "<group>"; };
 		E03570B51174E6BE004B9A0F /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E03570B71174E6BE004B9A0F /* AdHoc-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AdHoc-Info.plist"; sourceTree = "<group>"; };
+		E03570B71174E6BE004B9A0F /* AppStore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppStore-Info.plist"; sourceTree = "<group>"; };
 		E036EF3A117B7F3300D52BF6 /* SoundEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffects.h; sourceTree = "<group>"; };
 		E036EF3B117B7F3300D52BF6 /* SoundEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundEffects.m; sourceTree = "<group>"; };
 		E036EF4F117B816B00D52BF6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -651,8 +652,8 @@
 				E0DF13D611647B0B004FE7B9 /* Icon.png */,
 				E0448843116EF16B008603EB /* Icon-72.png */,
 				E0904FE811A0DF0100520190 /* Entitlements.plist */,
-				8D1107310486CEB800E47090 /* iPhone-Info.plist */,
-				E03570B71174E6BE004B9A0F /* AdHoc-Info.plist */,
+				8D1107310486CEB800E47090 /* HelTweetica-Info.plist */,
+				E03570B71174E6BE004B9A0F /* AppStore-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -988,9 +989,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* iPhone */ = {
+		1D6058900D05DD3D006BFB54 /* Dev */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iPhone" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Dev" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -1000,14 +1001,14 @@
 			);
 			dependencies = (
 			);
-			name = iPhone;
+			name = Dev;
 			productName = HelTweetica;
 			productReference = 1D6058910D05DD3D006BFB54 /* HelTweetica.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E03570721174E6BE004B9A0F /* AdHoc */ = {
+		E03570721174E6BE004B9A0F /* AppStore */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E03570B21174E6BE004B9A0F /* Build configuration list for PBXNativeTarget "AdHoc" */;
+			buildConfigurationList = E03570B21174E6BE004B9A0F /* Build configuration list for PBXNativeTarget "AppStore" */;
 			buildPhases = (
 				E03570731174E6BE004B9A0F /* Resources */,
 				E03570961174E6BE004B9A0F /* Sources */,
@@ -1017,7 +1018,7 @@
 			);
 			dependencies = (
 			);
-			name = AdHoc;
+			name = AppStore;
 			productName = HelTweetica;
 			productReference = E03570B51174E6BE004B9A0F /* HelTweetica.app */;
 			productType = "com.apple.product-type.application";
@@ -1059,8 +1060,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* iPhone */,
-				E03570721174E6BE004B9A0F /* AdHoc */,
+				1D6058900D05DD3D006BFB54 /* Dev */,
+				E03570721174E6BE004B9A0F /* AppStore */,
 				E0C8C06C11A770AA0081A2C7 /* Mac */,
 			);
 		};
@@ -1126,6 +1127,7 @@
 				E0A6A35F1192969F0034D8E7 /* tweet-row-highlighted-template.html in Resources */,
 				E006304F119DF570009F477B /* load-gap-template.html in Resources */,
 				E0377D7A11A05B69007B0177 /* tweet-row-mention-template.html in Resources */,
+				E0904FEA11A0DF0100520190 /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1416,7 +1418,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
-				INFOPLIST_FILE = "iPhone-Info.plist";
+				INFOPLIST_FILE = "HelTweetica-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1430,19 +1432,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Felt Tip Inc.";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
-				INFOPLIST_FILE = "iPhone-Info.plist";
+				INFOPLIST_FILE = "HelTweetica-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
 				PRODUCT_NAME = HelTweetica;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BA4BEA78-07F3-4A23-BDE6-582E9AF2562D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3BA82002-9180-4C20-BCD6-5506292E959B";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1485,7 +1488,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Felt Tip Inc.";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1493,14 +1495,14 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
-				INFOPLIST_FILE = "AdHoc-Info.plist";
+				INFOPLIST_FILE = "AppStore-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
 				PRODUCT_NAME = HelTweetica;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FC1E4EF4-5367-4CC4-B940-ACA012A0E60A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BA4BEA78-07F3-4A23-BDE6-582E9AF2562D";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 			};
 			name = Debug;
@@ -1509,20 +1511,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Felt Tip Inc.";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
-				INFOPLIST_FILE = "AdHoc-Info.plist";
+				INFOPLIST_FILE = "AppStore-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
 				PRODUCT_NAME = HelTweetica;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FC1E4EF4-5367-4CC4-B940-ACA012A0E60A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BA4BEA78-07F3-4A23-BDE6-582E9AF2562D";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 			};
 			name = Release;
@@ -1591,7 +1592,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iPhone" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Dev" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -1609,7 +1610,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E03570B21174E6BE004B9A0F /* Build configuration list for PBXNativeTarget "AdHoc" */ = {
+		E03570B21174E6BE004B9A0F /* Build configuration list for PBXNativeTarget "AppStore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E03570B31174E6BE004B9A0F /* Debug */,
