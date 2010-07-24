@@ -67,8 +67,6 @@
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-	[twitter save];
-	
 	// Save window positions
 	int index = 1;
 	for (MainWindowController *controller in windowControllers) {
@@ -82,6 +80,9 @@
 	// Save window states for next launch.
 	NSData *windowState = [NSKeyedArchiver archivedDataWithRootObject:windowControllers];
 	[[NSUserDefaults standardUserDefaults] setObject:windowState forKey:@"windowState"];
+
+	// Save Twitter database.
+	[twitter save];
 }
 
 #pragma mark Windows
