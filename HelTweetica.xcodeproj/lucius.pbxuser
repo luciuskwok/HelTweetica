@@ -44,11 +44,13 @@
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeArchitecturePreference = armv7;
-		activeBuildConfigurationName = Release;
-		activeExecutable = E0C8C06E11A770AA0081A2C7 /* Mac */;
-		activeTarget = E0C8C06C11A770AA0081A2C7 /* Mac */;
+		activeBuildConfigurationName = Debug;
+		activeExecutable = E00C26131162D5F100F62B70 /* Dev */;
+		activeSDKPreference = iphonesimulator3.2;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* Dev */;
 		addToTargets = (
-			E0C8C06C11A770AA0081A2C7 /* Mac */,
+			E03570721174E6BE004B9A0F /* AppStore */,
+			1D6058900D05DD3D006BFB54 /* Dev */,
 		);
 		breakpoints = (
 			E04B2A4211AE3F7F002D889F /* TimelineHTMLController.m:263 */,
@@ -90,7 +92,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					22,
 					300,
-					499,
+					464,
 				);
 				PBXFileTableDataSourceColumnsKey = (
 					PBXExecutablesDataSource_ActiveFlagID,
@@ -103,7 +105,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					576,
+					10,
 					20,
 					48,
 					43,
@@ -137,7 +139,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					536,
+					10,
 					60,
 					20,
 					48,
@@ -281,6 +283,11 @@
 			E0CE8AAF11A92FCA00AE85FE = E0CE8AAF11A92FCA00AE85FE /* PBXTextBookmark */;
 			E0CE8C4D11A946F500AE85FE = E0CE8C4D11A946F500AE85FE /* PBXTextBookmark */;
 			E0CF08A211FB9132007D5EB1 /* PBXTextBookmark */ = E0CF08A211FB9132007D5EB1 /* PBXTextBookmark */;
+			E0CF08BA11FB9431007D5EB1 /* PBXTextBookmark */ = E0CF08BA11FB9431007D5EB1 /* PBXTextBookmark */;
+			E0CF08C111FBAC0C007D5EB1 /* PBXTextBookmark */ = E0CF08C111FBAC0C007D5EB1 /* PBXTextBookmark */;
+			E0CF08C211FBAC0C007D5EB1 /* PlistBookmark */ = E0CF08C211FBAC0C007D5EB1 /* PlistBookmark */;
+			E0CF08C311FBAC0C007D5EB1 /* PBXTextBookmark */ = E0CF08C311FBAC0C007D5EB1 /* PBXTextBookmark */;
+			E0CF08C411FBAC0C007D5EB1 /* PBXTextBookmark */ = E0CF08C411FBAC0C007D5EB1 /* PBXTextBookmark */;
 			E0D3E4F01193D0690098BFB6 = E0D3E4F01193D0690098BFB6 /* PBXTextBookmark */;
 			E0D3E57D1193E25B0098BFB6 = E0D3E57D1193E25B0098BFB6 /* PBXTextBookmark */;
 			E0D3E5881193E25B0098BFB6 = E0D3E5881193E25B0098BFB6 /* PBXTextBookmark */;
@@ -340,6 +347,15 @@
 			sepNavSelRange = "{72, 1503}";
 			sepNavVisRange = "{0, 1863}";
 		};
+	};
+	8D1107310486CEB800E47090 /* HelTweetica-Info.plist */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = text.plist.xml;
+		name = "HelTweetica-Info.plist";
+		path = "/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Info.plist";
+		plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist";
+		sourceTree = "<absolute>";
 	};
 	E001F42C1197A0940015449C /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -535,16 +551,16 @@
 	};
 	E00C26321162D91C00F62B70 /* Twitter.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {833, 992}}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 1008}}";
 			sepNavSelRange = "{2506, 4}";
-			sepNavVisRange = "{1226, 1293}";
+			sepNavVisRange = "{1006, 1512}";
 		};
 	};
 	E00C26331162D91C00F62B70 /* Twitter.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {833, 3280}}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 3296}}";
 			sepNavSelRange = "{5434, 0}";
-			sepNavVisRange = "{4246, 1215}";
+			sepNavVisRange = "{4548, 1453}";
 			sepNavWindowFrame = "{{22, 47}, {913, 981}}";
 		};
 	};
@@ -677,7 +693,7 @@
 		fRef = E0904270117A21BC00CE8CB9 /* AllStarsViewController.h */;
 		name = "AllStarsViewController.h: 46";
 		rLen = 36;
-		rLoc = 2218;
+		rLoc = 2255;
 		rType = 0;
 		vrLen = 2216;
 		vrLoc = 94;
@@ -848,16 +864,16 @@
 	};
 	E02B29491184A13F0037F359 /* TwitterAction.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {858, 1152}}";
-			sepNavSelRange = "{2048, 11}";
-			sepNavVisRange = "{822, 1044}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 1376}}";
+			sepNavSelRange = "{1836, 185}";
+			sepNavVisRange = "{1775, 1406}";
 		};
 	};
 	E02B294A1184A13F0037F359 /* TwitterAction.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {766, 4032}}";
-			sepNavSelRange = "{6964, 0}";
-			sepNavVisRange = "{6830, 642}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 3920}}";
+			sepNavSelRange = "{4728, 173}";
+			sepNavVisRange = "{4017, 1631}";
 			sepNavWindowFrame = "{{472, 254}, {913, 774}}";
 		};
 	};
@@ -997,7 +1013,7 @@
 		fRef = E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */;
 		name = "AllStarsViewController.m: 32";
 		rLen = 0;
-		rLoc = 2055;
+		rLoc = 2056;
 		rType = 0;
 		vrLen = 816;
 		vrLoc = 1698;
@@ -1099,6 +1115,13 @@
 		);
 		variableFormatDictionary = {
 		};
+	};
+	E03570B71174E6BE004B9A0F /* AppStore-Info.plist */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.xml;
+		name = "AppStore-Info.plist";
+		path = "/Users/lucius/_Work/iPhone/HelTweetica/AppStore-Info.plist";
+		sourceTree = "<absolute>";
 	};
 	E036EF3A117B7F3300D52BF6 /* SoundEffects.h */ = {
 		uiCtxt = {
@@ -1507,9 +1530,9 @@
 	};
 	E06A348B116E8B7D0098CF12 /* TwitterAccount.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {870, 1072}}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 1104}}";
 			sepNavSelRange = "{2589, 0}";
-			sepNavVisRange = "{823, 1924}";
+			sepNavVisRange = "{1106, 1413}";
 		};
 	};
 	E06A348C116E8B7D0098CF12 /* TwitterAccount.m */ = {
@@ -1716,30 +1739,30 @@
 	};
 	E0904270117A21BC00CE8CB9 /* AllStarsViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {881, 928}}";
-			sepNavSelRange = "{2218, 36}";
-			sepNavVisRange = "{94, 2216}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 992}}";
+			sepNavSelRange = "{1784, 13}";
+			sepNavVisRange = "{832, 1515}";
 		};
 	};
 	E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {858, 5552}}";
-			sepNavSelRange = "{2055, 0}";
-			sepNavVisRange = "{1698, 816}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 6336}}";
+			sepNavSelRange = "{11750, 27}";
+			sepNavVisRange = "{9476, 1424}";
 		};
 	};
 	E0904321117A42B100CE8CB9 /* AllStarsMessageViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {917, 720}}";
-			sepNavSelRange = "{100, 0}";
-			sepNavVisRange = "{0, 1791}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 848}}";
+			sepNavSelRange = "{2205, 0}";
+			sepNavVisRange = "{104, 2158}";
 		};
 	};
 	E0904322117A42B100CE8CB9 /* AllStarsMessageViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {917, 1904}}";
-			sepNavSelRange = "{184, 0}";
-			sepNavVisRange = "{0, 2255}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 1904}}";
+			sepNavSelRange = "{1617, 29}";
+			sepNavVisRange = "{0, 2196}";
 			sepNavWindowFrame = "{{15, 4}, {854, 774}}";
 		};
 	};
@@ -2273,9 +2296,9 @@
 	};
 	E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {766, 15328}}";
-			sepNavSelRange = "{23902, 0}";
-			sepNavVisRange = "{23314, 1658}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 15344}}";
+			sepNavSelRange = "{1930, 0}";
+			sepNavVisRange = "{3873, 1293}";
 		};
 	};
 	E0CE87F111A86D8100AE85FE /* PBXTextBookmark */ = {
@@ -2389,6 +2412,71 @@
 		rType = 0;
 		vrLen = 642;
 		vrLoc = 6830;
+	};
+	E0CF08BA11FB9431007D5EB1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E02B294A1184A13F0037F359 /* TwitterAction.m */;
+		name = "TwitterAction.m: 182";
+		rLen = 0;
+		rLoc = 6964;
+		rType = 0;
+		vrLen = 1211;
+		vrLoc = 1562;
+	};
+	E0CF08C111FBAC0C007D5EB1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E02B294A1184A13F0037F359 /* TwitterAction.m */;
+		name = "TwitterAction.m: 182";
+		rLen = 0;
+		rLoc = 6964;
+		rType = 0;
+		vrLen = 1473;
+		vrLoc = 7235;
+	};
+	E0CF08C211FBAC0C007D5EB1 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E0C8C06F11A770AA0081A2C7 /* Mac-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/Mac-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E0CF08C311FBAC0C007D5EB1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 634";
+		rLen = 0;
+		rLoc = 23902;
+		rType = 0;
+		vrLen = 2008;
+		vrLoc = 23171;
+	};
+	E0CF08C411FBAC0C007D5EB1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0CE87E511A86AAF00AE85FE /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 33";
+		rLen = 0;
+		rLoc = 1930;
+		rType = 0;
+		vrLen = 1659;
+		vrLoc = 2151;
+	};
+	E0CF08C811FBB327007D5EB1 /* AllStarsLoadURLAction.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {766, 676}}";
+			sepNavSelRange = "{288, 10}";
+			sepNavVisRange = "{0, 713}";
+		};
+	};
+	E0CF08C911FBB327007D5EB1 /* AllStarsLoadURLAction.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {766, 1088}}";
+			sepNavSelRange = "{269, 0}";
+			sepNavVisRange = "{0, 1237}";
+		};
 	};
 	E0D3E4DE1193CDB20098BFB6 /* TwitterUserInfoAction.h */ = {
 		uiCtxt = {
@@ -2687,16 +2775,16 @@
 	};
 	E0DF1271116453EB004FE7B9 /* TwitterMessage.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {833, 1472}}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 1488}}";
 			sepNavSelRange = "{2681, 16}";
-			sepNavVisRange = "{1963, 1383}";
+			sepNavVisRange = "{1365, 1064}";
 		};
 	};
 	E0DF1272116453EB004FE7B9 /* TwitterMessage.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {858, 4608}}";
+			sepNavIntBoundsRect = "{{0, 0}, {766, 4768}}";
 			sepNavSelRange = "{1942, 0}";
-			sepNavVisRange = "{1606, 607}";
+			sepNavVisRange = "{1183, 1255}";
 		};
 	};
 	E0F04C7511723DBF00AAA38E /* SearchViewController.h */ = {

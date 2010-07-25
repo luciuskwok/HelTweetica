@@ -268,6 +268,9 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
+								<string>E0CE88F111A90B3300AE85FE</string>
+								<string>E0C8C07311A771370081A2C7</string>
+								<string>E0F1FAAD11AA6E8A000DD4F0</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C77FABC04509CD000000102</string>
 							</array>
@@ -275,12 +278,13 @@
 							<array>
 								<array>
 									<integer>10</integer>
+									<integer>8</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {255, 757}}</string>
+							<string>{{0, 0}, {255, 680}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -290,14 +294,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {272, 775}}</string>
+						<string>{{0, 0}, {272, 698}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>255</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>111 -8 1092 816 0 0 1680 1028 </string>
+						<string>139 39 1092 739 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -308,12 +312,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>E00C26401162D98D00F62B70</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TwitterAction.m</string>
+								<string>TimelineHTMLController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -321,11 +327,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E00C26411162D98D00F62B70</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>TwitterAction.m</string>
+										<string>TimelineHTMLController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0CF08A211FB9132007D5EB1</string>
+										<string>E0CF08C411FBAC0C007D5EB1</string>
 										<key>history</key>
 										<array>
 											<string>E00C27F51163195700F62B70</string>
@@ -456,7 +462,6 @@
 											<string>E02D6D3811B86DB20003805F</string>
 											<string>E02D6D3B11B86DB20003805F</string>
 											<string>E02D6D5811B874060003805F</string>
-											<string>E0308CDB11BA0220008A476C</string>
 											<string>E0308CE411BA10DE008A476C</string>
 											<string>E0308D6311BA25FC008A476C</string>
 											<string>E02BEAB511C8B9330063BA51</string>
@@ -486,10 +491,11 @@
 											<string>E0CA2C1411F911CA002DE57E</string>
 											<string>E0CA2C1511F911CA002DE57E</string>
 											<string>E0B75BC711FAC17A00866ABD</string>
-											<string>E0B75BCF11FAC1FE00866ABD</string>
 											<string>E0B75C1E11FACDF400866ABD</string>
 											<string>E056776711FB57DB00E0D2DC</string>
-											<string>E056777811FB5AF000E0D2DC</string>
+											<string>E0CF08C111FBAC0C007D5EB1</string>
+											<string>E0CF08C211FBAC0C007D5EB1</string>
+											<string>E0CF08C311FBAC0C007D5EB1</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -503,18 +509,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {815, 325}}</string>
+								<string>{{0, 0}, {815, 693}}</string>
 								<key>RubberWindowFrame</key>
-								<string>111 -8 1092 816 0 0 1680 1028 </string>
+								<string>139 39 1092 739 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>325pt</string>
+							<string>693pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>445pt</string>
+							<string>0pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -528,7 +534,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {815, 17}}</string>
+										<string>{{10, 27}, {815, -27}}</string>
+										<key>RubberWindowFrame</key>
+										<string>139 39 1092 739 0 0 1280 778 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -583,8 +591,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {815, 418}}</string>
-										<key>RubberWindowFrame</key>
-										<string>111 -8 1092 816 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -806,13 +812,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E0CF08AC11FB9132007D5EB1</string>
 		<string>E0CF08AD11FB9132007D5EB1</string>
 		<string>E0CF08AE11FB9132007D5EB1</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>111 -8 1092 816 0 0 1680 1028 </string>
+	<string>139 39 1092 739 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

@@ -23,6 +23,7 @@
 	IBOutlet UIScrollView *scrollView;
 	NSMutableArray *allButtons;
 	
+	NSMutableDictionary *profileImages;
 	CGFloat previewImageSize;
 	
 	NSTimer *reloadImagesTimer;

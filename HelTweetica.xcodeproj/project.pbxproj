@@ -286,6 +286,8 @@
 		E0CE8A7A11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */; };
 		E0CE8A7B11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */; };
 		E0CE8A9011A92E5E00AE85FE /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A98C7911913A1300C9C997 /* SearchResultsViewController.m */; };
+		E0CF08CA11FBB327007D5EB1 /* AllStarsLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CF08C911FBB327007D5EB1 /* AllStarsLoadURLAction.m */; };
+		E0CF08CB11FBB327007D5EB1 /* AllStarsLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CF08C911FBB327007D5EB1 /* AllStarsLoadURLAction.m */; };
 		E0D3E4E01193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
 		E0D3E4E11193CDB20098BFB6 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */; };
 		E0D3E6AE1194D4280098BFB6 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D3E6AD1194D4280098BFB6 /* TwitterTimeline.m */; };
@@ -344,7 +346,6 @@
 		28C286E00D94DF7D0034E888 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		28F335F01007B36200424DE2 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RootViewController.xib; path = ../Resources/RootViewController.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* HelTweetica-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "HelTweetica-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		E006304D119DF570009F477B /* load-gap-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "load-gap-template.html"; path = "Resources/load-gap-template.html"; sourceTree = "<group>"; };
 		E00C26281162D90800F62B70 /* Login.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Login.xib; path = ../Resources/Login.xib; sourceTree = "<group>"; };
 		E00C26291162D90800F62B70 /* Compose.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Compose.xib; path = ../Resources/Compose.xib; sourceTree = "<group>"; };
@@ -384,7 +385,6 @@
 		E02D6D6B11B8AD380003805F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Mac/Sparkle.framework; sourceTree = "<group>"; };
 		E02D6D8011B8BFF00003805F /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Mac/dsa_pub.pem; sourceTree = "<group>"; };
 		E03570B51174E6BE004B9A0F /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E03570B71174E6BE004B9A0F /* AppStore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppStore-Info.plist"; sourceTree = "<group>"; };
 		E036EF3A117B7F3300D52BF6 /* SoundEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffects.h; sourceTree = "<group>"; };
 		E036EF3B117B7F3300D52BF6 /* SoundEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundEffects.m; sourceTree = "<group>"; };
 		E036EF4F117B816B00D52BF6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -508,6 +508,8 @@
 		E0CE89CE11A91EFD00AE85FE /* ConversationHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationHTMLController.m; sourceTree = "<group>"; };
 		E0CE8A7711A92C6C00AE85FE /* SearchResultsHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsHTMLController.h; sourceTree = "<group>"; };
 		E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsHTMLController.m; sourceTree = "<group>"; };
+		E0CF08C811FBB327007D5EB1 /* AllStarsLoadURLAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllStarsLoadURLAction.h; sourceTree = "<group>"; };
+		E0CF08C911FBB327007D5EB1 /* AllStarsLoadURLAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllStarsLoadURLAction.m; sourceTree = "<group>"; };
 		E0D3E4DE1193CDB20098BFB6 /* TwitterUserInfoAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUserInfoAction.h; sourceTree = "<group>"; };
 		E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserInfoAction.m; sourceTree = "<group>"; };
 		E0D3E6AC1194D4280098BFB6 /* TwitterTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTimeline.h; sourceTree = "<group>"; };
@@ -652,8 +654,6 @@
 				E0DF13D611647B0B004FE7B9 /* Icon.png */,
 				E0448843116EF16B008603EB /* Icon-72.png */,
 				E0904FE811A0DF0100520190 /* Entitlements.plist */,
-				8D1107310486CEB800E47090 /* HelTweetica-Info.plist */,
-				E03570B71174E6BE004B9A0F /* AppStore-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -782,6 +782,8 @@
 				E0904270117A21BC00CE8CB9 /* AllStarsViewController.h */,
 				E0904271117A21BC00CE8CB9 /* AllStarsViewController.m */,
 				E0904272117A21BC00CE8CB9 /* AllStarsViewController.xib */,
+				E0CF08C811FBB327007D5EB1 /* AllStarsLoadURLAction.h */,
+				E0CF08C911FBB327007D5EB1 /* AllStarsLoadURLAction.m */,
 				E0904321117A42B100CE8CB9 /* AllStarsMessageViewController.h */,
 				E0904322117A42B100CE8CB9 /* AllStarsMessageViewController.m */,
 				E0904323117A42B100CE8CB9 /* AllStarsMessageViewController.xib */,
@@ -1300,6 +1302,7 @@
 				E0CE89D011A91EFD00AE85FE /* ConversationHTMLController.m in Sources */,
 				E0CE8A7A11A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */,
 				E0CE8A9011A92E5E00AE85FE /* SearchResultsViewController.m in Sources */,
+				E0CF08CB11FBB327007D5EB1 /* AllStarsLoadURLAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1357,6 +1360,7 @@
 				E0CE88F411A90B5200AE85FE /* UserPageHTMLController.m in Sources */,
 				E0CE89CF11A91EFD00AE85FE /* ConversationHTMLController.m in Sources */,
 				E0CE8A7911A92C6C00AE85FE /* SearchResultsHTMLController.m in Sources */,
+				E0CF08CA11FBB327007D5EB1 /* AllStarsLoadURLAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

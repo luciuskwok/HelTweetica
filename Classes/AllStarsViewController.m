@@ -28,7 +28,7 @@ const float kPreviewCellSize = 120.0;
 const float kPreviewImageInset = 8.0;
 const float kShuffleTargetAdvanceInterval = 1.0;
 const float kDurationMessageIsShown = 10.0;
-enum { kMaximumNumberOfAvatarsToShow = 96 };
+const int kMaximumNumberOfAvatarsToShow = 96;
 
 
 @interface AllStarsViewController (PrivateMethods)
@@ -43,10 +43,11 @@ enum { kMaximumNumberOfAvatarsToShow = 96 };
 
 - (id)initWithTimeline:(NSArray*)aTimeline {
     if ((self = [super initWithNibName:@"AllStarsViewController" bundle:nil])) {
+		profileImages = [[NSMutableDictionary alloc] initWithCapacity:kMaximumNumberOfAvatarsToShow];
 		
 		NSMutableArray *uniqueTimeline = [NSMutableArray array];
 		
-        // Load every large avatar
+		// Load every large avatar
 		TwitterMessage *originalMessage;
 		for (TwitterMessage *message in aTimeline) {
 			// Use original retweeted message if this is a retweet
@@ -77,7 +78,10 @@ enum { kMaximumNumberOfAvatarsToShow = 96 };
 	[timeline release];
  	[scrollView release];
 	[allButtons release];
+	
+	[profileImages release];
 	[shuffleTarget release];
+	
 	[super dealloc];
 }
 
@@ -86,6 +90,12 @@ enum { kMaximumNumberOfAvatarsToShow = 96 };
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark Profile images
+
+- (void)loadProfileImages {
+	
 }
 
 - (BOOL) screenName:(NSString*)screenName existsInArray:(NSArray*)array {
@@ -216,10 +226,11 @@ enum { kMaximumNumberOfAvatarsToShow = 96 };
 	// Set the UIApplication instance's idleTimerDisabled to YES to disable sleep.
 }
 
+#pragma mark View lifecycle
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return YES;
 }
-
 
 - (void)viewDidUnload {
     [super viewDidUnload];
@@ -265,6 +276,10 @@ enum { kMaximumNumberOfAvatarsToShow = 96 };
 		if (message.retweetedMessage != nil) 
 			message = message.retweetedMessage;
 		controller.message = message;
+		
+		// Set the large profile image.
+		
+		controller.profileImage = nil;
 	}
 	[self presentModalViewController:controller animated:YES];
 }

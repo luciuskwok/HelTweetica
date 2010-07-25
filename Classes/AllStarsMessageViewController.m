@@ -20,7 +20,7 @@
 
 @implementation AllStarsMessageViewController
 @synthesize avatarImage, screenNameLabel, contentLabel, dateLabel;
-@synthesize message;
+@synthesize message, profileImage;
 
 - (id)init {
     if ((self = [super initWithNibName:@"AllStarsMessageViewController" bundle:nil])) {
@@ -33,11 +33,12 @@
 }
 
 - (void)dealloc {
-	[avatarImage release];
+	[imageView release];
 	[screenNameLabel release];
 	[contentLabel release];
 	[dateLabel release];
  	[message release];
+	[profileImage release];
 	[super dealloc];
 }
 
@@ -73,14 +74,14 @@
 
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+	[super viewDidLoad];
 	
 	NSMutableString *content = [NSMutableString stringWithString:message.content];
 	[content replaceOccurrencesOfString:@"&lt;" withString:@"<" options:0 range:NSMakeRange(0, [content length])];
 	[content replaceOccurrencesOfString:@"&gt;" withString:@">" options:0 range:NSMakeRange(0, [content length])];
 	[content replaceOccurrencesOfString:@"&amp;" withString:@"&" options:0 range:NSMakeRange(0, [content length])];
 	
-	[avatarImage setImage: message.largeAvatar];
+	[avatarImage setImage: profileImage];
 	[screenNameLabel setText: message.screenName];
 	[contentLabel setText: content];
 	[dateLabel setText: [self timeStringSinceNow: message.createdDate]];
@@ -102,9 +103,9 @@
 
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+	[super viewDidUnload];
+	// Release any retained subviews of the main view.
+	// e.g. self.myOutlet = nil;
 	self.avatarImage = nil;
 	self.screenNameLabel = nil;
 	self.contentLabel = nil;

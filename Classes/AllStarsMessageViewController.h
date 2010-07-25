@@ -20,19 +20,21 @@
 
 
 @interface AllStarsMessageViewController : UIViewController {
-	IBOutlet UIImageView *avatarImage;
+	IBOutlet UIImageView *imageView;
 	IBOutlet UILabel *screenNameLabel;
 	IBOutlet UILabel *contentLabel;
 	IBOutlet UILabel *dateLabel;
 	
 	TwitterMessage *message;
+	UIImage *profileImage;
 }
-@property (nonatomic, retain) UIImageView *avatarImage;
+@property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UILabel *screenNameLabel;
 @property (nonatomic, retain) UILabel *contentLabel;
 @property (nonatomic, retain) UILabel *dateLabel;
 
 @property (nonatomic, retain) TwitterMessage *message;
+@property (nonatomic, retain) UIImage *profileImage;
 
 - (IBAction) close: (id) sender;
 
