@@ -369,9 +369,6 @@
 		E0564C0611FBD6A0000A9753 /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
-				E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */,
-				E0564C0811FBD6A0000A9753 /* LKJSONParser.h */,
-				E0564C0911FBD6A0000A9753 /* LKJSONParser.m */,
 				E0564C0A11FBD6A0000A9753 /* Twitter.h */,
 				E0564C0B11FBD6A0000A9753 /* Twitter.m */,
 				E0564C0C11FBD6A0000A9753 /* TwitterAccount.h */,
@@ -392,6 +389,9 @@
 				E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */,
 				E0564C1C11FBD6A0000A9753 /* TwitterUser.h */,
 				E0564C1D11FBD6A0000A9753 /* TwitterUser.m */,
+				E0564C0811FBD6A0000A9753 /* LKJSONParser.h */,
+				E0564C0911FBD6A0000A9753 /* LKJSONParser.m */,
+				E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */,
 			);
 			path = Twitter;
 			sourceTree = "<group>";
