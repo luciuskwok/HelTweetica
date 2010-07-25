@@ -1,0 +1,713 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E0564C3911FBD6A0000A9753 /* AddAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BE111FBD6A0000A9753 /* AddAccount.m */; };
+		E0564C3A11FBD6A0000A9753 /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564BE211FBD6A0000A9753 /* AddAccount.xib */; };
+		E0564C3B11FBD6A0000A9753 /* Compose.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BE411FBD6A0000A9753 /* Compose.m */; };
+		E0564C3C11FBD6A0000A9753 /* Compose.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564BE511FBD6A0000A9753 /* Compose.xib */; };
+		E0564C3D11FBD6A0000A9753 /* ConversationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564BE611FBD6A0000A9753 /* ConversationWindow.xib */; };
+		E0564C3E11FBD6A0000A9753 /* ConversationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BE811FBD6A0000A9753 /* ConversationWindowController.m */; };
+		E0564C3F11FBD6A0000A9753 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564BE911FBD6A0000A9753 /* MainWindow.xib */; };
+		E0564C4011FBD6A0000A9753 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BEB11FBD6A0000A9753 /* MainWindowController.m */; };
+		E0564C4111FBD6A0000A9753 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564BEC11FBD6A0000A9753 /* Preferences.xib */; };
+		E0564C4211FBD6A0000A9753 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BEE11FBD6A0000A9753 /* PreferencesController.m */; };
+		E0564C4311FBD6A0000A9753 /* SearchWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564BEF11FBD6A0000A9753 /* SearchWindow.xib */; };
+		E0564C4411FBD6A0000A9753 /* SearchWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BF111FBD6A0000A9753 /* SearchWindowController.m */; };
+		E0564C4511FBD6A0000A9753 /* UserWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564BF211FBD6A0000A9753 /* UserWindow.xib */; };
+		E0564C4611FBD6A0000A9753 /* UserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BF411FBD6A0000A9753 /* UserWindowController.m */; };
+		E0564C4711FBD6A0000A9753 /* HelTweeticaAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BF711FBD6A0000A9753 /* HelTweeticaAppDelegate.m */; };
+		E0564C4811FBD6A0000A9753 /* ConversationHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BFA11FBD6A0000A9753 /* ConversationHTMLController.m */; };
+		E0564C4911FBD6A0000A9753 /* LKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BFC11FBD6A0000A9753 /* LKWebView.m */; };
+		E0564C4A11FBD6A0000A9753 /* SearchResultsHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BFE11FBD6A0000A9753 /* SearchResultsHTMLController.m */; };
+		E0564C4B11FBD6A0000A9753 /* TimelineHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */; };
+		E0564C4C11FBD6A0000A9753 /* UserPageHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0211FBD6A0000A9753 /* UserPageHTMLController.m */; };
+		E0564C4D11FBD6A0000A9753 /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0511FBD6A0000A9753 /* OAuthClient.m */; };
+		E0564C4E11FBD6A0000A9753 /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0911FBD6A0000A9753 /* LKJSONParser.m */; };
+		E0564C4F11FBD6A0000A9753 /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0B11FBD6A0000A9753 /* Twitter.m */; };
+		E0564C5011FBD6A0000A9753 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */; };
+		E0564C5211FBD6A0000A9753 /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1111FBD6A0000A9753 /* TwitterList.m */; };
+		E0564C5311FBD6A0000A9753 /* TwitterMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1311FBD6A0000A9753 /* TwitterMessage.m */; };
+		E0564C5411FBD6A0000A9753 /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1511FBD6A0000A9753 /* TwitterMessageJSONParser.m */; };
+		E0564C5511FBD6A0000A9753 /* TwitterSavedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1711FBD6A0000A9753 /* TwitterSavedSearch.m */; };
+		E0564C5611FBD6A0000A9753 /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1911FBD6A0000A9753 /* TwitterSearchJSONParser.m */; };
+		E0564C5711FBD6A0000A9753 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */; };
+		E0564C5811FBD6A0000A9753 /* TwitterUser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1D11FBD6A0000A9753 /* TwitterUser.m */; };
+		E0564C5911FBD6A0000A9753 /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2011FBD6A0000A9753 /* TwitterAction.m */; };
+		E0564C5A11FBD6A0000A9753 /* TwitterFavoriteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2211FBD6A0000A9753 /* TwitterFavoriteAction.m */; };
+		E0564C5B11FBD6A0000A9753 /* TwitterFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2411FBD6A0000A9753 /* TwitterFriendshipsAction.m */; };
+		E0564C5C11FBD6A0000A9753 /* TwitterLoadListsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2611FBD6A0000A9753 /* TwitterLoadListsAction.m */; };
+		E0564C5D11FBD6A0000A9753 /* TwitterLoadSavedSearchesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2811FBD6A0000A9753 /* TwitterLoadSavedSearchesAction.m */; };
+		E0564C5E11FBD6A0000A9753 /* TwitterLoadTimelineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2A11FBD6A0000A9753 /* TwitterLoadTimelineAction.m */; };
+		E0564C5F11FBD6A0000A9753 /* TwitterLoginAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2C11FBD6A0000A9753 /* TwitterLoginAction.m */; };
+		E0564C6011FBD6A0000A9753 /* TwitterRetweetAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2E11FBD6A0000A9753 /* TwitterRetweetAction.m */; };
+		E0564C6111FBD6A0000A9753 /* TwitterSavedSearchAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C3011FBD6A0000A9753 /* TwitterSavedSearchAction.m */; };
+		E0564C6211FBD6A0000A9753 /* TwitterSearchAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C3211FBD6A0000A9753 /* TwitterSearchAction.m */; };
+		E0564C6311FBD6A0000A9753 /* TwitterShowFriendshipsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C3411FBD6A0000A9753 /* TwitterShowFriendshipsAction.m */; };
+		E0564C6411FBD6A0000A9753 /* TwitterUpdateStatusAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C3611FBD6A0000A9753 /* TwitterUpdateStatusAction.m */; };
+		E0564C6511FBD6A0000A9753 /* TwitterUserInfoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C3811FBD6A0000A9753 /* TwitterUserInfoAction.m */; };
+		E0564C8D11FBD6AC000A9753 /* alert.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6711FBD6AC000A9753 /* alert.png */; };
+		E0564C8E11FBD6AC000A9753 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6811FBD6AC000A9753 /* dsa_pub.pem */; };
+		E0564C8F11FBD6AC000A9753 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6911FBD6AC000A9753 /* Icon.icns */; };
+		E0564C9011FBD6AC000A9753 /* mac-clear.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6A11FBD6AC000A9753 /* mac-clear.png */; };
+		E0564C9111FBD6AC000A9753 /* mac-toolbar-compose.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6B11FBD6AC000A9753 /* mac-toolbar-compose.png */; };
+		E0564C9211FBD6AC000A9753 /* mac-toolbar-direct.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6C11FBD6AC000A9753 /* mac-toolbar-direct.png */; };
+		E0564C9311FBD6AC000A9753 /* mac-toolbar-home.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6D11FBD6AC000A9753 /* mac-toolbar-home.png */; };
+		E0564C9411FBD6AC000A9753 /* mac-toolbar-lists.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6E11FBD6AC000A9753 /* mac-toolbar-lists.png */; };
+		E0564C9511FBD6AC000A9753 /* mac-toolbar-mentions.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C6F11FBD6AC000A9753 /* mac-toolbar-mentions.png */; };
+		E0564C9611FBD6AC000A9753 /* mac-toolbar-star.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7011FBD6AC000A9753 /* mac-toolbar-star.png */; };
+		E0564C9711FBD6AC000A9753 /* mac-toolbar-user.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7111FBD6AC000A9753 /* mac-toolbar-user.png */; };
+		E0564C9811FBD6AC000A9753 /* main-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7211FBD6AC000A9753 /* main-template.html */; };
+		E0564C9911FBD6AC000A9753 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7311FBD6AC000A9753 /* MainMenu.xib */; };
+		E0564C9A11FBD6AC000A9753 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7411FBD6AC000A9753 /* style.css */; };
+		E0564C9B11FBD6AC000A9753 /* action-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7611FBD6AC000A9753 /* action-1.png */; };
+		E0564C9C11FBD6AC000A9753 /* action-2.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7711FBD6AC000A9753 /* action-2.png */; };
+		E0564C9D11FBD6AC000A9753 /* action-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7811FBD6AC000A9753 /* action-3.png */; };
+		E0564C9E11FBD6AC000A9753 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7911FBD6AC000A9753 /* action-4-on.png */; };
+		E0564C9F11FBD6AC000A9753 /* action-4.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7A11FBD6AC000A9753 /* action-4.png */; };
+		E0564CA011FBD6AC000A9753 /* basic-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7B11FBD6AC000A9753 /* basic-template.html */; };
+		E0564CA111FBD6AC000A9753 /* load-gap-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7C11FBD6AC000A9753 /* load-gap-template.html */; };
+		E0564CA211FBD6AC000A9753 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7D11FBD6AC000A9753 /* lock.png */; };
+		E0564CA511FBD6AC000A9753 /* profile-image-proxy.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8011FBD6AC000A9753 /* profile-image-proxy.png */; };
+		E0564CA611FBD6AC000A9753 /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8111FBD6AC000A9753 /* reload.png */; };
+		E0564CA711FBD6AC000A9753 /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8211FBD6AC000A9753 /* retweet.png */; };
+		E0564CA811FBD6AC000A9753 /* spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8311FBD6AC000A9753 /* spinner.gif */; };
+		E0564CA911FBD6AC000A9753 /* tab-bkgnd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8411FBD6AC000A9753 /* tab-bkgnd.png */; };
+		E0564CAA11FBD6AC000A9753 /* tab-off.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8511FBD6AC000A9753 /* tab-off.png */; };
+		E0564CAB11FBD6AC000A9753 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8611FBD6AC000A9753 /* tab.png */; };
+		E0564CAC11FBD6AC000A9753 /* tweet-row-highlighted-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8711FBD6AC000A9753 /* tweet-row-highlighted-template.html */; };
+		E0564CAD11FBD6AC000A9753 /* tweet-row-mention-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8811FBD6AC000A9753 /* tweet-row-mention-template.html */; };
+		E0564CAE11FBD6AC000A9753 /* tweet-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8911FBD6AC000A9753 /* tweet-row-template.html */; };
+		E0564CAF11FBD6AC000A9753 /* user-info-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8A11FBD6AC000A9753 /* user-info-template.html */; };
+		E0564CB011FBD6AC000A9753 /* user-page-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8B11FBD6AC000A9753 /* user-page-template.html */; };
+		E0564CB111FBD6AC000A9753 /* verified.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C8C11FBD6AC000A9753 /* verified.png */; };
+		E0564E0C11FBD833000A9753 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564E0B11FBD833000A9753 /* Sparkle.framework */; };
+		E0564E1811FBD85B000A9753 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E0564E0B11FBD833000A9753 /* Sparkle.framework */; };
+		E0564E1A11FBD871000A9753 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564E1911FBD871000A9753 /* WebKit.framework */; };
+		E0564EC411FBD881000A9753 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
+		E0564EC511FBD888000A9753 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E0564E1E11FBD871000A9753 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E0564E1811FBD85B000A9753 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8D1107320486CEB800E47090 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0564BE011FBD6A0000A9753 /* AddAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccount.h; sourceTree = "<group>"; };
+		E0564BE111FBD6A0000A9753 /* AddAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAccount.m; sourceTree = "<group>"; };
+		E0564BE211FBD6A0000A9753 /* AddAccount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAccount.xib; sourceTree = "<group>"; };
+		E0564BE311FBD6A0000A9753 /* Compose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Compose.h; sourceTree = "<group>"; };
+		E0564BE411FBD6A0000A9753 /* Compose.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Compose.m; sourceTree = "<group>"; };
+		E0564BE511FBD6A0000A9753 /* Compose.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Compose.xib; sourceTree = "<group>"; };
+		E0564BE611FBD6A0000A9753 /* ConversationWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationWindow.xib; sourceTree = "<group>"; };
+		E0564BE711FBD6A0000A9753 /* ConversationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationWindowController.h; sourceTree = "<group>"; };
+		E0564BE811FBD6A0000A9753 /* ConversationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationWindowController.m; sourceTree = "<group>"; };
+		E0564BE911FBD6A0000A9753 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		E0564BEA11FBD6A0000A9753 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
+		E0564BEB11FBD6A0000A9753 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
+		E0564BEC11FBD6A0000A9753 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		E0564BED11FBD6A0000A9753 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
+		E0564BEE11FBD6A0000A9753 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
+		E0564BEF11FBD6A0000A9753 /* SearchWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchWindow.xib; sourceTree = "<group>"; };
+		E0564BF011FBD6A0000A9753 /* SearchWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchWindowController.h; sourceTree = "<group>"; };
+		E0564BF111FBD6A0000A9753 /* SearchWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchWindowController.m; sourceTree = "<group>"; };
+		E0564BF211FBD6A0000A9753 /* UserWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserWindow.xib; sourceTree = "<group>"; };
+		E0564BF311FBD6A0000A9753 /* UserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserWindowController.h; sourceTree = "<group>"; };
+		E0564BF411FBD6A0000A9753 /* UserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserWindowController.m; sourceTree = "<group>"; };
+		E0564BF611FBD6A0000A9753 /* HelTweeticaAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweeticaAppDelegate.h; sourceTree = "<group>"; };
+		E0564BF711FBD6A0000A9753 /* HelTweeticaAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelTweeticaAppDelegate.m; sourceTree = "<group>"; };
+		E0564BF911FBD6A0000A9753 /* ConversationHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationHTMLController.h; sourceTree = "<group>"; };
+		E0564BFA11FBD6A0000A9753 /* ConversationHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationHTMLController.m; sourceTree = "<group>"; };
+		E0564BFB11FBD6A0000A9753 /* LKWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKWebView.h; sourceTree = "<group>"; };
+		E0564BFC11FBD6A0000A9753 /* LKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKWebView.m; sourceTree = "<group>"; };
+		E0564BFD11FBD6A0000A9753 /* SearchResultsHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsHTMLController.h; sourceTree = "<group>"; };
+		E0564BFE11FBD6A0000A9753 /* SearchResultsHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsHTMLController.m; sourceTree = "<group>"; };
+		E0564BFF11FBD6A0000A9753 /* TimelineHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineHTMLController.h; sourceTree = "<group>"; };
+		E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineHTMLController.m; sourceTree = "<group>"; };
+		E0564C0111FBD6A0000A9753 /* UserPageHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPageHTMLController.h; sourceTree = "<group>"; };
+		E0564C0211FBD6A0000A9753 /* UserPageHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPageHTMLController.m; sourceTree = "<group>"; };
+		E0564C0411FBD6A0000A9753 /* OAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthClient.h; sourceTree = "<group>"; };
+		E0564C0511FBD6A0000A9753 /* OAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthClient.m; sourceTree = "<group>"; };
+		E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
+		E0564C0811FBD6A0000A9753 /* LKJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKJSONParser.h; sourceTree = "<group>"; };
+		E0564C0911FBD6A0000A9753 /* LKJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKJSONParser.m; sourceTree = "<group>"; };
+		E0564C0A11FBD6A0000A9753 /* Twitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Twitter.h; sourceTree = "<group>"; };
+		E0564C0B11FBD6A0000A9753 /* Twitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Twitter.m; sourceTree = "<group>"; };
+		E0564C0C11FBD6A0000A9753 /* TwitterAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAccount.h; sourceTree = "<group>"; };
+		E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAccount.m; sourceTree = "<group>"; };
+		E0564C0E11FBD6A0000A9753 /* TwitterAtomParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAtomParser.h; sourceTree = "<group>"; };
+		E0564C0F11FBD6A0000A9753 /* TwitterAtomParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAtomParser.m; sourceTree = "<group>"; };
+		E0564C1011FBD6A0000A9753 /* TwitterList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterList.h; sourceTree = "<group>"; };
+		E0564C1111FBD6A0000A9753 /* TwitterList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterList.m; sourceTree = "<group>"; };
+		E0564C1211FBD6A0000A9753 /* TwitterMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessage.h; sourceTree = "<group>"; };
+		E0564C1311FBD6A0000A9753 /* TwitterMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessage.m; sourceTree = "<group>"; };
+		E0564C1411FBD6A0000A9753 /* TwitterMessageJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessageJSONParser.h; sourceTree = "<group>"; };
+		E0564C1511FBD6A0000A9753 /* TwitterMessageJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessageJSONParser.m; sourceTree = "<group>"; };
+		E0564C1611FBD6A0000A9753 /* TwitterSavedSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSavedSearch.h; sourceTree = "<group>"; };
+		E0564C1711FBD6A0000A9753 /* TwitterSavedSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSavedSearch.m; sourceTree = "<group>"; };
+		E0564C1811FBD6A0000A9753 /* TwitterSearchJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchJSONParser.h; sourceTree = "<group>"; };
+		E0564C1911FBD6A0000A9753 /* TwitterSearchJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSearchJSONParser.m; sourceTree = "<group>"; };
+		E0564C1A11FBD6A0000A9753 /* TwitterTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTimeline.h; sourceTree = "<group>"; };
+		E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterTimeline.m; sourceTree = "<group>"; };
+		E0564C1C11FBD6A0000A9753 /* TwitterUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUser.h; sourceTree = "<group>"; };
+		E0564C1D11FBD6A0000A9753 /* TwitterUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUser.m; sourceTree = "<group>"; };
+		E0564C1F11FBD6A0000A9753 /* TwitterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAction.h; sourceTree = "<group>"; };
+		E0564C2011FBD6A0000A9753 /* TwitterAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAction.m; sourceTree = "<group>"; };
+		E0564C2111FBD6A0000A9753 /* TwitterFavoriteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterFavoriteAction.h; sourceTree = "<group>"; };
+		E0564C2211FBD6A0000A9753 /* TwitterFavoriteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterFavoriteAction.m; sourceTree = "<group>"; };
+		E0564C2311FBD6A0000A9753 /* TwitterFriendshipsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterFriendshipsAction.h; sourceTree = "<group>"; };
+		E0564C2411FBD6A0000A9753 /* TwitterFriendshipsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterFriendshipsAction.m; sourceTree = "<group>"; };
+		E0564C2511FBD6A0000A9753 /* TwitterLoadListsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoadListsAction.h; sourceTree = "<group>"; };
+		E0564C2611FBD6A0000A9753 /* TwitterLoadListsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadListsAction.m; sourceTree = "<group>"; };
+		E0564C2711FBD6A0000A9753 /* TwitterLoadSavedSearchesAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoadSavedSearchesAction.h; sourceTree = "<group>"; };
+		E0564C2811FBD6A0000A9753 /* TwitterLoadSavedSearchesAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadSavedSearchesAction.m; sourceTree = "<group>"; };
+		E0564C2911FBD6A0000A9753 /* TwitterLoadTimelineAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoadTimelineAction.h; sourceTree = "<group>"; };
+		E0564C2A11FBD6A0000A9753 /* TwitterLoadTimelineAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadTimelineAction.m; sourceTree = "<group>"; };
+		E0564C2B11FBD6A0000A9753 /* TwitterLoginAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoginAction.h; sourceTree = "<group>"; };
+		E0564C2C11FBD6A0000A9753 /* TwitterLoginAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoginAction.m; sourceTree = "<group>"; };
+		E0564C2D11FBD6A0000A9753 /* TwitterRetweetAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterRetweetAction.h; sourceTree = "<group>"; };
+		E0564C2E11FBD6A0000A9753 /* TwitterRetweetAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterRetweetAction.m; sourceTree = "<group>"; };
+		E0564C2F11FBD6A0000A9753 /* TwitterSavedSearchAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSavedSearchAction.h; sourceTree = "<group>"; };
+		E0564C3011FBD6A0000A9753 /* TwitterSavedSearchAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSavedSearchAction.m; sourceTree = "<group>"; };
+		E0564C3111FBD6A0000A9753 /* TwitterSearchAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchAction.h; sourceTree = "<group>"; };
+		E0564C3211FBD6A0000A9753 /* TwitterSearchAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSearchAction.m; sourceTree = "<group>"; };
+		E0564C3311FBD6A0000A9753 /* TwitterShowFriendshipsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterShowFriendshipsAction.h; sourceTree = "<group>"; };
+		E0564C3411FBD6A0000A9753 /* TwitterShowFriendshipsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterShowFriendshipsAction.m; sourceTree = "<group>"; };
+		E0564C3511FBD6A0000A9753 /* TwitterUpdateStatusAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUpdateStatusAction.h; sourceTree = "<group>"; };
+		E0564C3611FBD6A0000A9753 /* TwitterUpdateStatusAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUpdateStatusAction.m; sourceTree = "<group>"; };
+		E0564C3711FBD6A0000A9753 /* TwitterUserInfoAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUserInfoAction.h; sourceTree = "<group>"; };
+		E0564C3811FBD6A0000A9753 /* TwitterUserInfoAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserInfoAction.m; sourceTree = "<group>"; };
+		E0564C6711FBD6AC000A9753 /* alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alert.png; sourceTree = "<group>"; };
+		E0564C6811FBD6AC000A9753 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		E0564C6911FBD6AC000A9753 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
+		E0564C6A11FBD6AC000A9753 /* mac-clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-clear.png"; sourceTree = "<group>"; };
+		E0564C6B11FBD6AC000A9753 /* mac-toolbar-compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-compose.png"; sourceTree = "<group>"; };
+		E0564C6C11FBD6AC000A9753 /* mac-toolbar-direct.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-direct.png"; sourceTree = "<group>"; };
+		E0564C6D11FBD6AC000A9753 /* mac-toolbar-home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-home.png"; sourceTree = "<group>"; };
+		E0564C6E11FBD6AC000A9753 /* mac-toolbar-lists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-lists.png"; sourceTree = "<group>"; };
+		E0564C6F11FBD6AC000A9753 /* mac-toolbar-mentions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-mentions.png"; sourceTree = "<group>"; };
+		E0564C7011FBD6AC000A9753 /* mac-toolbar-star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-star.png"; sourceTree = "<group>"; };
+		E0564C7111FBD6AC000A9753 /* mac-toolbar-user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-user.png"; sourceTree = "<group>"; };
+		E0564C7211FBD6AC000A9753 /* main-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "main-template.html"; sourceTree = "<group>"; };
+		E0564C7311FBD6AC000A9753 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		E0564C7411FBD6AC000A9753 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		E0564C7611FBD6AC000A9753 /* action-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-1.png"; sourceTree = "<group>"; };
+		E0564C7711FBD6AC000A9753 /* action-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-2.png"; sourceTree = "<group>"; };
+		E0564C7811FBD6AC000A9753 /* action-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-3.png"; sourceTree = "<group>"; };
+		E0564C7911FBD6AC000A9753 /* action-4-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-4-on.png"; sourceTree = "<group>"; };
+		E0564C7A11FBD6AC000A9753 /* action-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-4.png"; sourceTree = "<group>"; };
+		E0564C7B11FBD6AC000A9753 /* basic-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "basic-template.html"; sourceTree = "<group>"; };
+		E0564C7C11FBD6AC000A9753 /* load-gap-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "load-gap-template.html"; sourceTree = "<group>"; };
+		E0564C7D11FBD6AC000A9753 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
+		E0564C8011FBD6AC000A9753 /* profile-image-proxy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-image-proxy.png"; sourceTree = "<group>"; };
+		E0564C8111FBD6AC000A9753 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reload.png; sourceTree = "<group>"; };
+		E0564C8211FBD6AC000A9753 /* retweet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retweet.png; sourceTree = "<group>"; };
+		E0564C8311FBD6AC000A9753 /* spinner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spinner.gif; sourceTree = "<group>"; };
+		E0564C8411FBD6AC000A9753 /* tab-bkgnd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bkgnd.png"; sourceTree = "<group>"; };
+		E0564C8511FBD6AC000A9753 /* tab-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-off.png"; sourceTree = "<group>"; };
+		E0564C8611FBD6AC000A9753 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab.png; sourceTree = "<group>"; };
+		E0564C8711FBD6AC000A9753 /* tweet-row-highlighted-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "tweet-row-highlighted-template.html"; sourceTree = "<group>"; };
+		E0564C8811FBD6AC000A9753 /* tweet-row-mention-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "tweet-row-mention-template.html"; sourceTree = "<group>"; };
+		E0564C8911FBD6AC000A9753 /* tweet-row-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "tweet-row-template.html"; sourceTree = "<group>"; };
+		E0564C8A11FBD6AC000A9753 /* user-info-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "user-info-template.html"; sourceTree = "<group>"; };
+		E0564C8B11FBD6AC000A9753 /* user-page-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "user-page-template.html"; sourceTree = "<group>"; };
+		E0564C8C11FBD6AC000A9753 /* verified.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = verified.png; sourceTree = "<group>"; };
+		E0564CB211FBD6D2000A9753 /* Mac-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
+		E0564CB311FBD6DA000A9753 /* HelTweetica_Mac_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweetica_Mac_Prefix.pch; sourceTree = "<group>"; };
+		E0564E0B11FBD833000A9753 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		E0564E1911FBD871000A9753 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0564EC411FBD881000A9753 /* Foundation.framework in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				E0564EC511FBD888000A9753 /* AppKit.framework in Frameworks */,
+				E0564E1A11FBD871000A9753 /* WebKit.framework in Frameworks */,
+				E0564E0C11FBD833000A9753 /* Sparkle.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* HelTweetica.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* HelTweetica-Spare */ = {
+			isa = PBXGroup;
+			children = (
+				E0564BDF11FBD6A0000A9753 /* Classes-Mac */,
+				E0564BF511FBD6A0000A9753 /* Classes-Shared */,
+				E0564C6611FBD6AC000A9753 /* Resources-Mac */,
+				E0564C7511FBD6AC000A9753 /* Resources-Shared */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = "HelTweetica-Spare";
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E0564CB211FBD6D2000A9753 /* Mac-Info.plist */,
+				E0564CB311FBD6DA000A9753 /* HelTweetica_Mac_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				E0564E1911FBD871000A9753 /* WebKit.framework */,
+				E0564E0B11FBD833000A9753 /* Sparkle.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E0564BDF11FBD6A0000A9753 /* Classes-Mac */ = {
+			isa = PBXGroup;
+			children = (
+				E0564BE011FBD6A0000A9753 /* AddAccount.h */,
+				E0564BE111FBD6A0000A9753 /* AddAccount.m */,
+				E0564BE211FBD6A0000A9753 /* AddAccount.xib */,
+				E0564BE311FBD6A0000A9753 /* Compose.h */,
+				E0564BE411FBD6A0000A9753 /* Compose.m */,
+				E0564BE511FBD6A0000A9753 /* Compose.xib */,
+				E0564BE611FBD6A0000A9753 /* ConversationWindow.xib */,
+				E0564BE711FBD6A0000A9753 /* ConversationWindowController.h */,
+				E0564BE811FBD6A0000A9753 /* ConversationWindowController.m */,
+				E0564BE911FBD6A0000A9753 /* MainWindow.xib */,
+				E0564BEA11FBD6A0000A9753 /* MainWindowController.h */,
+				E0564BEB11FBD6A0000A9753 /* MainWindowController.m */,
+				E0564BEC11FBD6A0000A9753 /* Preferences.xib */,
+				E0564BED11FBD6A0000A9753 /* PreferencesController.h */,
+				E0564BEE11FBD6A0000A9753 /* PreferencesController.m */,
+				E0564BEF11FBD6A0000A9753 /* SearchWindow.xib */,
+				E0564BF011FBD6A0000A9753 /* SearchWindowController.h */,
+				E0564BF111FBD6A0000A9753 /* SearchWindowController.m */,
+				E0564BF211FBD6A0000A9753 /* UserWindow.xib */,
+				E0564BF311FBD6A0000A9753 /* UserWindowController.h */,
+				E0564BF411FBD6A0000A9753 /* UserWindowController.m */,
+			);
+			path = "Classes-Mac";
+			sourceTree = "<group>";
+		};
+		E0564BF511FBD6A0000A9753 /* Classes-Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E0564BF611FBD6A0000A9753 /* HelTweeticaAppDelegate.h */,
+				E0564BF711FBD6A0000A9753 /* HelTweeticaAppDelegate.m */,
+				E0564BF811FBD6A0000A9753 /* HTML Controllers */,
+				E0564C0311FBD6A0000A9753 /* OAuthClient */,
+				E0564C0611FBD6A0000A9753 /* Twitter */,
+				E0564C1E11FBD6A0000A9753 /* Twitter Actions */,
+			);
+			path = "Classes-Shared";
+			sourceTree = "<group>";
+		};
+		E0564BF811FBD6A0000A9753 /* HTML Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E0564BF911FBD6A0000A9753 /* ConversationHTMLController.h */,
+				E0564BFA11FBD6A0000A9753 /* ConversationHTMLController.m */,
+				E0564BFB11FBD6A0000A9753 /* LKWebView.h */,
+				E0564BFC11FBD6A0000A9753 /* LKWebView.m */,
+				E0564BFD11FBD6A0000A9753 /* SearchResultsHTMLController.h */,
+				E0564BFE11FBD6A0000A9753 /* SearchResultsHTMLController.m */,
+				E0564BFF11FBD6A0000A9753 /* TimelineHTMLController.h */,
+				E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */,
+				E0564C0111FBD6A0000A9753 /* UserPageHTMLController.h */,
+				E0564C0211FBD6A0000A9753 /* UserPageHTMLController.m */,
+			);
+			path = "HTML Controllers";
+			sourceTree = "<group>";
+		};
+		E0564C0311FBD6A0000A9753 /* OAuthClient */ = {
+			isa = PBXGroup;
+			children = (
+				E0564C0411FBD6A0000A9753 /* OAuthClient.h */,
+				E0564C0511FBD6A0000A9753 /* OAuthClient.m */,
+			);
+			path = OAuthClient;
+			sourceTree = "<group>";
+		};
+		E0564C0611FBD6A0000A9753 /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */,
+				E0564C0811FBD6A0000A9753 /* LKJSONParser.h */,
+				E0564C0911FBD6A0000A9753 /* LKJSONParser.m */,
+				E0564C0A11FBD6A0000A9753 /* Twitter.h */,
+				E0564C0B11FBD6A0000A9753 /* Twitter.m */,
+				E0564C0C11FBD6A0000A9753 /* TwitterAccount.h */,
+				E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */,
+				E0564C0E11FBD6A0000A9753 /* TwitterAtomParser.h */,
+				E0564C0F11FBD6A0000A9753 /* TwitterAtomParser.m */,
+				E0564C1011FBD6A0000A9753 /* TwitterList.h */,
+				E0564C1111FBD6A0000A9753 /* TwitterList.m */,
+				E0564C1211FBD6A0000A9753 /* TwitterMessage.h */,
+				E0564C1311FBD6A0000A9753 /* TwitterMessage.m */,
+				E0564C1411FBD6A0000A9753 /* TwitterMessageJSONParser.h */,
+				E0564C1511FBD6A0000A9753 /* TwitterMessageJSONParser.m */,
+				E0564C1611FBD6A0000A9753 /* TwitterSavedSearch.h */,
+				E0564C1711FBD6A0000A9753 /* TwitterSavedSearch.m */,
+				E0564C1811FBD6A0000A9753 /* TwitterSearchJSONParser.h */,
+				E0564C1911FBD6A0000A9753 /* TwitterSearchJSONParser.m */,
+				E0564C1A11FBD6A0000A9753 /* TwitterTimeline.h */,
+				E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */,
+				E0564C1C11FBD6A0000A9753 /* TwitterUser.h */,
+				E0564C1D11FBD6A0000A9753 /* TwitterUser.m */,
+			);
+			path = Twitter;
+			sourceTree = "<group>";
+		};
+		E0564C1E11FBD6A0000A9753 /* Twitter Actions */ = {
+			isa = PBXGroup;
+			children = (
+				E0564C1F11FBD6A0000A9753 /* TwitterAction.h */,
+				E0564C2011FBD6A0000A9753 /* TwitterAction.m */,
+				E0564C2111FBD6A0000A9753 /* TwitterFavoriteAction.h */,
+				E0564C2211FBD6A0000A9753 /* TwitterFavoriteAction.m */,
+				E0564C2311FBD6A0000A9753 /* TwitterFriendshipsAction.h */,
+				E0564C2411FBD6A0000A9753 /* TwitterFriendshipsAction.m */,
+				E0564C2511FBD6A0000A9753 /* TwitterLoadListsAction.h */,
+				E0564C2611FBD6A0000A9753 /* TwitterLoadListsAction.m */,
+				E0564C2711FBD6A0000A9753 /* TwitterLoadSavedSearchesAction.h */,
+				E0564C2811FBD6A0000A9753 /* TwitterLoadSavedSearchesAction.m */,
+				E0564C2911FBD6A0000A9753 /* TwitterLoadTimelineAction.h */,
+				E0564C2A11FBD6A0000A9753 /* TwitterLoadTimelineAction.m */,
+				E0564C2B11FBD6A0000A9753 /* TwitterLoginAction.h */,
+				E0564C2C11FBD6A0000A9753 /* TwitterLoginAction.m */,
+				E0564C2D11FBD6A0000A9753 /* TwitterRetweetAction.h */,
+				E0564C2E11FBD6A0000A9753 /* TwitterRetweetAction.m */,
+				E0564C2F11FBD6A0000A9753 /* TwitterSavedSearchAction.h */,
+				E0564C3011FBD6A0000A9753 /* TwitterSavedSearchAction.m */,
+				E0564C3111FBD6A0000A9753 /* TwitterSearchAction.h */,
+				E0564C3211FBD6A0000A9753 /* TwitterSearchAction.m */,
+				E0564C3311FBD6A0000A9753 /* TwitterShowFriendshipsAction.h */,
+				E0564C3411FBD6A0000A9753 /* TwitterShowFriendshipsAction.m */,
+				E0564C3511FBD6A0000A9753 /* TwitterUpdateStatusAction.h */,
+				E0564C3611FBD6A0000A9753 /* TwitterUpdateStatusAction.m */,
+				E0564C3711FBD6A0000A9753 /* TwitterUserInfoAction.h */,
+				E0564C3811FBD6A0000A9753 /* TwitterUserInfoAction.m */,
+			);
+			path = "Twitter Actions";
+			sourceTree = "<group>";
+		};
+		E0564C6611FBD6AC000A9753 /* Resources-Mac */ = {
+			isa = PBXGroup;
+			children = (
+				E0564C6711FBD6AC000A9753 /* alert.png */,
+				E0564C6811FBD6AC000A9753 /* dsa_pub.pem */,
+				E0564C6911FBD6AC000A9753 /* Icon.icns */,
+				E0564C6A11FBD6AC000A9753 /* mac-clear.png */,
+				E0564C6B11FBD6AC000A9753 /* mac-toolbar-compose.png */,
+				E0564C6C11FBD6AC000A9753 /* mac-toolbar-direct.png */,
+				E0564C6D11FBD6AC000A9753 /* mac-toolbar-home.png */,
+				E0564C6E11FBD6AC000A9753 /* mac-toolbar-lists.png */,
+				E0564C6F11FBD6AC000A9753 /* mac-toolbar-mentions.png */,
+				E0564C7011FBD6AC000A9753 /* mac-toolbar-star.png */,
+				E0564C7111FBD6AC000A9753 /* mac-toolbar-user.png */,
+				E0564C7211FBD6AC000A9753 /* main-template.html */,
+				E0564C7311FBD6AC000A9753 /* MainMenu.xib */,
+				E0564C7411FBD6AC000A9753 /* style.css */,
+			);
+			path = "Resources-Mac";
+			sourceTree = "<group>";
+		};
+		E0564C7511FBD6AC000A9753 /* Resources-Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E0564C7611FBD6AC000A9753 /* action-1.png */,
+				E0564C7711FBD6AC000A9753 /* action-2.png */,
+				E0564C7811FBD6AC000A9753 /* action-3.png */,
+				E0564C7911FBD6AC000A9753 /* action-4-on.png */,
+				E0564C7A11FBD6AC000A9753 /* action-4.png */,
+				E0564C7B11FBD6AC000A9753 /* basic-template.html */,
+				E0564C7C11FBD6AC000A9753 /* load-gap-template.html */,
+				E0564C7D11FBD6AC000A9753 /* lock.png */,
+				E0564C8011FBD6AC000A9753 /* profile-image-proxy.png */,
+				E0564C8111FBD6AC000A9753 /* reload.png */,
+				E0564C8211FBD6AC000A9753 /* retweet.png */,
+				E0564C8311FBD6AC000A9753 /* spinner.gif */,
+				E0564C8411FBD6AC000A9753 /* tab-bkgnd.png */,
+				E0564C8511FBD6AC000A9753 /* tab-off.png */,
+				E0564C8611FBD6AC000A9753 /* tab.png */,
+				E0564C8711FBD6AC000A9753 /* tweet-row-highlighted-template.html */,
+				E0564C8811FBD6AC000A9753 /* tweet-row-mention-template.html */,
+				E0564C8911FBD6AC000A9753 /* tweet-row-template.html */,
+				E0564C8A11FBD6AC000A9753 /* user-info-template.html */,
+				E0564C8B11FBD6AC000A9753 /* user-page-template.html */,
+				E0564C8C11FBD6AC000A9753 /* verified.png */,
+			);
+			path = "Resources-Shared";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Mac" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				E0564E1E11FBD871000A9753 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mac;
+			productInstallPath = "$(HOME)/Applications";
+			productName = "HelTweetica-Spare";
+			productReference = 8D1107320486CEB800E47090 /* HelTweetica.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Felt Tip Inc";
+			};
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "HelTweetica-Mac" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* HelTweetica-Spare */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Mac */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0564C3A11FBD6A0000A9753 /* AddAccount.xib in Resources */,
+				E0564C3C11FBD6A0000A9753 /* Compose.xib in Resources */,
+				E0564C3D11FBD6A0000A9753 /* ConversationWindow.xib in Resources */,
+				E0564C3F11FBD6A0000A9753 /* MainWindow.xib in Resources */,
+				E0564C4111FBD6A0000A9753 /* Preferences.xib in Resources */,
+				E0564C4311FBD6A0000A9753 /* SearchWindow.xib in Resources */,
+				E0564C4511FBD6A0000A9753 /* UserWindow.xib in Resources */,
+				E0564C8D11FBD6AC000A9753 /* alert.png in Resources */,
+				E0564C8E11FBD6AC000A9753 /* dsa_pub.pem in Resources */,
+				E0564C8F11FBD6AC000A9753 /* Icon.icns in Resources */,
+				E0564C9011FBD6AC000A9753 /* mac-clear.png in Resources */,
+				E0564C9111FBD6AC000A9753 /* mac-toolbar-compose.png in Resources */,
+				E0564C9211FBD6AC000A9753 /* mac-toolbar-direct.png in Resources */,
+				E0564C9311FBD6AC000A9753 /* mac-toolbar-home.png in Resources */,
+				E0564C9411FBD6AC000A9753 /* mac-toolbar-lists.png in Resources */,
+				E0564C9511FBD6AC000A9753 /* mac-toolbar-mentions.png in Resources */,
+				E0564C9611FBD6AC000A9753 /* mac-toolbar-star.png in Resources */,
+				E0564C9711FBD6AC000A9753 /* mac-toolbar-user.png in Resources */,
+				E0564C9811FBD6AC000A9753 /* main-template.html in Resources */,
+				E0564C9911FBD6AC000A9753 /* MainMenu.xib in Resources */,
+				E0564C9A11FBD6AC000A9753 /* style.css in Resources */,
+				E0564C9B11FBD6AC000A9753 /* action-1.png in Resources */,
+				E0564C9C11FBD6AC000A9753 /* action-2.png in Resources */,
+				E0564C9D11FBD6AC000A9753 /* action-3.png in Resources */,
+				E0564C9E11FBD6AC000A9753 /* action-4-on.png in Resources */,
+				E0564C9F11FBD6AC000A9753 /* action-4.png in Resources */,
+				E0564CA011FBD6AC000A9753 /* basic-template.html in Resources */,
+				E0564CA111FBD6AC000A9753 /* load-gap-template.html in Resources */,
+				E0564CA211FBD6AC000A9753 /* lock.png in Resources */,
+				E0564CA511FBD6AC000A9753 /* profile-image-proxy.png in Resources */,
+				E0564CA611FBD6AC000A9753 /* reload.png in Resources */,
+				E0564CA711FBD6AC000A9753 /* retweet.png in Resources */,
+				E0564CA811FBD6AC000A9753 /* spinner.gif in Resources */,
+				E0564CA911FBD6AC000A9753 /* tab-bkgnd.png in Resources */,
+				E0564CAA11FBD6AC000A9753 /* tab-off.png in Resources */,
+				E0564CAB11FBD6AC000A9753 /* tab.png in Resources */,
+				E0564CAC11FBD6AC000A9753 /* tweet-row-highlighted-template.html in Resources */,
+				E0564CAD11FBD6AC000A9753 /* tweet-row-mention-template.html in Resources */,
+				E0564CAE11FBD6AC000A9753 /* tweet-row-template.html in Resources */,
+				E0564CAF11FBD6AC000A9753 /* user-info-template.html in Resources */,
+				E0564CB011FBD6AC000A9753 /* user-page-template.html in Resources */,
+				E0564CB111FBD6AC000A9753 /* verified.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				E0564C3911FBD6A0000A9753 /* AddAccount.m in Sources */,
+				E0564C3B11FBD6A0000A9753 /* Compose.m in Sources */,
+				E0564C3E11FBD6A0000A9753 /* ConversationWindowController.m in Sources */,
+				E0564C4011FBD6A0000A9753 /* MainWindowController.m in Sources */,
+				E0564C4211FBD6A0000A9753 /* PreferencesController.m in Sources */,
+				E0564C4411FBD6A0000A9753 /* SearchWindowController.m in Sources */,
+				E0564C4611FBD6A0000A9753 /* UserWindowController.m in Sources */,
+				E0564C4711FBD6A0000A9753 /* HelTweeticaAppDelegate.m in Sources */,
+				E0564C4811FBD6A0000A9753 /* ConversationHTMLController.m in Sources */,
+				E0564C4911FBD6A0000A9753 /* LKWebView.m in Sources */,
+				E0564C4A11FBD6A0000A9753 /* SearchResultsHTMLController.m in Sources */,
+				E0564C4B11FBD6A0000A9753 /* TimelineHTMLController.m in Sources */,
+				E0564C4C11FBD6A0000A9753 /* UserPageHTMLController.m in Sources */,
+				E0564C4D11FBD6A0000A9753 /* OAuthClient.m in Sources */,
+				E0564C4E11FBD6A0000A9753 /* LKJSONParser.m in Sources */,
+				E0564C4F11FBD6A0000A9753 /* Twitter.m in Sources */,
+				E0564C5011FBD6A0000A9753 /* TwitterAccount.m in Sources */,
+				E0564C5211FBD6A0000A9753 /* TwitterList.m in Sources */,
+				E0564C5311FBD6A0000A9753 /* TwitterMessage.m in Sources */,
+				E0564C5411FBD6A0000A9753 /* TwitterMessageJSONParser.m in Sources */,
+				E0564C5511FBD6A0000A9753 /* TwitterSavedSearch.m in Sources */,
+				E0564C5611FBD6A0000A9753 /* TwitterSearchJSONParser.m in Sources */,
+				E0564C5711FBD6A0000A9753 /* TwitterTimeline.m in Sources */,
+				E0564C5811FBD6A0000A9753 /* TwitterUser.m in Sources */,
+				E0564C5911FBD6A0000A9753 /* TwitterAction.m in Sources */,
+				E0564C5A11FBD6A0000A9753 /* TwitterFavoriteAction.m in Sources */,
+				E0564C5B11FBD6A0000A9753 /* TwitterFriendshipsAction.m in Sources */,
+				E0564C5C11FBD6A0000A9753 /* TwitterLoadListsAction.m in Sources */,
+				E0564C5D11FBD6A0000A9753 /* TwitterLoadSavedSearchesAction.m in Sources */,
+				E0564C5E11FBD6A0000A9753 /* TwitterLoadTimelineAction.m in Sources */,
+				E0564C5F11FBD6A0000A9753 /* TwitterLoginAction.m in Sources */,
+				E0564C6011FBD6A0000A9753 /* TwitterRetweetAction.m in Sources */,
+				E0564C6111FBD6A0000A9753 /* TwitterSavedSearchAction.m in Sources */,
+				E0564C6211FBD6A0000A9753 /* TwitterSearchAction.m in Sources */,
+				E0564C6311FBD6A0000A9753 /* TwitterShowFriendshipsAction.m in Sources */,
+				E0564C6411FBD6A0000A9753 /* TwitterUpdateStatusAction.m in Sources */,
+				E0564C6511FBD6A0000A9753 /* TwitterUserInfoAction.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HelTweetica_Mac_Prefix.pch;
+				INFOPLIST_FILE = "Mac-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = HelTweetica;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HelTweetica_Mac_Prefix.pch;
+				INFOPLIST_FILE = "Mac-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = HelTweetica;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "HelTweetica-Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
