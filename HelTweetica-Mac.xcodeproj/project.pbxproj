@@ -94,6 +94,7 @@
 		E0564EC411FBD881000A9753 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		E0564EC511FBD888000A9753 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
 		E0D14E5911FCD4C400452E63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */; };
+		E0D14F0B11FCEE6800452E63 /* TwitterCacheTemplate.db in Resources */ = {isa = PBXBuildFile; fileRef = E0D14F0A11FCEE6800452E63 /* TwitterCacheTemplate.db */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -239,6 +240,7 @@
 		E0564E0B11FBD833000A9753 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		E0564E1911FBD871000A9753 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		E0D14F0A11FCEE6800452E63 /* TwitterCacheTemplate.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TwitterCacheTemplate.db; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -475,6 +477,7 @@
 				E0564C8711FBD6AC000A9753 /* tweet-row-highlighted-template.html */,
 				E0564C8811FBD6AC000A9753 /* tweet-row-mention-template.html */,
 				E0564C8911FBD6AC000A9753 /* tweet-row-template.html */,
+				E0D14F0A11FCEE6800452E63 /* TwitterCacheTemplate.db */,
 				E0564C8A11FBD6AC000A9753 /* user-info-template.html */,
 				E0564C8B11FBD6AC000A9753 /* user-page-template.html */,
 				E0564C8C11FBD6AC000A9753 /* verified.png */,
@@ -577,6 +580,7 @@
 				E0564CAF11FBD6AC000A9753 /* user-info-template.html in Resources */,
 				E0564CB011FBD6AC000A9753 /* user-page-template.html in Resources */,
 				E0564CB111FBD6AC000A9753 /* verified.png in Resources */,
+				E0D14F0B11FCEE6800452E63 /* TwitterCacheTemplate.db in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

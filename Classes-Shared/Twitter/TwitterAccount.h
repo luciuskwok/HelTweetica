@@ -22,24 +22,22 @@
 
 
 @interface TwitterAccount : NSObject {
+	// Core account info. Saved in user defaults.
 	NSNumber *identifier;
-	
 	NSString *screenName;
 	NSString *xAuthToken;
 	NSString *xAuthSecret;
 	
+	// Cached data. References to sqlite db.
 	TwitterTimeline *homeTimeline;
 	TwitterTimeline *mentions;
 	TwitterTimeline *directMessages;
 	TwitterTimeline *favorites;
-	
 	NSMutableArray *lists;
 	NSMutableArray *listSubscriptions;
-	
 	NSMutableArray *savedSearches;
 }
 @property (nonatomic, retain) NSNumber *identifier;
-
 @property (nonatomic, retain) NSString *screenName;
 @property (nonatomic, retain) NSString *xAuthToken;
 @property (nonatomic, retain) NSString *xAuthSecret;
@@ -48,10 +46,8 @@
 @property (nonatomic, retain) TwitterTimeline *mentions;
 @property (nonatomic, retain) TwitterTimeline *directMessages;
 @property (nonatomic, retain) TwitterTimeline *favorites;
-
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
-
 @property (nonatomic, retain) NSMutableArray *savedSearches;
 
 - (void)removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier;

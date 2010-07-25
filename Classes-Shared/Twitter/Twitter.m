@@ -26,7 +26,6 @@
 #import "TwitterLoadListsAction.h"
 #import "TwitterLoadSavedSearchesAction.h"
 
-#import <sqlite3.h>
 
 
 // HelTweetica twitter consumer/client credentials.
@@ -40,13 +39,12 @@
 
 
 @implementation Twitter
-@synthesize accounts, users, statuses;
+@synthesize accounts, statuses;
 
 
 - (id) init {
 	if (self = [super init]) {
 		self.accounts = [NSMutableArray array];
-		self.users = [NSMutableSet set];
 		self.statuses = [NSMutableSet set];
 		[self load];
 	}
@@ -55,7 +53,6 @@
 
 - (void) dealloc {
 	[accounts release];
-	[users release];
 	[statuses release];
 	[super dealloc];
 }
@@ -155,6 +152,26 @@
 /*	User data is stored in two places. The list of accounts is stored in user defaults. The status updates and user profiles are stored in the Cache folder.
  */
 
+- (NSString *)twitterCacheFilePath {
+	// Create a new sqlite database if none exists.
+	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
+	NSString *cachePath = [paths objectAtIndex:0];
+	return [cachePath stringByAppendingPathComponent:@"TwitterCache.db"];
+}
+
+- (BOOL)createTwitterCacheAtPath:(NSString *)path {
+	if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+		// Copy the existing database template from the App bundle
+		NSString *templateFile = [[NSBundle mainBundle] pathForResource:@"TwitterCacheTemplate" ofType:@"db"];
+		NSError *error = nil;
+		if ([[NSFileManager defaultManager] copyItemAtPath:templateFile toPath:path error:&error] == NO) {
+			NSLog (@"Error while creating new Twitter cache: %@", [error localizedDescription]);
+			return NO;
+		}
+	}
+	return YES;
+}
+
 - (void) load {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
@@ -162,19 +179,39 @@
 	[defaults removeObjectForKey:@"twitterAccounts"];
 	[defaults removeObjectForKey:@"twitterUsers"];
 	
+	// Load account info from user defaults
+	NSData *data = [defaults objectForKey:@"allAccounts"];
+	if (data != nil)
+		self.accounts = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	
 	// Create a new sqlite database if none exists.
+	NSString *cacheFile = [self twitterCacheFilePath];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:cacheFile] == NO) {
+		BOOL success = [self createTwitterCacheAtPath:cacheFile];
+		if (!success) return;
+	}
 	
-	// The path for document files is different on iPhone and Mac.
-	
-	
-	
-	
+	int error;
+	error = sqlite3_open ([cacheFile cStringUsingEncoding:NSUTF8StringEncoding], &database);
+	if (error != 0) {
+		NSLog (@"Error result from sqlite3_open(): %d", error);
+		sqlite3_close (database);
+	}
 }
 
 - (void) save {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	// Save only twitter account info
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.accounts];
+	[defaults setObject:data forKey:@"allAccounts"];
+	
 	// TODO: change architecture to avoid needing to save entire database. 
 
 	// Synchronize sqlite db in preparation for quitting.
+	int error;
+	error = sqlite3_close (database);
+	if (error != 0) NSLog (@"Error result from sqlite3_close(): %d", error);
 }
 
 @end

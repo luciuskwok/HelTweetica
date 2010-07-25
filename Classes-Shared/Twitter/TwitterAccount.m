@@ -23,7 +23,8 @@
 
 
 @implementation TwitterAccount
-@synthesize identifier, screenName, xAuthToken, xAuthSecret, homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
+@synthesize identifier, screenName, xAuthToken, xAuthSecret;
+@synthesize homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
 - (id)init {
 	// Initialize a blank account
@@ -33,7 +34,6 @@
 		self.mentions = [[[TwitterTimeline alloc] init] autorelease];
 		self.directMessages = [[[TwitterTimeline alloc] init] autorelease];
 		self.favorites = [[[TwitterTimeline alloc] init] autorelease];
-		
 		self.lists = [NSMutableArray array];
 		self.listSubscriptions = [NSMutableArray array];
 	}
@@ -60,20 +60,11 @@
 }
 
 - (id) initWithCoder: (NSCoder*) decoder {
-	if (self = [super init]) {
+	if (self = [self init]) {
+		self.identifier = [decoder decodeObjectForKey:@"identifier"];
 		self.screenName = [decoder decodeObjectForKey:@"screenName"];
 		self.xAuthToken = [decoder decodeObjectForKey:@"xAuthToken"];
 		self.xAuthSecret = [decoder decodeObjectForKey:@"xAuthSecret"];
-		
-		self.homeTimeline = [self timelineForKey:@"homeTimeline" coder:decoder];
-		self.mentions = [self timelineForKey:@"mentions" coder:decoder];
-		self.directMessages = [self timelineForKey:@"directMessages" coder:decoder];
-		self.favorites = [self timelineForKey:@"favorites" coder:decoder];
-
-		self.lists = [self mutableArrayForKey:@"lists" coder:decoder];
-		self.listSubscriptions = [self mutableArrayForKey:@"listSubscriptions" coder:decoder];
-				
-		self.savedSearches = [self mutableArrayForKey: @"savedSearches2" coder:decoder];
 	}
 	return self;
 }
@@ -82,19 +73,10 @@
 	[encoder encodeObject: screenName forKey:@"screenName"];
 	[encoder encodeObject: xAuthToken forKey:@"xAuthToken"];
 	[encoder encodeObject: xAuthSecret forKey:@"xAuthSecret"];
-	
-	[encoder encodeObject: homeTimeline forKey: @"homeTimeline"];
-	[encoder encodeObject: mentions forKey: @"mentions"];
-	[encoder encodeObject: directMessages forKey: @"directMessages"];
-	[encoder encodeObject: favorites forKey: @"favorites"];
-
-	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:lists] forKey: @"lists"];
-	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:listSubscriptions] forKey: @"listSubscriptions"];
-
-	[encoder encodeObject: [NSKeyedArchiver archivedDataWithRootObject:savedSearches] forKey: @"savedSearches2"];
 }
 
 - (void) dealloc {
+	[identifier release];
 	[screenName release];
 	[xAuthToken release];
 	[xAuthSecret release];
@@ -103,10 +85,10 @@
 	[mentions release];
 	[directMessages release];
 	[favorites release];
-	
 	[lists release];
 	[listSubscriptions release];
 	[savedSearches release];
+	
 	[super dealloc];
 }
 

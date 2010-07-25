@@ -16,6 +16,7 @@
 
 
 #import <Foundation/Foundation.h>
+#import <sqlite3.h>
 
 #import "TwitterAccount.h"
 #import "TwitterUser.h"
@@ -26,12 +27,11 @@
 
 @interface Twitter : NSObject {
 	NSMutableArray *accounts;
-	NSMutableSet *users;
 	NSMutableSet *statuses;
+	sqlite3 *database;
 }
 
 @property (nonatomic, retain) NSMutableArray *accounts;
-@property (nonatomic, retain) NSMutableSet *users;
 @property (nonatomic, retain) NSMutableSet *statuses;
 
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
@@ -39,10 +39,12 @@
 
 - (TwitterMessage *)statusWithIdentifier:(NSNumber *)identifier;
 - (NSSet*) statusesInReplyToStatusIdentifier:(NSNumber*)identifier;
-- (TwitterUser *)userWithScreenName:(NSString *)screenName;
 
 - (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses;
+
+// Users
 - (void)addUsers:(NSSet *)newUsers;
+- (TwitterUser *)userWithScreenName:(NSString *)screenName;
 
 - (void) load;
 - (void) save;

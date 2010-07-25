@@ -283,33 +283,6 @@
 	self.currentSheet = sheet;
 }
 
-
-/*
-- (void)reloadUsersMenu {
-	TwitterAccount *account = HTMLController.account;
-	if (account == nil) return;
-	
-	// Remove all items.
-	while (usersPopUp.menu.numberOfItems > kUsersMenuPresetItems) {
-		[usersPopUp.menu removeItemAtIndex:kUsersMenuPresetItems];
-	}
-
-	// Sort users by screen name
-	NSMutableArray *allUsers = [NSMutableArray arrayWithArray:[twitter.users allObjects]];
-	NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"screenName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
-	[allUsers sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
-	
-	// Insert users
-	for (TwitterUser *user in allUsers) {
-		[usersPopUp.menu addItemWithTitle:user.screenName action:@selector(selectUser:) keyEquivalent:@""];
-	}
-}
-
-- (IBAction)selectUser:(id)sender {
-}
-*/
-
-
 #pragma mark Lists
 
 - (void)reloadListsMenu {
