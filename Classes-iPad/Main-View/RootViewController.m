@@ -168,7 +168,7 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 - (IBAction) analyze: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		Analyze *c = [[[Analyze alloc] init] autorelease];
-		c.timeline = timelineHTMLController.account.homeTimeline.messages;
+		c.account = timelineHTMLController.account;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			[self presentPopoverFromItem:sender viewController:c];
 		} else {

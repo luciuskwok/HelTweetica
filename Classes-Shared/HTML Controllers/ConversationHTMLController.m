@@ -91,7 +91,8 @@
 
 - (void)didLoadMessage:(TwitterLoadTimelineAction *)action {
 	// Synchronized users and messages with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
+	[twitter synchronizeStatusesWithArray:action.timeline.messages];
+	[account addFavorites:action.favoriteMessages];
 	[twitter addUsers:action.users];
 	
 	// Load next message in conversation.

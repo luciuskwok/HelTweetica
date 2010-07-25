@@ -17,7 +17,7 @@
 #import <Foundation/Foundation.h>
 //#import "Twitter.h"
 
-@class TwitterLoadTimelineAction, TwitterAction;
+@class TwitterLoadTimelineAction, TwitterAction, TwitterMessage;
 @protocol TwitterTimelineDelegate;
 
 
@@ -42,6 +42,7 @@
 //@property (nonatomic, retain) Twitter *twitter;
 @property (assign) id delegate;
 
+- (TwitterMessage *)messageWithIdentifier:(NSNumber*)anIdentifier;
 - (void)removeMessageWithIdentifier:(NSNumber*)anIdentifier;
 - (void)limitTimelineLength:(int)count;
 
@@ -50,7 +51,7 @@
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier;
 - (void)didReloadRetweets:(TwitterLoadTimelineAction *)action;
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier;
-- (void) didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action;
+- (void)didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action;
 
 @end
 

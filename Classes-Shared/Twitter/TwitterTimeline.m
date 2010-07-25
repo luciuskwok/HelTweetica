@@ -75,6 +75,16 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 #pragma mark Synchronize
 
+- (TwitterMessage *)messageWithIdentifier:(NSNumber*)anIdentifier {
+	TwitterMessage *message = nil;
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", anIdentifier];
+	NSMutableArray *filteredArray = [NSMutableArray arrayWithArray: self.messages];
+	[filteredArray filterUsingPredicate:predicate];
+	if (filteredArray.count > 0)
+		message = [filteredArray objectAtIndex:0];
+	return message;
+}
+
 - (void)removeMessageWithIdentifier:(NSNumber*)anIdentifier {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", anIdentifier];
 	NSMutableArray *filteredArray = [NSMutableArray arrayWithArray: self.messages];

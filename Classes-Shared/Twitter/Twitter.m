@@ -20,14 +20,13 @@
 #import "TwitterTimeline.h"
 
 #import "TwitterFavoriteAction.h"
-#import "TwitterLoginAction.h"
 #import "TwitterRetweetAction.h"
 #import "TwitterUpdateStatusAction.h"
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterLoadListsAction.h"
 #import "TwitterLoadSavedSearchesAction.h"
 
-
+#import <sqlite3.h>
 
 
 // HelTweetica twitter consumer/client credentials.
@@ -81,7 +80,7 @@
 
 #pragma mark -
 
-- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses updateFavorites:(BOOL)updateFaves {
+- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses {
 	// For matching statuses already in the set, replace the ones in the array with those from the set, so that messages that are equal always have only one representation in memory. 
 	TwitterMessage *existingMessage, *newMessage;
 	int index;
@@ -90,10 +89,7 @@
 		if (newMessage.direct == NO) { // Only sync with public status updates, not direct messages.
 			existingMessage = [statuses member:newMessage];
 			if (existingMessage) {
-				// Message already exists, but still need to update the favorite status and timestamp of the message.
-				if (updateFaves)
-					existingMessage.favorite = newMessage.favorite;
-				existingMessage.inReplyToScreenName = newMessage.inReplyToScreenName;
+				// Update received date.
 				existingMessage.receivedDate = newMessage.receivedDate;
 				[newStatuses replaceObjectAtIndex:index withObject:existingMessage];
 			} else {
@@ -156,38 +152,29 @@
 
 #pragma mark Load and Save cache to disk
 
+/*	User data is stored in two places. The list of accounts is stored in user defaults. The status updates and user profiles are stored in the Cache folder.
+ */
+
 - (void) load {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
-	// Twitter Accounts
-	NSData *accountsData = [defaults objectForKey: @"twitterAccounts"];
-	if (accountsData != nil) {
-		self.accounts = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:accountsData]];
-		
-		// Add all statuses to set
-		for (TwitterAccount *account in accounts) {
-			[self synchronizeStatusesWithArray: account.homeTimeline.messages updateFavorites:YES];
-			[self synchronizeStatusesWithArray: account.mentions.messages updateFavorites:YES];
-			[self synchronizeStatusesWithArray: account.favorites.messages updateFavorites:YES];
-		}
-		
-	}
+	// Remove old preferences if they exist, to free up disk space.
+	[defaults removeObjectForKey:@"twitterAccounts"];
+	[defaults removeObjectForKey:@"twitterUsers"];
 	
-	// Twitter Users
-	NSData *usersData = [defaults objectForKey: @"twitterUsers"];
-	if (usersData != nil) {
-		self.users = [NSKeyedUnarchiver unarchiveObjectWithData:usersData];
-		for (TwitterUser* user in users) {
-			[self synchronizeStatusesWithArray:user.statuses.messages updateFavorites:YES];
-			[self synchronizeStatusesWithArray:user.favorites.messages updateFavorites:YES];
-		}
-	}
+	// Create a new sqlite database if none exists.
+	
+	// The path for document files is different on iPhone and Mac.
+	
+	
+	
+	
 }
 
 - (void) save {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: [NSKeyedArchiver archivedDataWithRootObject:accounts] forKey: @"twitterAccounts"];
-	[defaults setObject: [NSKeyedArchiver archivedDataWithRootObject:users] forKey: @"twitterUsers"];
+	// TODO: change architecture to avoid needing to save entire database. 
+
+	// Synchronize sqlite db in preparation for quitting.
 }
 
 @end

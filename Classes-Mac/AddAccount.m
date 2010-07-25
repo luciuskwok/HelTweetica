@@ -71,9 +71,10 @@
 	TwitterAccount *account = [twitter accountWithScreenName: action.username];
 	if (action.token) {
 		// Save the login information for the account.
-		[account setXAuthToken: action.token];
-		[account setXAuthSecret: action.secret];
-		[account setScreenName: action.username]; // To make sure the uppercase/lowercase letters are correct.
+		account.xAuthToken = action.token;
+		account.xAuthSecret = action.secret;
+		account.screenName = action.username; // To make sure the uppercase/lowercase letters are correct.
+		account.identifier = action.identifier;
 		
 		// Tell delegate we're done
 		if ([delegate respondsToSelector:@selector(didLoginToAccount:)])

@@ -89,7 +89,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 
 - (BOOL) screenName:(NSString*)screenName existsInArray:(NSArray*)array {
 	for (TwitterMessage *message in array) {
-		if ([screenName isEqualToString: message.screenName])
+		if ([screenName isEqualToString: message.userScreenName])
 			return YES;
 	}
 	return NO;
@@ -103,7 +103,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	for (TwitterMessage *message in aTimeline) {
 		// Use original retweeted message if this is a retweet
 		originalMessage = (message.retweetedMessage != nil) ? message.retweetedMessage : message;
-		if ([self screenName:message.screenName existsInArray:uniqueTimeline] == NO) {
+		if ([self screenName:message.userScreenName existsInArray:uniqueTimeline] == NO) {
 			[uniqueTimeline addObject:originalMessage];
 			if (uniqueTimeline.count >= kMaximumNumberOfAvatarsToShow) break; // Limit the number of avatars shown.
 		}
@@ -116,13 +116,13 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 - (void)loadProfileImages {
 	UIImage *image;
 	for (TwitterMessage *message in self.timeline) {
-		NSString *largeImageURLString = [message.avatar stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
+		NSString *largeImageURLString = [message.profileImageURL stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
 		image = [profileImages objectForKey:largeImageURLString];
 		if (image == nil) {
 			// Start an action to load the url.
 			AllStarsLoadURLAction *action = [[[AllStarsLoadURLAction alloc] init] autorelease];
 			action.delegate = self;
-			action.identifier = message.avatar;
+			action.identifier = message.profileImageURL;
 			[action loadURL:[NSURL URLWithString:largeImageURLString]];
 			
 			[loadURLActions addObject:action];
@@ -185,7 +185,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 		[profileImages setObject:avatarImage forKey:action.identifier];
 		
 		// Update message view if necessary.
-		if ((messageView.message.avatar != nil) && ([action.identifier isEqualToString:messageView.message.avatar]))
+		if ((messageView.message.profileImageURL != nil) && ([action.identifier isEqualToString:messageView.message.profileImageURL]))
 			messageView.imageView.image = avatarImage;
 		
 		// Set a timer to collect multiple updates into one
@@ -231,7 +231,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	for (int index = 0; index < timeline.count; index++) {
 		pool = [[NSAutoreleasePool alloc] init];
 		TwitterMessage *message = [timeline objectAtIndex:index];
-		UIImage *avatarImage = [profileImages objectForKey:message.avatar];
+		UIImage *avatarImage = [profileImages objectForKey:message.profileImageURL];
 		UIButton *button = [self addNewButtonWithImage: avatarImage];
 		button.tag = index + 1;
 		[pool release];
@@ -325,7 +325,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 		controller.message = message;
 		
 		// Set the large profile image.
-		controller.profileImage = [profileImages objectForKey:message.avatar];
+		controller.profileImage = [profileImages objectForKey:message.profileImageURL];
 	}
 	[self presentModalViewController:controller animated:YES];
 }

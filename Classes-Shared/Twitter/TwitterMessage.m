@@ -21,19 +21,20 @@
 
 
 @implementation TwitterMessage
-@synthesize identifier, inReplyToStatusIdentifier, inReplyToUserIdentifier;
-@synthesize screenName, inReplyToScreenName, avatar, content, source, retweetedMessage;
+@synthesize identifier, userIdentifier, userScreenName;
+@synthesize inReplyToStatusIdentifier, inReplyToUserIdentifier, inReplyToScreenName;
+@synthesize profileImageURL, content, source, retweetedMessage;
 @synthesize createdDate, receivedDate;
-@synthesize locked, favorite, direct;
+@synthesize locked, direct;
 
 
 - (void) dealloc {
 	[identifier release];
 	[inReplyToStatusIdentifier release];
 	[inReplyToUserIdentifier release];
-	[screenName release];
+	[userScreenName release];
 	[inReplyToScreenName release];
-	[avatar release];
+	[profileImageURL release];
 	[content release];
 	[source release];
 	[retweetedMessage release];
@@ -49,9 +50,9 @@
 		self.inReplyToStatusIdentifier = [decoder decodeObjectForKey:@"inReplyToStatusIdentifier"];
 		self.inReplyToUserIdentifier = [decoder decodeObjectForKey:@"inReplyToUserIdentifier"];
 		
-		self.screenName = [decoder decodeObjectForKey:@"username"];
+		self.userScreenName = [decoder decodeObjectForKey:@"username"];
 		self.inReplyToScreenName = [decoder decodeObjectForKey:@"inReplyToScreenName"];
-		self.avatar = [decoder decodeObjectForKey:@"avatar"];
+		self.profileImageURL = [decoder decodeObjectForKey:@"avatar"];
 		self.content = [decoder decodeObjectForKey:@"content"];
 		self.source = [decoder decodeObjectForKey:@"source"];
 		self.retweetedMessage = [decoder decodeObjectForKey:@"retweetedMessage"];
@@ -60,7 +61,6 @@
 		self.receivedDate = [decoder decodeObjectForKey:@"receivedDate"];
 		
 		locked = [decoder decodeBoolForKey:@"locked"];
-		favorite = [decoder decodeBoolForKey:@"favorite"];
 		direct = [decoder decodeBoolForKey:@"direct"];
 	}
 	return self;
@@ -71,9 +71,9 @@
 	[encoder encodeObject: inReplyToStatusIdentifier forKey:@"inReplyToStatusIdentifier"];
 	[encoder encodeObject: inReplyToUserIdentifier forKey:@"inReplyToUserIdentifier"];
 
-	[encoder encodeObject:screenName forKey:@"username"];
+	[encoder encodeObject:userScreenName forKey:@"username"];
 	[encoder encodeObject:inReplyToScreenName forKey:@"inReplyToScreenName"];
-	[encoder encodeObject:avatar forKey:@"avatar"];
+	[encoder encodeObject:profileImageURL forKey:@"avatar"];
 	[encoder encodeObject:content forKey:@"content"];
 	[encoder encodeObject:source forKey:@"source"];
 	[encoder encodeObject:retweetedMessage forKey:@"retweetedMessage"];
@@ -82,15 +82,14 @@
 	[encoder encodeObject:receivedDate forKey:@"receivedDate"];
 	
 	[encoder encodeBool:locked forKey:@"locked"];
-	[encoder encodeBool:favorite forKey:@"favorite"];
 	[encoder encodeBool:direct forKey:@"direct"];
 }
 
 // description: for the debugger po command.
 - (NSString*) description {
 	NSMutableString *result = [NSMutableString string];
-	if (screenName != nil) 
-		[result appendFormat:@"%@: ", screenName];
+	if (userScreenName != nil) 
+		[result appendFormat:@"%@: ", userScreenName];
 	if (content != nil) 
 		[result appendString: content];
 	return result;
@@ -157,14 +156,6 @@
 			self.inReplyToUserIdentifier = [self scanInt64FromString:value];
 		} else if ([key isEqualToString:@"created_at"]) {
 			self.createdDate = [self dateWithTwitterStatusString:value];
-		}
-	}
-	
-	// Boolean values
-	if ([value isKindOfClass:[NSNumber class]]) {
-		BOOL flag = [value boolValue];
-		if ([key isEqualToString:@"favorited"]) {
-			self.favorite = flag;
 		}
 	}
 	

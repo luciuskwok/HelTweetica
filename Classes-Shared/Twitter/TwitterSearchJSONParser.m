@@ -106,9 +106,9 @@
 	} else if ([parser.keyPath isEqualToString:@"/results/text"]) {
 		currentMessage.content = value;
 	} else if ([parser.keyPath isEqualToString:@"/results/from_user"]) { 
-		currentMessage.screenName = value;
+		currentMessage.userScreenName = value;
 	} else if ([parser.keyPath isEqualToString:@"/results/profile_image_url"]) { 
-		currentMessage.avatar = value;
+		currentMessage.profileImageURL = value;
 	}
 }
 

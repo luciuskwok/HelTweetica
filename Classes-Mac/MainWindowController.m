@@ -485,7 +485,7 @@
 	compose.delegate = self;
 	if (message != nil) {
 		// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
-		compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.screenName, message.content];
+		compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.userScreenName, message.content];
 		compose.originalRetweetContent = compose.messageContent;
 		compose.inReplyTo = identifier;
 	}
@@ -502,7 +502,7 @@
 	
 	// Insert @username in beginning of message. This preserves any other people being replied to.
 	if (message != nil) {
-		NSString *replyUsername = message.screenName;
+		NSString *replyUsername = message.userScreenName;
 		if (compose.messageContent != nil) {
 			compose.messageContent = [NSString stringWithFormat:@"@%@ %@", replyUsername, compose.messageContent];
 		} else {
@@ -525,7 +525,7 @@
 	
 	// Insert d username in beginnig of message. This preserves any other people being replied to.
 	if (message != nil) {
-		NSString *replyUsername = message.screenName;
+		NSString *replyUsername = message.userScreenName;
 		if (compose.messageContent != nil) {
 			compose.messageContent = [NSString stringWithFormat:@"d %@ %@", replyUsername, compose.messageContent];
 		} else {

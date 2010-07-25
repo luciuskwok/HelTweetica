@@ -16,43 +16,26 @@
 
 
 #import "Analyze.h"
+#import "TwitterAccount.h"
+#import "TwitterTimeline.h"
 #import "TwitterMessage.h"
 
 
-@interface Analyze (PrivateMethods)
-- (NSMutableArray*) analyzeTimeline: (NSArray*) aTimeline;
-- (NSMutableDictionary*) itemWithUsername: (NSString*) aUsername inArray: (NSArray*) anArray;
-- (NSString*) renderedHTMLWithAnalysis:(NSArray*)analysis;
-@end
-
 @implementation Analyze
-@synthesize webView, timeline;
+@synthesize webView, account;
 
-- (id)init {
-	if (self = [super initWithNibName:@"Analyze" bundle:nil]) {
-		// Content size for popover
-		if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
-			[self setContentSizeForViewInPopover: CGSizeMake(320, 460)];
-		}
+#pragma mark Private methods
+
+- (NSMutableDictionary*) itemWithUsername: (NSString*) aUsername inArray: (NSArray*) anArray {
+	NSMutableDictionary *item;
+	for (item in anArray) {
+		if ([aUsername isEqualToString: [item objectForKey:@"username"]])
+			return item;
 	}
-	return self;
+	return nil;
 }
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	NSMutableArray *analysis = [self analyzeTimeline: self.timeline];
-	
-	// Sort analysis by count
-	NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"count" ascending:NO];
-	[analysis sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
-	[descriptor release];
-	
-	NSString *html = [self renderedHTMLWithAnalysis:analysis];
-	NSURL *baseURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] resourcePath]];
-	[self.webView loadHTMLString:html baseURL:baseURL];
-}
-
-- (NSMutableArray*) analyzeTimeline: (NSArray*) aTimeline {
+- (NSMutableArray*) analyzeHomeTimeline:(NSArray*)homeTimeline favorites:(NSArray*)favorites {
 	NSMutableArray *analysis = [NSMutableArray array];
 	
 	TwitterMessage *message;
@@ -61,9 +44,9 @@
 	NSMutableDictionary *entry;
 	int messageCount, favoriteCount;
 	
-	for (message in aTimeline) {
-		user = [message screenName];
-		favorite = [message isFavorite];
+	for (message in homeTimeline) {
+		user = message.userScreenName;
+		favorite = [favorites containsObject:message];
 		
 		// Create an entry if it doesn't exist for this user
 		entry = [self itemWithUsername: user inArray: analysis];
@@ -85,15 +68,6 @@
 	return analysis;
 }
 
-- (NSMutableDictionary*) itemWithUsername: (NSString*) aUsername inArray: (NSArray*) anArray {
-	NSMutableDictionary *item;
-	for (item in anArray) {
-		if ([aUsername isEqualToString: [item objectForKey:@"username"]])
-			return item;
-	}
-	return nil;
-}
-
 - (NSString*) renderedHTMLWithAnalysis:(NSArray*)analysis {
 	// HTML header
 	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
@@ -102,12 +76,12 @@
 	[html appendString:@"<head>\n"];
 	[html appendString:@"<meta name='viewport' content='width=320' />"];
 	[html appendString:@"<style>body{font:17px/20px Helvetica;color:#333;}b{color:#000;}</style>"];
-
+	
 	// Body
 	[html appendString:@"</head><body>"];
-	[html appendFormat:@"<div class='tweet_area'><b>Most frequent tweeters</b> out of %d tweets in your home timeline:<br><br>", [timeline count]];
+	[html appendFormat:@"<div class='tweet_area'><b>Most frequent tweeters</b> out of %d tweets in your home timeline:<br><br>", account.homeTimeline.messages.count];
 	
-	if ((timeline == nil) || ([timeline count] == 0)) {
+	if ((account.homeTimeline.messages == nil) || (account.homeTimeline.messages.count == 0)) {
 		[html appendString:@"No tweets to analyze!"];
 	} else {
 		NSDictionary *entry;
@@ -135,11 +109,37 @@
 			[html appendString:@"<br>"];
 		}
 	}
-
+	
 	// Close artboard div, body. and html tags
 	[html appendString:@"</div></body></html>\n"];
 	
 	return html;
+}
+
+#pragma mark View lifecycle
+
+- (id)init {
+	if (self = [super initWithNibName:@"Analyze" bundle:nil]) {
+		// Content size for popover
+		if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
+			[self setContentSizeForViewInPopover: CGSizeMake(320, 460)];
+		}
+	}
+	return self;
+}
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	NSMutableArray *analysis = [self analyzeHomeTimeline:account.homeTimeline.messages favorites:account.favorites.messages];
+	
+	// Sort analysis by count
+	NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"count" ascending:NO];
+	[analysis sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
+	[descriptor release];
+	
+	NSString *html = [self renderedHTMLWithAnalysis:analysis];
+	NSURL *baseURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] resourcePath]];
+	[self.webView loadHTMLString:html baseURL:baseURL];
 }
 
 - (IBAction) close: (id) sender {
@@ -151,18 +151,18 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+	[super didReceiveMemoryWarning];
 }
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
+	[super viewDidUnload];
 	self.webView = nil;
 }
 
 - (void)dealloc {
 	[webView release];
-	[timeline release];
-    [super dealloc];
+	[account release];
+	[super dealloc];
 }
 
 

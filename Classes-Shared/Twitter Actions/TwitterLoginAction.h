@@ -20,11 +20,13 @@
 @interface TwitterLoginAction : TwitterAction {
 	NSString *username;
 	NSString *password;
+	NSNumber *identifier;
 	NSString *token;
 	NSString *secret;
 }
 @property (nonatomic, retain) NSString *username;
 @property (nonatomic, retain) NSString *password;
+@property (nonatomic, retain) NSNumber *identifier;
 @property (nonatomic, retain) NSString *token;
 @property (nonatomic, retain) NSString *secret;
 

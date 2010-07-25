@@ -41,7 +41,7 @@
 - (NSSet*) statusesInReplyToStatusIdentifier:(NSNumber*)identifier;
 - (TwitterUser *)userWithScreenName:(NSString *)screenName;
 
-- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses updateFavorites:(BOOL)updateFaves;
+- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses;
 - (void)addUsers:(NSSet *)newUsers;
 
 - (void) load;

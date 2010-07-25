@@ -17,7 +17,7 @@
 
 
 @implementation TwitterLoginAction
-@synthesize username, password, token, secret;
+@synthesize username, password, identifier, token, secret;
 
 
 - (id) initWithUsername:(NSString*)aUsername password:(NSString*)aPassword {
@@ -31,6 +31,9 @@
 - (void) dealloc {
 	[username release];
 	[password release];
+	[identifier release];
+	[token release];
+	[secret release];
 	[super dealloc];
 }
 
@@ -66,6 +69,11 @@
 					self.secret = [[components objectAtIndex: index + 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 				} else if ([key isEqualToString: @"screen_name"]) {
 					self.username = [[components objectAtIndex: index + 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				} else if ([key isEqualToString: @"user_id"]) {
+					NSScanner *scanner = [NSScanner scannerWithString:[components objectAtIndex: index + 1]];
+					SInt64 value;
+					if ([scanner scanLongLong:&value])
+						self.identifier = [NSNumber numberWithLongLong: value];
 				}
 			}
 			

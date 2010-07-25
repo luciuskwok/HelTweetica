@@ -17,7 +17,7 @@
 
 
 @implementation TwitterFavoriteAction
-@synthesize message;
+@synthesize message, destroy, success;
 
 
 - (id) initWithMessage:(TwitterMessage*)aMessage destroy:(BOOL)flag {
@@ -41,7 +41,7 @@
 - (void) parseReceivedData:(NSData*)data {
 	// Ignore data and just set the message's favorite flag if the status is good or is 403, which indicates that the message is already set to the status we want.
 	if ((statusCode < 400) || (statusCode == 403)) {
-		message.favorite = !destroy;
+		success = YES;
 	}
 }
 

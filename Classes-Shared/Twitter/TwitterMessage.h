@@ -20,12 +20,14 @@
 
 @interface TwitterMessage : NSObject {
 	NSNumber *identifier;
+	NSNumber *userIdentifier;
+	NSString *userScreenName;
+	NSString *profileImageURL;
+	
 	NSNumber *inReplyToStatusIdentifier;
 	NSNumber *inReplyToUserIdentifier;
 	
-	NSString *screenName;
 	NSString *inReplyToScreenName;
-	NSString *avatar;
 	NSString *content;
 	NSString *source;
 	TwitterMessage *retweetedMessage;
@@ -34,17 +36,17 @@
 	NSDate *receivedDate;
 	
 	BOOL locked;
-	BOOL favorite;
-	BOOL direct;
-	
+	BOOL direct;	
 }
 @property (nonatomic, retain) NSNumber *identifier;
+@property (nonatomic, retain) NSNumber *userIdentifier;
+@property (nonatomic, retain) NSString *userScreenName;
+@property (nonatomic, retain) NSString *profileImageURL;
+
 @property (nonatomic, retain) NSNumber *inReplyToStatusIdentifier;
 @property (nonatomic, retain) NSNumber *inReplyToUserIdentifier;
 
-@property (nonatomic, retain) NSString *screenName;
 @property (nonatomic, retain) NSString *inReplyToScreenName;
-@property (nonatomic, retain) NSString *avatar;
 @property (nonatomic, retain) NSString *content;
 @property (nonatomic, retain) NSString *source;
 @property (nonatomic, retain) TwitterMessage *retweetedMessage;
@@ -53,7 +55,6 @@
 @property (nonatomic, retain) NSDate *receivedDate;
 
 @property (assign, getter=isLocked) BOOL locked;
-@property (assign, getter=isFavorite) BOOL favorite;
 @property (assign, getter=isDirect) BOOL direct;
 
 - (void) setValue:(id)value forTwitterKey:(NSString*)key;

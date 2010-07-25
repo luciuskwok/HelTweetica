@@ -180,9 +180,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
 	// Synchronize timeline with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline.messages updateFavorites:YES];
+	[twitter synchronizeStatusesWithArray:action.timeline.messages];
+	[account addFavorites:action.favoriteMessages];
 	[twitter addUsers:action.users];
-	[twitter save];
 	isLoading = NO;
 	
 	if (timeline == aTimeline) {
@@ -364,7 +364,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		return;
 	}
 	
-	TwitterFavoriteAction *action = [[[TwitterFavoriteAction alloc] initWithMessage:message destroy:message.favorite] autorelease];
+	BOOL isFave = [account.favorites.messages containsObject:message];
+	
+	TwitterFavoriteAction *action = [[[TwitterFavoriteAction alloc] initWithMessage:message destroy:isFave] autorelease];
 	action.completionTarget= self;
 	action.completionAction = @selector(didFave:);
 	[self startTwitterAction:action];
@@ -372,15 +374,20 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (void)didFave:(TwitterFavoriteAction *)action {
 	TwitterMessage *message = [action message];
+	if (action.success == NO) return;
+	BOOL isFave = !action.destroy;
 	
 	// Change the display of the star next to tweet in root view
 	NSString *element = [NSString stringWithFormat:@"star-%@", [message.identifier stringValue]];
-	NSString *html = message.favorite ? @"<img src='action-4-on.png'>" : @"<img src='action-4.png'>";
+	NSString *html = isFave ? @"<img src='action-4-on.png'>" : @"<img src='action-4.png'>";
 	[self.webView setDocumentElement:element innerHTML:html];
 	
 	// Remove from favorites timeline
-	if (message.favorite == NO) 
-		[account.favorites.messages removeObject: message];
+	if (isFave) {
+		[account.favorites.messages addObject:message];
+	} else {
+		[account.favorites.messages removeObject:message];
+	}
 }
 
 #pragma mark Web view updating
@@ -622,17 +629,17 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	}
 	
 	// Favorites
-	BOOL isFavorite = (message.favorite || retweeterMessage.favorite);
+	BOOL isFavorite = [account.favorites.messages containsObject:message];
 	
 	
 	// Set up dictionary with variables to substitute
 	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
-	if (message.screenName)
-		[substitutions setObject:message.screenName forKey:@"screenName"];
+	if (message.userScreenName)
+		[substitutions setObject:message.userScreenName forKey:@"userScreenName"];
 	if (message.identifier)
 		[substitutions setObject:[message.identifier stringValue] forKey:@"messageIdentifier"];
-	if (message.avatar)
-		[substitutions setObject:message.avatar forKey:@"profileImageURL"];
+	if (message.profileImageURL)
+		[substitutions setObject:message.profileImageURL forKey:@"profileImageURL"];
 	if (retweeterMessage)
 		[substitutions setObject:@"<img src='retweet.png'>" forKey:@"retweetIcon"];
 	if ([message isLocked])
@@ -645,8 +652,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[substitutions setObject:message.source forKey:@"via"];
 	if (message.inReplyToScreenName) 
 		[substitutions setObject:message.inReplyToScreenName forKey:@"inReplyToScreenName"];
-	if (retweeterMessage.screenName) 
-		[substitutions setObject:retweeterMessage.screenName forKey:@"retweetedBy"];
+	if (retweeterMessage.userScreenName) 
+		[substitutions setObject:retweeterMessage.userScreenName forKey:@"retweetedBy"];
 	if (isFavorite) 
 		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
 	if (message.direct == NO) 

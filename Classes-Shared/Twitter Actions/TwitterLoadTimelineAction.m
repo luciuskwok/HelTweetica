@@ -18,7 +18,7 @@
 
 
 @implementation TwitterLoadTimelineAction
-@synthesize timeline, loadedMessages, users, newMessageCount, overlap;
+@synthesize timeline, loadedMessages, favoriteMessages, users, newMessageCount, overlap;
 
 - (id)initWithTwitterMethod:(NSString*)method {
 	self = [super init];
@@ -30,6 +30,7 @@
 - (void) dealloc {
 	[timeline release];
 	[loadedMessages release];
+	[favoriteMessages release];
 	[users release];
 	[super dealloc];
 }
@@ -48,6 +49,7 @@
 		newMessageCount = parser.messages.count;
 		[self mergeTimelineWithMessages: parser.messages];
 		self.loadedMessages = parser.messages;
+		self.favoriteMessages = parser.favorites;
 	} else {
 		newMessageCount = 0;
 	}

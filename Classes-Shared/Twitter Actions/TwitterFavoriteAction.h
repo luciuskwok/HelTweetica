@@ -21,8 +21,11 @@
 @interface TwitterFavoriteAction : TwitterAction {
 	TwitterMessage *message;
 	BOOL destroy;
+	BOOL success;
 }
 @property (nonatomic, retain) TwitterMessage *message;
+@property (nonatomic, assign) BOOL destroy;
+@property (nonatomic, assign) BOOL success;
 
 - (id) initWithMessage:(TwitterMessage*)aMessage destroy:(BOOL)flag;
 

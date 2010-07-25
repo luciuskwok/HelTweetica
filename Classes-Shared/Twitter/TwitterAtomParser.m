@@ -107,7 +107,7 @@
 		// For direct messages, extract the author's username from the title
 		NSArray *words = [self.currentText componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
 		if (words.count > 2) {
-			self.currentMessage.screenName = [words objectAtIndex:2]; // from user is always third word
+			self.currentMessage.userScreenName = [words objectAtIndex:2]; // from user is always third word
 		}
 	}
 }
@@ -119,7 +119,7 @@
 	} else {
 		NSRange range = [currentText rangeOfString: @": "];
 		if (range.location != NSNotFound) {
-			self.currentMessage.screenName = [currentText substringToIndex: range.location];
+			self.currentMessage.userScreenName = [currentText substringToIndex: range.location];
 			self.currentMessage.content = [currentText substringFromIndex:range.location + range.length];
 		} else {
 			self.currentMessage.content = currentText;

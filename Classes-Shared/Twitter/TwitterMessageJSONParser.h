@@ -23,6 +23,7 @@
 
 @interface TwitterMessageJSONParser : NSObject <LKJSONParserDelegate> {
 	NSMutableArray *messages;
+	NSMutableSet *favorites;
 	NSMutableSet *users;
 	
 	TwitterMessage *currentMessage;
@@ -35,6 +36,7 @@
 }
 
 @property (nonatomic, retain) NSMutableArray *messages;
+@property (nonatomic, retain) NSMutableSet *favorites;
 @property (nonatomic, retain) NSMutableSet *users;
 
 @property (nonatomic, retain) TwitterMessage *currentMessage;

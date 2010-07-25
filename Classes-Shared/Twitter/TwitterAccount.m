@@ -23,7 +23,7 @@
 
 
 @implementation TwitterAccount
-@synthesize screenName, xAuthToken, xAuthSecret, homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
+@synthesize identifier, screenName, xAuthToken, xAuthSecret, homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
 - (id)init {
 	// Initialize a blank account
@@ -110,10 +110,10 @@
 	[super dealloc];
 }
 
-#pragma mark -
+#pragma mark Public methods
 
-- (void) removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier {
-	[self.favorites removeMessageWithIdentifier:identifier];
+- (void) removeStatusFromFavoritesWithIdentifier: (NSNumber*) anIdentifier {
+	[self.favorites removeMessageWithIdentifier:anIdentifier];
 }
 
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {
@@ -130,6 +130,13 @@
 			newList = oldList;
 		newList.receivedDate = [NSDate date];
 		[existingLists addObject: newList];
+	}
+}
+
+- (void)addFavorites:(NSSet*)set {
+	for (TwitterMessage *message in set) {
+		if ([favorites.messages containsObject:message] == NO) 
+			[favorites.messages addObject:message];
 	}
 }
 

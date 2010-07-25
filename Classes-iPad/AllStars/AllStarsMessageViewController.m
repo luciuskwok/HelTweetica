@@ -80,7 +80,7 @@
 	[content replaceOccurrencesOfString:@"&amp;" withString:@"&" options:0 range:NSMakeRange(0, [content length])];
 	
 	[imageView setImage: profileImage];
-	[screenNameLabel setText: message.screenName];
+	[screenNameLabel setText: message.userScreenName];
 	[contentLabel setText: content];
 	[dateLabel setText: [self timeStringSinceNow: message.createdDate]];
 }

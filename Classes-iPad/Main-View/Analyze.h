@@ -16,12 +16,14 @@
 
 
 #import <UIKit/UIKit.h>
+@class TwitterAccount;
+
 @interface Analyze : UIViewController {
 	IBOutlet UIWebView *webView;
-	NSArray *timeline;
+	TwitterAccount *account;
 }
 @property (nonatomic, retain) UIWebView *webView;
-@property (nonatomic, retain) NSArray *timeline;
+@property (nonatomic, retain) TwitterAccount *account;
 
 - (IBAction) close: (id) sender;
 @end

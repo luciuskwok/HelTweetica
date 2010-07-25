@@ -102,6 +102,7 @@
 	// Cancel any pending requests.
 	[self cancel];
 	
+#ifdef kConsumerKey
 	// OAuth Authorization
 	if (consumerToken) {
 		OAuthClient *oauth = [[[OAuthClient alloc] initWithClientKey:kConsumerKey clientSecret:kConsumerSecret] autorelease];
@@ -110,6 +111,7 @@
 		NSString *authorization = [oauth authorizationHeaderWithURLRequest: request];
 		[request setValue: authorization forHTTPHeaderField:@"Authorization"];
 	}
+#endif
 	
 	// Cache policy
 	[request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];

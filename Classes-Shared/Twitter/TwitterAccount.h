@@ -22,6 +22,8 @@
 
 
 @interface TwitterAccount : NSObject {
+	NSNumber *identifier;
+	
 	NSString *screenName;
 	NSString *xAuthToken;
 	NSString *xAuthSecret;
@@ -36,6 +38,7 @@
 	
 	NSMutableArray *savedSearches;
 }
+@property (nonatomic, retain) NSNumber *identifier;
 
 @property (nonatomic, retain) NSString *screenName;
 @property (nonatomic, retain) NSString *xAuthToken;
@@ -53,5 +56,6 @@
 
 - (void)removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier;
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists;
+- (void)addFavorites:(NSSet*)set;
 
 @end

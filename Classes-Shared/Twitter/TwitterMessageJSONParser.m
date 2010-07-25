@@ -21,20 +21,22 @@
 
 
 @implementation TwitterMessageJSONParser
-@synthesize messages, users;
+@synthesize messages, favorites, users;
 @synthesize currentMessage, currentUser, currentRetweetedMessage, currentRetweetedUser;
 @synthesize directMessage, receivedTimestamp;
 
 - (id) init {
 	if (self = [super init]) {
 		messages = [[NSMutableArray alloc] init];
-		users = [[NSMutableArray alloc] init];
+		favorites = [[NSMutableSet alloc] init];
+		users = [[NSMutableSet alloc] init];
 	}
 	return self;
 }
 
 - (void) dealloc {
 	[messages release];
+	[favorites release];
 	[users release];
 	
 	[currentMessage release];
@@ -97,13 +99,13 @@
 		if (currentUser) {
 			if (currentMessage) {
 				// Some fields that this app stores in the message are in the JSON stream in the embedded user's dictionary.
-				currentMessage.screenName = currentUser.screenName;
-				currentMessage.avatar = currentUser.profileImageURL;
+				currentMessage.userScreenName = currentUser.screenName;
+				currentMessage.profileImageURL = currentUser.profileImageURL;
 				currentMessage.locked = currentUser.protectedUser;
 			}
 			
 			// Add to users set.
-			[users addObject: currentUser];
+			[users addObject:currentUser];
 		} else {
 			NSLog (@"Error while parsing JSON.");
 		}
@@ -127,8 +129,8 @@
 		if (currentRetweetedUser) {
 			if (currentRetweetedMessage) {
 				// Some fields that this app stores in the message are in the JSON stream in the embedded user's dictionary.
-				currentRetweetedMessage.screenName = currentRetweetedUser.screenName;
-				currentRetweetedMessage.avatar = currentRetweetedUser.profileImageURL;
+				currentRetweetedMessage.userScreenName = currentRetweetedUser.screenName;
+				currentRetweetedMessage.profileImageURL = currentRetweetedUser.profileImageURL;
 				currentRetweetedMessage.locked = currentRetweetedUser.protectedUser;
 			}
 			
@@ -151,6 +153,9 @@
 		[self.currentRetweetedMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/recipient/"]) {
 		// Ignore these key paths because they're only in DMs.
+	} else if ([keyPath hasPrefix:@"/favorited/"]) {
+		// Special handling for favorites. Instead of a flag in a message, which only is valid for the account requesting the favorite status, put the message in a set of favorites for this action.
+		[favorites addObject:currentMessage];
 	} else if ([keyPath hasPrefix:@"/"]) {
 		[self.currentMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} 
