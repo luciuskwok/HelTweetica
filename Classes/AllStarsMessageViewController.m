@@ -19,15 +19,13 @@
 
 
 @implementation AllStarsMessageViewController
-@synthesize avatarImage, screenNameLabel, contentLabel, dateLabel;
+@synthesize imageView, screenNameLabel, contentLabel, dateLabel;
 @synthesize message, profileImage;
 
 - (id)init {
     if ((self = [super initWithNibName:@"AllStarsMessageViewController" bundle:nil])) {
         // Custom initialization
 		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(largeAvatarDidLoad:) name:@"largeAvatarDidLoad" object:nil];
     }
     return self;
 }
@@ -81,7 +79,7 @@
 	[content replaceOccurrencesOfString:@"&gt;" withString:@">" options:0 range:NSMakeRange(0, [content length])];
 	[content replaceOccurrencesOfString:@"&amp;" withString:@"&" options:0 range:NSMakeRange(0, [content length])];
 	
-	[avatarImage setImage: profileImage];
+	[imageView setImage: profileImage];
 	[screenNameLabel setText: message.screenName];
 	[contentLabel setText: content];
 	[dateLabel setText: [self timeStringSinceNow: message.createdDate]];
@@ -106,7 +104,7 @@
 	[super viewDidUnload];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
-	self.avatarImage = nil;
+	self.imageView = nil;
 	self.screenNameLabel = nil;
 	self.contentLabel = nil;
 	self.dateLabel = nil;
@@ -118,12 +116,6 @@
 
 - (IBAction) close: (id) sender {
 	[self dismissModalViewControllerAnimated:YES];
-}
-
-- (void) largeAvatarDidLoad: (NSNotification*) aNotification {
-	TwitterMessage *notificationMessage = [aNotification object];
-	if ([notificationMessage isEqual: self.message])
-		[avatarImage setImage: message.largeAvatar];
 }
 
 @end

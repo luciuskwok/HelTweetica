@@ -510,6 +510,7 @@
 		E0CE8A7811A92C6C00AE85FE /* SearchResultsHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsHTMLController.m; sourceTree = "<group>"; };
 		E0CF08C811FBB327007D5EB1 /* AllStarsLoadURLAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllStarsLoadURLAction.h; sourceTree = "<group>"; };
 		E0CF08C911FBB327007D5EB1 /* AllStarsLoadURLAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllStarsLoadURLAction.m; sourceTree = "<group>"; };
+		E0CF08D211FBB6CC007D5EB1 /* iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iPhone-Info.plist"; sourceTree = "<group>"; };
 		E0D3E4DE1193CDB20098BFB6 /* TwitterUserInfoAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUserInfoAction.h; sourceTree = "<group>"; };
 		E0D3E4DF1193CDB20098BFB6 /* TwitterUserInfoAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserInfoAction.m; sourceTree = "<group>"; };
 		E0D3E6AC1194D4280098BFB6 /* TwitterTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTimeline.h; sourceTree = "<group>"; };
@@ -654,6 +655,7 @@
 				E0DF13D611647B0B004FE7B9 /* Icon.png */,
 				E0448843116EF16B008603EB /* Icon-72.png */,
 				E0904FE811A0DF0100520190 /* Entitlements.plist */,
+				E0CF08D211FBB6CC007D5EB1 /* iPhone-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1422,7 +1424,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = HelTweetica_Prefix.pch;
-				INFOPLIST_FILE = "HelTweetica-Info.plist";
+				INFOPLIST_FILE = "iPhone-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",

@@ -37,15 +37,6 @@
 	BOOL favorite;
 	BOOL direct;
 	
-#ifndef TARGET_PROJECT_MAC
-	// All Stars hack:
-	UIImage *largeAvatar;
-	
-	NSURLConnection *downloadConnection;
-	NSInteger downloadStatusCode;
-	NSMutableData *downloadData;
-	BOOL isLoading;
-#endif
 }
 @property (nonatomic, retain) NSNumber *identifier;
 @property (nonatomic, retain) NSNumber *inReplyToStatusIdentifier;
@@ -64,16 +55,6 @@
 @property (assign, getter=isLocked) BOOL locked;
 @property (assign, getter=isFavorite) BOOL favorite;
 @property (assign, getter=isDirect) BOOL direct;
-
-#ifndef TARGET_PROJECT_MAC
-// All Stars hack. (This is the wrong way to download images from URLs.)
-@property (nonatomic, retain) UIImage *largeAvatar;
-@property (nonatomic, retain) NSURLConnection *downloadConnection;
-@property (nonatomic, retain) NSMutableData *downloadData;
-
-// All Stars hack:
-- (void) loadLargeAvatar;
-#endif
 
 - (void) setValue:(id)value forTwitterKey:(NSString*)key;
 

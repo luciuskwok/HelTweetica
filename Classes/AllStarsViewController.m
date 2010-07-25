@@ -16,9 +16,11 @@
 
 
 #import "AllStarsViewController.h"
-#import "TwitterMessage.h"
+#import "AllStarsLoadURLAction.h"
 #import "AllStarsMessageViewController.h"
 #import "SoundEffects.h"
+#import "TwitterMessage.h"
+#import "HelTweeticaAppDelegate.h"
 
 
 const float kPreviewTopMargin = 24.0;
@@ -28,59 +30,50 @@ const float kPreviewCellSize = 120.0;
 const float kPreviewImageInset = 8.0;
 const float kShuffleTargetAdvanceInterval = 1.0;
 const float kDurationMessageIsShown = 10.0;
+const float kAvatarSize = 256.0f;
+
 const int kMaximumNumberOfAvatarsToShow = 96;
 
 
 @interface AllStarsViewController (PrivateMethods)
-- (BOOL) screenName:(NSString*)screenName existsInArray:(NSArray*)array;
+- (NSArray*)uniqueTimeline:(NSArray*)aTimeline;
+- (void)loadProfileImages;
 - (void) showTweetAtIndex: (int) index;
 @end
 
 
 @implementation AllStarsViewController
-@synthesize timeline;
-@synthesize scrollView, allButtons;
+@synthesize timeline, scrollView, allButtons, messageView;
+
 
 - (id)initWithTimeline:(NSArray*)aTimeline {
-    if ((self = [super initWithNibName:@"AllStarsViewController" bundle:nil])) {
-		profileImages = [[NSMutableDictionary alloc] initWithCapacity:kMaximumNumberOfAvatarsToShow];
-		
-		NSMutableArray *uniqueTimeline = [NSMutableArray array];
-		
-		// Load every large avatar
-		TwitterMessage *originalMessage;
-		for (TwitterMessage *message in aTimeline) {
-			// Use original retweeted message if this is a retweet
-			originalMessage = (message.retweetedMessage != nil) ? message.retweetedMessage : message;
-			if ([self screenName:message.screenName existsInArray:uniqueTimeline] == NO) {
-				[uniqueTimeline addObject:originalMessage];
-				if (originalMessage.largeAvatar == nil) 
-					[originalMessage loadLargeAvatar];
-				if (uniqueTimeline.count >= kMaximumNumberOfAvatarsToShow) break; // Limit the number of avatars shown.
-			}
-		}
-		self.timeline = uniqueTimeline;
-		
+	if ((self = [super initWithNibName:@"AllStarsViewController" bundle:nil])) {
+		appDelegate = [[UIApplication sharedApplication] delegate];
+
 		previewImageSize = kPreviewCellSize;
 		shuffleCounter = 0;
 		shuffleIndex = 0;
-
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(largeAvatarDidLoad:) name:@"largeAvatarDidLoad" object:nil];
-		
 		shuffleTarget = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"scanner_frame.png"]];
-   }
-    return self;
+
+		self.timeline = [self uniqueTimeline:aTimeline];
+
+		profileImages = [[NSMutableDictionary alloc] initWithCapacity:kMaximumNumberOfAvatarsToShow];
+		loadURLActions = [[NSMutableSet alloc] initWithCapacity:kMaximumNumberOfAvatarsToShow];
+		[self loadProfileImages];
+	}
+	return self;
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[timeline release];
  	[scrollView release];
 	[allButtons release];
+	[shuffleTarget release];
 	
 	[profileImages release];
-	[shuffleTarget release];
+	[loadURLActions release];
+	
+	[messageView release];
 	
 	[super dealloc];
 }
@@ -92,11 +85,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark Profile images
-
-- (void)loadProfileImages {
-	
-}
+#pragma mark Timeline
 
 - (BOOL) screenName:(NSString*)screenName existsInArray:(NSArray*)array {
 	for (TwitterMessage *message in array) {
@@ -106,7 +95,41 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	return NO;
 }
 
-#pragma mark -
+- (NSArray*)uniqueTimeline:(NSArray*)aTimeline {
+	NSMutableArray *uniqueTimeline = [NSMutableArray array];
+	
+	// Load every large avatar
+	TwitterMessage *originalMessage;
+	for (TwitterMessage *message in aTimeline) {
+		// Use original retweeted message if this is a retweet
+		originalMessage = (message.retweetedMessage != nil) ? message.retweetedMessage : message;
+		if ([self screenName:message.screenName existsInArray:uniqueTimeline] == NO) {
+			[uniqueTimeline addObject:originalMessage];
+			if (uniqueTimeline.count >= kMaximumNumberOfAvatarsToShow) break; // Limit the number of avatars shown.
+		}
+	}
+	return uniqueTimeline;
+}
+
+#pragma mark Profile images
+
+- (void)loadProfileImages {
+	UIImage *image;
+	for (TwitterMessage *message in self.timeline) {
+		NSString *largeImageURLString = [message.avatar stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
+		image = [profileImages objectForKey:largeImageURLString];
+		if (image == nil) {
+			// Start an action to load the url.
+			AllStarsLoadURLAction *action = [[[AllStarsLoadURLAction alloc] init] autorelease];
+			action.delegate = self;
+			action.identifier = message.avatar;
+			[action loadURL:[NSURL URLWithString:largeImageURLString]];
+			
+			[loadURLActions addObject:action];
+			[appDelegate incrementNetworkActionCount];
+		}
+	}
+}
 
 - (UIImage*) resizeImage:(UIImage*)originalImage withSize:(CGSize)newSize {
 	CGSize originalSize = originalImage.size;
@@ -118,10 +141,6 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
 	CGContextRef context = CGBitmapContextCreate(nil, bitmapWidth, bitmapHeight, 8, bitmapWidth * 4, colorspace, kCGImageAlphaPremultipliedLast);
 	if (context != nil) {
-		// Flip the coordinate system
-		//CGContextScaleCTM(context, 1.0, -1.0);
-		//CGContextTranslateCTM(context, 0.0, -bitmapHeight);
-		
 		// Black background
 		CGRect rect = CGRectMake(0, 0, bitmapWidth, bitmapHeight);
 		CGContextSetRGBFillColor (context, 0, 0, 0, 1);
@@ -154,6 +173,38 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	return result;
 }
 
+- (void)loadURLAction:(AllStarsLoadURLAction*)action didLoadData:(NSData*)data {
+	UIImage *avatarImage = [[[UIImage alloc] initWithData:data] autorelease];
+	if (avatarImage != nil) {
+		CGSize imageSize = avatarImage.size;
+		if ((imageSize.width > kAvatarSize) || (imageSize.height > kAvatarSize)) {
+			avatarImage = [self resizeImage:avatarImage withSize:CGSizeMake(kAvatarSize, kAvatarSize)];
+		}
+		
+		// Save large avatar in dictionary.
+		[profileImages setObject:avatarImage forKey:action.identifier];
+		
+		// Update message view if necessary.
+		if ((messageView.message.avatar != nil) && ([action.identifier isEqualToString:messageView.message.avatar]))
+			messageView.imageView.image = avatarImage;
+		
+		// Set a timer to collect multiple updates into one
+		if (reloadImagesTimer == nil) {
+			reloadImagesTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(reloadImagesTimer:) userInfo:nil repeats:NO];
+		}
+	}
+	
+	[loadURLActions removeObject:action];
+	[appDelegate decrementNetworkActionCount];
+}
+
+- (void)loadURLAction:(AllStarsLoadURLAction*)action didFailWithError:(NSError*)error {
+	// TODO: Replace avatar image with a placeholder to indicate network action got an error.
+	[loadURLActions removeObject:action];
+	[appDelegate decrementNetworkActionCount];
+}
+
+			
 - (UIButton*) addNewButtonWithImage: (UIImage*) image; {
 	UIButton *button = [UIButton buttonWithType: UIButtonTypeCustom];
 	button.contentMode = UIViewContentModeScaleAspectFill;
@@ -180,30 +231,25 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	for (int index = 0; index < timeline.count; index++) {
 		pool = [[NSAutoreleasePool alloc] init];
 		TwitterMessage *message = [timeline objectAtIndex:index];
-		UIButton *button = [self addNewButtonWithImage: message.largeAvatar];
+		UIImage *avatarImage = [profileImages objectForKey:message.avatar];
+		UIButton *button = [self addNewButtonWithImage: avatarImage];
 		button.tag = index + 1;
 		[pool release];
 	}
 	[self layoutScrollImages];
 }
 
-- (void) reloadImagesWithTimer:(NSTimer*)timer {
+- (void) reloadImagesTimer:(NSTimer*)timer {
 	[self reloadImages];
 	reloadImagesTimer = nil;
 }
 
-- (void) largeAvatarDidLoad: (NSNotification*) aNotification {
-	// Set a timer to collect multiple updates into one
-	if (reloadImagesTimer == nil) {
-		reloadImagesTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(reloadImagesWithTimer:) userInfo:nil repeats:NO];
-	}
-}
 
 #pragma mark -
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    [super viewDidLoad];
+	[super viewDidLoad];
 	[self reloadImages];
 }
 
@@ -233,14 +279,15 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 }
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
+	[super viewDidUnload];
 	self.scrollView = nil;
 	self.allButtons = nil;
 }
 
 - (void) viewWillAppear: (BOOL) animated {
-    [super viewWillAppear:animated];
+	[super viewWillAppear:animated];
 	[self layoutScrollImages]; // Update layout in case a new image was added.
+	self.messageView = nil;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)o duration:(NSTimeInterval)duration {
@@ -278,8 +325,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 		controller.message = message;
 		
 		// Set the large profile image.
-		
-		controller.profileImage = nil;
+		controller.profileImage = [profileImages objectForKey:message.avatar];
 	}
 	[self presentModalViewController:controller animated:YES];
 }

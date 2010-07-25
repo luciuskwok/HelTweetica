@@ -10,8 +10,14 @@
 
 
 @implementation AllStarsLoadURLAction
-@synthesize connection, receivedData, delegate;
+@synthesize connection, receivedData, identifier, delegate;
 
+- (void)dealloc {
+	[connection release];
+	[receivedData release];
+	[identifier release];
+	[super dealloc];
+}
 
 - (void)loadURL:(NSURL*)url {
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];

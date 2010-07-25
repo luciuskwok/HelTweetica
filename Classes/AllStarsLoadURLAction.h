@@ -13,19 +13,23 @@
 @interface AllStarsLoadURLAction : NSObject {
 	NSURLConnection *connection;
 	NSMutableData *receivedData;
+	NSString *identifier;
 	NSInteger statusCode;
 	BOOL isLoading;
 	id <AllStarsLoadURLActionDelegate> delegate;
 }
-
+@property (nonatomic, retain) NSURLConnection *connection;
+@property (nonatomic, retain) NSMutableData *receivedData;
+@property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, assign) id delegate;
-
-@end
 
 - (void)loadURL:(NSURL*)url;
 
+@end
 
-@protocol AllStarsLoadURLActionDelegate
+
+
+@protocol AllStarsLoadURLActionDelegate <NSObject>
 - (void)loadURLAction:(AllStarsLoadURLAction*)action didLoadData:(NSData*)data;
 - (void)loadURLAction:(AllStarsLoadURLAction*)action didFailWithError:(NSError*)error;
 @end

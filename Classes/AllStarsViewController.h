@@ -16,15 +16,19 @@
 
 
 #import <UIKit/UIKit.h>
+@class AllStarsMessageViewController;
+@class HelTweeticaAppDelegate;
 
 
 @interface AllStarsViewController : UIViewController {
 	NSArray *timeline;
 	IBOutlet UIScrollView *scrollView;
 	NSMutableArray *allButtons;
+	UIImageView *shuffleTarget;
 	
 	NSMutableDictionary *profileImages;
 	CGFloat previewImageSize;
+	NSMutableSet *loadURLActions;
 	
 	NSTimer *reloadImagesTimer;
 	NSTimer *showRandomTweetTimer;
@@ -32,12 +36,14 @@
 	int shuffleCounter;
 	int shuffleIndex;
 	
-	UIImageView *shuffleTarget;
+	AllStarsMessageViewController *messageView;
+	HelTweeticaAppDelegate *appDelegate;
+
 }
 @property (nonatomic, retain) UIScrollView *scrollView;
 @property (nonatomic, retain) NSMutableArray *allButtons;
-
 @property (nonatomic, retain) NSArray *timeline;
+@property (nonatomic, retain) AllStarsMessageViewController *messageView;
 
 - (id)initWithTimeline:(NSArray*)aTimeline;
 

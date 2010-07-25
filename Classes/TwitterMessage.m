@@ -26,12 +26,6 @@
 @synthesize createdDate, receivedDate;
 @synthesize locked, favorite, direct;
 
-#ifndef TARGET_PROJECT_MAC
-const float kAvatarSize = 256.0f;
-@synthesize largeAvatar;
-@synthesize downloadConnection, downloadData;
-#endif
-
 
 - (void) dealloc {
 	[identifier release];
@@ -45,12 +39,6 @@ const float kAvatarSize = 256.0f;
 	[retweetedMessage release];
 	[createdDate release];
 	[receivedDate release];
-
-#ifndef TARGET_PROJECT_MAC
-	[largeAvatar release];
-	[downloadConnection release];
-	[downloadData release];
-#endif
 	
 	[super dealloc];
 }
@@ -182,114 +170,4 @@ const float kAvatarSize = 256.0f;
 	
 	// Other values are usually taken from elsewhere, for example: the user dictionary embedded in the status update in timelines.
 }
-
-#ifndef TARGET_PROJECT_MAC
-#pragma mark All Stars
-// All Stars hack. (This is the wrong way to download images from URLs.)
-
-- (void) loadLargeAvatar {
-	NSString *largeImageURLString = [self.avatar stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
-	NSURL *url = [NSURL URLWithString:largeImageURLString];
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];
-	//[request setHTTPMethod:@"GET"];
-	
-	// Create the download connection
-	//[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	self.downloadConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];
-	isLoading = YES;
-	
-}
-
-- (UIImage*) resizeImage:(UIImage*)originalImage withSize:(CGSize)newSize {
-	CGSize originalSize = originalImage.size;
-	CGFloat originalAspectRatio = originalSize.width / originalSize.height;
-	
-	CGImageRef cgImage = nil;
-	int bitmapWidth = newSize.width;
-	int bitmapHeight = newSize.height;
-	CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-	CGContextRef context = CGBitmapContextCreate(nil, bitmapWidth, bitmapHeight, 8, bitmapWidth * 4, colorspace, kCGImageAlphaPremultipliedLast);
-	if (context != nil) {
-		// Flip the coordinate system
-		//CGContextScaleCTM(context, 1.0, -1.0);
-		//CGContextTranslateCTM(context, 0.0, -bitmapHeight);
-		
-		// Black background
-		CGRect rect = CGRectMake(0, 0, bitmapWidth, bitmapHeight);
-		CGContextSetRGBFillColor (context, 0, 0, 0, 1);
-		CGContextFillRect (context, rect);
-		
-		// Resize box to maintain aspect ratio
-		if (originalAspectRatio < 1.0) {
-			rect.origin.y += (rect.size.height - rect.size.width / originalAspectRatio) * 0.5;
-			rect.size.height = rect.size.width / originalAspectRatio;
-		} else {
-			rect.origin.x += (rect.size.width - rect.size.height * originalAspectRatio) * 0.5;
-			rect.size.width = rect.size.height * originalAspectRatio;
-		}
-		
-		CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-		
-		// Draw image
-		CGContextDrawImage (context, rect, [originalImage CGImage]);
-		
-		// Get image
-		cgImage = CGBitmapContextCreateImage (context);
-		
-		// Release context
-		CGContextRelease(context);
-	}
-	CGColorSpaceRelease(colorspace);
-	
-	UIImage *result = [UIImage imageWithCGImage:cgImage];
-	CGImageRelease (cgImage);
-	return result;
-}
-
-#pragma mark NSURLConnection delegate methods
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
-		downloadStatusCode = [(NSHTTPURLResponse*) response statusCode];
-	}
-	
-	if (downloadData == nil) {
-		self.downloadData = [NSMutableData data];
-	} else {
-		NSMutableData *theData = self.downloadData;
-		[theData setLength:0];
-	}
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[self.downloadData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	if (connection != downloadConnection) return;
-	
-	self.downloadConnection = nil;
-	self.downloadData = nil;
-	isLoading = NO;
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	if (connection != downloadConnection) return;
-	
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	UIImage *avatarImage = [[[UIImage alloc] initWithData:downloadData] autorelease];
-	if (avatarImage != nil) {
-		CGSize imageSize = avatarImage.size;
-		if ((imageSize.width > kAvatarSize) || (imageSize.height > kAvatarSize)) {
-			avatarImage = [self resizeImage:avatarImage withSize:CGSizeMake(kAvatarSize, kAvatarSize)];
-		}
-		self.largeAvatar = avatarImage;
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"largeAvatarDidLoad" object:self];
-	}
-	self.downloadConnection = nil;
-	self.downloadData = nil;
-	[pool release];
-}	
-#endif
-
 @end
