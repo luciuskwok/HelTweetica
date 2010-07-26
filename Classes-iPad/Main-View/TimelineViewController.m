@@ -148,7 +148,7 @@
 }	
 
 - (void)retweet:(NSNumber*)identifier {
-	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: identifier];
 	if (message == nil) return;
 	
 	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
@@ -156,7 +156,7 @@
 	compose.delegate = self;
 	if (message != nil) {
 		// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
-		compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.userScreenName, message.content];
+		compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.userScreenName, message.text];
 		compose.originalRetweetContent = compose.messageContent;
 		compose.inReplyTo = identifier;
 	}
@@ -169,7 +169,7 @@
 	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
 	[compose loadFromUserDefaults];
 	compose.delegate = self;
-	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: identifier];
 	
 	// Insert @username in beginning of message. This preserves any other people being replied to.
 	if (message != nil) {
@@ -192,7 +192,7 @@
 	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
 	[compose loadFromUserDefaults];
 	compose.delegate = self;
-	TwitterMessage *message = [twitter statusWithIdentifier: identifier];
+	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: identifier];
 	
 	// Insert d username in beginnig of message. This preserves any other people being replied to.
 	if (message != nil) {

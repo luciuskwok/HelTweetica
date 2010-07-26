@@ -19,7 +19,7 @@
 
 #import "TwitterAccount.h"
 #import "TwitterTimeline.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 
 #import "Analyze.h"
 #import "AccountsViewController.h"

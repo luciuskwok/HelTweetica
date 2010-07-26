@@ -19,7 +19,7 @@
 #import "AllStarsLoadURLAction.h"
 #import "AllStarsMessageViewController.h"
 #import "SoundEffects.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 #import "HelTweeticaAppDelegate.h"
 
 
@@ -88,7 +88,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 #pragma mark Timeline
 
 - (BOOL) screenName:(NSString*)screenName existsInArray:(NSArray*)array {
-	for (TwitterMessage *message in array) {
+	for (TwitterStatusUpdate *message in array) {
 		if ([screenName isEqualToString: message.userScreenName])
 			return YES;
 	}
@@ -99,10 +99,12 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	NSMutableArray *uniqueTimeline = [NSMutableArray array];
 	
 	// Load every large avatar
-	TwitterMessage *originalMessage;
-	for (TwitterMessage *message in aTimeline) {
+	TwitterStatusUpdate *originalMessage;
+	for (TwitterStatusUpdate *message in aTimeline) {
 		// Use original retweeted message if this is a retweet
-		originalMessage = (message.retweetedMessage != nil) ? message.retweetedMessage : message;
+		originalMessage = message;
+		if ([message.retweetedStatusIdentifier longLongValue] > 10000) 
+			originalMessage = [appDelegate.twitter statusUpdateWithIdentifier:message.retweetedStatusIdentifier];
 		if ([self screenName:message.userScreenName existsInArray:uniqueTimeline] == NO) {
 			[uniqueTimeline addObject:originalMessage];
 			if (uniqueTimeline.count >= kMaximumNumberOfAvatarsToShow) break; // Limit the number of avatars shown.
@@ -115,7 +117,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 
 - (void)loadProfileImages {
 	UIImage *image;
-	for (TwitterMessage *message in self.timeline) {
+	for (TwitterStatusUpdate *message in self.timeline) {
 		NSString *largeImageURLString = [message.profileImageURL stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
 		image = [profileImages objectForKey:largeImageURLString];
 		if (image == nil) {
@@ -230,7 +232,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	// Add a UIButton for each image to the scroll view
 	for (int index = 0; index < timeline.count; index++) {
 		pool = [[NSAutoreleasePool alloc] init];
-		TwitterMessage *message = [timeline objectAtIndex:index];
+		TwitterStatusUpdate *message = [timeline objectAtIndex:index];
 		UIImage *avatarImage = [profileImages objectForKey:message.profileImageURL];
 		UIButton *button = [self addNewButtonWithImage: avatarImage];
 		button.tag = index + 1;
@@ -319,9 +321,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	AllStarsMessageViewController *controller = [[[AllStarsMessageViewController alloc] init] autorelease];
 	if ((index >= 0) && (index < self.timeline.count)) {
 		// Replace ampersand-escaped letters with normal letters
-		TwitterMessage *message = [self.timeline objectAtIndex:index];
-		if (message.retweetedMessage != nil) 
-			message = message.retweetedMessage;
+		TwitterStatusUpdate *message = [self.timeline objectAtIndex:index];
 		controller.message = message;
 		
 		// Set the large profile image.

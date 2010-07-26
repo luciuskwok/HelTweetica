@@ -163,13 +163,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
 	[window addSubview:[navigationController view]];
-    [window makeKeyAndVisible];
+	[window makeKeyAndVisible];
 	return YES;
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-	[twitter save];
+	[twitter saveUserDefaults];
 }
 
 - (void) incrementNetworkActionCount {

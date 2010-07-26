@@ -18,7 +18,7 @@
 #import "Analyze.h"
 #import "TwitterAccount.h"
 #import "TwitterTimeline.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 
 
 @implementation Analyze
@@ -38,7 +38,7 @@
 - (NSMutableArray*) analyzeHomeTimeline:(NSArray*)homeTimeline favorites:(NSArray*)favorites {
 	NSMutableArray *analysis = [NSMutableArray array];
 	
-	TwitterMessage *message;
+	TwitterStatusUpdate *message;
 	NSString *user;
 	BOOL favorite;
 	NSMutableDictionary *entry;

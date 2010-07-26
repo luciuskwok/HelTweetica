@@ -60,7 +60,7 @@
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
 	
 	if ([elementName isEqualToString:@"entry"]) {
-		self.currentMessage = [[[TwitterMessage alloc] init] autorelease];
+		self.currentMessage = [[[TwitterStatusUpdate alloc] init] autorelease];
 		currentMessage.direct = directMessage;
 		if (receivedTimestamp != nil)
 			currentMessage.receivedDate = receivedTimestamp;

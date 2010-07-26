@@ -16,7 +16,7 @@
 
 
 #import <UIKit/UIKit.h>
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 
 
 @interface AllStarsMessageViewController : UIViewController {
@@ -25,7 +25,7 @@
 	IBOutlet UILabel *contentLabel;
 	IBOutlet UILabel *dateLabel;
 	
-	TwitterMessage *message;
+	TwitterStatusUpdate *message;
 	UIImage *profileImage;
 }
 @property (nonatomic, retain) UIImageView *imageView;
@@ -33,7 +33,7 @@
 @property (nonatomic, retain) UILabel *contentLabel;
 @property (nonatomic, retain) UILabel *dateLabel;
 
-@property (nonatomic, retain) TwitterMessage *message;
+@property (nonatomic, retain) TwitterStatusUpdate *message;
 @property (nonatomic, retain) UIImage *profileImage;
 
 - (IBAction) close: (id) sender;

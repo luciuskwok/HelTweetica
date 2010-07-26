@@ -16,13 +16,13 @@
 
 
 #import <Foundation/Foundation.h>
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 
 
 @interface TwitterAtomParser : NSObject <NSXMLParserDelegate> {
 	NSMutableArray *tweets;
 	NSSet *interestingKeys;
-	TwitterMessage *currentMessage;
+	TwitterStatusUpdate *currentMessage;
 	NSString *currentKey;
 	NSMutableString *currentText;
 	BOOL directMessage;
@@ -30,7 +30,7 @@
 }
 
 @property (nonatomic, retain) NSMutableArray *tweets;
-@property (nonatomic, retain) TwitterMessage *currentMessage;
+@property (nonatomic, retain) TwitterStatusUpdate *currentMessage;
 @property (nonatomic, retain) NSString *currentKey;
 @property (nonatomic, retain) NSMutableString *currentText;
 @property (assign) BOOL directMessage;

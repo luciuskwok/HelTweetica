@@ -6,9 +6,7 @@
 //  Copyright 2010 Felt Tip Inc. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
 #import <sqlite3.h>
-
 #import "LKSqliteStatement.h"
 
 

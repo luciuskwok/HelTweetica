@@ -74,7 +74,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	NSMutableString *content = [NSMutableString stringWithString:message.content];
+	NSMutableString *content = [NSMutableString stringWithString:message.text];
 	[content replaceOccurrencesOfString:@"&lt;" withString:@"<" options:0 range:NSMakeRange(0, [content length])];
 	[content replaceOccurrencesOfString:@"&gt;" withString:@">" options:0 range:NSMakeRange(0, [content length])];
 	[content replaceOccurrencesOfString:@"&amp;" withString:@"&" options:0 range:NSMakeRange(0, [content length])];
