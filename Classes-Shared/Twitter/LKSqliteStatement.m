@@ -19,14 +19,27 @@
 	return self;
 }
 
+- (void)bindNullAtIndex:(int)index {
+	int error = sqlite3_bind_null (statement, index);
+	if (error != SQLITE_OK) NSLog (@"Error result from sqlite3_bind_null(): %d", error);
+}
+
 - (void)bindString:(NSString*)string atIndex:(int)index {
-	const char *s = [string cStringUsingEncoding:NSUTF8StringEncoding];
-	int error = sqlite3_bind_text(statement, index, s, -1, SQLITE_TRANSIENT);
-	if (error != SQLITE_OK) NSLog (@"Error result from sqlite3_bind_text(): %d", error);
+	if (string == nil) {
+		[self bindNullAtIndex:index];
+	} else {
+		const char *s = [string cStringUsingEncoding:NSUTF8StringEncoding];
+		int error = sqlite3_bind_text(statement, index, s, -1, SQLITE_TRANSIENT);
+		if (error != SQLITE_OK) NSLog (@"Error result from sqlite3_bind_text(): %d", error);
+	}
 }
 
 - (void)bindNumber:(NSNumber*)number atIndex:(int)index {
-	[self bindInteger:[number longLongValue] atIndex:index];
+	if (number == nil) {
+		[self bindNullAtIndex:index];
+	} else {
+		[self bindInteger:[number longLongValue] atIndex:index];
+	}
 }
 
 - (void)bindInteger:(SInt64)n atIndex:(int)index {
@@ -35,9 +48,13 @@
 }
 
 - (void)bindDate:(NSDate*)date atIndex:(int)index {
-	// Convert date to number of seconds since reference date.
-	SInt64 seconds = round ([date timeIntervalSinceReferenceDate]);
-	[self bindInteger:seconds atIndex:index];
+	if (date == nil) {
+		[self bindNullAtIndex:index];
+	} else {
+		// Convert date to number of seconds since reference date.
+		SInt64 seconds = round ([date timeIntervalSinceReferenceDate]);
+		[self bindInteger:seconds atIndex:index];
+	}
 }
 
 - (int)step {

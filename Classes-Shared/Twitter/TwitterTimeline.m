@@ -33,7 +33,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	if (self) {
 		self.messages = [NSMutableArray array];
 		self.gaps = [NSMutableArray array];
-		defaultLoadCount = 50;
+		defaultLoadCount = 100;
 	}
 	return self;
 }
@@ -42,7 +42,6 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	[messages release];
 	[gaps release];
 	[loadAction release];
-	//[twitter release];
 	[super dealloc];
 }
 

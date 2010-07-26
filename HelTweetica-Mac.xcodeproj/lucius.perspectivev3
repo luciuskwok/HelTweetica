@@ -278,14 +278,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>10</integer>
-									<integer>6</integer>
+									<integer>42</integer>
+									<integer>18</integer>
 									<integer>2</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 482}, {289, 876}}</string>
+							<string>{{0, 34}, {289, 876}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -320,7 +320,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E0564BA811FBD59D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>asm fsync  0x00007fff86675d00</string>
+								<string>LKSqliteStatement.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -328,11 +328,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E0564BA911FBD59D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>asm fsync  0x00007fff86675d00</string>
+										<string>LKSqliteStatement.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0B8357511FD808F00E7FAFD</string>
+										<string>E0F182E011FDAFB500DEDE0D</string>
 										<key>history</key>
 										<array>
 											<string>E0564F0511FBDB7F000A9753</string>
@@ -351,7 +351,6 @@
 											<string>E0D1504311FD1DEC00452E63</string>
 											<string>E0D150A311FD2EE100452E63</string>
 											<string>E023D69411FD40C000903ABB</string>
-											<string>E023D69611FD40C000903ABB</string>
 											<string>E023D6F511FD448900903ABB</string>
 											<string>E023D6F611FD448900903ABB</string>
 											<string>E023D6F711FD448900903ABB</string>
@@ -359,7 +358,6 @@
 											<string>E023D6F911FD448900903ABB</string>
 											<string>E023D6FA11FD448900903ABB</string>
 											<string>E023D6FC11FD448900903ABB</string>
-											<string>E023D6FD11FD448900903ABB</string>
 											<string>E023D6FE11FD448900903ABB</string>
 											<string>E023D70111FD448900903ABB</string>
 											<string>E023D70211FD448900903ABB</string>
@@ -393,8 +391,10 @@
 											<string>E0B8354F11FD7EBD00E7FAFD</string>
 											<string>E0B8355311FD7EC900E7FAFD</string>
 											<string>E0B8355711FD7F2500E7FAFD</string>
-											<string>E0B8356511FD7F7900E7FAFD</string>
-											<string>E0B8356611FD7F7900E7FAFD</string>
+											<string>E0F182DD11FDAFB500DEDE0D</string>
+											<string>E0F182DE11FDAFB500DEDE0D</string>
+											<string>E0F182DF11FDAFB500DEDE0D</string>
+											<string>E023D6FD11FD448900903ABB</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -517,11 +517,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E0B8351611FD78BC00E7FAFD</string>
+				<string>E0F182E111FDAFB500DEDE0D</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>E0B8351711FD78BC00E7FAFD</string>
+				<string>E0F182E211FDAFB500DEDE0D</string>
 				<string>E0564BA811FBD59D000A9753</string>
-				<string>E0B8351811FD78BC00E7FAFD</string>
+				<string>E0F182E311FDAFB500DEDE0D</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -711,8 +711,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E0B8353311FD7BDF00E7FAFD</string>
-		<string>E0B8353411FD7BDF00E7FAFD</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Mac.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
