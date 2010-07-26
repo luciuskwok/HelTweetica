@@ -18,7 +18,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface TwitterMessage : NSObject {
+@interface TwitterStatusUpdate : NSObject {
 	NSNumber *identifier;
 	NSNumber *userIdentifier;
 	NSString *userScreenName;
@@ -30,7 +30,7 @@
 	NSString *inReplyToScreenName;
 	NSString *content;
 	NSString *source;
-	TwitterMessage *retweetedMessage;
+	TwitterStatusUpdate *retweetedMessage;
 	
 	NSDate *createdDate;
 	NSDate *receivedDate;
@@ -49,7 +49,7 @@
 @property (nonatomic, retain) NSString *inReplyToScreenName;
 @property (nonatomic, retain) NSString *content;
 @property (nonatomic, retain) NSString *source;
-@property (nonatomic, retain) TwitterMessage *retweetedMessage;
+@property (nonatomic, retain) TwitterStatusUpdate *retweetedMessage;
 
 @property (nonatomic, retain) NSDate *createdDate;
 @property (nonatomic, retain) NSDate *receivedDate;

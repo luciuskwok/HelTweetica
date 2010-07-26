@@ -19,7 +19,7 @@
 
 
 @implementation TwitterUser
-@synthesize identifier, screenName, fullName, bio, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdAt, updatedAt, locked, verified;
+@synthesize identifier, screenName, fullName, bio, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdDate, updatedDate, locked, verified;
 @synthesize statuses, favorites, lists, listSubscriptions;
 
 
@@ -68,8 +68,8 @@
 	[statusesCount release];
 	[favoritesCount release];
 	
-	[createdAt release];
-	[updatedAt release];
+	[createdDate release];
+	[updatedDate release];
 	
 	[statuses release];
 	[favorites release];
@@ -152,7 +152,7 @@
 		} else if ([key isEqualToString:@"url"]) {
 			self.webURL = value;
 		} else if ([key isEqualToString:@"created_at"]) {
-			self.createdAt = [self dateWithTwitterStatusString:value];
+			self.createdDate = [self dateWithTwitterStatusString:value];
 		}
 	}
 	
@@ -170,9 +170,9 @@
 }
 
 - (BOOL) isNewerThan:(TwitterUser*)aUser {
-	if (self.updatedAt == nil) return NO;
-	if (aUser.updatedAt == nil) return YES;
-	return ([self.updatedAt compare:aUser.updatedAt] == NSOrderedDescending);
+	if (self.updatedDate == nil) return NO;
+	if (aUser.updatedDate == nil) return YES;
+	return ([self.updatedDate compare:aUser.updatedDate] == NSOrderedDescending);
 }
 
 

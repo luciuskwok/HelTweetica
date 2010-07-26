@@ -22,7 +22,7 @@
 
 #import "TwitterAccount.h"
 #import "TwitterUser.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 #import "TwitterList.h"
 
 @protocol TwitterDelegate;
@@ -39,14 +39,19 @@
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
 
-- (TwitterMessage *)statusWithIdentifier:(NSNumber *)identifier;
+- (TwitterStatusUpdate *)statusWithIdentifier:(NSNumber *)identifier;
 - (NSSet*) statusesInReplyToStatusIdentifier:(NSNumber*)identifier;
 
 - (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses;
 
+// Status Updates
+- (void)addStatusUpdates:(NSSet *)newUpdates;
+- (TwitterStatusUpdate *)statusUpdateWithIdentifier:(NSNumber *)identifier;
+
 // Users
 - (void)addUsers:(NSSet *)newUsers;
 - (TwitterUser *)userWithScreenName:(NSString *)screenName;
+- (TwitterUser *)userWithIdentifier:(NSNumber *)identifier;
 
 - (void)saveUserDefaults;
 

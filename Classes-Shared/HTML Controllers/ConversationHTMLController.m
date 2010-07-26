@@ -58,7 +58,7 @@
 
 - (void)loadMessage:(NSNumber*)messageIdentifier {
 	// Check if message is already loaded
-	TwitterMessage *message = [twitter statusWithIdentifier:messageIdentifier];
+	TwitterStatusUpdate *message = [twitter statusWithIdentifier:messageIdentifier];
 	if (message) {
 		[timeline.messages addObject:message];
 		[self loadInReplyToMessage: message];
@@ -97,14 +97,14 @@
 	
 	// Load next message in conversation.
 	if (!loadingComplete && timeline.messages.count > 0) {
-		TwitterMessage *lastMessage = [timeline.messages lastObject];
+		TwitterStatusUpdate *lastMessage = [timeline.messages lastObject];
 		[self loadInReplyToMessage: lastMessage];
 		if (webViewHasValidHTML) 
 			[self rewriteTweetArea];	
 	}
 }
 
-- (void)loadInReplyToMessage:(TwitterMessage*)message {
+- (void)loadInReplyToMessage:(TwitterStatusUpdate*)message {
 	NSNumber *identifier = message.inReplyToStatusIdentifier;
 	if (identifier == nil && message.retweetedMessage != nil)
 		identifier = message.retweetedMessage.inReplyToStatusIdentifier;
@@ -152,7 +152,7 @@
 }
 
 - (NSString *)tweetRowTemplateForRow:(int)row {
-	TwitterMessage *message = [timeline.messages objectAtIndex:row];
+	TwitterStatusUpdate *message = [timeline.messages objectAtIndex:row];
 	if ([message.identifier isEqualToNumber:selectedMessageIdentifier])
 		return highlightedTweetRowTemplate;
 	return tweetRowTemplate;

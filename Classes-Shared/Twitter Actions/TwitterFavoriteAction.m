@@ -20,7 +20,7 @@
 @synthesize message, destroy, success;
 
 
-- (id) initWithMessage:(TwitterMessage*)aMessage destroy:(BOOL)flag {
+- (id) initWithMessage:(TwitterStatusUpdate*)aMessage destroy:(BOOL)flag {
 	if (self = [super init]) {
 		self.message = aMessage;
 		destroy = flag;

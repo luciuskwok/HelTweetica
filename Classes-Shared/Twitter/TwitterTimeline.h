@@ -17,7 +17,7 @@
 #import <Foundation/Foundation.h>
 //#import "Twitter.h"
 
-@class TwitterLoadTimelineAction, TwitterAction, TwitterMessage;
+@class TwitterLoadTimelineAction, TwitterAction, TwitterStatusUpdate;
 @protocol TwitterTimelineDelegate;
 
 
@@ -42,7 +42,7 @@
 //@property (nonatomic, retain) Twitter *twitter;
 @property (assign) id delegate;
 
-- (TwitterMessage *)messageWithIdentifier:(NSNumber*)anIdentifier;
+- (TwitterStatusUpdate *)messageWithIdentifier:(NSNumber*)anIdentifier;
 - (void)removeMessageWithIdentifier:(NSNumber*)anIdentifier;
 - (void)limitTimelineLength:(int)count;
 

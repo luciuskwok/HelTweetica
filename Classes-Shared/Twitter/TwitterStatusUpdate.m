@@ -15,12 +15,12 @@
  */
 
 
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 
 
 
 
-@implementation TwitterMessage
+@implementation TwitterStatusUpdate
 @synthesize identifier, userIdentifier, userScreenName;
 @synthesize inReplyToStatusIdentifier, inReplyToUserIdentifier, inReplyToScreenName;
 @synthesize profileImageURL, content, source, retweetedMessage;

@@ -14,7 +14,7 @@
  */
 
 #import "TwitterSearchAction.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 #import "TwitterSearchJSONParser.h"
 
 

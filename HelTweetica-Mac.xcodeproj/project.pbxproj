@@ -22,7 +22,7 @@
 		E023D6DE11FD42F700903ABB /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2011FBD6A0000A9753 /* TwitterAction.m */; };
 		E023D6E711FD43BA00903ABB /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1911FBD6A0000A9753 /* TwitterSearchJSONParser.m */; };
 		E023D6E811FD43C300903ABB /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0511FBD6A0000A9753 /* OAuthClient.m */; };
-		E023D6EB11FD43D200903ABB /* TwitterMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1311FBD6A0000A9753 /* TwitterMessage.m */; };
+		E023D6EB11FD43D200903ABB /* TwitterStatusUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1311FBD6A0000A9753 /* TwitterStatusUpdate.m */; };
 		E023D6EC11FD43D200903ABB /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1111FBD6A0000A9753 /* TwitterList.m */; };
 		E023D6ED11FD43D500903ABB /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1511FBD6A0000A9753 /* TwitterMessageJSONParser.m */; };
 		E023D6EE11FD43D700903ABB /* TwitterSavedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1711FBD6A0000A9753 /* TwitterSavedSearch.m */; };
@@ -51,7 +51,7 @@
 		E0564C4F11FBD6A0000A9753 /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0B11FBD6A0000A9753 /* Twitter.m */; };
 		E0564C5011FBD6A0000A9753 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */; };
 		E0564C5211FBD6A0000A9753 /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1111FBD6A0000A9753 /* TwitterList.m */; };
-		E0564C5311FBD6A0000A9753 /* TwitterMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1311FBD6A0000A9753 /* TwitterMessage.m */; };
+		E0564C5311FBD6A0000A9753 /* TwitterStatusUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1311FBD6A0000A9753 /* TwitterStatusUpdate.m */; };
 		E0564C5411FBD6A0000A9753 /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1511FBD6A0000A9753 /* TwitterMessageJSONParser.m */; };
 		E0564C5511FBD6A0000A9753 /* TwitterSavedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1711FBD6A0000A9753 /* TwitterSavedSearch.m */; };
 		E0564C5611FBD6A0000A9753 /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1911FBD6A0000A9753 /* TwitterSearchJSONParser.m */; };
@@ -183,8 +183,8 @@
 		E0564C0F11FBD6A0000A9753 /* TwitterAtomParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAtomParser.m; sourceTree = "<group>"; };
 		E0564C1011FBD6A0000A9753 /* TwitterList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterList.h; sourceTree = "<group>"; };
 		E0564C1111FBD6A0000A9753 /* TwitterList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterList.m; sourceTree = "<group>"; };
-		E0564C1211FBD6A0000A9753 /* TwitterMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessage.h; sourceTree = "<group>"; };
-		E0564C1311FBD6A0000A9753 /* TwitterMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessage.m; sourceTree = "<group>"; };
+		E0564C1211FBD6A0000A9753 /* TwitterStatusUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterStatusUpdate.h; sourceTree = "<group>"; };
+		E0564C1311FBD6A0000A9753 /* TwitterStatusUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterStatusUpdate.m; sourceTree = "<group>"; };
 		E0564C1411FBD6A0000A9753 /* TwitterMessageJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessageJSONParser.h; sourceTree = "<group>"; };
 		E0564C1511FBD6A0000A9753 /* TwitterMessageJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessageJSONParser.m; sourceTree = "<group>"; };
 		E0564C1611FBD6A0000A9753 /* TwitterSavedSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSavedSearch.h; sourceTree = "<group>"; };
@@ -420,8 +420,8 @@
 				E0564C0F11FBD6A0000A9753 /* TwitterAtomParser.m */,
 				E0564C1011FBD6A0000A9753 /* TwitterList.h */,
 				E0564C1111FBD6A0000A9753 /* TwitterList.m */,
-				E0564C1211FBD6A0000A9753 /* TwitterMessage.h */,
-				E0564C1311FBD6A0000A9753 /* TwitterMessage.m */,
+				E0564C1211FBD6A0000A9753 /* TwitterStatusUpdate.h */,
+				E0564C1311FBD6A0000A9753 /* TwitterStatusUpdate.m */,
 				E0564C1411FBD6A0000A9753 /* TwitterMessageJSONParser.h */,
 				E0564C1511FBD6A0000A9753 /* TwitterMessageJSONParser.m */,
 				E0564C1611FBD6A0000A9753 /* TwitterSavedSearch.h */,
@@ -684,7 +684,7 @@
 				E0564C4F11FBD6A0000A9753 /* Twitter.m in Sources */,
 				E0564C5011FBD6A0000A9753 /* TwitterAccount.m in Sources */,
 				E0564C5211FBD6A0000A9753 /* TwitterList.m in Sources */,
-				E0564C5311FBD6A0000A9753 /* TwitterMessage.m in Sources */,
+				E0564C5311FBD6A0000A9753 /* TwitterStatusUpdate.m in Sources */,
 				E0564C5411FBD6A0000A9753 /* TwitterMessageJSONParser.m in Sources */,
 				E0564C5511FBD6A0000A9753 /* TwitterSavedSearch.m in Sources */,
 				E0564C5611FBD6A0000A9753 /* TwitterSearchJSONParser.m in Sources */,
@@ -724,7 +724,7 @@
 				E023D6DE11FD42F700903ABB /* TwitterAction.m in Sources */,
 				E023D6E711FD43BA00903ABB /* TwitterSearchJSONParser.m in Sources */,
 				E023D6E811FD43C300903ABB /* OAuthClient.m in Sources */,
-				E023D6EB11FD43D200903ABB /* TwitterMessage.m in Sources */,
+				E023D6EB11FD43D200903ABB /* TwitterStatusUpdate.m in Sources */,
 				E023D6EC11FD43D200903ABB /* TwitterList.m in Sources */,
 				E023D6ED11FD43D500903ABB /* TwitterMessageJSONParser.m in Sources */,
 				E023D6EE11FD43D700903ABB /* TwitterSavedSearch.m in Sources */,

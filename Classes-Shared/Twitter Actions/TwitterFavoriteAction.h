@@ -15,18 +15,18 @@
 
 #import <Foundation/Foundation.h>
 #import "TwitterAction.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 
 
 @interface TwitterFavoriteAction : TwitterAction {
-	TwitterMessage *message;
+	TwitterStatusUpdate *message;
 	BOOL destroy;
 	BOOL success;
 }
-@property (nonatomic, retain) TwitterMessage *message;
+@property (nonatomic, retain) TwitterStatusUpdate *message;
 @property (nonatomic, assign) BOOL destroy;
 @property (nonatomic, assign) BOOL success;
 
-- (id) initWithMessage:(TwitterMessage*)aMessage destroy:(BOOL)flag;
+- (id) initWithMessage:(TwitterStatusUpdate*)aMessage destroy:(BOOL)flag;
 
 @end

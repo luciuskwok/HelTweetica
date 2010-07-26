@@ -233,7 +233,7 @@
 	NSString *statusesCount = user.statusesCount ? [self formattedNumber:user.statusesCount] : @"";
 	NSString *favoritesCount = user.favoritesCount ? [self formattedNumber:user.favoritesCount] : @"";
 	
-	NSString *joinDate = user.createdAt ? [self formattedDate:user.createdAt] : @"";
+	NSString *joinDate = user.createdDate ? [self formattedDate:user.createdDate] : @"";
 	
 	NSString *protectedUser = user.locked ? @"<img src=lock.png>" : @"";
 	NSString *verifiedUser = user.verified ? @"<img src=verified.png class='user_verified'> Verified" : @"";
@@ -261,7 +261,7 @@
 	[self replaceBlock:@"Location" display:(user.location.length != 0) inTemplate:html];
 	[self replaceBlock:@"Web" display:(user.webURL.length != 0) inTemplate:html];
 	[self replaceBlock:@"Bio" display:(user.bio.length != 0) inTemplate:html];
-	[self replaceBlock:@"JoinDate" display:(user.createdAt != nil) inTemplate:html];
+	[self replaceBlock:@"JoinDate" display:(user.createdDate != nil) inTemplate:html];
 	
 	return html;
 }

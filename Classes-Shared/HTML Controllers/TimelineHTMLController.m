@@ -358,7 +358,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void) fave: (NSNumber*) messageIdentifier {
 	noInternetConnection = NO;
 	
-	TwitterMessage *message = [twitter statusWithIdentifier: messageIdentifier];
+	TwitterStatusUpdate *message = [twitter statusWithIdentifier: messageIdentifier];
 	if (message == nil) {
 		NSLog (@"Cannot find the message to fave (or unfave). id == %@", messageIdentifier);
 		return;
@@ -373,7 +373,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 }
 
 - (void)didFave:(TwitterFavoriteAction *)action {
-	TwitterMessage *message = [action message];
+	TwitterStatusUpdate *message = [action message];
 	if (action.success == NO) return;
 	BOOL isFave = !action.destroy;
 	
@@ -605,7 +605,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (NSString *)tweetRowTemplateForRow:(int)row {
 	// Highlight Mentions
 	NSString *screenName = [NSString stringWithFormat:@"@%@", account.screenName];
-	TwitterMessage *message = [timeline.messages objectAtIndex:row];
+	TwitterStatusUpdate *message = [timeline.messages objectAtIndex:row];
 	if (message.retweetedMessage)
 		message = message.retweetedMessage;
 	NSRange foundRange = [message.content rangeOfString:screenName options:NSCaseInsensitiveSearch];
@@ -616,8 +616,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 }
 
 - (NSString *)tweetRowHTMLForRow:(int)row {
-	TwitterMessage *message = [timeline.messages objectAtIndex:row];
-	TwitterMessage *retweeterMessage = nil;
+	TwitterStatusUpdate *message = [timeline.messages objectAtIndex:row];
+	TwitterStatusUpdate *retweeterMessage = nil;
 	
 	// Skip messages with invalid identifiers
 	if ([message.identifier compare:[NSNumber numberWithInt:10000]] == NSOrderedAscending) return @"";

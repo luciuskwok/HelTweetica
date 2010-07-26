@@ -10,8 +10,8 @@
 	followersCount integer, 
 	statusesCount integer, 
 	favoritesCount integer, 
-	createdAt integer, 
-	updatedAt integer, 
+	createdDate integer, 
+	updatedDate integer, 
 	locked boolean, 
 	verified boolean
 );
@@ -26,16 +26,16 @@ CREATE TABLE StatusUpdates (
 	inReplyToScreenName text,
 	text text,
 	source text,
-	retweetedMessageIdentifier integer,
-	createdAt integer,
-	receivedAt integer,
+	retweetedStatusIdentifier integer,
+	createdDate integer,
+	receivedDate integer,
 	locked boolean
 );
 
 CREATE TABLE DirectMessages (
 	identifier integer primary key,
-	createdAt integer,
-	receivedAt integer,
+	createdDate integer,
+	receivedDate integer,
 	senderIdentifier integer,
 	senderScreenName text,
 	recipientIdentifier integer,

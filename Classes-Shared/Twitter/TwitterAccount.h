@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class TwitterMessage;
+@class TwitterStatusUpdate;
 @class TwitterTimeline;
 
 

@@ -15,17 +15,17 @@
 
 #import <Foundation/Foundation.h>
 #import "LKJSONParser.h"
-@class TwitterMessage;
+@class TwitterStatusUpdate;
 
 
 @interface TwitterSearchJSONParser : NSObject <LKJSONParserDelegate> {
 	NSMutableArray *messages;
-	TwitterMessage *currentMessage;
+	TwitterStatusUpdate *currentMessage;
 	NSDate *receivedTimestamp;
 }
 
 @property (nonatomic, retain) NSMutableArray *messages;
-@property (nonatomic, retain) TwitterMessage *currentMessage;
+@property (nonatomic, retain) TwitterStatusUpdate *currentMessage;
 @property (nonatomic, retain) NSDate *receivedTimestamp;
 
 - (void) parseJSONData:(NSData*)jsonData;

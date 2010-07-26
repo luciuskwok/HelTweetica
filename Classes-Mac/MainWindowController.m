@@ -450,7 +450,7 @@
 }
 
 - (void)retweet:(NSNumber*)identifier {
-	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
+	TwitterStatusUpdate *message = [htmlController.twitter statusWithIdentifier: identifier];
 	if (message == nil) return;
 	
 	Compose* compose = [[[Compose alloc] init] autorelease];
@@ -471,7 +471,7 @@
 	Compose* compose = [[[Compose alloc] init] autorelease];
 	[compose loadFromUserDefaults];
 	compose.delegate = self;
-	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
+	TwitterStatusUpdate *message = [htmlController.twitter statusWithIdentifier: identifier];
 	
 	// Insert @username in beginning of message. This preserves any other people being replied to.
 	if (message != nil) {
@@ -494,7 +494,7 @@
 	Compose* compose = [[[Compose alloc] init] autorelease];
 	[compose loadFromUserDefaults];
 	compose.delegate = self;
-	TwitterMessage *message = [htmlController.twitter statusWithIdentifier: identifier];
+	TwitterStatusUpdate *message = [htmlController.twitter statusWithIdentifier: identifier];
 	
 	// Insert d username in beginnig of message. This preserves any other people being replied to.
 	if (message != nil) {

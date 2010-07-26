@@ -62,14 +62,14 @@
 		self.timeline.messages = messages;
 	} else {
 		// Check if last loaded message overlaps timeline
-		TwitterMessage *lastLoadedMessage = [messages lastObject];
+		TwitterStatusUpdate *lastLoadedMessage = [messages lastObject];
 		overlap = [timeline.messages containsObject:lastLoadedMessage];
 		if (overlap == NO) 
 			[timeline.gaps addObject: lastLoadedMessage];
 		
 		// Merge downloaded messages with existing messages.
 		//overlap = NO;
-		for (TwitterMessage *message in messages) {
+		for (TwitterStatusUpdate *message in messages) {
 			if ([timeline.messages containsObject:message]) {
 				//overlap = YES; 
 				

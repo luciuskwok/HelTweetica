@@ -34,8 +34,8 @@
 	NSNumber *statusesCount;
 	NSNumber *favoritesCount;
 	
-	NSDate *createdAt; // Join date
-	NSDate *updatedAt; // Creation date of status update that encapsulated this user info, or the date the info was received.
+	NSDate *createdDate; // Join date
+	NSDate *updatedDate; // Creation date of status update that encapsulated this user info, or the date the info was received.
 	
 	BOOL locked; // Protected (lock icon)
 	BOOL verified;
@@ -63,8 +63,8 @@
 @property (nonatomic, retain) NSNumber *statusesCount;
 @property (nonatomic, retain) NSNumber *favoritesCount;
 
-@property (nonatomic, retain) NSDate *createdAt;
-@property (nonatomic, retain) NSDate *updatedAt;
+@property (nonatomic, retain) NSDate *createdDate;
+@property (nonatomic, retain) NSDate *updatedDate;
 
 @property (nonatomic, assign) BOOL locked;
 @property (nonatomic, assign) BOOL verified;

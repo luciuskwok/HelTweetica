@@ -29,6 +29,6 @@
 
 - (id)initWithMessageIdentifier:(NSNumber*)anIdentifier;
 - (void)loadMessage:(NSNumber*)messageIdentifier;
-- (void)loadInReplyToMessage:(TwitterMessage*)message;
+- (void)loadInReplyToMessage:(TwitterStatusUpdate*)message;
 
 @end

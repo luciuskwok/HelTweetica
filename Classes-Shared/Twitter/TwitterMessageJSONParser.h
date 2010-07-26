@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LKJSONParser.h"
-@class TwitterMessage;
+@class TwitterStatusUpdate;
 @class TwitterUser;
 
 
@@ -26,9 +26,9 @@
 	NSMutableSet *favorites;
 	NSMutableSet *users;
 	
-	TwitterMessage *currentMessage;
+	TwitterStatusUpdate *currentMessage;
 	TwitterUser *currentUser;
-	TwitterMessage *currentRetweetedMessage;
+	TwitterStatusUpdate *currentRetweetedMessage;
 	TwitterUser *currentRetweetedUser;
 	
 	BOOL directMessage;
@@ -39,9 +39,9 @@
 @property (nonatomic, retain) NSMutableSet *favorites;
 @property (nonatomic, retain) NSMutableSet *users;
 
-@property (nonatomic, retain) TwitterMessage *currentMessage;
+@property (nonatomic, retain) TwitterStatusUpdate *currentMessage;
 @property (nonatomic, retain) TwitterUser *currentUser;
-@property (nonatomic, retain) TwitterMessage *currentRetweetedMessage;
+@property (nonatomic, retain) TwitterStatusUpdate *currentRetweetedMessage;
 @property (nonatomic, retain) TwitterUser *currentRetweetedUser;
 
 @property (assign) BOOL directMessage;

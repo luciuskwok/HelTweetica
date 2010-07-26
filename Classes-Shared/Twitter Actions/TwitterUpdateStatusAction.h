@@ -15,7 +15,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TwitterAction.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 
 
 @interface TwitterUpdateStatusAction : TwitterAction {

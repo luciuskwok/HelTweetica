@@ -103,7 +103,7 @@
 
 - (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses {
 	// For matching statuses already in the set, replace the ones in the array with those from the set, so that messages that are equal always have only one representation in memory. 
-	TwitterMessage *existingMessage, *newMessage;
+	TwitterStatusUpdate *existingMessage, *newMessage;
 	int index;
 	for (index = 0; index < newStatuses.count; index++) {
 		newMessage = [newStatuses objectAtIndex: index];
@@ -124,10 +124,10 @@
 
 #pragma mark -
 
-- (TwitterMessage*) statusWithIdentifier:(NSNumber*)identifier {
+- (TwitterStatusUpdate*) statusWithIdentifier:(NSNumber*)identifier {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
 	NSSet *filteredSet = [statuses filteredSetUsingPredicate:predicate];
-	TwitterMessage *message = [filteredSet anyObject];
+	TwitterStatusUpdate *message = [filteredSet anyObject];
 	
 	// Check for retweets
 	if (filteredSet.count == 0) {
@@ -145,15 +145,51 @@
 	return [statuses filteredSetUsingPredicate:predicate];
 }
 
+#pragma mark Status Updates
+
+- (void)addStatusUpdates:(NSSet *)newUpdates {
+	if (newUpdates.count == 0) return;
+	
+	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
+	NSString *query = @"INSERT OR REPLACE INTO StatusUpdates (identifier, userIdentifier, userScreenName, profileImageURL, inReplyToStatusIdentifier,   inReplyToUserIdentifier, inReplyToScreenName, text, source, retweetedStatusIdentifier,   createdDate, receivedDate, locked) VALUES (?, ?, ?, ?, ?,   ?, ?, ?, ?, ?,   ?, ?, ?)";
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	
+	for (TwitterStatusUpdate *status in newUpdates) {
+		// Bind variables.
+		[statement bindNumber:status.identifier atIndex:1];
+		[statement bindNumber:status.userIdentifier atIndex:2];
+		[statement bindString:status.userScreenName atIndex:3];
+		[statement bindString:status.profileImageURL atIndex:4];
+		[statement bindNumber:status.inReplyToStatusIdentifier atIndex:5];
+		
+		[statement bindNumber:status.inReplyToUserIdentifier atIndex:6];
+		[statement bindString:status.inReplyToScreenName atIndex:7];
+		[statement bindString:status.content atIndex:8];
+		[statement bindString:status.source atIndex:9];
+		//[statement bindNumber:status.retweetedStatusIdentifier atIndex:10];
+		
+		[statement bindDate:status.createdDate atIndex:11];
+		[statement bindDate:status.receivedDate atIndex:12];
+		[statement bindInteger:status.locked atIndex:13];
+		
+		// Execute and reset.
+		[statement step];
+		[statement reset];
+	}
+}
+
+- (TwitterStatusUpdate *)statusUpdateWithIdentifier:(NSNumber *)identifier {
+	TwitterStatusUpdate *status = nil;
+	return status;
+}
+
 #pragma mark Users
 
 - (void)addUsers:(NSSet *)newUsers {
 	if (newUsers.count == 0) return;
 	
 	// Insert or replace rows. Rows with the same user identifier will be replaced with the new one.
-	//NSTimeInterval startTime = [[NSDate date] timeIntervalSinceReferenceDate];
-	
-	NSString *query = @"INSERT OR REPLACE INTO users (identifier, screenName, fullName, bio, location,   profileImageURL, webURL, friendsCount, followersCount, statusesCount,   favoritesCount, createdAt, updatedAt, locked, verified) VALUES (?, ?, ?, ?, ?,   ?, ?, ?, ?, ?,   ?, ?, ?, ?, ?)";
+	NSString *query = @"INSERT OR REPLACE INTO Users (identifier, screenName, fullName, bio, location,   profileImageURL, webURL, friendsCount, followersCount, statusesCount,   favoritesCount, createdDate, updatedDate, locked, verified) VALUES (?, ?, ?, ?, ?,   ?, ?, ?, ?, ?,   ?, ?, ?, ?, ?)";
 	LKSqliteStatement *statement = [database statementWithQuery:query];
 	
 	for (TwitterUser *user in newUsers) {
@@ -171,8 +207,8 @@
 		[statement bindNumber:user.statusesCount atIndex:10];
 
 		[statement bindNumber:user.favoritesCount atIndex:11];
-		[statement bindDate:user.createdAt atIndex:12];
-		[statement bindDate:user.updatedAt atIndex:13];
+		[statement bindDate:user.createdDate atIndex:12];
+		[statement bindDate:user.updatedDate atIndex:13];
 		[statement bindInteger:user.locked atIndex:14];
 		[statement bindInteger:user.verified atIndex:15];
 
@@ -180,42 +216,51 @@
 		[statement step];
 		[statement reset];
 	}
+}
 
-	//NSTimeInterval endTime = [[NSDate date] timeIntervalSinceReferenceDate];
-	//NSLog (@"Inserted %d rows in %1.4f seconds.", newUsers.count, endTime - startTime);
+- (TwitterUser *)userWithDatabaseRow:(NSDictionary *)row {
+	TwitterUser *user = [[[TwitterUser alloc] init] autorelease];
+	
+	user.identifier = [row objectForKey:@"identifier"];
+	user.screenName = [row objectForKey:@"screenName"];
+	user.fullName = [row objectForKey:@"fullName"];
+	user.bio = [row objectForKey:@"bio"];
+	user.location = [row objectForKey:@"location"];
+	
+	user.profileImageURL = [row objectForKey:@"profileImageURL"];
+	user.webURL = [row objectForKey:@"webURL"];
+	user.friendsCount = [row objectForKey:@"friendsCount"];
+	user.followersCount = [row objectForKey:@"followersCount"];
+	user.statusesCount = [row objectForKey:@"statusesCount"];
+	
+	user.favoritesCount = [row objectForKey:@"favoritesCount"];
+	user.createdDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"createdDate"] doubleValue]];
+	user.updatedDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"updatedDate"] doubleValue]];
+	user.locked = [[row objectForKey:@"locked"] boolValue];
+	user.verified = [[row objectForKey:@"verified"] boolValue];
+	
+	return user;
 }
 
 - (TwitterUser *)userWithScreenName:(NSString *)screenName {
 	TwitterUser *user = nil;
-	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM users WHERE screenName LIKE ?"];
+	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM Users WHERE screenName LIKE ?"];
 	[statement bindString:screenName atIndex:1];
 	int status = [statement step];
 	if (status == SQLITE_ROW) { // Row has data.
-		NSDictionary *row = [statement rowData];
-
-		user = [[[TwitterUser alloc] init] autorelease];
-		
-		user.identifier = [row objectForKey:@"identifier"];
-		user.screenName = [row objectForKey:@"screenName"];
-		user.fullName = [row objectForKey:@"fullName"];
-		user.bio = [row objectForKey:@"bio"];
-		user.location = [row objectForKey:@"location"];
-		
-		user.profileImageURL = [row objectForKey:@"profileImageURL"];
-		user.webURL = [row objectForKey:@"webURL"];
-		user.friendsCount = [row objectForKey:@"friendsCount"];
-		user.followersCount = [row objectForKey:@"followersCount"];
-		user.statusesCount = [row objectForKey:@"statusesCount"];
-
-		user.favoritesCount = [row objectForKey:@"favoritesCount"];
-		user.createdAt = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"createdAt"] doubleValue]];
-		user.updatedAt = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"updatedAt"] doubleValue]];
-		user.locked = [[row objectForKey:@"locked"] boolValue];
-		user.verified = [[row objectForKey:@"verified"] boolValue];
+		user = [self userWithDatabaseRow:[statement rowData]];
 	}
-	
-	[statement reset];
+	return user;
+}
 
+- (TwitterUser *)userWithIdentifier:(NSNumber *)identifier {
+	TwitterUser *user = nil;
+	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM Users WHERE identifier == ?"];
+	[statement bindNumber:identifier atIndex:1];
+	int status = [statement step];
+	if (status == SQLITE_ROW) { // Row has data.
+		user = [self userWithDatabaseRow:[statement rowData]];
+	}
 	return user;
 }
 

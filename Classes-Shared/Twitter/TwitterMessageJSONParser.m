@@ -16,7 +16,7 @@
 
 
 #import "TwitterMessageJSONParser.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 #import "TwitterUser.h"
 
 
@@ -62,7 +62,7 @@
 	
 	// Statuses
 	if ([key isEqualToString:@"/"]) {
-		self.currentMessage = [[[TwitterMessage alloc] init] autorelease];
+		self.currentMessage = [[[TwitterStatusUpdate alloc] init] autorelease];
 		currentMessage.direct = directMessage;
 		currentMessage.receivedDate = receivedTimestamp;
 	} else if ([key isEqualToString:@"/user/"] || [key isEqualToString:@"/sender/"]) {
@@ -71,7 +71,7 @@
 	
 	// Retweets
 	if ([key isEqualToString:@"/retweeted_status/"]) {
-		self.currentRetweetedMessage = [[[TwitterMessage alloc] init] autorelease];
+		self.currentRetweetedMessage = [[[TwitterStatusUpdate alloc] init] autorelease];
 		currentRetweetedMessage.receivedDate = receivedTimestamp;
 	} else if ([key isEqualToString:@"/retweeted_status/user/"]) {
 		self.currentRetweetedUser = [[[TwitterUser alloc] init] autorelease];
@@ -86,7 +86,7 @@
 		if (currentMessage) {
 			// This line depends on the last currentUser to be left over after its dictionary is closed:
 			if (currentUser)
-				currentUser.updatedAt = currentMessage.createdDate;
+				currentUser.updatedDate = currentMessage.createdDate;
 			
 			// Add object to messages array and set currentMessage to nil so that next object doesn't affect the closed message.
 			[messages addObject: currentMessage];
@@ -99,6 +99,7 @@
 		if (currentUser) {
 			if (currentMessage) {
 				// Some fields that this app stores in the message are in the JSON stream in the embedded user's dictionary.
+				currentMessage.userIdentifier = currentUser.identifier;
 				currentMessage.userScreenName = currentUser.screenName;
 				currentMessage.profileImageURL = currentUser.profileImageURL;
 				currentMessage.locked = currentUser.locked;
@@ -116,7 +117,7 @@
 		if (currentRetweetedMessage != nil) {
 			// This line depends on the last currentRetweetedUser to be left over after its dictionary is closed:
 			if (currentRetweetedUser)
-				currentRetweetedUser.updatedAt = currentRetweetedMessage.createdDate;
+				currentRetweetedUser.updatedDate = currentRetweetedMessage.createdDate;
 			
 			// Add retweeted message to the currentMessage's retweetedMessage ivar.
 			currentMessage.retweetedMessage = currentRetweetedMessage;
@@ -129,6 +130,7 @@
 		if (currentRetweetedUser) {
 			if (currentRetweetedMessage) {
 				// Some fields that this app stores in the message are in the JSON stream in the embedded user's dictionary.
+				currentRetweetedMessage.userIdentifier = currentRetweetedUser.identifier;
 				currentRetweetedMessage.userScreenName = currentRetweetedUser.screenName;
 				currentRetweetedMessage.profileImageURL = currentRetweetedUser.profileImageURL;
 				currentRetweetedMessage.locked = currentRetweetedUser.locked;

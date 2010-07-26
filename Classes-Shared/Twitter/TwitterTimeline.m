@@ -15,7 +15,7 @@
  */
 
 #import "TwitterTimeline.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 #import "TwitterLoadTimelineAction.h"
 
 
@@ -75,8 +75,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 #pragma mark Synchronize
 
-- (TwitterMessage *)messageWithIdentifier:(NSNumber*)anIdentifier {
-	TwitterMessage *message = nil;
+- (TwitterStatusUpdate *)messageWithIdentifier:(NSNumber*)anIdentifier {
+	TwitterStatusUpdate *message = nil;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", anIdentifier];
 	NSMutableArray *filteredArray = [NSMutableArray arrayWithArray: self.messages];
 	[filteredArray filterUsingPredicate:predicate];
@@ -116,7 +116,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		
 		// Skip past retweets because account user's own RTs don't show up in the home timeline.
 		int messageIndex = 0;
-		TwitterMessage *message;
+		TwitterStatusUpdate *message;
 		while (messageIndex < messages.count) {
 			message = [messages objectAtIndex:messageIndex];
 			messageIndex++;
@@ -148,7 +148,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	[self limitTimelineLength:kMaxNumberOfMessagesInATimeline];
 	
 	// Also start an action to load RTs that the account's user has posted within the loaded timeline
-	TwitterMessage *lastMessage = nil;
+	TwitterStatusUpdate *lastMessage = nil;
 	if (action.loadedMessages.count > 1) {
 		// If any messages were loaded, load RTs that would be mixed in with these tweets.
 		lastMessage = [action.loadedMessages lastObject];
@@ -200,7 +200,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	if (action == nil) return; // No action to reload.
 	
 	if (maxIdentifier == nil && messages.count > 2) { // Load older
-		TwitterMessage *message = [messages lastObject];
+		TwitterStatusUpdate *message = [messages lastObject];
 		maxIdentifier = message.identifier;
 	}
 	

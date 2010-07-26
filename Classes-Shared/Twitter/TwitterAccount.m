@@ -17,7 +17,7 @@
 
 #import "TwitterAccount.h"
 #import "TwitterTimeline.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 #import "TwitterList.h"
 
 
@@ -116,7 +116,7 @@
 }
 
 - (void)addFavorites:(NSSet*)set {
-	for (TwitterMessage *message in set) {
+	for (TwitterStatusUpdate *message in set) {
 		if ([favorites.messages containsObject:message] == NO) 
 			[favorites.messages addObject:message];
 	}

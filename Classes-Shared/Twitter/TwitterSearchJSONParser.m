@@ -14,7 +14,7 @@
  */
 
 #import "TwitterSearchJSONParser.h"
-#import "TwitterMessage.h"
+#import "TwitterStatusUpdate.h"
 
 
 @implementation TwitterSearchJSONParser
@@ -46,7 +46,7 @@
 
 - (void) parserDidBeginDictionary:(LKJSONParser*)parser {
 	if ([parser.keyPath isEqualToString:@"/results/"]) {
-		self.currentMessage = [[[TwitterMessage alloc] init] autorelease];
+		self.currentMessage = [[[TwitterStatusUpdate alloc] init] autorelease];
 		currentMessage.receivedDate = receivedTimestamp;
 	}
 }
