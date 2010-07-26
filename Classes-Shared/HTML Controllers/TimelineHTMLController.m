@@ -635,7 +635,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	// Set up dictionary with variables to substitute
 	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
 	if (message.userScreenName)
-		[substitutions setObject:message.userScreenName forKey:@"userScreenName"];
+		[substitutions setObject:message.userScreenName forKey:@"screenName"];
 	if (message.identifier)
 		[substitutions setObject:[message.identifier stringValue] forKey:@"messageIdentifier"];
 	if (message.profileImageURL)

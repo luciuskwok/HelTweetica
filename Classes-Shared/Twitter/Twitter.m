@@ -17,14 +17,6 @@
 
 #import "Twitter.h"
 
-#import "TwitterTimeline.h"
-
-#import "TwitterFavoriteAction.h"
-#import "TwitterRetweetAction.h"
-#import "TwitterUpdateStatusAction.h"
-#import "TwitterLoadTimelineAction.h"
-#import "TwitterLoadListsAction.h"
-#import "TwitterLoadSavedSearchesAction.h"
 
 
 
@@ -46,7 +38,38 @@
 	if (self = [super init]) {
 		self.accounts = [NSMutableArray array];
 		self.statuses = [NSMutableSet set];
-		[self load];
+
+		// == User defaults ==
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+		// Remove old preferences if they exist, to free up disk space.
+		[defaults removeObjectForKey:@"twitterAccounts"];
+		[defaults removeObjectForKey:@"twitterUsers"];
+		
+		// Load account info from user defaults
+		NSData *data = [defaults objectForKey:@"allAccounts"];
+		if (data != nil)
+			self.accounts = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+		// == Sqlite 3 ==
+		// Create a new sqlite database if none exists.
+		NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
+		NSString *cachePath = [paths objectAtIndex:0];
+		NSString *cacheFile = [cachePath stringByAppendingPathComponent:@"HelTweetica Twitter Cache.db"];
+		BOOL justCreated = ![[NSFileManager defaultManager] fileExistsAtPath:cacheFile];
+		database = [[LKSqliteDatabase alloc] initWithFile:cacheFile];
+		
+		if (justCreated) {
+			// Set up tables.
+			NSError *error = nil;
+			NSString *creationPath = [[NSBundle mainBundle] pathForResource:@"CreationStatement" ofType:@"sql"];
+			NSString *creationStatement = [NSString stringWithContentsOfFile:creationPath encoding:NSUTF8StringEncoding error:&error];
+			if (creationStatement == nil) {
+				NSLog (@"Unable to load SQL statements to create tables. %@", [error localizedDescription]);
+			} else {
+				[database execute:creationStatement];
+			}
+		}
 	}
 	return self;
 }
@@ -54,6 +77,7 @@
 - (void) dealloc {
 	[accounts release];
 	[statuses release];
+	[database release];
 	[super dealloc];
 }
 
@@ -97,26 +121,6 @@
 	}
 }
 
-- (void)addUsers:(NSSet *)newUsers {
-	// Update set of users.
-	TwitterUser *member;
-	for (TwitterUser *user in newUsers) {
-		member = [self.users member:user];
-		if (member && [user isNewerThan:member]) {
-			// Copy data from old user to new user instance
-			user.statuses = member.statuses;
-			user.favorites = member.favorites;
-			user.lists = member.lists;
-			user.listSubscriptions = member.listSubscriptions;
-			
-			// Remove old user
-			[self.users removeObject:member];
-		}
-		
-		// Add new user. If user already is in self.users, this does nothing.
-		[self.users addObject: user];
-	}
-}
 
 #pragma mark -
 
@@ -141,77 +145,87 @@
 	return [statuses filteredSetUsingPredicate:predicate];
 }
 
+#pragma mark Users
+
+- (void)addUsers:(NSSet *)newUsers {
+	if (newUsers.count == 0) return;
+	
+	// Insert or replace rows. Rows with the same user identifier will be replaced with the new one.
+	//NSTimeInterval startTime = [[NSDate date] timeIntervalSinceReferenceDate];
+	
+	NSString *query = @"INSERT OR REPLACE INTO users (identifier, screenName, fullName, bio, location,   profileImageURL, webURL, friendsCount, followersCount, statusesCount,   favoritesCount, createdAt, updatedAt, locked, verified) VALUES (?, ?, ?, ?, ?,   ?, ?, ?, ?, ?,   ?, ?, ?, ?, ?)";
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	
+	for (TwitterUser *user in newUsers) {
+		// Bind variables.
+		[statement bindNumber:user.identifier atIndex:1];
+		[statement bindString:user.screenName atIndex:2];
+		[statement bindString:user.fullName atIndex:3];
+		[statement bindString:user.bio atIndex:4];
+		[statement bindString:user.location atIndex:5];
+
+		[statement bindString:user.profileImageURL atIndex:6];
+		[statement bindString:user.webURL atIndex:7];
+		[statement bindNumber:user.friendsCount atIndex:8];
+		[statement bindNumber:user.followersCount atIndex:9];
+		[statement bindNumber:user.statusesCount atIndex:10];
+
+		[statement bindNumber:user.favoritesCount atIndex:11];
+		[statement bindDate:user.createdAt atIndex:12];
+		[statement bindDate:user.updatedAt atIndex:13];
+		[statement bindInteger:user.locked atIndex:14];
+		[statement bindInteger:user.verified atIndex:15];
+
+		// Execute and reset.
+		[statement step];
+		[statement reset];
+	}
+
+	//NSTimeInterval endTime = [[NSDate date] timeIntervalSinceReferenceDate];
+	//NSLog (@"Inserted %d rows in %1.4f seconds.", newUsers.count, endTime - startTime);
+}
+
 - (TwitterUser *)userWithScreenName:(NSString *)screenName {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"screenName LIKE[cd] %@", screenName];
-	NSSet *filteredSet = [users filteredSetUsingPredicate:predicate];
-	return [filteredSet anyObject];
-}
+	TwitterUser *user = nil;
+	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM users WHERE screenName LIKE ?"];
+	[statement bindString:screenName atIndex:1];
+	int status = [statement step];
+	if (status == SQLITE_ROW) { // Row has data.
+		NSDictionary *row = [statement rowData];
 
-#pragma mark Load and Save cache to disk
+		user = [[[TwitterUser alloc] init] autorelease];
+		
+		user.identifier = [row objectForKey:@"identifier"];
+		user.screenName = [row objectForKey:@"screenName"];
+		user.fullName = [row objectForKey:@"fullName"];
+		user.bio = [row objectForKey:@"bio"];
+		user.location = [row objectForKey:@"location"];
+		
+		user.profileImageURL = [row objectForKey:@"profileImageURL"];
+		user.webURL = [row objectForKey:@"webURL"];
+		user.friendsCount = [row objectForKey:@"friendsCount"];
+		user.followersCount = [row objectForKey:@"followersCount"];
+		user.statusesCount = [row objectForKey:@"statusesCount"];
 
-/*	User data is stored in two places. The list of accounts is stored in user defaults. The status updates and user profiles are stored in the Cache folder.
- */
-
-- (NSString *)twitterCacheFilePath {
-	// Create a new sqlite database if none exists.
-	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
-	NSString *cachePath = [paths objectAtIndex:0];
-	return [cachePath stringByAppendingPathComponent:@"TwitterCache.db"];
-}
-
-- (BOOL)createTwitterCacheAtPath:(NSString *)path {
-	if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-		// Copy the existing database template from the App bundle
-		NSString *templateFile = [[NSBundle mainBundle] pathForResource:@"TwitterCacheTemplate" ofType:@"db"];
-		NSError *error = nil;
-		if ([[NSFileManager defaultManager] copyItemAtPath:templateFile toPath:path error:&error] == NO) {
-			NSLog (@"Error while creating new Twitter cache: %@", [error localizedDescription]);
-			return NO;
-		}
-	}
-	return YES;
-}
-
-- (void) load {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
-	// Remove old preferences if they exist, to free up disk space.
-	[defaults removeObjectForKey:@"twitterAccounts"];
-	[defaults removeObjectForKey:@"twitterUsers"];
-	
-	// Load account info from user defaults
-	NSData *data = [defaults objectForKey:@"allAccounts"];
-	if (data != nil)
-		self.accounts = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-	
-	// Create a new sqlite database if none exists.
-	NSString *cacheFile = [self twitterCacheFilePath];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:cacheFile] == NO) {
-		BOOL success = [self createTwitterCacheAtPath:cacheFile];
-		if (!success) return;
+		user.favoritesCount = [row objectForKey:@"favoritesCount"];
+		user.createdAt = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"createdAt"] doubleValue]];
+		user.updatedAt = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"updatedAt"] doubleValue]];
+		user.locked = [[row objectForKey:@"locked"] boolValue];
+		user.verified = [[row objectForKey:@"verified"] boolValue];
 	}
 	
-	int error;
-	error = sqlite3_open ([cacheFile cStringUsingEncoding:NSUTF8StringEncoding], &database);
-	if (error != 0) {
-		NSLog (@"Error result from sqlite3_open(): %d", error);
-		sqlite3_close (database);
-	}
+	[statement reset];
+
+	return user;
 }
 
-- (void) save {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
+#pragma mark User defaults
+
+- (void) saveUserDefaults {
 	// Save only twitter account info
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.accounts];
-	[defaults setObject:data forKey:@"allAccounts"];
-	
-	// TODO: change architecture to avoid needing to save entire database. 
-
-	// Synchronize sqlite db in preparation for quitting.
-	int error;
-	error = sqlite3_close (database);
-	if (error != 0) NSLog (@"Error result from sqlite3_close(): %d", error);
+	[[NSUserDefaults standardUserDefaults] setObject:data forKey:@"allAccounts"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

@@ -20,6 +20,8 @@
 #import "TwitterSavedSearchAction.h"
 #import "TwitterLoadTimelineAction.h"
 
+#import "HelTweeticaAppDelegate.h"
+
 
 
 @implementation SearchWindowController
@@ -32,6 +34,7 @@
 		self.query = aQuery;
 		
 		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery] autorelease];
+		controller.twitter = appDelegate.twitter;
 		controller.delegate = self;
 		self.htmlController = controller;
 	

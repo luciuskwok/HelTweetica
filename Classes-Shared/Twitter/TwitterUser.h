@@ -20,7 +20,7 @@
 
 @interface TwitterUser : NSObject {
 	
-	NSNumber *identifier; // User ID
+	NSNumber *identifier; // User ID, primary key.
 	
 	NSString *screenName;
 	NSString *fullName;
@@ -37,8 +37,8 @@
 	NSDate *createdAt; // Join date
 	NSDate *updatedAt; // Creation date of status update that encapsulated this user info, or the date the info was received.
 	
-	BOOL protectedUser; // Protected (lock icon)
-	BOOL verifiedUser;
+	BOOL locked; // Protected (lock icon)
+	BOOL verified;
 	// There is a "following" flag but it only applies to the authenticating user who requested the stream, so it depends on the account being used. There should be some way of caching the social graph of who follows whom.
 	
 	// Fields that are not saved via NSCoder
@@ -66,8 +66,8 @@
 @property (nonatomic, retain) NSDate *createdAt;
 @property (nonatomic, retain) NSDate *updatedAt;
 
-@property (nonatomic, assign) BOOL protectedUser;
-@property (nonatomic, assign) BOOL verifiedUser;
+@property (nonatomic, assign) BOOL locked;
+@property (nonatomic, assign) BOOL verified;
 
 @property (nonatomic, retain) TwitterTimeline *statuses;
 @property (nonatomic, retain) TwitterTimeline *favorites;

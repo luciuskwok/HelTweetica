@@ -101,7 +101,7 @@
 				// Some fields that this app stores in the message are in the JSON stream in the embedded user's dictionary.
 				currentMessage.userScreenName = currentUser.screenName;
 				currentMessage.profileImageURL = currentUser.profileImageURL;
-				currentMessage.locked = currentUser.protectedUser;
+				currentMessage.locked = currentUser.locked;
 			}
 			
 			// Add to users set.
@@ -131,7 +131,7 @@
 				// Some fields that this app stores in the message are in the JSON stream in the embedded user's dictionary.
 				currentRetweetedMessage.userScreenName = currentRetweetedUser.screenName;
 				currentRetweetedMessage.profileImageURL = currentRetweetedUser.profileImageURL;
-				currentRetweetedMessage.locked = currentRetweetedUser.protectedUser;
+				currentRetweetedMessage.locked = currentRetweetedUser.locked;
 			}
 			
 			// Add to users set.

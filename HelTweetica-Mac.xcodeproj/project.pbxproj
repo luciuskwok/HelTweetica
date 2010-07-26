@@ -9,6 +9,23 @@
 /* Begin PBXBuildFile section */
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E023D6C811FD41ED00903ABB /* main-test.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D14F6411FCFE6800452E63 /* main-test.m */; };
+		E023D6C911FD41F500903ABB /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0B11FBD6A0000A9753 /* Twitter.m */; };
+		E023D6CA11FD420000903ABB /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */; };
+		E023D6D011FD429800903ABB /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */; };
+		E023D6D111FD429C00903ABB /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0911FBD6A0000A9753 /* LKJSONParser.m */; };
+		E023D6D211FD429D00903ABB /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */; };
+		E023D6D311FD429E00903ABB /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D1502611FD1AD100452E63 /* LKSqliteStatement.m */; };
+		E023D6D911FD42C100903ABB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */; };
+		E023D6DC11FD42EC00903ABB /* TwitterUser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1D11FBD6A0000A9753 /* TwitterUser.m */; };
+		E023D6DD11FD42F200903ABB /* TwitterLoadTimelineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2A11FBD6A0000A9753 /* TwitterLoadTimelineAction.m */; };
+		E023D6DE11FD42F700903ABB /* TwitterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C2011FBD6A0000A9753 /* TwitterAction.m */; };
+		E023D6E711FD43BA00903ABB /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1911FBD6A0000A9753 /* TwitterSearchJSONParser.m */; };
+		E023D6E811FD43C300903ABB /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0511FBD6A0000A9753 /* OAuthClient.m */; };
+		E023D6EB11FD43D200903ABB /* TwitterMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1311FBD6A0000A9753 /* TwitterMessage.m */; };
+		E023D6EC11FD43D200903ABB /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1111FBD6A0000A9753 /* TwitterList.m */; };
+		E023D6ED11FD43D500903ABB /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1511FBD6A0000A9753 /* TwitterMessageJSONParser.m */; };
+		E023D6EE11FD43D700903ABB /* TwitterSavedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1711FBD6A0000A9753 /* TwitterSavedSearch.m */; };
 		E0564C3911FBD6A0000A9753 /* AddAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BE111FBD6A0000A9753 /* AddAccount.m */; };
 		E0564C3A11FBD6A0000A9753 /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564BE211FBD6A0000A9753 /* AddAccount.xib */; };
 		E0564C3B11FBD6A0000A9753 /* Compose.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564BE411FBD6A0000A9753 /* Compose.m */; };
@@ -94,7 +111,9 @@
 		E0564EC411FBD881000A9753 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		E0564EC511FBD888000A9753 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
 		E0D14E5911FCD4C400452E63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */; };
-		E0D14F0B11FCEE6800452E63 /* TwitterCacheTemplate.db in Resources */ = {isa = PBXBuildFile; fileRef = E0D14F0A11FCEE6800452E63 /* TwitterCacheTemplate.db */; };
+		E0D14F6911FD024A00452E63 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */; };
+		E0D1502811FD1AD100452E63 /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D1502611FD1AD100452E63 /* LKSqliteStatement.m */; };
+		E0D1509C11FD2E1400452E63 /* CreationStatement.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509B11FD2E1400452E63 /* CreationStatement.sql */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -116,6 +135,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E023D6C111FD41D600903ABB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E023D6C311FD41D600903ABB /* Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Test-Info.plist"; sourceTree = "<group>"; };
 		E0564BE011FBD6A0000A9753 /* AddAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccount.h; sourceTree = "<group>"; };
 		E0564BE111FBD6A0000A9753 /* AddAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAccount.m; sourceTree = "<group>"; };
 		E0564BE211FBD6A0000A9753 /* AddAccount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAccount.xib; sourceTree = "<group>"; };
@@ -240,7 +261,12 @@
 		E0564E0B11FBD833000A9753 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		E0564E1911FBD871000A9753 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		E0D14F0A11FCEE6800452E63 /* TwitterCacheTemplate.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TwitterCacheTemplate.db; sourceTree = "<group>"; };
+		E0D14F6411FCFE6800452E63 /* main-test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "main-test.m"; sourceTree = "<group>"; };
+		E0D14F6611FD024A00452E63 /* LKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteDatabase.h; sourceTree = "<group>"; };
+		E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteDatabase.m; sourceTree = "<group>"; };
+		E0D1502511FD1AD100452E63 /* LKSqliteStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteStatement.h; sourceTree = "<group>"; };
+		E0D1502611FD1AD100452E63 /* LKSqliteStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteStatement.m; sourceTree = "<group>"; };
+		E0D1509B11FD2E1400452E63 /* CreationStatement.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreationStatement.sql; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +283,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E023D6BF11FD41D600903ABB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E023D6D911FD42C100903ABB /* libsqlite3.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -264,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* HelTweetica.app */,
+				E023D6C111FD41D600903ABB /* Test.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -276,8 +311,10 @@
 				E0564C6611FBD6AC000A9753 /* Resources-Mac */,
 				E0564C7511FBD6AC000A9753 /* Resources-Shared */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				E0D14F6211FCFE4800452E63 /* Test */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				E023D6C311FD41D600903ABB /* Test-Info.plist */,
 			);
 			name = "HelTweetica-Spare";
 			sourceTree = "<group>";
@@ -398,6 +435,10 @@
 				E0564C0811FBD6A0000A9753 /* LKJSONParser.h */,
 				E0564C0911FBD6A0000A9753 /* LKJSONParser.m */,
 				E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */,
+				E0D14F6611FD024A00452E63 /* LKSqliteDatabase.h */,
+				E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */,
+				E0D1502511FD1AD100452E63 /* LKSqliteStatement.h */,
+				E0D1502611FD1AD100452E63 /* LKSqliteStatement.m */,
 			);
 			path = Twitter;
 			sourceTree = "<group>";
@@ -477,12 +518,20 @@
 				E0564C8711FBD6AC000A9753 /* tweet-row-highlighted-template.html */,
 				E0564C8811FBD6AC000A9753 /* tweet-row-mention-template.html */,
 				E0564C8911FBD6AC000A9753 /* tweet-row-template.html */,
-				E0D14F0A11FCEE6800452E63 /* TwitterCacheTemplate.db */,
 				E0564C8A11FBD6AC000A9753 /* user-info-template.html */,
 				E0564C8B11FBD6AC000A9753 /* user-page-template.html */,
 				E0564C8C11FBD6AC000A9753 /* verified.png */,
+				E0D1509B11FD2E1400452E63 /* CreationStatement.sql */,
 			);
 			path = "Resources-Shared";
+			sourceTree = "<group>";
+		};
+		E0D14F6211FCFE4800452E63 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				E0D14F6411FCFE6800452E63 /* main-test.m */,
+			);
+			name = Test;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -507,6 +556,23 @@
 			productReference = 8D1107320486CEB800E47090 /* HelTweetica.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E023D6C011FD41D600903ABB /* Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E023D6C611FD41D600903ABB /* Build configuration list for PBXNativeTarget "Test" */;
+			buildPhases = (
+				E023D6BD11FD41D600903ABB /* Resources */,
+				E023D6BE11FD41D600903ABB /* Sources */,
+				E023D6BF11FD41D600903ABB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Test;
+			productName = Test;
+			productReference = E023D6C111FD41D600903ABB /* Test.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -529,6 +595,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Mac */,
+				E023D6C011FD41D600903ABB /* Test */,
 			);
 		};
 /* End PBXProject section */
@@ -580,7 +647,14 @@
 				E0564CAF11FBD6AC000A9753 /* user-info-template.html in Resources */,
 				E0564CB011FBD6AC000A9753 /* user-page-template.html in Resources */,
 				E0564CB111FBD6AC000A9753 /* verified.png in Resources */,
-				E0D14F0B11FCEE6800452E63 /* TwitterCacheTemplate.db in Resources */,
+				E0D1509C11FD2E1400452E63 /* CreationStatement.sql in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E023D6BD11FD41D600903ABB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +703,31 @@
 				E0564C6311FBD6A0000A9753 /* TwitterShowFriendshipsAction.m in Sources */,
 				E0564C6411FBD6A0000A9753 /* TwitterUpdateStatusAction.m in Sources */,
 				E0564C6511FBD6A0000A9753 /* TwitterUserInfoAction.m in Sources */,
+				E0D14F6911FD024A00452E63 /* LKSqliteDatabase.m in Sources */,
+				E0D1502811FD1AD100452E63 /* LKSqliteStatement.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E023D6BE11FD41D600903ABB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E023D6C811FD41ED00903ABB /* main-test.m in Sources */,
+				E023D6C911FD41F500903ABB /* Twitter.m in Sources */,
+				E023D6CA11FD420000903ABB /* TwitterTimeline.m in Sources */,
+				E023D6D011FD429800903ABB /* TwitterAccount.m in Sources */,
+				E023D6D111FD429C00903ABB /* LKJSONParser.m in Sources */,
+				E023D6D211FD429D00903ABB /* LKSqliteDatabase.m in Sources */,
+				E023D6D311FD429E00903ABB /* LKSqliteStatement.m in Sources */,
+				E023D6DC11FD42EC00903ABB /* TwitterUser.m in Sources */,
+				E023D6DD11FD42F200903ABB /* TwitterLoadTimelineAction.m in Sources */,
+				E023D6DE11FD42F700903ABB /* TwitterAction.m in Sources */,
+				E023D6E711FD43BA00903ABB /* TwitterSearchJSONParser.m in Sources */,
+				E023D6E811FD43C300903ABB /* OAuthClient.m in Sources */,
+				E023D6EB11FD43D200903ABB /* TwitterMessage.m in Sources */,
+				E023D6EC11FD43D200903ABB /* TwitterList.m in Sources */,
+				E023D6ED11FD43D500903ABB /* TwitterMessageJSONParser.m in Sources */,
+				E023D6EE11FD43D700903ABB /* TwitterSavedSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,6 +799,62 @@
 			};
 			name = Release;
 		};
+		E023D6C411FD41D600903ABB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HelTweetica_Mac_Prefix.pch;
+				INFOPLIST_FILE = "Mac-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Test;
+			};
+			name = Debug;
+		};
+		E023D6C511FD41D600903ABB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HelTweetica_Mac_Prefix.pch;
+				INFOPLIST_FILE = "Mac-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Test;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -717,6 +872,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E023D6C611FD41D600903ABB /* Build configuration list for PBXNativeTarget "Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E023D6C411FD41D600903ABB /* Debug */,
+				E023D6C511FD41D600903ABB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

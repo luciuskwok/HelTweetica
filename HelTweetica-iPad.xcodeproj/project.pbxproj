@@ -224,7 +224,8 @@
 		E0564B8411FBD4AB000A9753 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564AEC11FBD344000A9753 /* AVFoundation.framework */; };
 		E0564ED411FBD93E000A9753 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564ED211FBD93E000A9753 /* MainWindow-iPad.xib */; };
 		E0564ED511FBD93E000A9753 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564ED311FBD93E000A9753 /* MainWindow.xib */; };
-		E0D14F0F11FCEE7700452E63 /* TwitterCacheTemplate.db in Resources */ = {isa = PBXBuildFile; fileRef = E0D14F0E11FCEE7700452E63 /* TwitterCacheTemplate.db */; };
+		E0D1509911FD2DE900452E63 /* CreationStatement.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509811FD2DE900452E63 /* CreationStatement.sql */; };
+		E0D1509A11FD2DE900452E63 /* CreationStatement.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509811FD2DE900452E63 /* CreationStatement.sql */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -395,7 +396,7 @@
 		E0564B8811FBD4AB000A9753 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0564ED211FBD93E000A9753 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		E0564ED311FBD93E000A9753 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = "Resources-iPad/MainWindow.xib"; sourceTree = "<group>"; };
-		E0D14F0E11FCEE7700452E63 /* TwitterCacheTemplate.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = TwitterCacheTemplate.db; path = "Resources-Shared/TwitterCacheTemplate.db"; sourceTree = "<group>"; };
+		E0D1509811FD2DE900452E63 /* CreationStatement.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CreationStatement.sql; path = "Resources-Shared/CreationStatement.sql"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -741,10 +742,10 @@
 				E0564AC711FBD325000A9753 /* tweet-row-highlighted-template.html */,
 				E0564AC811FBD325000A9753 /* tweet-row-mention-template.html */,
 				E0564AC911FBD325000A9753 /* tweet-row-template.html */,
-				E0D14F0E11FCEE7700452E63 /* TwitterCacheTemplate.db */,
 				E0564ACA11FBD325000A9753 /* user-info-template.html */,
 				E0564ACB11FBD325000A9753 /* user-page-template.html */,
 				E0564ACC11FBD325000A9753 /* verified.png */,
+				E0D1509811FD2DE900452E63 /* CreationStatement.sql */,
 			);
 			name = "Resources-Shared";
 			sourceTree = "<group>";
@@ -865,7 +866,7 @@
 				E0564AE311FBD325000A9753 /* verified.png in Resources */,
 				E0564ED411FBD93E000A9753 /* MainWindow-iPad.xib in Resources */,
 				E0564ED511FBD93E000A9753 /* MainWindow.xib in Resources */,
-				E0D14F0F11FCEE7700452E63 /* TwitterCacheTemplate.db in Resources */,
+				E0D1509911FD2DE900452E63 /* CreationStatement.sql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -924,6 +925,7 @@
 				E0564B4711FBD4AB000A9753 /* user-info-template.html in Resources */,
 				E0564B4811FBD4AB000A9753 /* user-page-template.html in Resources */,
 				E0564B4911FBD4AB000A9753 /* verified.png in Resources */,
+				E0D1509A11FD2DE900452E63 /* CreationStatement.sql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

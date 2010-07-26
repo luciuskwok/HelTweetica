@@ -1,5 +1,5 @@
 //
-//  Twitter.h
+//  main-test.m
 //  HelTweetica
 //
 //  Created by Lucius Kwok on 3/30/10.
@@ -14,41 +14,15 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-#import <Foundation/Foundation.h>
-
-#import <sqlite3.h>
+#import <Cocoa/Cocoa.h>
 #import "LKSqliteDatabase.h"
 
-#import "TwitterAccount.h"
-#import "TwitterUser.h"
-#import "TwitterMessage.h"
-#import "TwitterList.h"
+int main(int argc, char *argv[]) {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
-@protocol TwitterDelegate;
-
-@interface Twitter : NSObject {
-	NSMutableArray *accounts;
-	NSMutableSet *statuses;
-	LKSqliteDatabase *database;
+	// Tests
+	[LKSqliteDatabase runTests];
+	
+	[pool release];
+	return 0;
 }
-
-@property (nonatomic, retain) NSMutableArray *accounts;
-@property (nonatomic, retain) NSMutableSet *statuses;
-
-- (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
-- (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
-
-- (TwitterMessage *)statusWithIdentifier:(NSNumber *)identifier;
-- (NSSet*) statusesInReplyToStatusIdentifier:(NSNumber*)identifier;
-
-- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses;
-
-// Users
-- (void)addUsers:(NSSet *)newUsers;
-- (TwitterUser *)userWithScreenName:(NSString *)screenName;
-
-- (void)saveUserDefaults;
-
-@end
-

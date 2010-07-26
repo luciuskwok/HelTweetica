@@ -235,8 +235,8 @@
 	
 	NSString *joinDate = user.createdAt ? [self formattedDate:user.createdAt] : @"";
 	
-	NSString *protectedUser = user.protectedUser ? @"<img src=lock.png>" : @"";
-	NSString *verifiedUser = user.verifiedUser ? @"<img src=verified.png class='user_verified'> Verified" : @"";
+	NSString *protectedUser = user.locked ? @"<img src=lock.png>" : @"";
+	NSString *verifiedUser = user.verified ? @"<img src=verified.png class='user_verified'> Verified" : @"";
 	
 	// Replace
 	[html replaceOccurrencesOfString:@"{profileImageURL}" withString:profileImageURL options:0 range:NSMakeRange(0, html.length)];

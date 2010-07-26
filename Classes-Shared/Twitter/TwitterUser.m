@@ -19,7 +19,7 @@
 
 
 @implementation TwitterUser
-@synthesize identifier, screenName, fullName, bio, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdAt, updatedAt, protectedUser, verifiedUser;
+@synthesize identifier, screenName, fullName, bio, location, profileImageURL, webURL, friendsCount, followersCount, statusesCount, favoritesCount, createdAt, updatedAt, locked, verified;
 @synthesize statuses, favorites, lists, listSubscriptions;
 
 
@@ -51,61 +51,6 @@
 		return aTimeline;
 	}
 	return [[[TwitterTimeline alloc] init] autorelease];
-}
-
-- (id) initWithCoder: (NSCoder*) decoder {
-	if (self = [super init]) {
-		self.identifier = [decoder decodeObjectForKey:@"identifier"];
-		
-		self.screenName = [decoder decodeObjectForKey:@"screenName"];
-		self.fullName = [decoder decodeObjectForKey:@"fullName"];
-		self.bio = [decoder decodeObjectForKey:@"bio"];
-		self.location = [decoder decodeObjectForKey:@"location"];
-		self.profileImageURL = [decoder decodeObjectForKey:@"profileImageURL"];
-		self.webURL = [decoder decodeObjectForKey:@"webURL"];
-		
-		self.friendsCount = [decoder decodeObjectForKey:@"friendsCount"];
-		self.followersCount = [decoder decodeObjectForKey:@"followersCount"];
-		self.statusesCount = [decoder decodeObjectForKey:@"statusesCount"];
-		self.favoritesCount = [decoder decodeObjectForKey:@"favoritesCount"];
-		
-		self.createdAt = [decoder decodeObjectForKey:@"createdAt"];
-		self.updatedAt = [decoder decodeObjectForKey:@"updatedAt"];
-		
-		protectedUser = [decoder decodeBoolForKey:@"protectedUser"];
-		verifiedUser = [decoder decodeBoolForKey:@"verifiedUser"];
-		
-		self.statuses = [self decodeTimelineForKey:@"statuses" withDecoder:decoder];
-		self.favorites = [self decodeTimelineForKey:@"favorites" withDecoder:decoder];
-		self.lists = [NSMutableArray array];
-		self.listSubscriptions = [NSMutableArray array];
-	}
-	return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject: identifier forKey:@"identifier"];
-	
-	[encoder encodeObject:screenName forKey:@"screenName"];
-	[encoder encodeObject:fullName forKey:@"fullName"];
-	[encoder encodeObject:bio forKey:@"bio"];
-	[encoder encodeObject:location forKey:@"location"];
-	[encoder encodeObject:profileImageURL forKey:@"profileImageURL"];
-	[encoder encodeObject:webURL forKey:@"webURL"];
-	
-	[encoder encodeObject:friendsCount forKey:@"friendsCount"];
-	[encoder encodeObject:followersCount forKey:@"followersCount"];
-	[encoder encodeObject:statusesCount forKey:@"statusesCount"];
-	[encoder encodeObject:favoritesCount forKey:@"favoritesCount"];
-	
-	[encoder encodeObject:createdAt forKey:@"createdAt"];
-	[encoder encodeObject:updatedAt forKey:@"updatedAt"];
-	
-	[encoder encodeBool:protectedUser forKey:@"protectedUser"];
-	[encoder encodeBool:verifiedUser forKey:@"verifiedUser"];
-
-	[encoder encodeObject:statuses forKey:@"statuses"];
-	[encoder encodeObject:favorites forKey:@"favorites"];
 }
 
 - (void)dealloc {
@@ -215,9 +160,9 @@
 	if ([value isKindOfClass:[NSNumber class]]) {
 		BOOL flag = [value boolValue];
 		if ([key isEqualToString:@"protected"]) {
-			self.protectedUser = flag;
+			self.locked = flag;
 		} else if ([key isEqualToString:@"verified"]) {
-			self.verifiedUser = flag;
+			self.verified = flag;
 		}
 	}
 	

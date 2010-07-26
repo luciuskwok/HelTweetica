@@ -21,6 +21,8 @@
 #import "TwitterAccount.h"
 #import "TwitterUser.h"
 
+#import "HelTweeticaAppDelegate.h"
+
 
 @implementation UserWindowController
 @synthesize followButton, screenName;
@@ -30,10 +32,12 @@
 	self = [super initWithWindowNibName:@"UserWindow"];
 	if (self) {
 		appDelegate = [NSApp delegate];
+
 		self.screenName = aScreenName;
 		
 		// Timeline HTML Controller generates the HTML from a timeline
 		UserPageHTMLController *controller = [[[UserPageHTMLController alloc] init] autorelease];
+		controller.twitter = appDelegate.twitter;
 		controller.delegate = self;
 		self.htmlController = controller;
 	}

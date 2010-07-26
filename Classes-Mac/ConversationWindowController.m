@@ -17,6 +17,8 @@
 #import "ConversationWindowController.h"
 #import "ConversationHTMLController.h"
 
+#import "HelTweeticaAppDelegate.h"
+
 
 @implementation ConversationWindowController
 @synthesize messageIdentifier;
@@ -28,6 +30,7 @@
 		
 		// Timeline HTML Controller generates the HTML from a timeline
 		ConversationHTMLController *controller = [[[ConversationHTMLController alloc] initWithMessageIdentifier:nil] autorelease];
+		controller.twitter = appDelegate.twitter;
 		self.htmlController = controller;
 		controller.delegate = self;
 	}

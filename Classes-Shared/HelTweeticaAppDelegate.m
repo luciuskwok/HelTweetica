@@ -81,8 +81,8 @@
 	NSData *windowState = [NSKeyedArchiver archivedDataWithRootObject:windowControllers];
 	[[NSUserDefaults standardUserDefaults] setObject:windowState forKey:@"windowState"];
 
-	// Save Twitter database.
-	[twitter save];
+	// Save account settings.
+	[twitter saveUserDefaults];
 }
 
 #pragma mark Windows
