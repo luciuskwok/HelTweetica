@@ -74,8 +74,10 @@
 	// Also load all cached replies to this message
 	NSMutableSet *timelineSet = [NSMutableSet setWithArray:timeline.messages];
 	NSSet *replies = [twitter statusUpdatesInReplyToStatusIdentifier:messageIdentifier];
-	[timelineSet unionSet:replies];
-	[timeline.messages setArray: [timelineSet allObjects]];
+	if (replies) {
+		[timelineSet unionSet:replies];
+		[timeline.messages setArray: [timelineSet allObjects]];
+	}
 	
 	// Sort by date, then by identifier, descending.
 	NSSortDescriptor *createdDateDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO] autorelease];
@@ -107,7 +109,7 @@
 - (void)loadInReplyToMessage:(TwitterStatusUpdate*)message {
 	NSNumber *identifier = message.inReplyToStatusIdentifier;
 	
-	if (identifier != nil) {
+	if ([identifier longLongValue] > 10000) {
 		// Load next message
 		[self loadMessage:identifier];
 	} else {

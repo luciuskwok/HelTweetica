@@ -627,7 +627,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if ([message.identifier compare:[NSNumber numberWithInt:10000]] == NSOrderedAscending) return @"";
 	
 	// Swap retweeted message with root message
-	if (message.retweetedStatusIdentifier != nil) {
+	if ([message.retweetedStatusIdentifier longLongValue] != 0) {
 		retweeterMessage = message;
 		message = [twitter statusUpdateWithIdentifier:message.retweetedStatusIdentifier];
 	}
@@ -660,7 +660,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[substitutions setObject:retweeterMessage.userScreenName forKey:@"retweetedBy"];
 	if (isFavorite) 
 		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
-	if ([self.customTabName isEqualToString:kDirectMessagesIdentifier]) 
+	if ([self.customTabName isEqualToString:kDirectMessagesIdentifier] == NO) 
 		[substitutions setObject:@"YES" forKey:@"actions"];
 	
 	// Use scanner to replace curly-bracketed variables with values

@@ -154,6 +154,8 @@
 }
 
 - (TwitterStatusUpdate *)statusUpdateWithIdentifier:(NSNumber *)identifier {
+	if ([identifier longLongValue] == 0) return nil;
+
 	TwitterStatusUpdate *status = nil;
 	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM StatusUpdates WHERE identifier == ?"];
 	[statement bindNumber:identifier atIndex:1];
@@ -164,6 +166,8 @@
 }
 
 - (NSSet*) statusUpdatesInReplyToStatusIdentifier:(NSNumber*)identifier {
+	if ([identifier longLongValue] == 0) return nil;
+
 	NSMutableSet *resultSet = [NSMutableSet set];
 	TwitterStatusUpdate *status = nil;
 	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM StatusUpdates WHERE inReplyToStatusIdentifier == ?"];
@@ -246,6 +250,8 @@
 }
 
 - (TwitterUser *)userWithIdentifier:(NSNumber *)identifier {
+	if ([identifier longLongValue] == 0) return nil;
+	
 	TwitterUser *user = nil;
 	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM Users WHERE identifier == ?"];
 	[statement bindNumber:identifier atIndex:1];
