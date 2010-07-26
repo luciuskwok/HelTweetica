@@ -21,7 +21,7 @@
 
 
 @implementation TwitterUserInfoAction
-@synthesize userResult, latestStatus, valid;
+@synthesize userResult, latestStatus, retweetedStatus, valid;
 
 - (id)initWithScreenName:(NSString*)screenName {
 	self = [super init];
@@ -62,8 +62,8 @@
 		self.latestStatus = [[[TwitterStatusUpdate alloc] init] autorelease];
 		latestStatus.receivedDate = [NSDate date];
 	} else if ([parser.keyPath isEqualToString:@"/status/retweeted_status/"]) {
-		self.latestStatus.retweetedMessage = [[[TwitterStatusUpdate alloc] init] autorelease];
-		latestStatus.retweetedMessage.receivedDate = [NSDate date];
+		self.retweetedStatus = [[[TwitterStatusUpdate alloc] init] autorelease];
+		retweetedStatus.receivedDate = [NSDate date];
 	}
 }
 
@@ -71,8 +71,7 @@
 
 - (void) foundValue:(id)value forKeyPath:(NSString*)keyPath {
 	if ([keyPath hasPrefix:@"/status/retweeted_status"]) {
-		if (self.latestStatus) 
-			[self.latestStatus.retweetedMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
+		[self.retweetedStatus setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/status"]) {
 		[self.latestStatus setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/"]) {

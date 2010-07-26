@@ -28,15 +28,14 @@
 	NSNumber *inReplyToUserIdentifier;
 	
 	NSString *inReplyToScreenName;
-	NSString *content;
+	NSString *text;
 	NSString *source;
-	TwitterStatusUpdate *retweetedMessage;
+	NSNumber *retweetedStatusIdentifier;
 	
 	NSDate *createdDate;
 	NSDate *receivedDate;
 	
 	BOOL locked;
-	BOOL direct;	
 }
 @property (nonatomic, retain) NSNumber *identifier;
 @property (nonatomic, retain) NSNumber *userIdentifier;
@@ -47,15 +46,14 @@
 @property (nonatomic, retain) NSNumber *inReplyToUserIdentifier;
 
 @property (nonatomic, retain) NSString *inReplyToScreenName;
-@property (nonatomic, retain) NSString *content;
+@property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) NSString *source;
-@property (nonatomic, retain) TwitterStatusUpdate *retweetedMessage;
+@property (nonatomic, retain) NSNumber *retweetedStatusIdentifier;
 
 @property (nonatomic, retain) NSDate *createdDate;
 @property (nonatomic, retain) NSDate *receivedDate;
 
 @property (assign, getter=isLocked) BOOL locked;
-@property (assign, getter=isDirect) BOOL direct;
 
 - (void) setValue:(id)value forTwitterKey:(NSString*)key;
 

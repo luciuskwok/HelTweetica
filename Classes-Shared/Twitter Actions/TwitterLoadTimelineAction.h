@@ -21,6 +21,7 @@
 @interface TwitterLoadTimelineAction : TwitterAction {
 	TwitterTimeline *timeline;
 	NSArray *loadedMessages;
+	NSArray *retweetedMessages;
 	NSSet *favoriteMessages;
 	NSSet *users;
 	int newMessageCount;
@@ -28,6 +29,7 @@
 }
 @property (nonatomic, retain) TwitterTimeline *timeline;
 @property (nonatomic, retain) NSArray *loadedMessages;
+@property (nonatomic, retain) NSArray *retweetedMessages;
 @property (nonatomic, retain) NSSet *favoriteMessages;
 @property (nonatomic, retain) NSSet *users;
 @property (nonatomic, assign) int newMessageCount;

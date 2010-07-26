@@ -64,7 +64,7 @@
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
 	// Synchronize timeline with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline.messages];
+	[twitter addStatusUpdates:action.loadedMessages];
 	[twitter addUsers:action.users];
 	isLoading = NO;
 	

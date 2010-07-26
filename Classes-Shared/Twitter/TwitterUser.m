@@ -34,25 +34,6 @@
 	return self;
 }
 
-- (NSMutableArray*) mutableArrayForKey:(NSString *)key coder:(NSCoder *)decoder {
-	NSData *data = [decoder decodeObjectForKey:key];
-	NSMutableArray *array;
-	if (data && [data isKindOfClass:[NSData class]]) {
-		array = [NSMutableArray arrayWithArray: [NSKeyedUnarchiver unarchiveObjectWithData:data]];
-	} else {
-		array = [NSMutableArray array];
-	}
-	return array;
-}
-
-- (TwitterTimeline *)decodeTimelineForKey:(NSString *)key withDecoder:(NSCoder *)decoder {
-	TwitterTimeline *aTimeline = [decoder decodeObjectForKey:key];
-	if ([aTimeline isKindOfClass: [TwitterTimeline class]]) {
-		return aTimeline;
-	}
-	return [[[TwitterTimeline alloc] init] autorelease];
-}
-
 - (void)dealloc {
 	[identifier release];
 	

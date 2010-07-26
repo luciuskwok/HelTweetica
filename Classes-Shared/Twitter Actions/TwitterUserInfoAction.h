@@ -20,10 +20,12 @@
 @interface TwitterUserInfoAction : TwitterAction {
 	TwitterUser *userResult;
 	TwitterStatusUpdate *latestStatus;
+	TwitterStatusUpdate *retweetedStatus;
 	BOOL valid;
 }
 @property (nonatomic, retain) TwitterUser *userResult;
 @property (nonatomic, retain) TwitterStatusUpdate *latestStatus;
+@property (nonatomic, retain) TwitterStatusUpdate *retweetedStatus;
 @property (nonatomic, assign) BOOL valid;
 
 - (id)initWithScreenName:(NSString*)screenName;

@@ -180,9 +180,10 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
 	// Synchronize timeline with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline.messages];
-	[account addFavorites:action.favoriteMessages];
+	[twitter addStatusUpdates:action.loadedMessages];
+	[twitter addStatusUpdates:action.retweetedMessages];
 	[twitter addUsers:action.users];
+	[account addFavorites:action.favoriteMessages];
 	isLoading = NO;
 	
 	if (timeline == aTimeline) {
@@ -358,7 +359,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void) fave: (NSNumber*) messageIdentifier {
 	noInternetConnection = NO;
 	
-	TwitterStatusUpdate *message = [twitter statusWithIdentifier: messageIdentifier];
+	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: messageIdentifier];
 	if (message == nil) {
 		NSLog (@"Cannot find the message to fave (or unfave). id == %@", messageIdentifier);
 		return;
@@ -606,9 +607,12 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	// Highlight Mentions
 	NSString *screenName = [NSString stringWithFormat:@"@%@", account.screenName];
 	TwitterStatusUpdate *message = [timeline.messages objectAtIndex:row];
-	if (message.retweetedMessage)
-		message = message.retweetedMessage;
-	NSRange foundRange = [message.content rangeOfString:screenName options:NSCaseInsensitiveSearch];
+	if (message.retweetedStatusIdentifier) {
+		TwitterStatusUpdate *retweeted = [twitter statusUpdateWithIdentifier:message.retweetedStatusIdentifier];
+		if (retweeted)
+			message = retweeted;
+	}
+	NSRange foundRange = [message.text rangeOfString:screenName options:NSCaseInsensitiveSearch];
 	if (foundRange.location != NSNotFound) 
 		return tweetMentionRowTemplate;
 	
@@ -623,9 +627,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if ([message.identifier compare:[NSNumber numberWithInt:10000]] == NSOrderedAscending) return @"";
 	
 	// Swap retweeted message with root message
-	if (message.retweetedMessage != nil) {
+	if (message.retweetedStatusIdentifier != nil) {
 		retweeterMessage = message;
-		message = retweeterMessage.retweetedMessage;
+		message = [twitter statusUpdateWithIdentifier:message.retweetedStatusIdentifier];
 	}
 	
 	// Favorites
@@ -644,8 +648,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[substitutions setObject:@"<img src='retweet.png'>" forKey:@"retweetIcon"];
 	if ([message isLocked])
 		[substitutions setObject:@"<img src='lock.png'>" forKey:@"lockIcon"];
-	if (message.content)
-		[substitutions setObject:[self htmlFormattedString:message.content] forKey:@"content"];
+	if (message.text)
+		[substitutions setObject:[self htmlFormattedString:message.text] forKey:@"content"];
 	if (message.createdDate) 
 		[substitutions setObject:[self timeStringSinceNow: message.createdDate] forKey:@"createdDate"];
 	if (message.source) 
@@ -656,7 +660,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[substitutions setObject:retweeterMessage.userScreenName forKey:@"retweetedBy"];
 	if (isFavorite) 
 		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
-	if (message.direct == NO) 
+	if ([self.customTabName isEqualToString:kDirectMessagesIdentifier]) 
 		[substitutions setObject:@"YES" forKey:@"actions"];
 	
 	// Use scanner to replace curly-bracketed variables with values

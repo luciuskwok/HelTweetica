@@ -120,7 +120,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		while (messageIndex < messages.count) {
 			message = [messages objectAtIndex:messageIndex];
 			messageIndex++;
-			if (message.retweetedMessage == nil) break;
+			if (message.retweetedStatusIdentifier == nil) break;
 		}
 		// On exit, messageIndex points to the message one index after the first non-RT message.
 		

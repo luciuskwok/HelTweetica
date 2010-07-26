@@ -172,15 +172,13 @@
 		E0564C0211FBD6A0000A9753 /* UserPageHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPageHTMLController.m; sourceTree = "<group>"; };
 		E0564C0411FBD6A0000A9753 /* OAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthClient.h; sourceTree = "<group>"; };
 		E0564C0511FBD6A0000A9753 /* OAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthClient.m; sourceTree = "<group>"; };
-		E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
+		E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "(HelTweeticaConsumerToken).h"; path = "Twitter/(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
 		E0564C0811FBD6A0000A9753 /* LKJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKJSONParser.h; sourceTree = "<group>"; };
 		E0564C0911FBD6A0000A9753 /* LKJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKJSONParser.m; sourceTree = "<group>"; };
 		E0564C0A11FBD6A0000A9753 /* Twitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Twitter.h; sourceTree = "<group>"; };
 		E0564C0B11FBD6A0000A9753 /* Twitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Twitter.m; sourceTree = "<group>"; };
 		E0564C0C11FBD6A0000A9753 /* TwitterAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAccount.h; sourceTree = "<group>"; };
 		E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAccount.m; sourceTree = "<group>"; };
-		E0564C0E11FBD6A0000A9753 /* TwitterAtomParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAtomParser.h; sourceTree = "<group>"; };
-		E0564C0F11FBD6A0000A9753 /* TwitterAtomParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAtomParser.m; sourceTree = "<group>"; };
 		E0564C1011FBD6A0000A9753 /* TwitterList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterList.h; sourceTree = "<group>"; };
 		E0564C1111FBD6A0000A9753 /* TwitterList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterList.m; sourceTree = "<group>"; };
 		E0564C1211FBD6A0000A9753 /* TwitterStatusUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterStatusUpdate.h; sourceTree = "<group>"; };
@@ -373,6 +371,7 @@
 		E0564BF511FBD6A0000A9753 /* Classes-Shared */ = {
 			isa = PBXGroup;
 			children = (
+				E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */,
 				E0564BF611FBD6A0000A9753 /* HelTweeticaAppDelegate.h */,
 				E0564BF711FBD6A0000A9753 /* HelTweeticaAppDelegate.m */,
 				E0564BF811FBD6A0000A9753 /* HTML Controllers */,
@@ -416,8 +415,6 @@
 				E0564C0B11FBD6A0000A9753 /* Twitter.m */,
 				E0564C0C11FBD6A0000A9753 /* TwitterAccount.h */,
 				E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */,
-				E0564C0E11FBD6A0000A9753 /* TwitterAtomParser.h */,
-				E0564C0F11FBD6A0000A9753 /* TwitterAtomParser.m */,
 				E0564C1011FBD6A0000A9753 /* TwitterList.h */,
 				E0564C1111FBD6A0000A9753 /* TwitterList.m */,
 				E0564C1211FBD6A0000A9753 /* TwitterStatusUpdate.h */,
@@ -434,7 +431,6 @@
 				E0564C1D11FBD6A0000A9753 /* TwitterUser.m */,
 				E0564C0811FBD6A0000A9753 /* LKJSONParser.h */,
 				E0564C0911FBD6A0000A9753 /* LKJSONParser.m */,
-				E0564C0711FBD6A0000A9753 /* (HelTweeticaConsumerToken).h */,
 				E0D14F6611FD024A00452E63 /* LKSqliteDatabase.h */,
 				E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */,
 				E0D1502511FD1AD100452E63 /* LKSqliteStatement.h */,

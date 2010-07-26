@@ -39,14 +39,10 @@
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
 
-- (TwitterStatusUpdate *)statusWithIdentifier:(NSNumber *)identifier;
-- (NSSet*) statusesInReplyToStatusIdentifier:(NSNumber*)identifier;
-
-- (void)synchronizeStatusesWithArray:(NSMutableArray *)newStatuses;
-
 // Status Updates
-- (void)addStatusUpdates:(NSSet *)newUpdates;
+- (void)addStatusUpdates:(NSArray *)newUpdates;
 - (TwitterStatusUpdate *)statusUpdateWithIdentifier:(NSNumber *)identifier;
+- (NSSet*) statusUpdatesInReplyToStatusIdentifier:(NSNumber*)identifier;
 
 // Users
 - (void)addUsers:(NSSet *)newUsers;

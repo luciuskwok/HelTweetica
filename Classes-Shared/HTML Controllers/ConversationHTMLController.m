@@ -58,7 +58,7 @@
 
 - (void)loadMessage:(NSNumber*)messageIdentifier {
 	// Check if message is already loaded
-	TwitterStatusUpdate *message = [twitter statusWithIdentifier:messageIdentifier];
+	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier:messageIdentifier];
 	if (message) {
 		[timeline.messages addObject:message];
 		[self loadInReplyToMessage: message];
@@ -73,7 +73,7 @@
 	
 	// Also load all cached replies to this message
 	NSMutableSet *timelineSet = [NSMutableSet setWithArray:timeline.messages];
-	NSSet *replies = [twitter statusesInReplyToStatusIdentifier:messageIdentifier];
+	NSSet *replies = [twitter statusUpdatesInReplyToStatusIdentifier:messageIdentifier];
 	[timelineSet unionSet:replies];
 	[timeline.messages setArray: [timelineSet allObjects]];
 	
@@ -91,9 +91,9 @@
 
 - (void)didLoadMessage:(TwitterLoadTimelineAction *)action {
 	// Synchronized users and messages with Twitter cache.
-	[twitter synchronizeStatusesWithArray:action.timeline.messages];
-	[account addFavorites:action.favoriteMessages];
+	[twitter addStatusUpdates:action.loadedMessages];
 	[twitter addUsers:action.users];
+	[account addFavorites:action.favoriteMessages];
 	
 	// Load next message in conversation.
 	if (!loadingComplete && timeline.messages.count > 0) {
@@ -106,8 +106,6 @@
 
 - (void)loadInReplyToMessage:(TwitterStatusUpdate*)message {
 	NSNumber *identifier = message.inReplyToStatusIdentifier;
-	if (identifier == nil && message.retweetedMessage != nil)
-		identifier = message.retweetedMessage.inReplyToStatusIdentifier;
 	
 	if (identifier != nil) {
 		// Load next message

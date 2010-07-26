@@ -21,13 +21,14 @@
 
 
 @implementation TwitterMessageJSONParser
-@synthesize messages, favorites, users;
+@synthesize messages, retweets, favorites, users;
 @synthesize currentMessage, currentUser, currentRetweetedMessage, currentRetweetedUser;
 @synthesize directMessage, receivedTimestamp;
 
 - (id) init {
 	if (self = [super init]) {
 		messages = [[NSMutableArray alloc] init];
+		retweets = [[NSMutableArray alloc] init];
 		favorites = [[NSMutableSet alloc] init];
 		users = [[NSMutableSet alloc] init];
 	}
@@ -36,6 +37,7 @@
 
 - (void) dealloc {
 	[messages release];
+	[retweets release];
 	[favorites release];
 	[users release];
 	
@@ -63,7 +65,6 @@
 	// Statuses
 	if ([key isEqualToString:@"/"]) {
 		self.currentMessage = [[[TwitterStatusUpdate alloc] init] autorelease];
-		currentMessage.direct = directMessage;
 		currentMessage.receivedDate = receivedTimestamp;
 	} else if ([key isEqualToString:@"/user/"] || [key isEqualToString:@"/sender/"]) {
 		self.currentUser = [[[TwitterUser alloc] init] autorelease];
@@ -120,7 +121,8 @@
 				currentRetweetedUser.updatedDate = currentRetweetedMessage.createdDate;
 			
 			// Add retweeted message to the currentMessage's retweetedMessage ivar.
-			currentMessage.retweetedMessage = currentRetweetedMessage;
+			[retweets addObject:currentRetweetedMessage];
+			currentMessage.retweetedStatusIdentifier = currentRetweetedMessage.identifier;
 			self.currentRetweetedMessage = nil;
 		} else {
 			NSLog (@"Error while parsing JSON.");

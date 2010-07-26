@@ -23,9 +23,9 @@
 @implementation TwitterStatusUpdate
 @synthesize identifier, userIdentifier, userScreenName;
 @synthesize inReplyToStatusIdentifier, inReplyToUserIdentifier, inReplyToScreenName;
-@synthesize profileImageURL, content, source, retweetedMessage;
+@synthesize profileImageURL, text, source, retweetedStatusIdentifier;
 @synthesize createdDate, receivedDate;
-@synthesize locked, direct;
+@synthesize locked;
 
 
 - (void) dealloc {
@@ -35,54 +35,13 @@
 	[userScreenName release];
 	[inReplyToScreenName release];
 	[profileImageURL release];
-	[content release];
+	[text release];
 	[source release];
-	[retweetedMessage release];
+	[retweetedStatusIdentifier release];
 	[createdDate release];
 	[receivedDate release];
 	
 	[super dealloc];
-}
-
-- (id) initWithCoder: (NSCoder*) decoder {
-	if (self = [super init]) {
-		self.identifier = [decoder decodeObjectForKey:@"identifier"];
-		self.inReplyToStatusIdentifier = [decoder decodeObjectForKey:@"inReplyToStatusIdentifier"];
-		self.inReplyToUserIdentifier = [decoder decodeObjectForKey:@"inReplyToUserIdentifier"];
-		
-		self.userScreenName = [decoder decodeObjectForKey:@"username"];
-		self.inReplyToScreenName = [decoder decodeObjectForKey:@"inReplyToScreenName"];
-		self.profileImageURL = [decoder decodeObjectForKey:@"avatar"];
-		self.content = [decoder decodeObjectForKey:@"content"];
-		self.source = [decoder decodeObjectForKey:@"source"];
-		self.retweetedMessage = [decoder decodeObjectForKey:@"retweetedMessage"];
-		
-		self.createdDate = [decoder decodeObjectForKey:@"date"];
-		self.receivedDate = [decoder decodeObjectForKey:@"receivedDate"];
-		
-		locked = [decoder decodeBoolForKey:@"locked"];
-		direct = [decoder decodeBoolForKey:@"direct"];
-	}
-	return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject: identifier forKey:@"identifier"];
-	[encoder encodeObject: inReplyToStatusIdentifier forKey:@"inReplyToStatusIdentifier"];
-	[encoder encodeObject: inReplyToUserIdentifier forKey:@"inReplyToUserIdentifier"];
-
-	[encoder encodeObject:userScreenName forKey:@"username"];
-	[encoder encodeObject:inReplyToScreenName forKey:@"inReplyToScreenName"];
-	[encoder encodeObject:profileImageURL forKey:@"avatar"];
-	[encoder encodeObject:content forKey:@"content"];
-	[encoder encodeObject:source forKey:@"source"];
-	[encoder encodeObject:retweetedMessage forKey:@"retweetedMessage"];
-	
-	[encoder encodeObject:createdDate forKey:@"date"];
-	[encoder encodeObject:receivedDate forKey:@"receivedDate"];
-	
-	[encoder encodeBool:locked forKey:@"locked"];
-	[encoder encodeBool:direct forKey:@"direct"];
 }
 
 // description: for the debugger po command.
@@ -90,8 +49,8 @@
 	NSMutableString *result = [NSMutableString string];
 	if (userScreenName != nil) 
 		[result appendFormat:@"%@: ", userScreenName];
-	if (content != nil) 
-		[result appendString: content];
+	if (text != nil) 
+		[result appendString: text];
 	return result;
 }
 
@@ -147,7 +106,7 @@
 		} else if ([key isEqualToString:@"source"]) {
 			self.source = value;
 		} else if ([key isEqualToString:@"text"]) {
-			self.content = value;
+			self.text = value;
 		} else if ([key isEqualToString:@"id"]) {
 			self.identifier = [self scanInt64FromString:value];
 		} else if ([key isEqualToString:@"in_reply_to_status_id"]) {

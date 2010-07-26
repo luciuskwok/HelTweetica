@@ -112,8 +112,11 @@
 	[self startTwitterAction:action];
 }
 
-- (void)didLoadUserInfo:(id)action {
-	// TODO: set user in Twitter singleton and in this class.
+- (void)didLoadUserInfo:(TwitterUserInfoAction*)action {
+	[twitter addUsers:[NSSet setWithObject:action.userResult]];
+	[twitter addStatusUpdates:[NSArray arrayWithObjects: action.latestStatus, action.retweetedStatus, nil]];
+	self.user = action.userResult;
+	[self rewriteUserInfoArea];
 }
 
 - (void)loadFriendStatus:(NSString*)screenName {

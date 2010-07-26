@@ -18,6 +18,8 @@
 
 CREATE TABLE StatusUpdates (
 	identifier integer primary key,
+	createdDate integer,
+	receivedDate integer,
 	userIdentifier integer,
 	userScreenName text,
 	profileImageURL text,
@@ -27,8 +29,6 @@ CREATE TABLE StatusUpdates (
 	text text,
 	source text,
 	retweetedStatusIdentifier integer,
-	createdDate integer,
-	receivedDate integer,
 	locked boolean
 );
 

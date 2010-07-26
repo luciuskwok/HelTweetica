@@ -104,7 +104,7 @@
 	} else if ([parser.keyPath isEqualToString:@"/results/created_at"]) {
 		currentMessage.createdDate = [self dateWithSearchString:value];
 	} else if ([parser.keyPath isEqualToString:@"/results/text"]) {
-		currentMessage.content = value;
+		currentMessage.text = value;
 	} else if ([parser.keyPath isEqualToString:@"/results/from_user"]) { 
 		currentMessage.userScreenName = value;
 	} else if ([parser.keyPath isEqualToString:@"/results/profile_image_url"]) { 
