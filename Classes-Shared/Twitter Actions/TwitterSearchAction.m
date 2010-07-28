@@ -22,16 +22,13 @@
 @synthesize query;
 
 
-- (id)initWithQuery:(NSString *)aQuery count:(NSNumber*)count {
+- (id)initWithQuery:(NSString *)aQuery {
 	self = [super init];
 	if (self) {
 		self.query = aQuery;
 		
 		NSMutableDictionary *theParameters = [NSMutableDictionary dictionary];
 		[theParameters setObject:aQuery forKey:@"q"];
-		if (count) 
-			[theParameters setObject:count forKey:@"rpp"]; // Results per page.
-		
 		self.parameters = theParameters;
 		
 		// self.method is nil because search uses a completely different API from the rest of Twitter.

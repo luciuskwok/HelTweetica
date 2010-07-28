@@ -25,18 +25,14 @@
 	LKSqliteDatabase *database;
 	NSString *databaseTableName;
 	BOOL noOlderMessages;
-
 	TwitterLoadTimelineAction *loadAction;
-	int defaultLoadCount;
 
 	id <TwitterTimelineDelegate> delegate;
 }
 @property (nonatomic, retain) LKSqliteDatabase *database;
 @property (nonatomic, retain) NSString *databaseTableName;
 @property (assign) BOOL noOlderMessages;
-
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
-@property (assign) int defaultLoadCount;
 
 @property (assign) id delegate;
 
@@ -62,6 +58,7 @@
 - (void)didReloadRetweets:(TwitterLoadTimelineAction *)action;
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier;
 - (void)didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action;
+- (int)defaultLoadCount;
 
 @end
 

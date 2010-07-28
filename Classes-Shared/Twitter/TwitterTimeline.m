@@ -34,13 +34,12 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 
 @implementation TwitterTimeline
-@synthesize database, databaseTableName, noOlderMessages, loadAction, defaultLoadCount, delegate;
+@synthesize database, databaseTableName, noOlderMessages, loadAction, delegate;
 //@synthesize twitter;
 
 - (id)init {
 	self = [super init];
 	if (self) {
-		defaultLoadCount = 100;
 	}
 	return self;
 }
@@ -77,6 +76,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 - (void)addMessages:(NSArray*)messages updateGap:(BOOL)updateGap {
 	if (messages.count == 0) return;
+	if (database == nil)
+		NSLog(@"TwitterTimeline is missing its database connection.");
 	
 	// Check if oldest message exists in timeline.
 	id last = [messages lastObject];
@@ -89,7 +90,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	
 	for (id message in messages) {
 		// Bind variables.
-		[statement bindNumber:[last identifier] atIndex:1];
+		[statement bindNumber:[message identifier] atIndex:1];
 		[statement bindDate:[message createdDate] atIndex:2];
 		
 		int gapAfter = (updateGap && hasGap && [message isEqual:last])? 1 : 0;
@@ -113,6 +114,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 - (BOOL)containsIdentifier:(NSNumber *)identifier {
 	// SQL command to check for existence of row with matching message identifier for this timeline only.
 	if ([identifier longLongValue] == 0) return NO;
+	if (database == nil)
+		NSLog(@"TwitterTimeline is missing its database connection.");
 	
 	NSString *query = [NSString stringWithFormat:@"Select identifier from %@ where Identifier == ?", databaseTableName];
 	LKSqliteStatement *statement = [database statementWithQuery:query];
@@ -130,6 +133,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 - (NSArray *)statusUpdatesWithLimit:(int)limit {
 	// SQL command to select rows up to limit sorted by createdDate.
 	if (limit <= 0) return nil;
+	if (database == nil)
+		NSLog(@"TwitterTimeline is missing its database connection.");
 	
 	NSString *query = [NSString stringWithFormat:@"Select StatusUpdates.* from StatusUpdates inner join %@ on %@.identifier=StatusUpdates.identifier order by StatusUpdates.CreatedDate desc limit %d", databaseTableName, databaseTableName, limit];
 	LKSqliteStatement *statement = [database statementWithQuery:query];
@@ -147,6 +152,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 - (NSArray *)directMessagesWithLimit:(int)limit {
 	// SQL command to select rows up to limit sorted by createdDate.
 	if (limit <= 0) return nil;
+	if (database == nil)
+		NSLog(@"TwitterTimeline is missing its database connection.");
 	
 	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier order by DirectMessages.CreatedDate desc limit %d", databaseTableName, databaseTableName, limit];
 	LKSqliteStatement *statement = [database statementWithQuery:query];
@@ -245,8 +252,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 			[action.parameters setObject:newerThan forKey:@"since_id"];
 	}
 	
-	// Set the default load count
-	[action.parameters setObject:[NSString stringWithFormat:@"%d", defaultLoadCount] forKey:@"count"];
+	// Set the default load count. (Note that searches use rpp instead of count, so this will have no effect on search actions.) 
+	[action setCount:[self defaultLoadCount]];
 	
 	// Prepare action and start it. 
 	action.completionTarget= self;
@@ -284,7 +291,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 			[action.parameters setObject:sinceIdentifier forKey:@"since_id"];
 		if (maxIdentifier) 
 			[action.parameters setObject:maxIdentifier forKey:@"max_id"];
-		[action.parameters setObject:[NSString stringWithFormat:@"%d", defaultLoadCount] forKey:@"count"];
+		[action setCount:[self defaultLoadCount]];
 		
 		// Prepare action and start it. 
 		action.completionTarget = self;
@@ -332,6 +339,10 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	// Call delegate so it can update the UI and Twitter cache.
 	if ([delegate respondsToSelector:@selector(timeline:didLoadWithAction:)]) 
 		[delegate timeline:self didLoadWithAction:action];
+}
+
+- (int)defaultLoadCount {
+	return 100;
 }
 
 

@@ -44,8 +44,6 @@
 	NSString *customPageTitle;
 	NSString *customTabName;
 	
-	NSNumber *defaultLoadCount;
-
 	int maxTweetsShown;
 	BOOL webViewHasValidHTML;
 	BOOL isLoading;
@@ -67,8 +65,6 @@
 
 @property (nonatomic, retain) NSString *customPageTitle;
 @property (nonatomic, retain) NSString *customTabName;
-
-@property (nonatomic, retain) NSNumber *defaultLoadCount;
 
 @property (assign) BOOL webViewHasValidHTML;
 @property (assign) BOOL isLoading;

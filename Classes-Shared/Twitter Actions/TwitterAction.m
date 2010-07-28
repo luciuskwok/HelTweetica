@@ -26,7 +26,7 @@
 
 
 @implementation TwitterAction
-@synthesize consumerToken, consumerSecret, twitterMethod, parameters, connection, receivedData, statusCode, isLoading;
+@synthesize consumerToken, consumerSecret, twitterMethod, parameters, countKey, connection, receivedData, statusCode, isLoading;
 @synthesize completionTarget, completionAction, delegate;
 
 #pragma mark -
@@ -40,6 +40,7 @@
 		appDelegate = [[UIApplication sharedApplication] delegate];
 #endif
 		parameters = [[NSMutableDictionary alloc] init];
+		self.countKey = @"count";
 	}
 	return self;
 }
@@ -49,6 +50,7 @@
 	[consumerSecret release];
 	[twitterMethod release];
 	[parameters release];
+	[countKey release];
 	[connection release]; // Note that connection retains its delegate (which is self) until it is cancelled or completes.
 	[receivedData release];
 	[super dealloc];
@@ -152,6 +154,10 @@
 	[self.connection cancel];
 	isLoading = NO;
 	[appDelegate decrementNetworkActionCount];
+}
+
+- (void) setCount:(int)count {
+	[self.parameters setObject:[NSNumber numberWithInt:count] forKey:countKey];
 }
 
 #pragma mark -

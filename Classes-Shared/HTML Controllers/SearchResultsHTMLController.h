@@ -22,7 +22,7 @@
 
 }
 
-- (id)initWithQuery:(NSString*)aQuery;
+- (id)initWithQuery:(NSString*)aQuery database:(LKSqliteDatabase *)db;
 - (NSString *)htmlSafeString:(NSString *)string;
 
 @end

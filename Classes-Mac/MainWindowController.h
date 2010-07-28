@@ -22,7 +22,7 @@
 #import "LKWebView.h"
 
 
-@class Twitter, HelTweeticaAppDelegate;
+@class HelTweeticaAppDelegate;
 
 
 @interface MainWindowController : NSWindowController <AddAccountDelegate, ComposeDelegate> {

@@ -46,7 +46,7 @@
 		user = [aUser retain];
 	}
 	
-	// Set up user.
+	// Set up database connection.
 	[aUser setTimelineDatabase:twitter.database];
 }
 
@@ -63,7 +63,6 @@
 	self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
-	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 	[self loadTimeline: timeline];
 
 	// Show loading spinner or old tweets

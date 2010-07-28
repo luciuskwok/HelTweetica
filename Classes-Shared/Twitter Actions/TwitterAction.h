@@ -24,6 +24,7 @@
 	NSString *consumerSecret;
 	NSString *twitterMethod;
 	NSMutableDictionary *parameters;
+	NSString *countKey;
 
 	NSURLConnection *connection;
 	NSMutableData *receivedData;
@@ -41,6 +42,7 @@
 @property (nonatomic, retain) NSString *consumerSecret;
 @property (nonatomic, retain) NSString *twitterMethod;
 @property (nonatomic, retain) NSMutableDictionary *parameters;
+@property (nonatomic, retain) NSString *countKey;
 
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSMutableData *receivedData;
@@ -57,6 +59,9 @@
 - (void) startPostRequest;
 - (void) startGetRequest;
 - (void) cancel;
+
+// Subclasses can override setCount: if the parameter is not named "count".
+- (void)setCount:(int)count;
 
 // Subclasses should override these methods:
 - (void) parseReceivedData:(NSData*)data;

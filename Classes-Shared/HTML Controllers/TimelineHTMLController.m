@@ -16,16 +16,14 @@
 
 #import "TimelineHTMLController.h"
 
-
 #import "TwitterAction.h"
 #import "TwitterFavoriteAction.h"
 #import "TwitterRetweetAction.h"
 #import "TwitterUpdateStatusAction.h"
+#import "TwitterLoadDirectMessagesAction.h"
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterLoadListsAction.h"
 #import "TwitterLoadSavedSearchesAction.h"
-
-
 
 
 
@@ -41,7 +39,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 @implementation TimelineHTMLController
 @synthesize webView, twitter, account, timeline, messages, actions;
 @synthesize webViewHasValidHTML, isLoading, noInternetConnection, suppressNetworkErrorAlerts;
-@synthesize customPageTitle, customTabName, defaultLoadCount;
+@synthesize customPageTitle, customTabName;
 @synthesize delegate;
 
 
@@ -60,7 +58,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		// Misc
 		isLoading = YES;
 		maxTweetsShown = kDefaultMaxTweetsShown; 
-		self.defaultLoadCount = [NSNumber numberWithInt:50]; // String to pass in the count, per_page, and rpp parameters.
 		self.actions = [NSMutableArray array]; // List of currently active network connections
 		
 	}
@@ -84,8 +81,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[customPageTitle release];
 	[customTabName release];
 	
-	[defaultLoadCount release];
-	
 	[super dealloc];
 }
 
@@ -96,7 +91,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	self.timeline = account.homeTimeline;
 	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
-	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 	[self startLoadingCurrentTimeline];
 }
 
@@ -105,16 +99,14 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	self.timeline = account.mentions;
 	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
-	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 	[self startLoadingCurrentTimeline];
 }
 
 - (void)selectDirectMessageTimeline {
 	self.customTabName = kDirectMessagesIdentifier;
-	self.timeline = account.directMessages;
-	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
-	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
-	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
+	self.timeline = account.directMessagesReceived;
+	self.messages = [timeline directMessagesWithLimit:maxTweetsShown];
+	self.timeline.loadAction = [[[TwitterLoadDirectMessagesAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
 	[self startLoadingCurrentTimeline];
 }
 
@@ -190,7 +182,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	}
 }
 
-
 - (void)loadList:(TwitterList*)list {
 	TwitterTimeline *listTimeline = list.statuses;
 	
@@ -206,7 +197,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	// Create Twitter action to load list statuses into the timeline.
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
 	listTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
-	[listTimeline.loadAction.parameters setObject:defaultLoadCount forKey:@"per_page"];
+	listTimeline.loadAction.countKey = @"per_page";
 	suppressNetworkErrorAlerts = NO;
 	
 	// Load timeline
@@ -219,7 +210,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	// Notify delegate that a different timeline was selected.
 	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
 		[delegate didSelectTimeline:timeline];
-
 }
 
 #pragma mark TwitterAction

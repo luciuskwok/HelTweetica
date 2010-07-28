@@ -33,7 +33,7 @@
 		appDelegate = [NSApp delegate];
 		self.query = aQuery;
 		
-		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery] autorelease];
+		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery database:appDelegate.twitter.database] autorelease];
 		controller.twitter = appDelegate.twitter;
 		controller.delegate = self;
 		self.htmlController = controller;
@@ -110,7 +110,7 @@
 	}
 	
 	// Copy credentials from old query to new one.
-	SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery] autorelease];
+	SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery database:appDelegate.twitter.database] autorelease];
 	controller.twitter = htmlController.twitter;
 	controller.account = htmlController.account;
 	controller.delegate = self;

@@ -621,7 +621,7 @@
 		index = 0;
 	} else if (timeline == htmlController.account.mentions) {
 		index = 1;
-	} else if (timeline == htmlController.account.directMessages) {
+	} else if (timeline == htmlController.account.directMessagesReceived) {
 		index = 2;
 	} else if (timeline == htmlController.account.favorites) {
 		index = 3;
@@ -653,6 +653,5 @@
 -  (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	self.currentSheet = nil;
 }
-
 
 @end

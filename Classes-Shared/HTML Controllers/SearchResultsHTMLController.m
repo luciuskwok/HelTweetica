@@ -23,7 +23,7 @@
 
 
 // Designated initializer.
-- (id)initWithQuery:(NSString*)aQuery {
+- (id)initWithQuery:(NSString*)aQuery database:(LKSqliteDatabase *)db {
 	self = [super init];
 	if (self) {
 		self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:aQuery]];
@@ -32,14 +32,18 @@
 		
 		// Timeline
 		self.timeline = [[[TwitterTimeline alloc] init] autorelease]; // Always start with an empty array of messages for Search.
-		timeline.database = twitter.database;
+		timeline.loadAction = [[[TwitterSearchAction alloc] initWithQuery:aQuery] autorelease];
+		timeline.loadAction.countKey = @"rpp";
+
+		// Database
 		timeline.databaseTableName = [NSString stringWithFormat:@"SearchResults_%@", aQuery];
-		timeline.loadAction = [[[TwitterSearchAction alloc] initWithQuery:aQuery count:defaultLoadCount] autorelease];
+		timeline.database = db;
+		[timeline createTableIfNeeded];
+
 		[self loadTimeline:timeline];
 	}
 	return self;
 }
-
 
 #pragma mark HTML formatting
 
@@ -61,8 +65,6 @@
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
 	// Twitter cache.
 	[twitter addStatusUpdates:action.loadedMessages];
-	[twitter addStatusUpdates:action.retweetedMessages];
-	[twitter addUsers:action.users]; // Don't replace existing User info in the database.
 	
 	// Timeline
 	[aTimeline addMessages:action.loadedMessages updateGap:YES];
