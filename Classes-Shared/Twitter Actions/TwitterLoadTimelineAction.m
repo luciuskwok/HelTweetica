@@ -15,7 +15,6 @@
 
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterStatusJSONParser.h"
-#import "TwitterDirectMessageJSONParser.h"
 
 
 @implementation TwitterLoadTimelineAction
@@ -42,21 +41,13 @@
 
 - (void) parseReceivedData:(NSData*)data {
 	if (statusCode < 400) {
-		if ([twitterMethod hasPrefix:@"direct_messages"]) {
-			TwitterDirectMessageJSONParser *parser = [[[TwitterDirectMessageJSONParser alloc] init] autorelease];
-			parser.receivedTimestamp = [NSDate date];
-			[parser parseJSONData:receivedData];
-			self.users = parser.users;
-			self.loadedMessages = parser.messages;
-		} else {
-			TwitterStatusJSONParser *parser = [[[TwitterStatusJSONParser alloc] init] autorelease];
-			parser.receivedTimestamp = [NSDate date];
-			[parser parseJSONData:receivedData];
-			self.users = parser.users;
-			self.loadedMessages = parser.messages;
-			self.retweetedMessages = parser.retweets;
-			self.favoriteMessages = parser.favorites;
-		}
+		TwitterStatusJSONParser *parser = [[[TwitterStatusJSONParser alloc] init] autorelease];
+		parser.receivedTimestamp = [NSDate date];
+		[parser parseJSONData:receivedData];
+		self.users = parser.users;
+		self.loadedMessages = parser.messages;
+		self.retweetedMessages = parser.retweets;
+		self.favoriteMessages = parser.favorites;
 	}
 }
 

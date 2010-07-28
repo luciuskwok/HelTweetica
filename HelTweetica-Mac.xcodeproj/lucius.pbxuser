@@ -417,9 +417,9 @@
 	};
 	E0564BEB11FBD6A0000A9753 /* MainWindowController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {903, 11772}}";
-			sepNavSelRange = "{6120, 14}";
-			sepNavVisRange = "{5672, 905}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 11844}}";
+			sepNavSelRange = "{21695, 0}";
+			sepNavVisRange = "{21175, 932}";
 		};
 	};
 	E0564BED11FBD6A0000A9753 /* PreferencesController.h */ = {
@@ -557,23 +557,23 @@
 	};
 	E0564C0A11FBD6A0000A9753 /* Twitter.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {609, 1476}}";
-			sepNavSelRange = "{2513, 0}";
-			sepNavVisRange = "{1663, 1032}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 1314}}";
+			sepNavSelRange = "{1614, 20}";
+			sepNavVisRange = "{1810, 1107}";
 		};
 	};
 	E0564C0B11FBD6A0000A9753 /* Twitter.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {833, 5778}}";
-			sepNavSelRange = "{4434, 0}";
-			sepNavVisRange = "{5244, 950}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 5544}}";
+			sepNavSelRange = "{6841, 0}";
+			sepNavVisRange = "{2154, 1421}";
 		};
 	};
 	E0564C0C11FBD6A0000A9753 /* TwitterAccount.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {609, 1476}}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 1314}}";
 			sepNavSelRange = "{2046, 0}";
-			sepNavVisRange = "{1840, 1328}";
+			sepNavVisRange = "{1908, 1260}";
 		};
 	};
 	E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */ = {
@@ -650,15 +650,15 @@
 	E0564C1A11FBD6A0000A9753 /* TwitterTimeline.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {899, 1494}}";
-			sepNavSelRange = "{3456, 0}";
-			sepNavVisRange = "{1017, 1749}";
+			sepNavSelRange = "{2665, 49}";
+			sepNavVisRange = "{1836, 1620}";
 		};
 	};
 	E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {899, 5868}}";
-			sepNavSelRange = "{12862, 0}";
-			sepNavVisRange = "{2912, 1704}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 6264}}";
+			sepNavSelRange = "{1677, 0}";
+			sepNavVisRange = "{4489, 1238}";
 		};
 	};
 	E0564C1C11FBD6A0000A9753 /* TwitterUser.h */ = {
@@ -734,16 +734,16 @@
 	};
 	E0564C2911FBD6A0000A9753 /* TwitterLoadTimelineAction.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {903, 792}}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 792}}";
 			sepNavSelRange = "{2019, 0}";
-			sepNavVisRange = "{95, 1974}";
+			sepNavVisRange = "{299, 1775}";
 		};
 	};
 	E0564C2A11FBD6A0000A9753 /* TwitterLoadTimelineAction.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {903, 1242}}";
-			sepNavSelRange = "{1825, 0}";
-			sepNavVisRange = "{763, 1384}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 1170}}";
+			sepNavSelRange = "{2188, 289}";
+			sepNavVisRange = "{1670, 842}";
 		};
 	};
 	E0564C2B11FBD6A0000A9753 /* TwitterLoginAction.h */ = {
@@ -932,7 +932,7 @@
 		fRef = E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */;
 		name = "TwitterTimeline.m: 321";
 		rLen = 0;
-		rLoc = 12856;
+		rLoc = 13644;
 		rType = 0;
 		vrLen = 1704;
 		vrLoc = 2912;
@@ -992,7 +992,7 @@
 		fRef = E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */;
 		name = "LKSqliteDatabase.m: 124";
 		rLen = 5;
-		rLoc = 3566;
+		rLoc = 3558;
 		rType = 0;
 		vrLen = 985;
 		vrLoc = 2897;
@@ -1209,9 +1209,16 @@
 	};
 	E0A3F7D911FF78130092BD8A /* TwitterLoadDirectMessagesAction.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {609, 882}}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 738}}";
 			sepNavSelRange = "{1909, 0}";
-			sepNavVisRange = "{436, 1479}";
+			sepNavVisRange = "{158, 1757}";
+		};
+	};
+	E0A3F7DA11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {899, 792}}";
+			sepNavSelRange = "{513, 0}";
+			sepNavVisRange = "{205, 728}";
 		};
 	};
 	E0A3F7DF11FF79350092BD8A /* PBXTextBookmark */ = {
@@ -1349,7 +1356,7 @@
 		fRef = E0564C2A11FBD6A0000A9753 /* TwitterLoadTimelineAction.m */;
 		name = "TwitterLoadTimelineAction.m: 22";
 		rLen = 0;
-		rLoc = 1825;
+		rLoc = 1782;
 		rType = 0;
 		vrLen = 1384;
 		vrLoc = 763;
@@ -1409,7 +1416,7 @@
 		fRef = E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */;
 		name = "TwitterTimeline.m: 95";
 		rLen = 0;
-		rLoc = 3708;
+		rLoc = 3725;
 		rType = 0;
 		vrLen = 1107;
 		vrLoc = 3024;
@@ -1419,7 +1426,7 @@
 		fRef = E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */;
 		name = "TwitterTimeline.m: 138";
 		rLen = 0;
-		rLoc = 6024;
+		rLoc = 6031;
 		rType = 0;
 		vrLen = 1150;
 		vrLoc = 8803;
@@ -1450,16 +1457,16 @@
 	};
 	E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {966, 2790}}";
-			sepNavSelRange = "{3566, 5}";
-			sepNavVisRange = "{2897, 985}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 2898}}";
+			sepNavSelRange = "{2123, 0}";
+			sepNavVisRange = "{1406, 1198}";
 		};
 	};
 	E0D1502511FD1AD100452E63 /* LKSqliteStatement.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1164, 558}}";
+			sepNavIntBoundsRect = "{{0, 0}, {899, 591}}";
 			sepNavSelRange = "{613, 20}";
-			sepNavVisRange = "{51, 644}";
+			sepNavVisRange = "{0, 695}";
 		};
 	};
 	E0D1502611FD1AD100452E63 /* LKSqliteStatement.m */ = {

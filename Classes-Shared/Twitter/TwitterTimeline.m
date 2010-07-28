@@ -16,6 +16,7 @@
 
 #import "TwitterTimeline.h"
 #import "TwitterStatusUpdate.h"
+#import "TwitterDirectMessage.h"
 #import "TwitterLoadTimelineAction.h"
 #import "LKSqliteDatabase.h"
 
@@ -75,23 +76,23 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (void)addMessages:(NSArray*)messages updateGap:(BOOL)updateGap {
-	if (updates.count == 0) return;
+	if (messages.count == 0) return;
 	
 	// Check if oldest message exists in timeline.
-	TwitterStatusUpdate *last = [updates lastObject];
-	BOOL hasGap = ([self containsIdentifier:last.identifier] == NO);
+	id last = [messages lastObject];
+	BOOL hasGap = ([self containsIdentifier:[last identifier]] == NO);
 	
 	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
 	NSArray *allKeys = [NSArray arrayWithObjects:@"identifier", @"createdDate", @"gapAfter", nil];
 	NSString *query = [database queryWithCommand:@"Insert or replace into" table:databaseTableName keys:allKeys];
 	LKSqliteStatement *statement = [database statementWithQuery:query];
 	
-	for (TwitterStatusUpdate *status in updates) {
+	for (id message in messages) {
 		// Bind variables.
-		[statement bindNumber:status.identifier atIndex:1];
-		[statement bindDate:status.createdDate atIndex:2];
+		[statement bindNumber:[last identifier] atIndex:1];
+		[statement bindDate:[message createdDate] atIndex:2];
 		
-		int gapAfter = (updateGap && hasGap && [status isEqual:last])? 1 : 0;
+		int gapAfter = (updateGap && hasGap && [message isEqual:last])? 1 : 0;
 		[statement bindInteger:gapAfter atIndex:3];
 		
 		// Execute and reset.
@@ -141,6 +142,23 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	}
 	
 	return statuses;
+}
+
+- (NSArray *)directMessagesWithLimit:(int)limit {
+	// SQL command to select rows up to limit sorted by createdDate.
+	if (limit <= 0) return nil;
+	
+	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier order by DirectMessages.CreatedDate desc limit %d", databaseTableName, databaseTableName, limit];
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	NSMutableArray *messages = [NSMutableArray arrayWithCapacity:limit];
+	TwitterDirectMessage *message;
+	
+	while ([statement step] == SQLITE_ROW) { // Row has data.
+		message = [[[TwitterDirectMessage alloc] initWithDictionary:[statement rowData]] autorelease];
+		[messages addObject:message];
+	}
+	
+	return messages;
 }
 
 - (BOOL)hasGapAfter:(NSNumber *)identifier {

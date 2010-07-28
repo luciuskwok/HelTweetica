@@ -68,10 +68,8 @@
 - (int)execute:(NSString*)aQuery {
 	char *errorMessage = nil;
 	int error = sqlite3_exec (database, [aQuery cStringUsingEncoding:NSUTF8StringEncoding], nil, nil, &errorMessage);
-	if (error != SQLITE_OK) {
+	if (error != SQLITE_OK)
 		NSLog (@"Error result from sqlite3_exec(): %d: %s", error, errorMessage);
-		
-	}
 	if (errorMessage != nil)
 		sqlite3_free(errorMessage);
 	return error;
