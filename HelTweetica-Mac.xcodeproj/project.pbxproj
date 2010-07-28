@@ -110,7 +110,6 @@
 		E0564E1A11FBD871000A9753 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564E1911FBD871000A9753 /* WebKit.framework */; };
 		E0564EC411FBD881000A9753 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		E0564EC511FBD888000A9753 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
-		E0A3F7CD11FF74CE0092BD8A /* DirectMessageHTMLController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A3F7CC11FF74CE0092BD8A /* DirectMessageHTMLController.m */; };
 		E0A3F7DB11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A3F7DA11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m */; };
 		E0D14E5911FCD4C400452E63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */; };
 		E0D14F6911FD024A00452E63 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */; };
@@ -262,8 +261,6 @@
 		E0564CB311FBD6DA000A9753 /* HelTweetica_Mac_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweetica_Mac_Prefix.pch; sourceTree = "<group>"; };
 		E0564E0B11FBD833000A9753 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		E0564E1911FBD871000A9753 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		E0A3F7CB11FF74CE0092BD8A /* DirectMessageHTMLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectMessageHTMLController.h; sourceTree = "<group>"; };
-		E0A3F7CC11FF74CE0092BD8A /* DirectMessageHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectMessageHTMLController.m; sourceTree = "<group>"; };
 		E0A3F7D911FF78130092BD8A /* TwitterLoadDirectMessagesAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoadDirectMessagesAction.h; sourceTree = "<group>"; };
 		E0A3F7DA11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadDirectMessagesAction.m; sourceTree = "<group>"; };
 		E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -399,8 +396,6 @@
 			children = (
 				E0564BFF11FBD6A0000A9753 /* TimelineHTMLController.h */,
 				E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */,
-				E0A3F7CB11FF74CE0092BD8A /* DirectMessageHTMLController.h */,
-				E0A3F7CC11FF74CE0092BD8A /* DirectMessageHTMLController.m */,
 				E0564BF911FBD6A0000A9753 /* ConversationHTMLController.h */,
 				E0564BFA11FBD6A0000A9753 /* ConversationHTMLController.m */,
 				E0564BFD11FBD6A0000A9753 /* SearchResultsHTMLController.h */,
@@ -723,7 +718,6 @@
 				E0D1502811FD1AD100452E63 /* LKSqliteStatement.m in Sources */,
 				E0F182EB11FDB1C300DEDE0D /* TwitterDirectMessage.m in Sources */,
 				E0F1838511FDBBE800DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */,
-				E0A3F7CD11FF74CE0092BD8A /* DirectMessageHTMLController.m in Sources */,
 				E0A3F7DB11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
