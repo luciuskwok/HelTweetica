@@ -15,6 +15,8 @@
 }
 
 - (id)initWithFile:(NSString*)file;
+
+- (NSString *)queryWithCommand:(NSString*)command table:(NSString*)table keys:(NSArray *)keys;
 - (LKSqliteStatement*)statementWithQuery:(NSString*)aQuery;
 - (int)execute:(NSString*)aQuery;
 

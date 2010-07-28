@@ -15,21 +15,21 @@
  */
 
 
-#import "TwitterMessageJSONParser.h"
+#import "TwitterStatusJSONParser.h"
 #import "TwitterStatusUpdate.h"
 #import "TwitterUser.h"
 
 
-@implementation TwitterMessageJSONParser
+@implementation TwitterStatusJSONParser
 @synthesize messages, retweets, favorites, users;
 @synthesize currentMessage, currentUser, currentRetweetedMessage, currentRetweetedUser;
-@synthesize directMessage, receivedTimestamp;
+@synthesize receivedTimestamp;
 
 - (id) init {
 	if (self = [super init]) {
 		messages = [[NSMutableArray alloc] init];
 		retweets = [[NSMutableArray alloc] init];
-		favorites = [[NSMutableSet alloc] init];
+		favorites = [[NSMutableArray alloc] init];
 		users = [[NSMutableSet alloc] init];
 	}
 	return self;

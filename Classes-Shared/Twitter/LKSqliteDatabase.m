@@ -34,6 +34,26 @@
 	[super dealloc];
 }
 
+- (NSString *)queryWithCommand:(NSString*)command table:(NSString*)table keys:(NSArray *)keys {
+	NSMutableString *queryKeys = [NSMutableString string];
+	NSMutableString *valuePlaceholders = [NSMutableString string];
+	BOOL firstItem = YES;
+	for (NSString *key in keys) {
+		// Insert separators between elements.
+		if (firstItem == NO) {
+			[queryKeys appendString:@", "];
+			[valuePlaceholders appendString:@", "];
+		}
+		// Insert elements.
+		[queryKeys appendString:key];
+		[valuePlaceholders appendString:@"?"];
+		
+		firstItem = NO;
+	}
+	
+	return [NSString stringWithFormat:@"%@ %@ (%@) VALUES (%@)", command, table, queryKeys, valuePlaceholders];
+}
+
 - (LKSqliteStatement*)statementWithQuery:(NSString*)aQuery {
 	sqlite3_stmt *statement = nil;
 	int error = sqlite3_prepare_v2 (database, [aQuery cStringUsingEncoding:NSUTF8StringEncoding], -1, &statement, nil);

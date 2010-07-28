@@ -21,9 +21,11 @@
 @interface Analyze : UIViewController {
 	IBOutlet UIWebView *webView;
 	TwitterAccount *account;
+	NSArray *messages;
 }
 @property (nonatomic, retain) UIWebView *webView;
 @property (nonatomic, retain) TwitterAccount *account;
+@property (nonatomic, retain) NSArray *messages;
 
 - (IBAction) close: (id) sender;
 @end

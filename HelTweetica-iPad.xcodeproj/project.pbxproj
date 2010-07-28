@@ -61,7 +61,6 @@
 		E0564A8411FBD2E7000A9753 /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */; };
 		E0564A8511FBD2E7000A9753 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5011FBD2E7000A9753 /* TwitterAccount.m */; };
 		E0564A8711FBD2E7000A9753 /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5411FBD2E7000A9753 /* TwitterList.m */; };
-		E0564A8911FBD2E7000A9753 /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5811FBD2E7000A9753 /* TwitterMessageJSONParser.m */; };
 		E0564A8A11FBD2E7000A9753 /* TwitterSavedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5A11FBD2E7000A9753 /* TwitterSavedSearch.m */; };
 		E0564A8B11FBD2E7000A9753 /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5C11FBD2E7000A9753 /* TwitterSearchJSONParser.m */; };
 		E0564A8C11FBD2E7000A9753 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5E11FBD2E7000A9753 /* TwitterTimeline.m */; };
@@ -196,7 +195,6 @@
 		E0564B6811FBD4AB000A9753 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5011FBD2E7000A9753 /* TwitterAccount.m */; };
 		E0564B6911FBD4AB000A9753 /* TwitterAtomParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5211FBD2E7000A9753 /* TwitterAtomParser.m */; };
 		E0564B6A11FBD4AB000A9753 /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5411FBD2E7000A9753 /* TwitterList.m */; };
-		E0564B6C11FBD4AB000A9753 /* TwitterMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5811FBD2E7000A9753 /* TwitterMessageJSONParser.m */; };
 		E0564B6D11FBD4AB000A9753 /* TwitterSavedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5A11FBD2E7000A9753 /* TwitterSavedSearch.m */; };
 		E0564B6E11FBD4AB000A9753 /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5C11FBD2E7000A9753 /* TwitterSearchJSONParser.m */; };
 		E0564B6F11FBD4AB000A9753 /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5E11FBD2E7000A9753 /* TwitterTimeline.m */; };
@@ -222,14 +220,21 @@
 		E0564B8411FBD4AB000A9753 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564AEC11FBD344000A9753 /* AVFoundation.framework */; };
 		E0564ED411FBD93E000A9753 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564ED211FBD93E000A9753 /* MainWindow-iPad.xib */; };
 		E0564ED511FBD93E000A9753 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564ED311FBD93E000A9753 /* MainWindow.xib */; };
-		E0CADD3C11FD81A10075F657 /* TwitterStatusUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD3B11FD81A10075F657 /* TwitterStatusUpdate.m */; };
-		E0CADD3D11FD81A10075F657 /* TwitterStatusUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD3B11FD81A10075F657 /* TwitterStatusUpdate.m */; };
 		E0CADD4611FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
 		E0CADD4711FD82000075F657 /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4511FD82000075F657 /* LKSqliteStatement.m */; };
 		E0CADD4811FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
 		E0CADD4911FD82000075F657 /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4511FD82000075F657 /* LKSqliteStatement.m */; };
 		E0D1509911FD2DE900452E63 /* CreationStatement.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509811FD2DE900452E63 /* CreationStatement.sql */; };
 		E0D1509A11FD2DE900452E63 /* CreationStatement.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509811FD2DE900452E63 /* CreationStatement.sql */; };
+		E0F1831C11FDB53900DEDE0D /* TwitterDirectMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1831711FDB53900DEDE0D /* TwitterDirectMessage.m */; };
+		E0F1831D11FDB53900DEDE0D /* TwitterStatusJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1831911FDB53900DEDE0D /* TwitterStatusJSONParser.m */; };
+		E0F1831E11FDB53900DEDE0D /* TwitterStatusUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1831B11FDB53900DEDE0D /* TwitterStatusUpdate.m */; };
+		E0F1831F11FDB53900DEDE0D /* TwitterDirectMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1831711FDB53900DEDE0D /* TwitterDirectMessage.m */; };
+		E0F1832011FDB53900DEDE0D /* TwitterStatusJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1831911FDB53900DEDE0D /* TwitterStatusJSONParser.m */; };
+		E0F1832111FDB53900DEDE0D /* TwitterStatusUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1831B11FDB53900DEDE0D /* TwitterStatusUpdate.m */; };
+		E0F1835011FDB84600DEDE0D /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0F1834F11FDB84600DEDE0D /* libsqlite3.dylib */; };
+		E0F1838A11FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1838911FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m */; };
+		E0F1838B11FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1838911FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -311,7 +316,7 @@
 		E0564A4511FBD2E7000A9753 /* UserPageHTMLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPageHTMLController.m; sourceTree = "<group>"; };
 		E0564A4711FBD2E7000A9753 /* OAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthClient.h; sourceTree = "<group>"; };
 		E0564A4811FBD2E7000A9753 /* OAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthClient.m; sourceTree = "<group>"; };
-		E0564A4A11FBD2E7000A9753 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
+		E0564A4A11FBD2E7000A9753 /* (HelTweeticaConsumerToken).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "(HelTweeticaConsumerToken).h"; path = "Classes-Shared/Twitter/(HelTweeticaConsumerToken).h"; sourceTree = "<group>"; };
 		E0564A4B11FBD2E7000A9753 /* LKJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKJSONParser.h; sourceTree = "<group>"; };
 		E0564A4C11FBD2E7000A9753 /* LKJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKJSONParser.m; sourceTree = "<group>"; };
 		E0564A4D11FBD2E7000A9753 /* Twitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Twitter.h; sourceTree = "<group>"; };
@@ -322,8 +327,6 @@
 		E0564A5211FBD2E7000A9753 /* TwitterAtomParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAtomParser.m; sourceTree = "<group>"; };
 		E0564A5311FBD2E7000A9753 /* TwitterList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterList.h; sourceTree = "<group>"; };
 		E0564A5411FBD2E7000A9753 /* TwitterList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterList.m; sourceTree = "<group>"; };
-		E0564A5711FBD2E7000A9753 /* TwitterMessageJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMessageJSONParser.h; sourceTree = "<group>"; };
-		E0564A5811FBD2E7000A9753 /* TwitterMessageJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterMessageJSONParser.m; sourceTree = "<group>"; };
 		E0564A5911FBD2E7000A9753 /* TwitterSavedSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSavedSearch.h; sourceTree = "<group>"; };
 		E0564A5A11FBD2E7000A9753 /* TwitterSavedSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSavedSearch.m; sourceTree = "<group>"; };
 		E0564A5B11FBD2E7000A9753 /* TwitterSearchJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchJSONParser.h; sourceTree = "<group>"; };
@@ -398,13 +401,20 @@
 		E0564B8811FBD4AB000A9753 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0564ED211FBD93E000A9753 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		E0564ED311FBD93E000A9753 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = "Resources-iPad/MainWindow.xib"; sourceTree = "<group>"; };
-		E0CADD3A11FD81A10075F657 /* TwitterStatusUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterStatusUpdate.h; sourceTree = "<group>"; };
-		E0CADD3B11FD81A10075F657 /* TwitterStatusUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterStatusUpdate.m; sourceTree = "<group>"; };
 		E0CADD4211FD82000075F657 /* LKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteDatabase.h; sourceTree = "<group>"; };
 		E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteDatabase.m; sourceTree = "<group>"; };
 		E0CADD4411FD82000075F657 /* LKSqliteStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteStatement.h; sourceTree = "<group>"; };
 		E0CADD4511FD82000075F657 /* LKSqliteStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteStatement.m; sourceTree = "<group>"; };
 		E0D1509811FD2DE900452E63 /* CreationStatement.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CreationStatement.sql; path = "Resources-Shared/CreationStatement.sql"; sourceTree = "<group>"; };
+		E0F1831611FDB53900DEDE0D /* TwitterDirectMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessage.h; sourceTree = "<group>"; };
+		E0F1831711FDB53900DEDE0D /* TwitterDirectMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDirectMessage.m; sourceTree = "<group>"; };
+		E0F1831811FDB53900DEDE0D /* TwitterStatusJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterStatusJSONParser.h; sourceTree = "<group>"; };
+		E0F1831911FDB53900DEDE0D /* TwitterStatusJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterStatusJSONParser.m; sourceTree = "<group>"; };
+		E0F1831A11FDB53900DEDE0D /* TwitterStatusUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterStatusUpdate.h; sourceTree = "<group>"; };
+		E0F1831B11FDB53900DEDE0D /* TwitterStatusUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterStatusUpdate.m; sourceTree = "<group>"; };
+		E0F1834F11FDB84600DEDE0D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		E0F1838811FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessageJSONParser.h; sourceTree = "<group>"; };
+		E0F1838911FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDirectMessageJSONParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -418,6 +428,7 @@
 				E0564AE511FBD337000A9753 /* MessageUI.framework in Frameworks */,
 				E0564AE911FBD33E000A9753 /* AudioToolbox.framework in Frameworks */,
 				E0564AED11FBD344000A9753 /* AVFoundation.framework in Frameworks */,
+				E0F1835011FDB84600DEDE0D /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,6 +511,7 @@
 				E0564AE411FBD337000A9753 /* MessageUI.framework */,
 				E0564AE811FBD33E000A9753 /* AudioToolbox.framework */,
 				E0564AEC11FBD344000A9753 /* AVFoundation.framework */,
+				E0F1834F11FDB84600DEDE0D /* libsqlite3.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -520,6 +532,7 @@
 		E05649CF11FBCF0C000A9753 /* Classes-Shared */ = {
 			isa = PBXGroup;
 			children = (
+				E0564A4A11FBD2E7000A9753 /* (HelTweeticaConsumerToken).h */,
 				E0564A3911FBD2E7000A9753 /* HelTweeticaAppDelegate.h */,
 				E0564A3A11FBD2E7000A9753 /* HelTweeticaAppDelegate.m */,
 				E0564A3B11FBD2E7000A9753 /* HTML Controllers */,
@@ -667,7 +680,6 @@
 		E0564A4911FBD2E7000A9753 /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
-				E0564A4A11FBD2E7000A9753 /* (HelTweeticaConsumerToken).h */,
 				E0564A4B11FBD2E7000A9753 /* LKJSONParser.h */,
 				E0564A4C11FBD2E7000A9753 /* LKJSONParser.m */,
 				E0CADD4211FD82000075F657 /* LKSqliteDatabase.h */,
@@ -676,20 +688,24 @@
 				E0CADD4511FD82000075F657 /* LKSqliteStatement.m */,
 				E0564A4D11FBD2E7000A9753 /* Twitter.h */,
 				E0564A4E11FBD2E7000A9753 /* Twitter.m */,
+				E0F1831611FDB53900DEDE0D /* TwitterDirectMessage.h */,
+				E0F1831711FDB53900DEDE0D /* TwitterDirectMessage.m */,
+				E0F1831A11FDB53900DEDE0D /* TwitterStatusUpdate.h */,
+				E0F1831B11FDB53900DEDE0D /* TwitterStatusUpdate.m */,
 				E0564A4F11FBD2E7000A9753 /* TwitterAccount.h */,
 				E0564A5011FBD2E7000A9753 /* TwitterAccount.m */,
 				E0564A5111FBD2E7000A9753 /* TwitterAtomParser.h */,
 				E0564A5211FBD2E7000A9753 /* TwitterAtomParser.m */,
 				E0564A5311FBD2E7000A9753 /* TwitterList.h */,
 				E0564A5411FBD2E7000A9753 /* TwitterList.m */,
-				E0564A5711FBD2E7000A9753 /* TwitterMessageJSONParser.h */,
-				E0564A5811FBD2E7000A9753 /* TwitterMessageJSONParser.m */,
 				E0564A5911FBD2E7000A9753 /* TwitterSavedSearch.h */,
 				E0564A5A11FBD2E7000A9753 /* TwitterSavedSearch.m */,
 				E0564A5B11FBD2E7000A9753 /* TwitterSearchJSONParser.h */,
 				E0564A5C11FBD2E7000A9753 /* TwitterSearchJSONParser.m */,
-				E0CADD3A11FD81A10075F657 /* TwitterStatusUpdate.h */,
-				E0CADD3B11FD81A10075F657 /* TwitterStatusUpdate.m */,
+				E0F1831811FDB53900DEDE0D /* TwitterStatusJSONParser.h */,
+				E0F1831911FDB53900DEDE0D /* TwitterStatusJSONParser.m */,
+				E0F1838811FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.h */,
+				E0F1838911FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m */,
 				E0564A5D11FBD2E7000A9753 /* TwitterTimeline.h */,
 				E0564A5E11FBD2E7000A9753 /* TwitterTimeline.m */,
 				E0564A5F11FBD2E7000A9753 /* TwitterUser.h */,
@@ -979,7 +995,6 @@
 				E0564A8411FBD2E7000A9753 /* Twitter.m in Sources */,
 				E0564A8511FBD2E7000A9753 /* TwitterAccount.m in Sources */,
 				E0564A8711FBD2E7000A9753 /* TwitterList.m in Sources */,
-				E0564A8911FBD2E7000A9753 /* TwitterMessageJSONParser.m in Sources */,
 				E0564A8A11FBD2E7000A9753 /* TwitterSavedSearch.m in Sources */,
 				E0564A8B11FBD2E7000A9753 /* TwitterSearchJSONParser.m in Sources */,
 				E0564A8C11FBD2E7000A9753 /* TwitterTimeline.m in Sources */,
@@ -997,9 +1012,12 @@
 				E0564A9811FBD2E7000A9753 /* TwitterShowFriendshipsAction.m in Sources */,
 				E0564A9911FBD2E7000A9753 /* TwitterUpdateStatusAction.m in Sources */,
 				E0564A9A11FBD2E7000A9753 /* TwitterUserInfoAction.m in Sources */,
-				E0CADD3C11FD81A10075F657 /* TwitterStatusUpdate.m in Sources */,
 				E0CADD4611FD82000075F657 /* LKSqliteDatabase.m in Sources */,
 				E0CADD4711FD82000075F657 /* LKSqliteStatement.m in Sources */,
+				E0F1831C11FDB53900DEDE0D /* TwitterDirectMessage.m in Sources */,
+				E0F1831D11FDB53900DEDE0D /* TwitterStatusJSONParser.m in Sources */,
+				E0F1831E11FDB53900DEDE0D /* TwitterStatusUpdate.m in Sources */,
+				E0F1838A11FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1039,7 +1057,6 @@
 				E0564B6811FBD4AB000A9753 /* TwitterAccount.m in Sources */,
 				E0564B6911FBD4AB000A9753 /* TwitterAtomParser.m in Sources */,
 				E0564B6A11FBD4AB000A9753 /* TwitterList.m in Sources */,
-				E0564B6C11FBD4AB000A9753 /* TwitterMessageJSONParser.m in Sources */,
 				E0564B6D11FBD4AB000A9753 /* TwitterSavedSearch.m in Sources */,
 				E0564B6E11FBD4AB000A9753 /* TwitterSearchJSONParser.m in Sources */,
 				E0564B6F11FBD4AB000A9753 /* TwitterTimeline.m in Sources */,
@@ -1057,9 +1074,12 @@
 				E0564B7B11FBD4AB000A9753 /* TwitterShowFriendshipsAction.m in Sources */,
 				E0564B7C11FBD4AB000A9753 /* TwitterUpdateStatusAction.m in Sources */,
 				E0564B7D11FBD4AB000A9753 /* TwitterUserInfoAction.m in Sources */,
-				E0CADD3D11FD81A10075F657 /* TwitterStatusUpdate.m in Sources */,
 				E0CADD4811FD82000075F657 /* LKSqliteDatabase.m in Sources */,
 				E0CADD4911FD82000075F657 /* LKSqliteStatement.m in Sources */,
+				E0F1831F11FDB53900DEDE0D /* TwitterDirectMessage.m in Sources */,
+				E0F1832011FDB53900DEDE0D /* TwitterStatusJSONParser.m in Sources */,
+				E0F1832111FDB53900DEDE0D /* TwitterStatusUpdate.m in Sources */,
+				E0F1838B11FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

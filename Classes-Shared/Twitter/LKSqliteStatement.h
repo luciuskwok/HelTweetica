@@ -15,6 +15,8 @@
 
 - (id)initWithStatement:(sqlite3_stmt *)aStatement;
 
+- (void)bindValue:(id)value atIndex:(int)index;
+- (void)bindNullAtIndex:(int)index;
 - (void)bindString:(NSString*)string atIndex:(int)index;
 - (void)bindNumber:(NSNumber*)number atIndex:(int)index;
 - (void)bindInteger:(SInt64)n atIndex:(int)index;

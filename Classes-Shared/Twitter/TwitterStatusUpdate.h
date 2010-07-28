@@ -20,41 +20,43 @@
 
 @interface TwitterStatusUpdate : NSObject {
 	NSNumber *identifier;
+	NSDate *createdDate;
+	NSDate *receivedDate;
+
 	NSNumber *userIdentifier;
 	NSString *userScreenName;
 	NSString *profileImageURL;
 	
 	NSNumber *inReplyToStatusIdentifier;
 	NSNumber *inReplyToUserIdentifier;
-	
 	NSString *inReplyToScreenName;
+	NSNumber *retweetedStatusIdentifier;
+
 	NSString *text;
 	NSString *source;
-	NSNumber *retweetedStatusIdentifier;
-	
-	NSDate *createdDate;
-	NSDate *receivedDate;
-	
 	BOOL locked;
 }
 @property (nonatomic, retain) NSNumber *identifier;
+@property (nonatomic, retain) NSDate *createdDate;
+@property (nonatomic, retain) NSDate *receivedDate;
+
 @property (nonatomic, retain) NSNumber *userIdentifier;
 @property (nonatomic, retain) NSString *userScreenName;
 @property (nonatomic, retain) NSString *profileImageURL;
 
 @property (nonatomic, retain) NSNumber *inReplyToStatusIdentifier;
 @property (nonatomic, retain) NSNumber *inReplyToUserIdentifier;
-
 @property (nonatomic, retain) NSString *inReplyToScreenName;
-@property (nonatomic, retain) NSString *text;
-@property (nonatomic, retain) NSString *source;
 @property (nonatomic, retain) NSNumber *retweetedStatusIdentifier;
 
-@property (nonatomic, retain) NSDate *createdDate;
-@property (nonatomic, retain) NSDate *receivedDate;
-
+@property (nonatomic, retain) NSString *text;
+@property (nonatomic, retain) NSString *source;
 @property (assign, getter=isLocked) BOOL locked;
 
++ (NSArray *)databaseKeys;
+
+- (id)initWithDictionary:(NSDictionary *)d;
+- (id)databaseValueForKey:(NSString *)key;
 - (void) setValue:(id)value forTwitterKey:(NSString*)key;
 
 

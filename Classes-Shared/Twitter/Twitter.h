@@ -23,18 +23,18 @@
 #import "TwitterAccount.h"
 #import "TwitterUser.h"
 #import "TwitterStatusUpdate.h"
-#import "TwitterList.h"
+#import "TwitterDirectMessage.h"
+
 
 @protocol TwitterDelegate;
 
 @interface Twitter : NSObject {
 	NSMutableArray *accounts;
-	NSMutableSet *statuses;
 	LKSqliteDatabase *database;
 }
 
 @property (nonatomic, retain) NSMutableArray *accounts;
-@property (nonatomic, retain) NSMutableSet *statuses;
+@property (nonatomic, retain) LKSqliteDatabase *database;
 
 - (TwitterAccount*) accountWithScreenName: (NSString*) screenName;
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
@@ -44,10 +44,17 @@
 - (TwitterStatusUpdate *)statusUpdateWithIdentifier:(NSNumber *)identifier;
 - (NSSet*) statusUpdatesInReplyToStatusIdentifier:(NSNumber*)identifier;
 
+// Direct Messages
+- (void)addDirectMessages:(NSArray *)newMessages;
+- (TwitterDirectMessage *)directMessageWithIdentifier:(NSNumber *)identifier;
+
 // Users
-- (void)addUsers:(NSSet *)newUsers;
+- (void)addUsers:(NSSet *)newUsers; // Add users if not already in database.
+- (void)addOrReplaceUsers:(NSSet *)newUsers; // Add users replacing existing users in database.
 - (TwitterUser *)userWithScreenName:(NSString *)screenName;
 - (TwitterUser *)userWithIdentifier:(NSNumber *)identifier;
+- (NSArray *)allUsers;
+- (NSArray *)usersWithName:(NSString *)name;
 
 - (void)saveUserDefaults;
 

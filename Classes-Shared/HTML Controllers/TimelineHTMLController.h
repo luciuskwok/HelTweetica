@@ -33,6 +33,7 @@
 	Twitter *twitter;
 	TwitterAccount *account;
 	TwitterTimeline *timeline;
+	NSArray *messages;
 	NSMutableArray *actions;
 
 	NSString *tweetRowTemplate;
@@ -61,6 +62,7 @@
 @property (nonatomic, retain) Twitter *twitter;
 @property (nonatomic, retain) TwitterAccount *account;
 @property (nonatomic, retain) TwitterTimeline *timeline;
+@property (nonatomic, retain) NSArray *messages;
 @property (nonatomic, retain) NSMutableArray *actions;
 
 @property (nonatomic, retain) NSString *customPageTitle;
@@ -110,6 +112,7 @@
 - (void)invalidateRefreshTimer;
 
 // HTML
+- (NSString *)loadHTMLTemplate:(NSString *)templateName;
 - (NSString *)webPageTemplate;
 - (NSString *)currentAccountHTML;
 - (NSString *)tabAreaHTML;

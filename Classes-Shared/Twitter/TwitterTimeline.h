@@ -17,35 +17,45 @@
 #import <Foundation/Foundation.h>
 //#import "Twitter.h"
 
-@class TwitterLoadTimelineAction, TwitterAction, TwitterStatusUpdate;
+@class TwitterLoadTimelineAction, TwitterAction, TwitterStatusUpdate, LKSqliteDatabase;
 @protocol TwitterTimelineDelegate;
 
 
 @interface TwitterTimeline : NSObject {
-	NSMutableArray *messages;
-	NSMutableArray *gaps;
+	LKSqliteDatabase *database;
+	NSString *databaseTableName;
 	BOOL noOlderMessages;
 
 	TwitterLoadTimelineAction *loadAction;
 	int defaultLoadCount;
 
-	//Twitter *twitter;
 	id <TwitterTimelineDelegate> delegate;
 }
-@property (nonatomic, retain) NSMutableArray *messages;
-@property (nonatomic, retain) NSMutableArray *gaps;
+@property (nonatomic, retain) LKSqliteDatabase *database;
+@property (nonatomic, retain) NSString *databaseTableName;
 @property (assign) BOOL noOlderMessages;
 
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
 @property (assign) int defaultLoadCount;
 
-//@property (nonatomic, retain) Twitter *twitter;
 @property (assign) id delegate;
 
-- (TwitterStatusUpdate *)messageWithIdentifier:(NSNumber*)anIdentifier;
-- (void)removeMessageWithIdentifier:(NSNumber*)anIdentifier;
-- (void)limitTimelineLength:(int)count;
+// Database
+- (void)createTableIfNeeded;
+- (void)deleteCaches;
 
+// Messages (Status Updates or Direct Messages)
+- (void)addMessages:(NSArray*)messages;
+- (void)addMessages:(NSArray*)messages updateGap:(BOOL)updateGap;
+- (void)removeIdentifier:(NSNumber *)identifier;
+- (BOOL)containsIdentifier:(NSNumber *)identifier;
+- (NSArray *)statusUpdatesWithLimit:(int)limit;
+- (NSArray *)directMessagesWithLimit:(int)limit;
+
+// Gap
+- (BOOL)hasGapAfter:(NSNumber *)identifier;
+
+// Loading from Twitter
 - (void)reloadNewer;
 - (void)didReloadNewer:(TwitterLoadTimelineAction *)action;
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier;

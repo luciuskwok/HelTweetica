@@ -159,7 +159,9 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 
 - (IBAction) allstars: (id) sender {
 	if ([self closeAllPopovers] == NO) {
-		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:timelineHTMLController.account.homeTimeline.messages] autorelease];
+		NSArray *messages = [timelineHTMLController.account.homeTimeline statusUpdatesWithLimit:96];
+		
+		AllStarsViewController *controller = [[[AllStarsViewController alloc] initWithTimeline:messages] autorelease];
 		[self presentModalViewController:controller animated:YES];
 		[controller startDelayedShuffleModeAfterInterval:kDelayBeforeEnteringShuffleMode];
 	}

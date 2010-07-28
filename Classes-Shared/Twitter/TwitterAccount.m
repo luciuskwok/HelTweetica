@@ -21,10 +21,9 @@
 #import "TwitterList.h"
 
 
-
 @implementation TwitterAccount
 @synthesize identifier, screenName, xAuthToken, xAuthSecret;
-@synthesize homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
+@synthesize homeTimeline, mentions, directMessagesReceived, directMessagesSent, favorites, lists, listSubscriptions, savedSearches;
 
 - (id)init {
 	// Initialize a blank account
@@ -32,31 +31,13 @@
 	if (self) {
 		self.homeTimeline = [[[TwitterTimeline alloc] init] autorelease];
 		self.mentions = [[[TwitterTimeline alloc] init] autorelease];
-		self.directMessages = [[[TwitterTimeline alloc] init] autorelease];
+		self.directMessagesReceived = [[[TwitterTimeline alloc] init] autorelease];
+		self.directMessagesSent = [[[TwitterTimeline alloc] init] autorelease];
 		self.favorites = [[[TwitterTimeline alloc] init] autorelease];
 		self.lists = [NSMutableArray array];
 		self.listSubscriptions = [NSMutableArray array];
 	}
 	return self;
-}
-
-- (NSMutableArray*) mutableArrayForKey:(NSString *)key coder:(NSCoder *)decoder {
-	NSData *data = [decoder decodeObjectForKey:key];
-	NSMutableArray *array;
-	if (data && [data isKindOfClass:[NSData class]]) {
-		array = [NSMutableArray arrayWithArray: [NSKeyedUnarchiver unarchiveObjectWithData:data]];
-	} else {
-		array = [NSMutableArray array];
-	}
-	return array;
-}
-
-- (TwitterTimeline *)timelineForKey:(NSString *)key coder:(NSCoder *)decoder {
-	TwitterTimeline *aTimeline = [decoder decodeObjectForKey:key];
-	if ([aTimeline isKindOfClass: [TwitterTimeline class]]) {
-		return aTimeline;
-	}
-	return [[[TwitterTimeline alloc] init] autorelease];
 }
 
 - (id) initWithCoder: (NSCoder*) decoder {
@@ -70,6 +51,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeObject: identifier forKey:@"identifier"];
 	[encoder encodeObject: screenName forKey:@"screenName"];
 	[encoder encodeObject: xAuthToken forKey:@"xAuthToken"];
 	[encoder encodeObject: xAuthSecret forKey:@"xAuthSecret"];
@@ -83,7 +65,8 @@
 	
 	[homeTimeline release];
 	[mentions release];
-	[directMessages release];
+	[directMessagesReceived release];
+	[directMessagesSent release];
 	[favorites release];
 	[lists release];
 	[listSubscriptions release];
@@ -94,8 +77,34 @@
 
 #pragma mark Public methods
 
-- (void) removeStatusFromFavoritesWithIdentifier: (NSNumber*) anIdentifier {
-	[self.favorites removeMessageWithIdentifier:anIdentifier];
+- (void)setDatabase:(LKSqliteDatabase *)database {
+	// Timelines will not work unless they have been given a database and table name.
+	NSString *idString = [identifier stringValue];
+	if (idString.length == 0) {
+		idString = screenName;
+		NSLog (@"User identifier is an empty string. Using screen name instead.");
+		return;
+	}
+	
+	homeTimeline.database = database;
+	homeTimeline.databaseTableName = [NSString stringWithFormat:@"User_%@_HomeTimeline", idString];
+	[homeTimeline createTableIfNeeded];
+	
+	mentions.database = database;
+	mentions.databaseTableName = [NSString stringWithFormat:@"User_%@_Mentions", idString];
+	[mentions createTableIfNeeded];
+
+	directMessagesReceived.database = database;
+	directMessagesReceived.databaseTableName = [NSString stringWithFormat:@"User_%@_DirectMessagesReceived", idString];
+	[directMessagesReceived createTableIfNeeded];
+
+	directMessagesSent.database = database;
+	directMessagesSent.databaseTableName = [NSString stringWithFormat:@"User_%@_DirectMessagesSent", idString];
+	[directMessagesSent createTableIfNeeded];
+	
+	favorites.database = database;
+	favorites.databaseTableName = [NSString stringWithFormat:@"User_%@_Favorites", idString];
+	[favorites createTableIfNeeded];
 }
 
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {
@@ -115,11 +124,24 @@
 	}
 }
 
-- (void)addFavorites:(NSSet*)set {
-	for (TwitterStatusUpdate *message in set) {
-		if ([favorites.messages containsObject:message] == NO) 
-			[favorites.messages addObject:message];
-	}
+- (void)addFavorites:(NSArray*)set {
+	[favorites addMessages:set];
+}
+
+- (void)removeFavorite:(NSNumber *)messageIdentifier {
+	[favorites removeIdentifier:messageIdentifier];
+}
+
+- (BOOL)messageIsFavorite:(NSNumber *)messageIdentifier {
+	return [favorites containsIdentifier:messageIdentifier];
+}
+			
+- (void)deleteCaches {
+	[homeTimeline deleteCaches];
+	[mentions deleteCaches];
+	[directMessagesReceived deleteCaches];
+	[directMessagesSent deleteCaches];
+	[favorites deleteCaches];
 }
 
 @end

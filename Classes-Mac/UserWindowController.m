@@ -105,7 +105,7 @@
 		user.screenName = aScreenName;
 		user.identifier = [NSNumber numberWithInt: -1]; // -1 signifies that user info has not been loaded
 	}
-
+	
 	// Set up HTML controller.
 	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 	controller.user = user;

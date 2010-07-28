@@ -18,8 +18,6 @@
 #import "Twitter.h"
 
 
-
-
 // HelTweetica twitter consumer/client credentials.
 // Please use your own application credentials, which you can request from Twitter.
 
@@ -31,25 +29,12 @@
 
 
 @implementation Twitter
-@synthesize accounts, statuses;
+@synthesize accounts, database;
 
 
 - (id) init {
 	if (self = [super init]) {
 		self.accounts = [NSMutableArray array];
-		self.statuses = [NSMutableSet set];
-
-		// == User defaults ==
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		
-		// Remove old preferences if they exist, to free up disk space.
-		[defaults removeObjectForKey:@"twitterAccounts"];
-		[defaults removeObjectForKey:@"twitterUsers"];
-		
-		// Load account info from user defaults
-		NSData *data = [defaults objectForKey:@"allAccounts"];
-		if (data != nil)
-			self.accounts = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
 		// == Sqlite 3 ==
 		// Create a new sqlite database if none exists.
@@ -69,14 +54,32 @@
 			} else {
 				[database execute:creationStatement];
 			}
+		} else {
+			// Maintenance: keep the size of the database within limits.
 		}
+
+		// == User defaults ==
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+		// Remove old preferences if they exist, to free up disk space.
+		[defaults removeObjectForKey:@"twitterAccounts"];
+		[defaults removeObjectForKey:@"twitterUsers"];
+		
+		// Load account info from user defaults
+		NSData *data = [defaults objectForKey:@"allAccounts"];
+		if (data != nil)
+			self.accounts = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+		
+		// Set up the database connections.
+		for (TwitterAccount *account in accounts) 
+			[account setDatabase:database];
+		
 	}
 	return self;
 }
 
 - (void) dealloc {
 	[accounts release];
-	[statuses release];
 	[database release];
 	[super dealloc];
 }
@@ -102,56 +105,28 @@
 
 - (void)addStatusUpdates:(NSArray *)newUpdates {
 	if (newUpdates.count == 0) return;
-	
+
 	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
-	NSString *query = @"INSERT OR REPLACE INTO StatusUpdates (identifier, createdDate, receivedDate, userIdentifier, userScreenName,   profileImageURL, inReplyToStatusIdentifier, inReplyToUserIdentifier, inReplyToScreenName, text,   source, retweetedStatusIdentifier, locked) VALUES (?, ?, ?, ?, ?,   ?, ?, ?, ?, ?,   ?, ?, ?)";
+	NSArray *allKeys = [TwitterStatusUpdate databaseKeys];
+	NSString *query = [database queryWithCommand:@"Insert or replace into" table:@"StatusUpdates" keys:allKeys];
 	LKSqliteStatement *statement = [database statementWithQuery:query];
-	
+
 	for (TwitterStatusUpdate *status in newUpdates) {
-		// Bind variables.
-		[statement bindNumber:status.identifier atIndex:1];
-		[statement bindDate:status.createdDate atIndex:2];
-		[statement bindDate:status.receivedDate atIndex:3];
-		[statement bindNumber:status.userIdentifier atIndex:4];
-		[statement bindString:status.userScreenName atIndex:5];
-		
-		[statement bindString:status.profileImageURL atIndex:6];
-		[statement bindNumber:status.inReplyToStatusIdentifier atIndex:7];
-		[statement bindNumber:status.inReplyToUserIdentifier atIndex:8];
-		[statement bindString:status.inReplyToScreenName atIndex:9];
-		[statement bindString:status.text atIndex:10];
-		
-		[statement bindString:status.source atIndex:11];
-		[statement bindNumber:status.retweetedStatusIdentifier atIndex:12];
-		[statement bindInteger:status.locked atIndex:13];
-		
-		// Execute and reset.
-		[statement step];
-		[statement reset];
+		if ([status isKindOfClass:[TwitterStatusUpdate class]]) {
+			// Bind variables.
+			for (int index = 0; index<allKeys.count; index++) {
+				id key = [allKeys objectAtIndex:index];
+				NSString *value = [status databaseValueForKey:key];
+				[statement bindValue:value atIndex:index+1];
+			}
+			
+			// Execute and reset.
+			[statement step];
+			[statement reset];
+		}
 	}
 }
 
-- (TwitterStatusUpdate *)statusUpdateWithDatabaseRow:(NSDictionary *)row {
-	TwitterStatusUpdate *status = [[[TwitterStatusUpdate alloc] init] autorelease];
-	
-	status.identifier = [row objectForKey:@"identifier"];
-	status.createdDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"createdDate"] doubleValue]];
-	status.receivedDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"receivedDate"] doubleValue]];
-	status.userIdentifier = [row objectForKey:@"userIdentifier"];
-	status.userScreenName = [row objectForKey:@"userScreenName"];
-
-	status.profileImageURL = [row objectForKey:@"profileImageURL"];
-	status.inReplyToStatusIdentifier = [row objectForKey:@"inReplyToStatusIdentifier"];
-	status.inReplyToUserIdentifier = [row objectForKey:@"inReplyToUserIdentifier"];
-	status.inReplyToScreenName = [row objectForKey:@"inReplyToScreenName"];
-	status.text = [row objectForKey:@"text"];
-
-	status.source = [row objectForKey:@"source"];
-	status.retweetedStatusIdentifier = [row objectForKey:@"retweetedStatusIdentifier"];
-	status.locked = [[row objectForKey:@"locked"] boolValue];
-	
-	return status;
-}
 
 - (TwitterStatusUpdate *)statusUpdateWithIdentifier:(NSNumber *)identifier {
 	if ([identifier longLongValue] == 0) return nil;
@@ -160,7 +135,7 @@
 	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM StatusUpdates WHERE identifier == ?"];
 	[statement bindNumber:identifier atIndex:1];
 	if ([statement step] == SQLITE_ROW) { // Row has data.
-		status = [self statusUpdateWithDatabaseRow:[statement rowData]];
+		status = [[[TwitterStatusUpdate alloc] initWithDictionary:[statement rowData]] autorelease];
 	}
 	return status;
 }
@@ -173,78 +148,104 @@
 	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM StatusUpdates WHERE inReplyToStatusIdentifier == ?"];
 	[statement bindNumber:identifier atIndex:1];
 	while ([statement step] == SQLITE_ROW) { // Row has data.
-		status = [self statusUpdateWithDatabaseRow:[statement rowData]];
+		status = [[[TwitterStatusUpdate alloc] initWithDictionary:[statement rowData]] autorelease];
 		[resultSet addObject:status]; 
 	}
 	return resultSet;
 }
 
+#pragma mark Direct Messages
+
+- (void)addDirectMessages:(NSArray *)newMessages {
+	if (newMessages.count == 0) return;
+	
+	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
+	NSArray *allKeys = [TwitterDirectMessage databaseKeys];
+	NSString *query = [database queryWithCommand:@"Insert or replace into" table:@"DirectMessages" keys:allKeys];
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	
+	for (TwitterDirectMessage *message in newMessages) {
+		if ([message isKindOfClass:[TwitterDirectMessage class]]) {
+			// Bind variables.
+			for (int index = 0; index<allKeys.count; index++) {
+				id key = [allKeys objectAtIndex:index];
+				NSString *value = [message databaseValueForKey:key];
+				[statement bindValue:value atIndex:index+1];
+			}
+			
+			// Execute and reset.
+			[statement step];
+			[statement reset];
+		}
+	}
+}
+
+- (TwitterDirectMessage *)directMessageWithIdentifier:(NSNumber *)identifier {
+	if ([identifier longLongValue] == 0) return nil;
+	
+	TwitterDirectMessage *status = nil;
+	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM DirectMessages WHERE identifier == ?"];
+	[statement bindNumber:identifier atIndex:1];
+	if ([statement step] == SQLITE_ROW) { // Row has data.
+		status = [[[TwitterDirectMessage alloc] initWithDictionary:[statement rowData]] autorelease];
+	}
+	return status;
+}
 
 #pragma mark Users
 
 - (void)addUsers:(NSSet *)newUsers {
 	if (newUsers.count == 0) return;
 	
+	// Insert rows. Users with the same identifier will not be inserted.
+	NSArray *allKeys = [TwitterUser databaseKeys];
+	NSString *query = [database queryWithCommand:@"Insert or ignore into" table:@"Users" keys:allKeys];
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	
+	for (TwitterUser *user in newUsers) {
+		if ([user isKindOfClass:[TwitterUser class]]) {
+			// Bind variables.
+			for (int index = 0; index<allKeys.count; index++) {
+				id key = [allKeys objectAtIndex:index];
+				NSString *value = [user databaseValueForKey:key];
+				[statement bindValue:value atIndex:index+1];
+			}
+			
+			// Execute and reset.
+			[statement step];
+			[statement reset];
+		}
+	}
+}
+
+- (void)addOrReplaceUsers:(NSSet *)newUsers {
+	if (newUsers.count == 0) return;
+	
 	// Insert or replace rows. Rows with the same user identifier will be replaced with the new one.
-	NSString *query = @"INSERT OR REPLACE INTO Users (identifier, screenName, fullName, bio, location,   profileImageURL, webURL, friendsCount, followersCount, statusesCount,   favoritesCount, createdDate, updatedDate, locked, verified) VALUES (?, ?, ?, ?, ?,   ?, ?, ?, ?, ?,   ?, ?, ?, ?, ?)";
+	NSArray *allKeys = [TwitterUser databaseKeys];
+	NSString *query = [database queryWithCommand:@"Insert or replace into" table:@"Users" keys:allKeys];
 	LKSqliteStatement *statement = [database statementWithQuery:query];
 	
 	for (TwitterUser *user in newUsers) {
 		// Bind variables.
-		[statement bindNumber:user.identifier atIndex:1];
-		[statement bindString:user.screenName atIndex:2];
-		[statement bindString:user.fullName atIndex:3];
-		[statement bindString:user.bio atIndex:4];
-		[statement bindString:user.location atIndex:5];
-
-		[statement bindString:user.profileImageURL atIndex:6];
-		[statement bindString:user.webURL atIndex:7];
-		[statement bindNumber:user.friendsCount atIndex:8];
-		[statement bindNumber:user.followersCount atIndex:9];
-		[statement bindNumber:user.statusesCount atIndex:10];
-
-		[statement bindNumber:user.favoritesCount atIndex:11];
-		[statement bindDate:user.createdDate atIndex:12];
-		[statement bindDate:user.updatedDate atIndex:13];
-		[statement bindInteger:user.locked atIndex:14];
-		[statement bindInteger:user.verified atIndex:15];
-
+		for (int index = 0; index<allKeys.count; index++) {
+			id key = [allKeys objectAtIndex:index];
+			NSString *value = [user databaseValueForKey:key];
+			[statement bindValue:value atIndex:index+1];
+		}
+		
 		// Execute and reset.
 		[statement step];
 		[statement reset];
 	}
 }
 
-- (TwitterUser *)userWithDatabaseRow:(NSDictionary *)row {
-	TwitterUser *user = [[[TwitterUser alloc] init] autorelease];
-	
-	user.identifier = [row objectForKey:@"identifier"];
-	user.screenName = [row objectForKey:@"screenName"];
-	user.fullName = [row objectForKey:@"fullName"];
-	user.bio = [row objectForKey:@"bio"];
-	user.location = [row objectForKey:@"location"];
-	
-	user.profileImageURL = [row objectForKey:@"profileImageURL"];
-	user.webURL = [row objectForKey:@"webURL"];
-	user.friendsCount = [row objectForKey:@"friendsCount"];
-	user.followersCount = [row objectForKey:@"followersCount"];
-	user.statusesCount = [row objectForKey:@"statusesCount"];
-	
-	user.favoritesCount = [row objectForKey:@"favoritesCount"];
-	user.createdDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"createdDate"] doubleValue]];
-	user.updatedDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[row objectForKey:@"updatedDate"] doubleValue]];
-	user.locked = [[row objectForKey:@"locked"] boolValue];
-	user.verified = [[row objectForKey:@"verified"] boolValue];
-	
-	return user;
-}
-
 - (TwitterUser *)userWithScreenName:(NSString *)screenName {
 	TwitterUser *user = nil;
-	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM Users WHERE screenName LIKE ?"];
+	LKSqliteStatement *statement = [database statementWithQuery:@"Select * from Users where ScreenName like ?"];
 	[statement bindString:screenName atIndex:1];
 	if ([statement step] == SQLITE_ROW) { // Row has data.
-		user = [self userWithDatabaseRow:[statement rowData]];
+		user = [[[TwitterUser alloc] initWithDictionary:[statement rowData]] autorelease];
 	}
 	return user;
 }
@@ -253,12 +254,37 @@
 	if ([identifier longLongValue] == 0) return nil;
 	
 	TwitterUser *user = nil;
-	LKSqliteStatement *statement = [database statementWithQuery:@"SELECT * FROM Users WHERE identifier == ?"];
+	LKSqliteStatement *statement = [database statementWithQuery:@"Select * from Users where Identifier == ?"];
 	[statement bindNumber:identifier atIndex:1];
 	if ([statement step] == SQLITE_ROW) { // Row has data.
-		user = [self userWithDatabaseRow:[statement rowData]];
+		user = [[[TwitterUser alloc] initWithDictionary:[statement rowData]] autorelease];
 	}
 	return user;
+}
+
+- (NSArray *)allUsers {
+	NSMutableArray *set = [NSMutableArray arrayWithCapacity:1000];
+	TwitterUser *user = nil;
+	LKSqliteStatement *statement = [database statementWithQuery:@"Select * from Users order by ScreenName collate nocase asc limit 1000"];
+	while ([statement step] == SQLITE_ROW) { // Row has data.
+		user = [[[TwitterUser alloc] initWithDictionary:[statement rowData]] autorelease];
+		[set addObject:user];
+	}
+	return set;
+}
+
+- (NSArray *)usersWithName:(NSString *)name {
+	NSMutableArray *set = [NSMutableArray arrayWithCapacity:1000];
+	TwitterUser *user = nil;
+	NSString *pattern = [NSString stringWithFormat:@"%%%@%%", name];
+	LKSqliteStatement *statement = [database statementWithQuery:@"Select * from Users where ScreenName like ? union Select * from Users where FullName like ? order by ScreenName collate nocase asc limit 1000"];
+	[statement bindString:pattern atIndex:1];
+	[statement bindString:pattern atIndex:2];
+	while ([statement step] == SQLITE_ROW) { // Row has data.
+		user = [[[TwitterUser alloc] initWithDictionary:[statement rowData]] autorelease];
+		[set addObject:user];
+	}
+	return set;
 }
 
 #pragma mark User defaults

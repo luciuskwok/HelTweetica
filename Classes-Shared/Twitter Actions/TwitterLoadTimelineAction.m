@@ -14,11 +14,12 @@
  */
 
 #import "TwitterLoadTimelineAction.h"
-#import "TwitterMessageJSONParser.h"
+#import "TwitterStatusJSONParser.h"
+#import "TwitterDirectMessageJSONParser.h"
 
 
 @implementation TwitterLoadTimelineAction
-@synthesize timeline, retweetedMessages, loadedMessages, favoriteMessages, users, newMessageCount, overlap;
+@synthesize retweetedMessages, loadedMessages, favoriteMessages, users;
 
 - (id)initWithTwitterMethod:(NSString*)method {
 	self = [super init];
@@ -28,7 +29,6 @@
 	return self;
 }
 - (void) dealloc {
-	[timeline release];
 	[loadedMessages release];
 	[retweetedMessages release];
 	[favoriteMessages release];
@@ -42,50 +42,21 @@
 
 - (void) parseReceivedData:(NSData*)data {
 	if (statusCode < 400) {
-		TwitterMessageJSONParser *parser = [[[TwitterMessageJSONParser alloc] init] autorelease];
-		parser.receivedTimestamp = [NSDate date];
-		parser.directMessage = [twitterMethod hasPrefix:@"direct_messages"];
-		[parser parseJSONData:receivedData];
-		self.users = parser.users;
-		newMessageCount = parser.messages.count;
-		[self mergeTimelineWithMessages: parser.messages];
-		self.loadedMessages = parser.messages;
-		self.retweetedMessages = parser.retweets;
-		self.favoriteMessages = parser.favorites;
-	} else {
-		newMessageCount = 0;
-	}
-}
-
-- (void) mergeTimelineWithMessages:(NSMutableArray*)messages {
-	if (messages.count == 0) return;
-	
-	if (timeline.messages.count == 0) {
-		self.timeline.messages = messages;
-	} else {
-		// Check if last loaded message overlaps timeline
-		TwitterStatusUpdate *lastLoadedMessage = [messages lastObject];
-		overlap = [timeline.messages containsObject:lastLoadedMessage];
-		if (overlap == NO) 
-			[timeline.gaps addObject: lastLoadedMessage];
-		
-		// Merge downloaded messages with existing messages.
-		//overlap = NO;
-		for (TwitterStatusUpdate *message in messages) {
-			if ([timeline.messages containsObject:message]) {
-				//overlap = YES; 
-				
-				// Remove gap indicators if there's overlap
-				[timeline.gaps removeObject:message];
-			} else {
-				[timeline.messages addObject: message];
-			}
+		if ([twitterMethod hasPrefix:@"direct_messages"]) {
+			TwitterDirectMessageJSONParser *parser = [[[TwitterDirectMessageJSONParser alloc] init] autorelease];
+			parser.receivedTimestamp = [NSDate date];
+			[parser parseJSONData:receivedData];
+			self.users = parser.users;
+			self.loadedMessages = parser.messages;
+		} else {
+			TwitterStatusJSONParser *parser = [[[TwitterStatusJSONParser alloc] init] autorelease];
+			parser.receivedTimestamp = [NSDate date];
+			[parser parseJSONData:receivedData];
+			self.users = parser.users;
+			self.loadedMessages = parser.messages;
+			self.retweetedMessages = parser.retweets;
+			self.favoriteMessages = parser.favorites;
 		}
-		
-		// Sort by date, then by identifier, descending.
-		NSSortDescriptor *createdDateDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO] autorelease];
-		NSSortDescriptor *identifierDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
-		[timeline.messages sortUsingDescriptors: [NSArray arrayWithObjects: createdDateDescriptor, identifierDescriptor, nil]];
 	}
 }
 

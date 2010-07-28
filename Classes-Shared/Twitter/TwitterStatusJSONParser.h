@@ -21,10 +21,10 @@
 @class TwitterUser;
 
 
-@interface TwitterMessageJSONParser : NSObject <LKJSONParserDelegate> {
+@interface TwitterStatusJSONParser : NSObject <LKJSONParserDelegate> {
 	NSMutableArray *messages;
 	NSMutableArray *retweets;
-	NSMutableSet *favorites;
+	NSMutableArray *favorites;
 	NSMutableSet *users;
 	
 	TwitterStatusUpdate *currentMessage;
@@ -32,13 +32,12 @@
 	TwitterStatusUpdate *currentRetweetedMessage;
 	TwitterUser *currentRetweetedUser;
 	
-	BOOL directMessage;
 	NSDate *receivedTimestamp;
 }
 
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, retain) NSMutableArray *retweets;
-@property (nonatomic, retain) NSMutableSet *favorites;
+@property (nonatomic, retain) NSMutableArray *favorites;
 @property (nonatomic, retain) NSMutableSet *users;
 
 @property (nonatomic, retain) TwitterStatusUpdate *currentMessage;
@@ -46,7 +45,6 @@
 @property (nonatomic, retain) TwitterStatusUpdate *currentRetweetedMessage;
 @property (nonatomic, retain) TwitterUser *currentRetweetedUser;
 
-@property (assign) BOOL directMessage;
 @property (nonatomic, retain) NSDate *receivedTimestamp;
 
 - (void) parseJSONData:(NSData*)jsonData;

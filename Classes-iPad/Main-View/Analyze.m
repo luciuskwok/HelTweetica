@@ -22,7 +22,7 @@
 
 
 @implementation Analyze
-@synthesize webView, account;
+@synthesize webView, account, messages;
 
 #pragma mark Private methods
 
@@ -79,9 +79,9 @@
 	
 	// Body
 	[html appendString:@"</head><body>"];
-	[html appendFormat:@"<div class='tweet_area'><b>Most frequent tweeters</b> out of %d tweets in your home timeline:<br><br>", account.homeTimeline.messages.count];
+	[html appendFormat:@"<div class='tweet_area'><b>Most frequent tweeters</b> out of %d tweets in your home timeline:<br><br>", messages.count];
 	
-	if ((account.homeTimeline.messages == nil) || (account.homeTimeline.messages.count == 0)) {
+	if ((messages == nil) || (messages.count == 0)) {
 		[html appendString:@"No tweets to analyze!"];
 	} else {
 		NSDictionary *entry;
@@ -124,13 +124,18 @@
 		if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
 			[self setContentSizeForViewInPopover: CGSizeMake(320, 460)];
 		}
+		
+		// Get up to 2000 messages.
+		self.messages = [account.homeTimeline statusUpdatesWithLimit:2000];
 	}
 	return self;
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	NSMutableArray *analysis = [self analyzeHomeTimeline:account.homeTimeline.messages favorites:account.favorites.messages];
+	
+	NSArray *favorites = [account.favorites statusUpdatesWithLimit:2000];
+	NSMutableArray *analysis = [self analyzeHomeTimeline:messages favorites:favorites];
 	
 	// Sort analysis by count
 	NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"count" ascending:NO];
@@ -162,6 +167,7 @@
 - (void)dealloc {
 	[webView release];
 	[account release];
+	[messages release];
 	[super dealloc];
 }
 

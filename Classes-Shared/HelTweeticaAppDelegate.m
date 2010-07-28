@@ -83,6 +83,9 @@
 
 	// Save account settings.
 	[twitter saveUserDefaults];
+	
+	// Close database to ensure it cleans up.
+	twitter.database = nil;
 }
 
 #pragma mark Windows
@@ -169,7 +172,11 @@
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+	// Save account settings.
 	[twitter saveUserDefaults];
+	
+	// Close database to ensure it cleans up.
+	twitter.database = nil;
 }
 
 - (void) incrementNetworkActionCount {

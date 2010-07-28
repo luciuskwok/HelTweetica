@@ -40,6 +40,5 @@ CREATE TABLE DirectMessages (
 	senderScreenName text,
 	recipientIdentifier integer,
 	recipientScreenName text,
-	locked boolean,
 	text text
 );

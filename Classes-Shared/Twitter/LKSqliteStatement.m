@@ -19,6 +19,20 @@
 	return self;
 }
 
+#pragma mark Bind
+
+- (void)bindValue:(id)value atIndex:(int)index {
+	if (value == nil) {
+		[self bindNullAtIndex: index];
+	} else if ([value isKindOfClass:[NSDate class]]) {
+		[self bindDate:value atIndex: index];
+	} else if ([value isKindOfClass:[NSNumber class]]) {
+		[self bindNumber:value atIndex:index];
+	} else if ([value isKindOfClass:[NSString class]]) {
+		[self bindString:value atIndex:index];
+	}
+}
+
 - (void)bindNullAtIndex:(int)index {
 	int error = sqlite3_bind_null (statement, index);
 	if (error != SQLITE_OK) NSLog (@"Error result from sqlite3_bind_null(): %d", error);

@@ -23,6 +23,13 @@
 @synthesize statuses, favorites, lists, listSubscriptions;
 
 
++ (NSArray *)databaseKeys {
+	return [NSArray arrayWithObjects:@"identifier", @"createdDate", @"updatedDate", 
+			@"screenName", @"fullName", @"bio", @"location", @"profileImageURL", @"webURL",
+			@"friendsCount", @"followersCount", @"statusesCount", @"favoritesCount",
+			@"locked", @"verified", nil];
+}
+
 - (id)init {
 	self = [super init];
 	if (self) {
@@ -34,8 +41,34 @@
 	return self;
 }
 
+- (id)initWithDictionary:(NSDictionary *)d {
+	self = [self init];
+	if (self) {
+		self.identifier = [d objectForKey:@"identifier"];
+		self.createdDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[d objectForKey:@"createdDate"] doubleValue]];
+		self.updatedDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[d objectForKey:@"updatedDate"] doubleValue]];
+
+		self.screenName = [d objectForKey:@"screenName"];
+		self.fullName = [d objectForKey:@"fullName"];
+		self.bio = [d objectForKey:@"bio"];
+		self.location = [d objectForKey:@"location"];
+		self.profileImageURL = [d objectForKey:@"profileImageURL"];
+		self.webURL = [d objectForKey:@"webURL"];
+
+		self.friendsCount = [d objectForKey:@"friendsCount"];
+		self.followersCount = [d objectForKey:@"followersCount"];
+		self.statusesCount = [d objectForKey:@"statusesCount"];
+		self.favoritesCount = [d objectForKey:@"favoritesCount"];
+		self.locked = [[d objectForKey:@"locked"] boolValue];
+		self.verified = [[d objectForKey:@"verified"] boolValue];
+	}
+	return self;
+}
+
 - (void)dealloc {
 	[identifier release];
+	[createdDate release];
+	[updatedDate release];
 	
 	[screenName release];
 	[fullName release];
@@ -49,9 +82,6 @@
 	[statusesCount release];
 	[favoritesCount release];
 	
-	[createdDate release];
-	[updatedDate release];
-	
 	[statuses release];
 	[favorites release];
 	[lists release];
@@ -60,13 +90,13 @@
 	[super dealloc];
 }
 
-// description: for the debugger po command.
 - (NSString*) description {
+	// for the debugger po command.
 	return screenName ? screenName : @"<no screen name>";
 }
 
-// hash and isEqual: are used by NSSet to determine if an object is unique.
 - (NSUInteger) hash {
+	// hash and isEqual: are used by NSSet to determine if an object is unique.
 	return [identifier hash];
 }
 
@@ -76,6 +106,29 @@
 		result = [self.identifier isEqual: [object identifier]];
 	}
 	return result;
+}
+
+#pragma mark Sqlite
+
+- (void)setTimelineDatabase:(LKSqliteDatabase *)db {
+	NSString *userIdentifier = screenName;
+	
+	statuses.database = db;
+	statuses.databaseTableName = [NSString stringWithFormat:@"User_%@_Statuses", userIdentifier];
+	[statuses createTableIfNeeded];
+	
+	favorites.database = db;
+	favorites.databaseTableName = [NSString stringWithFormat:@"User_%@_Favorites", userIdentifier];
+	[favorites createTableIfNeeded];
+}
+
+- (id)databaseValueForKey:(NSString *)key {
+	if ([key isEqualToString:@"locked"]) {
+		return [NSNumber numberWithBool:self.locked];
+	} else if ([key isEqualToString:@"verified"]) {
+		return [NSNumber numberWithBool:self.verified];
+	}
+	return [self valueForKey:key];
 }
 
 #pragma mark Twitter API
@@ -156,5 +209,35 @@
 	return ([self.updatedDate compare:aUser.updatedDate] == NSOrderedDescending);
 }
 
+- (void)updateValuesWithUser:(TwitterUser *)aUser {
+	if (aUser.identifier)
+		self.identifier = aUser.identifier;
+	if (aUser.screenName)
+		self.screenName = aUser.screenName;
+	if (aUser.fullName)
+		self.fullName = aUser.fullName;
+	if (aUser.bio)
+		self.bio = aUser.bio;
+	if (aUser.location)
+		self.location = aUser.location;
+	if (aUser.profileImageURL)
+		self.profileImageURL = aUser.profileImageURL;
+	if (aUser.webURL)
+		self.webURL = aUser.webURL;
+	if (aUser.friendsCount)
+		self.friendsCount = aUser.friendsCount;
+	if (aUser.followersCount)
+		self.followersCount = aUser.followersCount;
+	if (aUser.statusesCount)
+		self.statusesCount = aUser.statusesCount;
+	if (aUser.favoritesCount)
+		self.favoritesCount = aUser.favoritesCount;
+	if (aUser.createdDate)
+		self.createdDate = aUser.createdDate;
+	if (aUser.updatedDate)
+		self.updatedDate = aUser.updatedDate;
+	self.locked = aUser.locked;
+	self.verified =aUser.verified;
+}
 
 @end

@@ -17,9 +17,6 @@
 
 #import "TwitterStatusUpdate.h"
 
-
-
-
 @implementation TwitterStatusUpdate
 @synthesize identifier, userIdentifier, userScreenName;
 @synthesize inReplyToStatusIdentifier, inReplyToUserIdentifier, inReplyToScreenName;
@@ -27,21 +24,60 @@
 @synthesize createdDate, receivedDate;
 @synthesize locked;
 
++ (NSArray *)databaseKeys {
+	return [NSArray arrayWithObjects:@"identifier", @"createdDate", @"receivedDate", @"userIdentifier", @"userScreenName", 
+			@"profileImageURL", @"inReplyToStatusIdentifier", @"inReplyToUserIdentifier", @"inReplyToScreenName", @"retweetedStatusIdentifier",
+			@"text", @"source", @"locked", nil];
+}
+
+- (id)initWithDictionary:(NSDictionary *)d {
+	self = [super init];
+	if (self) {
+		self.identifier = [d objectForKey:@"identifier"];
+		self.createdDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[d objectForKey:@"createdDate"] doubleValue]];
+		self.receivedDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[d objectForKey:@"receivedDate"] doubleValue]];
+
+		self.userIdentifier = [d objectForKey:@"userIdentifier"];
+		self.userScreenName = [d objectForKey:@"userScreenName"];
+		self.profileImageURL = [d objectForKey:@"profileImageURL"];
+
+		self.inReplyToStatusIdentifier = [d objectForKey:@"inReplyToStatusIdentifier"];
+		self.inReplyToUserIdentifier = [d objectForKey:@"inReplyToUserIdentifier"];
+		self.inReplyToScreenName = [d objectForKey:@"inReplyToScreenName"];
+		self.retweetedStatusIdentifier = [d objectForKey:@"retweetedStatusIdentifier"];
+
+		self.text = [d objectForKey:@"text"];
+		self.source = [d objectForKey:@"source"];
+		self.locked = [[d objectForKey:@"locked"] boolValue];
+	}
+	return self;
+}
 
 - (void) dealloc {
 	[identifier release];
-	[inReplyToStatusIdentifier release];
-	[inReplyToUserIdentifier release];
-	[userScreenName release];
-	[inReplyToScreenName release];
-	[profileImageURL release];
-	[text release];
-	[source release];
-	[retweetedStatusIdentifier release];
 	[createdDate release];
 	[receivedDate release];
+
+	[userIdentifier release];
+	[userScreenName release];
+	[profileImageURL release];
+
+	[inReplyToStatusIdentifier release];
+	[inReplyToUserIdentifier release];
+	[inReplyToScreenName release];
+	[retweetedStatusIdentifier release];
+	
+	[text release];
+	[source release];
 	
 	[super dealloc];
+}
+
+- (id)databaseValueForKey:(NSString *)key {
+	if ([key isEqualToString:@"locked"]) {
+		return [NSNumber numberWithBool:self.locked];
+	}
+	return [self valueForKey:key];
 }
 
 // description: for the debugger po command.

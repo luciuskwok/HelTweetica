@@ -17,8 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class TwitterStatusUpdate;
-@class TwitterTimeline;
+@class TwitterStatusUpdate, TwitterTimeline, LKSqliteDatabase;
 
 
 @interface TwitterAccount : NSObject {
@@ -31,7 +30,8 @@
 	// Cached data. References to sqlite db.
 	TwitterTimeline *homeTimeline;
 	TwitterTimeline *mentions;
-	TwitterTimeline *directMessages;
+	TwitterTimeline *directMessagesReceived;
+	TwitterTimeline *directMessagesSent;
 	TwitterTimeline *favorites;
 	NSMutableArray *lists;
 	NSMutableArray *listSubscriptions;
@@ -44,14 +44,19 @@
 
 @property (nonatomic, retain) TwitterTimeline *homeTimeline;
 @property (nonatomic, retain) TwitterTimeline *mentions;
-@property (nonatomic, retain) TwitterTimeline *directMessages;
+@property (nonatomic, retain) TwitterTimeline *directMessagesReceived;
+@property (nonatomic, retain) TwitterTimeline *directMessagesSent;
 @property (nonatomic, retain) TwitterTimeline *favorites;
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 @property (nonatomic, retain) NSMutableArray *savedSearches;
 
-- (void)removeStatusFromFavoritesWithIdentifier: (NSNumber*) identifier;
+- (void)setDatabase:(LKSqliteDatabase *)database;
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists;
-- (void)addFavorites:(NSSet*)set;
+- (void)addFavorites:(NSArray*)set;
+- (void)removeFavorite:(NSNumber *)message;
+- (BOOL)messageIsFavorite:(NSNumber *)message;
+
+- (void)deleteCaches;
 
 @end

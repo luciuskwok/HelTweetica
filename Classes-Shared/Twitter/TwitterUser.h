@@ -15,7 +15,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class TwitterTimeline;
+@class TwitterTimeline, LKSqliteDatabase;
 
 
 @interface TwitterUser : NSObject {
@@ -74,7 +74,15 @@
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 
-- (void) setValue:(id)value forTwitterKey:(NSString*)key;
-- (BOOL) isNewerThan:(TwitterUser*)aUser;
++ (NSArray *)databaseKeys;
+
+- (id)initWithDictionary:(NSDictionary *)d;
+
+- (void)setTimelineDatabase:(LKSqliteDatabase *)db;
+- (id)databaseValueForKey:(NSString *)key;
+
+- (void)setValue:(id)value forTwitterKey:(NSString*)key;
+- (BOOL)isNewerThan:(TwitterUser*)aUser;
+- (void)updateValuesWithUser:(TwitterUser *)aUser;
 
 @end

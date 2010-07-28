@@ -13,29 +13,21 @@
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
 #import "TwitterAction.h"
 #import "TwitterTimeline.h"
 
 
 @interface TwitterLoadTimelineAction : TwitterAction {
-	TwitterTimeline *timeline;
 	NSArray *loadedMessages;
 	NSArray *retweetedMessages;
-	NSSet *favoriteMessages;
+	NSArray *favoriteMessages;
 	NSSet *users;
-	int newMessageCount;
-	BOOL overlap;
 }
-@property (nonatomic, retain) TwitterTimeline *timeline;
 @property (nonatomic, retain) NSArray *loadedMessages;
 @property (nonatomic, retain) NSArray *retweetedMessages;
-@property (nonatomic, retain) NSSet *favoriteMessages;
+@property (nonatomic, retain) NSArray *favoriteMessages;
 @property (nonatomic, retain) NSSet *users;
-@property (nonatomic, assign) int newMessageCount;
-@property (nonatomic, assign) BOOL overlap;
 
 - (id)initWithTwitterMethod:(NSString*)method ;
-- (void) mergeTimelineWithMessages:(NSMutableArray*)messages;
 
 @end

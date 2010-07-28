@@ -32,6 +32,8 @@
 		
 		// Timeline
 		self.timeline = [[[TwitterTimeline alloc] init] autorelease]; // Always start with an empty array of messages for Search.
+		timeline.database = twitter.database;
+		timeline.databaseTableName = [NSString stringWithFormat:@"SearchResults_%@", aQuery];
 		timeline.loadAction = [[[TwitterSearchAction alloc] initWithQuery:aQuery count:defaultLoadCount] autorelease];
 		[self loadTimeline:timeline];
 	}
@@ -51,24 +53,24 @@
 }
 
 - (NSString*) webPageTemplate {
-	// Load basic template
-	NSError *error = nil;
-	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"basic-template" ofType:@"html"];
-	NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-	if (error != nil)
-		NSLog (@"Error loading basic-template.html: %@", [error localizedDescription]);
-	return html;
+	return [self loadHTMLTemplate:@"basic-template"];
 }
 
 #pragma mark TwitterTimelineDelegate
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
-	// Synchronize timeline with Twitter cache.
+	// Twitter cache.
 	[twitter addStatusUpdates:action.loadedMessages];
-	[twitter addUsers:action.users];
+	[twitter addStatusUpdates:action.retweetedMessages];
+	[twitter addUsers:action.users]; // Don't replace existing User info in the database.
+	
+	// Timeline
+	[aTimeline addMessages:action.loadedMessages updateGap:YES];
+	
 	isLoading = NO;
 	
 	if (timeline == aTimeline) {
+		self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];	
 	}
 }

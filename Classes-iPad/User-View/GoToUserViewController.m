@@ -24,12 +24,7 @@
 	self = [super initWithNibName:@"GoToUser" bundle:nil];
 	if (self) {
 		self.twitter = aTwitter;
-		
-		// Sort users by screen name
-		NSMutableArray *allUsers = [NSMutableArray arrayWithArray:[aTwitter.users allObjects]];
-		NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"screenName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
-		[allUsers sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
-		self.users = allUsers;
+		self.users = [aTwitter allUsers];
 	}
 	return self;
 }
@@ -135,16 +130,7 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
 	// Filter set by search term
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"screenName CONTAINS[cd] %@ OR fullName CONTAINS[cd] %@", searchString, searchString];
-	NSSet *filteredResults = [twitter.users filteredSetUsingPredicate:predicate];
-	
-	// Sort by screen name case-insensitive
-	NSMutableArray *sortedResults = [NSMutableArray arrayWithArray: [filteredResults allObjects]];
-	NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"screenName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
-	[sortedResults sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
-	
-	self.searchResults = sortedResults;
-	
+	self.searchResults = [twitter usersWithName:searchString];
 	return YES;
 }
 

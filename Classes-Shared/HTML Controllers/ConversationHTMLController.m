@@ -21,31 +21,27 @@
 
 
 @implementation ConversationHTMLController
-@synthesize selectedMessageIdentifier;
+@synthesize selectedMessageIdentifier, relevantMessages;
 
 // Designated initializer. Uses aMessage as the head of a chain of replies, and gets each status in the reply chain.
 - (id)initWithMessageIdentifier:(NSNumber*)anIdentifier {
 	self = [super init];
 	if (self) {
-		self.selectedMessageIdentifier = anIdentifier;
 		self.customPageTitle = NSLocalizedString (@"The <b>Conversation</b>", @"title");
-		self.timeline = [[[TwitterTimeline alloc] init] autorelease];
-		self.timeline.gaps = nil; // Ignore gaps
-		
-		// Special template to highlight the selected message. tweet-row-highlighted-template.html
-		NSError *error = nil;
-		NSString *filePath = [[NSBundle mainBundle] pathForResource:@"tweet-row-highlighted-template" ofType:@"html"];
-		highlightedTweetRowTemplate = [[NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error] retain];
-		if (error != nil)
-			NSLog (@"Error loading tweet-row-highlighted-template.html: %@", [error localizedDescription]);
+
+		self.selectedMessageIdentifier = anIdentifier;
+		self.relevantMessages = [NSMutableSet set];
+		highlightedTweetRowTemplate = [[self loadHTMLTemplate:@"tweet-row-highlighted-template"] retain];
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[selectedMessageIdentifier release];
+	[relevantMessages release];
 	[highlightedTweetRowTemplate release];
-    [super dealloc];
+	
+	[super dealloc];
 }
 
 #pragma mark Timeline selection
@@ -60,29 +56,26 @@
 	// Check if message is already loaded
 	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier:messageIdentifier];
 	if (message) {
-		[timeline.messages addObject:message];
+		[relevantMessages addObject:message];
 		[self loadInReplyToMessage: message];
 	} else {
 		NSString *twitterMethod = [NSString stringWithFormat:@"statuses/show/%@", messageIdentifier];
 		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:twitterMethod] autorelease];
-		action.timeline = timeline;
 		action.completionAction = @selector(didLoadMessage:);
 		action.completionTarget = self;
 		[self startTwitterAction:action];
 	}
 	
 	// Also load all cached replies to this message
-	NSMutableSet *timelineSet = [NSMutableSet setWithArray:timeline.messages];
 	NSSet *replies = [twitter statusUpdatesInReplyToStatusIdentifier:messageIdentifier];
-	if (replies) {
-		[timelineSet unionSet:replies];
-		[timeline.messages setArray: [timelineSet allObjects]];
+	if (replies.count > 0) {
+		[relevantMessages unionSet:replies];
 	}
 	
 	// Sort by date, then by identifier, descending.
 	NSSortDescriptor *createdDateDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO] autorelease];
 	NSSortDescriptor *identifierDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
-	[timeline.messages sortUsingDescriptors: [NSArray arrayWithObjects: createdDateDescriptor, identifierDescriptor, nil]];
+	self.messages = [[relevantMessages allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects: createdDateDescriptor, identifierDescriptor, nil]];
 }
 
 - (void)loadingComplete {
@@ -92,14 +85,19 @@
 }
 
 - (void)didLoadMessage:(TwitterLoadTimelineAction *)action {
+	// Add loaded message to array.
+	NSMutableSet *messageSet = [NSMutableSet setWithArray:messages];
+	[messageSet addObjectsFromArray:action.loadedMessages];
+	self.messages = [messageSet allObjects];
+	
 	// Synchronized users and messages with Twitter cache.
 	[twitter addStatusUpdates:action.loadedMessages];
 	[twitter addUsers:action.users];
 	[account addFavorites:action.favoriteMessages];
 	
 	// Load next message in conversation.
-	if (!loadingComplete && timeline.messages.count > 0) {
-		TwitterStatusUpdate *lastMessage = [timeline.messages lastObject];
+	if (!loadingComplete && messages.count > 0) {
+		TwitterStatusUpdate *lastMessage = [messages lastObject];
 		[self loadInReplyToMessage: lastMessage];
 		if (webViewHasValidHTML) 
 			[self rewriteTweetArea];	
@@ -142,17 +140,11 @@
 #pragma mark Web view
 
 - (NSString*) webPageTemplate {
-	// Load main template
-	NSError *error = nil;
-	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"basic-template" ofType:@"html"];
-	NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-	if (error != nil)
-		NSLog (@"Error loading basic-template.html: %@", [error localizedDescription]);
-	return html;
+	return [self loadHTMLTemplate:@"basic-template"];
 }
 
 - (NSString *)tweetRowTemplateForRow:(int)row {
-	TwitterStatusUpdate *message = [timeline.messages objectAtIndex:row];
+	TwitterStatusUpdate *message = [messages objectAtIndex:row];
 	if ([message.identifier isEqualToNumber:selectedMessageIdentifier])
 		return highlightedTweetRowTemplate;
 	return tweetRowTemplate;
@@ -169,7 +161,7 @@
 		result = @"<div class='status'>Protected message.</div>";
 	} else if (messageNotFound) {
 		result = @"<div class='status'>Message was deleted.</div>";
-	} else if (timeline.messages.count == 0) {
+	} else if (messages.count == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	}
 	

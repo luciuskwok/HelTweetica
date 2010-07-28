@@ -76,6 +76,9 @@
 		account.screenName = action.username; // To make sure the uppercase/lowercase letters are correct.
 		account.identifier = action.identifier;
 		
+		// Set database connection.
+		[account setDatabase:twitter.database];
+		
 		// Tell delegate we're done
 		if ([delegate respondsToSelector:@selector(didLoginToAccount:)])
 			[delegate didLoginToAccount:account];

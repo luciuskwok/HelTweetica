@@ -39,7 +39,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 
 @implementation TimelineHTMLController
-@synthesize webView, twitter, account, timeline, actions;
+@synthesize webView, twitter, account, timeline, messages, actions;
 @synthesize webViewHasValidHTML, isLoading, noInternetConnection, suppressNetworkErrorAlerts;
 @synthesize customPageTitle, customTabName, defaultLoadCount;
 @synthesize delegate;
@@ -50,30 +50,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if (self) {
 		
 		// Load the HTML templates.
-		NSBundle *mainBundle = [NSBundle mainBundle];
-		NSError *error;
-		NSString *filePath;
-		
-		// Tweet row template
-		error = nil;
-		filePath = [mainBundle pathForResource:@"tweet-row-template" ofType:@"html"];
-		tweetRowTemplate = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-		if (error != nil)
-			NSLog (@"Error loading tweet-row-template.html: %@", [error localizedDescription]);
-		
-		// Mention row template
-		error = nil;
-		filePath = [mainBundle pathForResource:@"tweet-row-mention-template" ofType:@"html"];
-		tweetMentionRowTemplate = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-		if (error != nil)
-			NSLog (@"Error loading tweet-row-mention-template.html: %@", [error localizedDescription]);
-		
-		// Gap row template
-		error = nil;
-		filePath = [mainBundle pathForResource:@"load-gap-template" ofType:@"html"];
-		tweetGapRowTemplate = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-		if (error != nil)
-			NSLog (@"Error loading load-gap-template.html: %@", [error localizedDescription]);
+		tweetRowTemplate = [[self loadHTMLTemplate:@"tweet-row-template"] retain];
+		tweetMentionRowTemplate = [[self loadHTMLTemplate:@"tweet-row-mention-template"] retain];
+		tweetGapRowTemplate = [[self loadHTMLTemplate:@"load-gap-template"] retain];
 		
 		// Loading template
 		loadingHTML = [@"<div class='status'><img class='status_spinner_image' src='spinner.gif'> Loading...</div>"retain];
@@ -94,6 +73,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[twitter release];
 	[account release];
 	[timeline release];
+	[messages release];
 	[actions release];
 	
 	[tweetRowTemplate release];
@@ -114,6 +94,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)selectHomeTimeline {
 	self.customTabName = kTimelineIdentifier;
 	self.timeline = account.homeTimeline;
+	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 	[self startLoadingCurrentTimeline];
@@ -122,6 +103,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)selectMentionsTimeline {
 	self.customTabName = kMentionsIdentifier;
 	self.timeline = account.mentions;
+	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 	[self startLoadingCurrentTimeline];
@@ -130,6 +112,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)selectDirectMessageTimeline {
 	self.customTabName = kDirectMessagesIdentifier;
 	self.timeline = account.directMessages;
+	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
 	[self startLoadingCurrentTimeline];
@@ -138,6 +121,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)selectFavoritesTimeline {
 	self.customTabName = kFavoritesIdentifier;
 	self.timeline = account.favorites;
+	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	// Favorites always loads 20 per page. Cannot change the count.
 	[self startLoadingCurrentTimeline];
@@ -160,6 +144,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)loadTimeline:(TwitterTimeline*)aTimeline {
 	isLoading = YES;
 	self.timeline = aTimeline;
+	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	timeline.delegate = self;
 	[timeline reloadNewer];
 }
@@ -179,17 +164,28 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 }
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
-	// Synchronize timeline with Twitter cache.
-	[twitter addStatusUpdates:action.loadedMessages];
-	[twitter addStatusUpdates:action.retweetedMessages];
-	[twitter addUsers:action.users];
-	[account addFavorites:action.favoriteMessages];
+	// Twitter cache.
+	if ([action.twitterMethod hasPrefix:@"direct_messages"]) {
+		[twitter addDirectMessages:action.loadedMessages];
+	} else {
+		[twitter addStatusUpdates:action.loadedMessages];
+		[twitter addStatusUpdates:action.retweetedMessages];
+	}
+	[twitter addOrReplaceUsers:action.users];
+	
+	// Timeline
+	[aTimeline addMessages:action.loadedMessages updateGap:YES];
+
 	isLoading = NO;
 	
 	if (timeline == aTimeline) {
-		// Both reloading methods seem to block the main thread while images load over the network. It might be the number of URL connections being made at once that's causing this.
-		//[self loadWebView];
+		// User may have changed timelines or accounts by the time this method is called, because network operations can take a while.
 		
+		// To be safe, only update Favorites if a different timeline was not selected.
+		[account addFavorites:action.favoriteMessages];
+	
+		// Update our array of messages with the latest in the timeline.
+		self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];	
 	}
 }
@@ -365,7 +361,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		return;
 	}
 	
-	BOOL isFave = [account.favorites.messages containsObject:message];
+	BOOL isFave = [account messageIsFavorite:messageIdentifier];
 	
 	TwitterFavoriteAction *action = [[[TwitterFavoriteAction alloc] initWithMessage:message destroy:isFave] autorelease];
 	action.completionTarget= self;
@@ -385,9 +381,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	
 	// Remove from favorites timeline
 	if (isFave) {
-		[account.favorites.messages addObject:message];
+		[account addFavorites:[NSArray arrayWithObject:message]];
 	} else {
-		[account.favorites.messages removeObject:message];
+		[account removeFavorite:message.identifier];
 	}
 }
 
@@ -459,9 +455,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	} else if ([action isEqualToString:kMentionsIdentifier]) { // Mentions
 		self.customPageTitle = nil; // Reset the custom page title.
 		[self selectMentionsTimeline];
-	} else if ([action isEqualToString:kDirectMessagesIdentifier]) { // Direct Messages
-		self.customPageTitle = nil; // Reset the custom page title.
-		[self selectDirectMessageTimeline];
 	} else if ([action isEqualToString:kFavoritesIdentifier]) { // Favorites
 		self.customPageTitle = nil; // Reset the custom page title.
 		[self selectFavoritesTimeline];
@@ -526,14 +519,18 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 #pragma mark HTML
 
-- (NSString *)webPageTemplate {
+- (NSString *)loadHTMLTemplate:(NSString *)templateName {
 	// Load main template
 	NSError *error = nil;
-	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"main-template" ofType:@"html"];
+	NSString *filePath = [[NSBundle mainBundle] pathForResource:templateName ofType:@"html"];
 	NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
 	if (error != nil)
-		NSLog (@"Error loading main-template.html: %@", [error localizedDescription]);
+		NSLog (@"Error loading %@.html: %@", templateName, [error localizedDescription]);
 	return html;
+}
+
+- (NSString *)webPageTemplate {
+	return [self loadHTMLTemplate:@"main-template"];
 }
 
 - (NSString *)currentAccountHTML {
@@ -569,8 +566,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (NSString*) tweetAreaHTML {
 	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
-	
-	
+
 	// Page Title for Lists and Search
 	if (customPageTitle) {
 		// Put the title inside a regular tweet table row.
@@ -581,16 +577,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	
 	[html appendString:@"<div class='tweet_table'> "];
 
-	NSArray *messages = timeline.messages; 
-	int displayedCount = (messages.count < maxTweetsShown) ? messages.count : maxTweetsShown;
-	
 	// Template for tweet_row
-	
-	//NSAutoreleasePool *pool;
-	for (int index=0; index<displayedCount; index++) {
-		//pool = [[NSAutoreleasePool alloc] init];
+	for (int index=0; index<messages.count; index++) {
 		[html appendString: [self tweetRowHTMLForRow:index]];
-		//[pool release];
 	}
 	
 	[html appendString:@"</div> "]; // Close tweet_table
@@ -606,7 +595,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (NSString *)tweetRowTemplateForRow:(int)row {
 	// Highlight Mentions
 	NSString *screenName = [NSString stringWithFormat:@"@%@", account.screenName];
-	TwitterStatusUpdate *message = [timeline.messages objectAtIndex:row];
+	TwitterStatusUpdate *message = [messages objectAtIndex:row];
 	if (message.retweetedStatusIdentifier) {
 		TwitterStatusUpdate *retweeted = [twitter statusUpdateWithIdentifier:message.retweetedStatusIdentifier];
 		if (retweeted)
@@ -620,7 +609,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 }
 
 - (NSString *)tweetRowHTMLForRow:(int)row {
-	TwitterStatusUpdate *message = [timeline.messages objectAtIndex:row];
+	TwitterStatusUpdate *message = [messages objectAtIndex:row];
 	TwitterStatusUpdate *retweeterMessage = nil;
 	
 	// Skip messages with invalid identifiers
@@ -633,8 +622,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	}
 	
 	// Favorites
-	BOOL isFavorite = [account.favorites.messages containsObject:message];
-	
+	BOOL isFavorite = [account messageIsFavorite:message.identifier];
 	
 	// Set up dictionary with variables to substitute
 	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
@@ -706,8 +694,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	}
 	
 	// Append "Load gap" row if needed
-	BOOL gap = [timeline.gaps containsObject:retweeterMessage ? retweeterMessage : message];
-	BOOL endRow = (row >= maxTweetsShown - 1 || row >= timeline.messages.count - 1);
+	BOOL gap = [timeline hasGapAfter:message.identifier];
+	BOOL endRow = (row >= maxTweetsShown - 1 || row >= messages.count - 1);
 	NSString *messageIdentifier = [message.identifier stringValue];
 	if (retweeterMessage) 
 		messageIdentifier = [retweeterMessage.identifier stringValue];
@@ -729,11 +717,11 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		result = @"<div class='status'><a href='action:login'>Please log in.</a></div>";
 	} else if (isLoading) { // (actions.count > 0 || !webViewHasValidHTML)
 		result = loadingHTML;
-	} else if ([timeline.messages count] == 0) {
+	} else if (messages.count == 0) {
 		result = @"<div class='status'>No messages.</div>";
 	} else if (timeline.noOlderMessages) {
 		result = @"";
-	} else if ([timeline.messages count] < maxTweetsShown) {
+	} else if (messages.count < maxTweetsShown) {
 		// Action to Load older messages 
 		result = @"<div class='load_older'><a href='action:loadOlder'>Load older messages</a></div> ";
 	}

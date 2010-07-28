@@ -29,11 +29,7 @@
 	self = [super init];
 	if (self) {
 		// Special template to highlight the selected message. tweet-row-highlighted-template.html
-		NSError *error = nil;
-		NSString *filePath = [[NSBundle mainBundle] pathForResource:@"tweet-row-highlighted-template" ofType:@"html"];
-		highlightedTweetRowTemplate = [[NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error] retain];
-		if (error != nil)
-			NSLog (@"Error loading tweet-row-highlighted-template.html: %@", [error localizedDescription]);
+		highlightedTweetRowTemplate = [[self loadHTMLTemplate:@"tweet-row-highlighted-template"] retain];
 	}
 	return self;
 }
@@ -44,6 +40,15 @@
 	[super dealloc];
 }
 
+- (void)setUser:(TwitterUser *)aUser {
+	if (user != aUser) {
+		[user release];
+		user = [aUser retain];
+	}
+	
+	// Set up user.
+	[aUser setTimelineDatabase:twitter.database];
+}
 
 #pragma mark Timeline selection
 
@@ -55,6 +60,7 @@
 	
 	self.customPageTitle = nil;
 	self.timeline = user.statuses;
+	self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	[self.timeline.loadAction.parameters setObject:defaultLoadCount forKey:@"count"];
@@ -73,6 +79,7 @@
 	
 	self.customPageTitle = [NSString stringWithFormat:@"%@&rsquo;s <b>favorites</b>", user.screenName];
 	self.timeline = user.favorites;
+	self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	// Favorites always loads 20 per page. Cannot change the count.
@@ -113,7 +120,14 @@
 }
 
 - (void)didLoadUserInfo:(TwitterUserInfoAction*)action {
-	[twitter addUsers:[NSSet setWithObject:action.userResult]];
+	// Update existing record if it exists
+	TwitterUser *existingUser = [twitter userWithIdentifier:action.userResult.identifier];
+	if (existingUser) {
+		[existingUser updateValuesWithUser:action.userResult];
+		[twitter addUsers:[NSSet setWithObject:existingUser]];
+	} else {
+		[twitter addUsers:[NSSet setWithObject:action.userResult]];
+	}
 	[twitter addStatusUpdates:[NSArray arrayWithObjects: action.latestStatus, action.retweetedStatus, nil]];
 	self.user = action.userResult;
 	[self rewriteUserInfoArea];
@@ -181,11 +195,7 @@
 
 - (NSString*) webPageTemplate {
 	// Load main template
-	NSError *error = nil;
-	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"user-page-template" ofType:@"html"];
-	NSMutableString *html = [NSMutableString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-	if (error != nil)
-		NSLog (@"Error loading user-page-template.html: %@", [error localizedDescription]);
+	NSMutableString *html = [NSMutableString stringWithString:[self loadHTMLTemplate:@"user-page-template"]];
 
 	// Replace custom tags with HTML
 	NSString *userInfoAreaHTML = [self userInfoHTML];
@@ -216,11 +226,7 @@
 	if (user == nil) return @"";
 	
 	// Load template
-	NSError *error = nil;
-	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"user-info-template" ofType:@"html"];
-	NSMutableString *html = [NSMutableString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-	if (error != nil)
-		NSLog (@"Error loading user-info-template.html: %@", [error localizedDescription]);
+	NSMutableString *html = [NSMutableString stringWithString:[self loadHTMLTemplate:@"user-info-template"]];
 	
 	// Prepare variables
 	NSString *profileImageURL = @"profile-image-proxy.png";
@@ -270,7 +276,7 @@
 }
 
 - (NSString *)tweetRowTemplateForRow:(int)row {
-	if (row == 0 && timeline == user.statuses)
+	if (row == 0 && self.customPageTitle == nil)
 		return highlightedTweetRowTemplate;
 	return [super tweetRowTemplateForRow:row];
 }

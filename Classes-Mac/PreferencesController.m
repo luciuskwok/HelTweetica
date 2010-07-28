@@ -73,8 +73,12 @@
 	int index;
 	
 	for (index = 0; index < twitter.accounts.count; index++) {
+		TwitterAccount *account = [twitter.accounts objectAtIndex:index];
 		if ([selection containsIndex:index] == NO) {
-			[unselectedAccounts addObject: [twitter.accounts objectAtIndex:index]];
+			[unselectedAccounts addObject: account];
+		} else {
+			// Delete caches in database to free up space & allow reset by deleting and re-adding account.
+			[account deleteCaches];
 		}
 	}
 	

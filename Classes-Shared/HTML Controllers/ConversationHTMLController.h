@@ -20,12 +20,16 @@
 
 @interface ConversationHTMLController : TimelineHTMLController {
 	NSNumber *selectedMessageIdentifier;
+	NSMutableSet *relevantMessages;
+
 	BOOL loadingComplete;
 	BOOL messageNotFound;
 	BOOL protectedUser;
 	NSString *highlightedTweetRowTemplate;
+	
 }
 @property (nonatomic, retain) NSNumber *selectedMessageIdentifier;
+@property (nonatomic, retain) NSMutableSet *relevantMessages;
 
 - (id)initWithMessageIdentifier:(NSNumber*)anIdentifier;
 - (void)loadMessage:(NSNumber*)messageIdentifier;
