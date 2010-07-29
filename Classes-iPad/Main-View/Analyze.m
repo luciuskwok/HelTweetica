@@ -22,7 +22,7 @@
 
 
 @implementation Analyze
-@synthesize webView, account, messages;
+@synthesize webView, durationControl, account;
 
 #pragma mark Private methods
 
@@ -35,7 +35,7 @@
 	return nil;
 }
 
-- (NSMutableArray*) analyzeHomeTimeline:(NSArray*)homeTimeline favorites:(NSArray*)favorites {
+- (NSMutableArray*) analyzeMessages:(NSArray*)messages favorites:(NSArray*)favorites {
 	NSMutableArray *analysis = [NSMutableArray array];
 	
 	TwitterStatusUpdate *message;
@@ -44,7 +44,7 @@
 	NSMutableDictionary *entry;
 	int messageCount, favoriteCount;
 	
-	for (message in homeTimeline) {
+	for (message in messages) {
 		user = message.userScreenName;
 		favorite = [favorites containsObject:message];
 		
@@ -68,7 +68,7 @@
 	return analysis;
 }
 
-- (NSString*) renderedHTMLWithAnalysis:(NSArray*)analysis {
+- (NSString*) renderedHTMLWithAnalysis:(NSArray*)analysis totalCount:(int)totalCount duration:(int)duration {
 	// HTML header
 	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
 	[html appendString:@"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"];
@@ -79,9 +79,9 @@
 	
 	// Body
 	[html appendString:@"</head><body>"];
-	[html appendFormat:@"<div class='tweet_area'><b>Most frequent tweeters</b> out of %d tweets in your home timeline:<br><br>", messages.count];
+	[html appendFormat:@"<div class='tweet_area'><b>Most frequent tweeters</b> out of %d tweets in the past %d hours in your home timeline:<br><br>", totalCount, duration];
 	
-	if ((messages == nil) || (messages.count == 0)) {
+	if (totalCount == 0) {
 		[html appendString:@"No tweets to analyze!"];
 	} else {
 		NSDictionary *entry;
@@ -118,7 +118,7 @@
 
 #pragma mark View lifecycle
 
-- (id)init {
+- (id)initWithAccount:(TwitterAccount *)anAccount {
 	if (self = [super initWithNibName:@"Analyze" bundle:nil]) {
 		// Content size for popover
 		if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
@@ -126,25 +126,55 @@
 		}
 		
 		// Get up to 2000 messages.
-		self.messages = [account.homeTimeline statusUpdatesWithLimit:2000];
+		self.account = anAccount;
 	}
 	return self;
 }
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
+- (void)updateAnalysis {
+	double duration = 2.0; // hours
+	switch (self.durationControl.selectedSegmentIndex) {
+		case 0:	duration = 2.0;	break;
+		case 1:	duration = 6.0;	break;
+		case 2:	duration = 12.0;	break;
+		case 3:	duration = 24.0;	break;
+		default:	break;
+	}
+	NSTimeInterval seconds = duration * 60.0 * 60.0;
+	NSDate *sinceDate = [NSDate dateWithTimeIntervalSinceNow:-seconds];
 	
-	NSArray *favorites = [account.favorites statusUpdatesWithLimit:2000];
-	NSMutableArray *analysis = [self analyzeHomeTimeline:messages favorites:favorites];
+	NSArray *messages = [account.homeTimeline statusUpdatesSinceDate:sinceDate];
+	NSArray *favorites = [account.favorites statusUpdatesSinceDate:sinceDate];
+	NSMutableArray *analysis = [self analyzeMessages:messages favorites:favorites];
 	
 	// Sort analysis by count
 	NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"count" ascending:NO];
 	[analysis sortUsingDescriptors: [NSArray arrayWithObject: descriptor]];
 	[descriptor release];
 	
-	NSString *html = [self renderedHTMLWithAnalysis:analysis];
+	NSString *html = [self renderedHTMLWithAnalysis:analysis totalCount:messages.count duration:duration];
 	NSURL *baseURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] resourcePath]];
 	[self.webView loadHTMLString:html baseURL:baseURL];
+	
+}
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	// Set up nav bar.
+	self.navigationItem.titleView = self.durationControl;
+	NSInteger index = [[NSUserDefaults standardUserDefaults] integerForKey:@"AnalysisDurationSegmentIndex"];
+	[self.durationControl setSelectedSegmentIndex:index];
+	
+	// Update.
+	[self updateAnalysis];
+}
+
+- (IBAction)didChangeDuration:(id)sender {
+	[self updateAnalysis];
+	
+	NSInteger index = [sender selectedSegmentIndex];
+	[[NSUserDefaults standardUserDefaults] setInteger:index forKey:@"AnalysisDurationSegmentIndex"];
 }
 
 - (IBAction) close: (id) sender {
@@ -162,12 +192,13 @@
 - (void)viewDidUnload {
 	[super viewDidUnload];
 	self.webView = nil;
+	self.durationControl = nil;
 }
 
 - (void)dealloc {
 	[webView release];
+	[durationControl release];
 	[account release];
-	[messages release];
 	[super dealloc];
 }
 

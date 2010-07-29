@@ -154,6 +154,28 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	return statuses;
 }
 
+- (NSArray *)statusUpdatesSinceDate:(NSDate*)date {
+	// SQL command to select rows up to limit sorted by createdDate.
+	if (date == nil) return nil;
+	if (database == nil)
+		NSLog(@"TwitterTimeline is missing its database connection.");
+	
+	NSString *query = [NSString stringWithFormat:@"Select StatusUpdates.* from StatusUpdates inner join %@ on %@.identifier=StatusUpdates.identifier where StatusUpdates.CreatedDate>=? order by StatusUpdates.CreatedDate desc", databaseTableName, databaseTableName];
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	[statement bindInteger:[date timeIntervalSinceReferenceDate] atIndex:1];
+	
+	NSMutableArray *statuses = [NSMutableArray array];
+	TwitterStatusUpdate *status;
+	
+	while ([statement step] == SQLITE_ROW) { // Row has data.
+		status = [[[TwitterStatusUpdate alloc] initWithDictionary:[statement rowData]] autorelease];
+		[statuses addObject:status];
+	}
+	
+	return statuses;
+	
+}
+
 - (NSArray *)directMessagesWithLimit:(int)limit {
 	// SQL command to select rows up to limit sorted by createdDate.
 	if (limit <= 0) return nil;

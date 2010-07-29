@@ -44,6 +44,7 @@
 - (void)removeIdentifier:(NSNumber *)identifier;
 - (BOOL)containsIdentifier:(NSNumber *)identifier;
 - (NSArray *)statusUpdatesWithLimit:(int)limit;
+- (NSArray *)statusUpdatesSinceDate:(NSDate*)date;
 - (NSArray *)directMessagesWithLimit:(int)limit;
 
 // Gap

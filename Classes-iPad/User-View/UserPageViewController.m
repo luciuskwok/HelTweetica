@@ -103,7 +103,7 @@ enum {
 		lists.currentLists = self.user.lists;
 		lists.currentSubscriptions = self.user.listSubscriptions;
 		lists.delegate = self;
-		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
+		[self presentViewController:lists inNavControllerInPopoverFromItem:sender];
 	}
 }
 

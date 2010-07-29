@@ -20,12 +20,14 @@
 
 @interface Analyze : UIViewController {
 	IBOutlet UIWebView *webView;
+	IBOutlet UISegmentedControl *durationControl;
 	TwitterAccount *account;
-	NSArray *messages;
 }
 @property (nonatomic, retain) UIWebView *webView;
+@property (nonatomic, retain) UISegmentedControl *durationControl;
 @property (nonatomic, retain) TwitterAccount *account;
-@property (nonatomic, retain) NSArray *messages;
 
-- (IBAction) close: (id) sender;
+- (id)initWithAccount:(TwitterAccount *)anAccount;
+- (IBAction)didChangeDuration:(id)sender;
+- (IBAction)close:(id)sender;
 @end

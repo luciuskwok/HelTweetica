@@ -74,7 +74,7 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 		return nil;
 	AccountsViewController *accountsController = [[[AccountsViewController alloc] initWithTwitter:twitter] autorelease];
 	accountsController.delegate = self;
-	[self presentContent: accountsController inNavControllerInPopoverFromItem: sender];
+	[self presentViewController:accountsController inNavControllerInPopoverFromItem:sender];
 	return accountsController;
 }
 
@@ -153,7 +153,7 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 		lists.currentLists = timelineHTMLController.account.lists;
 		lists.currentSubscriptions = timelineHTMLController.account.listSubscriptions;
 		lists.delegate = self;
-		[self presentContent: lists inNavControllerInPopoverFromItem: sender];
+		[self presentViewController:lists inNavControllerInPopoverFromItem:sender];
 	}
 }
 
@@ -169,10 +169,9 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 
 - (IBAction) analyze: (id) sender {
 	if ([self closeAllPopovers] == NO) {
-		Analyze *c = [[[Analyze alloc] init] autorelease];
-		c.account = timelineHTMLController.account;
+		Analyze *c = [[[Analyze alloc] initWithAccount:timelineHTMLController.account] autorelease];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[self presentPopoverFromItem:sender viewController:c];
+			[self presentViewController:c inNavControllerInPopoverFromItem:sender];
 		} else {
 			[self presentModalViewController:c animated:YES];
 		}

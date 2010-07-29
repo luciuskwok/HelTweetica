@@ -118,7 +118,7 @@
 	if ([self closeAllPopovers] == NO) {
 		SearchViewController *search = [[[SearchViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
 		search.delegate = self;
-		[self presentContent: search inNavControllerInPopoverFromItem: sender];
+		[self presentViewController: search inNavControllerInPopoverFromItem: sender];
 	}
 }
 
@@ -126,7 +126,7 @@
 	if ([self closeAllPopovers] == NO) { 
 		GoToUserViewController *vc = [[[GoToUserViewController alloc] initWithTwitter:twitter] autorelease];
 		vc.delegate = self;
-		[self presentContent:vc inNavControllerInPopoverFromItem:sender];
+		[self presentViewController:vc inNavControllerInPopoverFromItem:sender];
 	}
 }
 
@@ -143,7 +143,7 @@
 		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
 		[compose loadFromUserDefaults];
 		compose.delegate = self;
-		[self presentContent: compose inNavControllerInPopoverFromItem: sender];
+		[self presentViewController: compose inNavControllerInPopoverFromItem: sender];
 	}
 }	
 
@@ -162,7 +162,7 @@
 	}
 	
 	[self closeAllPopovers];
-	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
+	[self presentViewController: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
 - (void) replyToMessage: (NSNumber*)identifier {
@@ -185,7 +185,7 @@
 	}
 	
 	[self closeAllPopovers];
-	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
+	[self presentViewController: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
 - (void) directMessageWithTweet:(NSNumber*)identifier {
@@ -207,7 +207,7 @@
 	}
 	
 	[self closeAllPopovers];
-	[self presentContent: compose inNavControllerInPopoverFromItem: composeButton];
+	[self presentViewController: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
 
@@ -237,7 +237,7 @@
 	self.currentPopover = nil;
 }
 
-- (UIPopoverController*) presentPopoverFromItem:(UIBarButtonItem*)item viewController:(UIViewController*)vc {
+- (UIPopoverController*) presentViewController:(UIViewController*)vc inPopoverFromItem:(UIBarButtonItem*)item {
 	// Present popover
 	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:vc] autorelease];
 	popover.delegate = self;
@@ -246,11 +246,11 @@
 	return popover;
 }	
 
-- (void) presentContent: (UIViewController*) contentViewController inNavControllerInPopoverFromItem: (UIBarButtonItem*) item {
-	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController: contentViewController] autorelease];
+- (void) presentViewController:(UIViewController*)viewController inNavControllerInPopoverFromItem: (UIBarButtonItem*) item {
+	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController: viewController] autorelease];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self presentPopoverFromItem:item viewController:navController];
+		[self presentViewController:navController inPopoverFromItem:item];
 	} else { // iPhone
 		navController.navigationBar.barStyle = UIBarStyleBlack;
 		[self presentModalViewController:navController animated:YES];

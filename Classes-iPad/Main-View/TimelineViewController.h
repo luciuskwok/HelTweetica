@@ -68,8 +68,8 @@
 
 // Popovers
 - (BOOL)closeAllPopovers;
-- (UIPopoverController*) presentPopoverFromItem:(UIBarButtonItem*)item viewController:(UIViewController*)vc;
-- (void) presentContent: (UIViewController*) contentViewController inNavControllerInPopoverFromItem: (UIBarButtonItem*) item;
+- (UIPopoverController*) presentViewController:(UIViewController*)vc inPopoverFromItem:(UIBarButtonItem*)item;
+- (void) presentViewController:(UIViewController*)viewController inNavControllerInPopoverFromItem: (UIBarButtonItem*) item;
 
 // Pushable view controllers
 - (void) showUserPage:(NSString*)screenName;
