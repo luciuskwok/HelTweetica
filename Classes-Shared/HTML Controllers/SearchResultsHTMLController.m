@@ -36,9 +36,7 @@
 		timeline.loadAction.countKey = @"rpp";
 
 		// Database
-		timeline.databaseTableName = [NSString stringWithFormat:@"SearchResults_%@", aQuery];
-		timeline.database = db;
-		[timeline createTableIfNeeded];
+		[timeline setDatabase:db tableName:[NSString stringWithFormat:@"SearchResults_%u", [aQuery hash]] temp:YES];
 
 		[self loadTimeline:timeline];
 	}

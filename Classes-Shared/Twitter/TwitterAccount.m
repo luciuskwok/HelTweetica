@@ -77,33 +77,21 @@
 
 #pragma mark Public methods
 
-- (void)setDatabase:(LKSqliteDatabase *)database {
+- (void)setDatabase:(LKSqliteDatabase *)db {
 	// Timelines will not work unless they have been given a database and table name.
 	NSString *idString = [identifier stringValue];
 	if (idString.length == 0) {
-		idString = screenName;
-		NSLog (@"User identifier is an empty string. Using screen name instead.");
+		// If the account identifier is empty, that means that login failed, so don't create tables.
+		NSLog (@"User identifier is an empty string. Database tables were not created.");
+		return;
 	}
-	
-	homeTimeline.database = database;
-	homeTimeline.databaseTableName = [NSString stringWithFormat:@"User_%@_HomeTimeline", idString];
-	[homeTimeline createTableIfNeeded];
-	
-	mentions.database = database;
-	mentions.databaseTableName = [NSString stringWithFormat:@"User_%@_Mentions", idString];
-	[mentions createTableIfNeeded];
 
-	directMessagesReceived.database = database;
-	directMessagesReceived.databaseTableName = [NSString stringWithFormat:@"User_%@_DirectMessagesReceived", idString];
-	[directMessagesReceived createTableIfNeeded];
+	[homeTimeline setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_HomeTimeline", idString] temp:NO];
+	[mentions setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Mentions", idString] temp:NO];
+	[directMessagesReceived setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_DirectMessagesReceived", idString] temp:NO];
+	[directMessagesSent setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_DirectMessagesSent", idString] temp:NO];
+	[favorites setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Favorites", idString] temp:NO];
 
-	directMessagesSent.database = database;
-	directMessagesSent.databaseTableName = [NSString stringWithFormat:@"User_%@_DirectMessagesSent", idString];
-	[directMessagesSent createTableIfNeeded];
-	
-	favorites.database = database;
-	favorites.databaseTableName = [NSString stringWithFormat:@"User_%@_Favorites", idString];
-	[favorites createTableIfNeeded];
 }
 
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {

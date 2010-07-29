@@ -112,14 +112,9 @@
 
 - (void)setTimelineDatabase:(LKSqliteDatabase *)db {
 	NSString *userIdentifier = screenName;
-	
-	statuses.database = db;
-	statuses.databaseTableName = [NSString stringWithFormat:@"User_%@_Statuses", userIdentifier];
-	[statuses createTableIfNeeded];
-	
-	favorites.database = db;
-	favorites.databaseTableName = [NSString stringWithFormat:@"User_%@_Favorites", userIdentifier];
-	[favorites createTableIfNeeded];
+
+	[statuses setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Statuses", userIdentifier] temp:NO];
+	[favorites setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Favorites", userIdentifier] temp:NO];
 }
 
 - (id)databaseValueForKey:(NSString *)key {

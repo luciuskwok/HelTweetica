@@ -200,6 +200,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	listTimeline.loadAction.countKey = @"per_page";
 	suppressNetworkErrorAlerts = NO;
 	
+	// Prepare database.
+	[list setDatabase:twitter.database];
+	
 	// Load timeline
 	[self loadTimeline: listTimeline];
 	

@@ -34,7 +34,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 
 @implementation TwitterTimeline
-@synthesize database, databaseTableName, noOlderMessages, loadAction, delegate;
+@synthesize noOlderMessages, loadAction, delegate;
 //@synthesize twitter;
 
 - (id)init {
@@ -53,13 +53,18 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 #pragma mark Database
 
-- (void)createTableIfNeeded {
-	NSString *query = [NSString stringWithFormat:@"Create table if not exists %@ (identifier integer primary key, createdDate integer, gapAfter boolean, Foreign Key (identifier) references StatusUpdates(identifier))", databaseTableName];
-	[database execute:query];
-}
+- (void)setDatabase:(LKSqliteDatabase *)db tableName:(NSString*)tableName temp:(BOOL)temp {
+	if (database != db) {
+		[database release];
+		database = [db retain];
+	}
+	if (databaseTableName != tableName) {
+		[databaseTableName release];
+		databaseTableName = [tableName copy];
+	}
 
-- (void)createTemporaryTable {
-	NSString *query = [NSString stringWithFormat:@"Create temp table if not exists %@ (identifier integer primary key, createdDate integer, gapAfter boolean, Foreign Key (identifier) references StatusUpdates(identifier))", databaseTableName];
+	NSString *tempString = temp? @"temp" : @"";
+	NSString *query = [NSString stringWithFormat:@"Create %@ table if not exists %@ (identifier integer primary key, createdDate integer, gapAfter boolean, Foreign Key (identifier) references StatusUpdates(identifier))", tempString, databaseTableName];
 	[database execute:query];
 }
 

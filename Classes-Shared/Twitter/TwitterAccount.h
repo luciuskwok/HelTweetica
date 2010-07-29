@@ -51,7 +51,7 @@
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 @property (nonatomic, retain) NSMutableArray *savedSearches;
 
-- (void)setDatabase:(LKSqliteDatabase *)database;
+- (void)setDatabase:(LKSqliteDatabase *)db;
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists;
 - (void)addFavorites:(NSArray*)set;
 - (void)removeFavorite:(NSNumber *)message;

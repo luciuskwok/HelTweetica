@@ -175,11 +175,13 @@
 	NSMutableData *hash = [NSMutableData dataWithLength:20];
 	CCHmac(kCCHmacAlgSHA1, [secretData bytes], [secretData length], [textData bytes], [textData length], [hash mutableBytes]);
 	
-	NSString *encodedHash = [self base64encode: hash];
+	NSString *encodedHash = [OAuthClient base64encode: hash];
 	return encodedHash;
 }
 
-- (NSString *) base64encode: (NSData*) data {
+#pragma mark Class methods
+
++ (NSString *)base64encode:(NSData *)data {
 	if (data == nil) return nil;
 	if ([data length] == 0) return @"";
 	

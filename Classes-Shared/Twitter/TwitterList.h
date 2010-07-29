@@ -16,8 +16,7 @@
 
 
 #import <Foundation/Foundation.h>
-
-@class TwitterTimeline;
+@class TwitterTimeline, LKSqliteDatabase;
 
 
 @interface TwitterList : NSObject {
@@ -31,9 +30,7 @@
 	NSNumber *memberCount;
 	
 	TwitterTimeline *statuses;
-	
 	BOOL privateList;
-	
 	NSDate *receivedDate;
 }
 @property (nonatomic, retain) NSString *name;
@@ -46,9 +43,9 @@
 @property (nonatomic, retain) NSNumber *memberCount;
 
 @property (nonatomic, retain) TwitterTimeline *statuses;
-
 @property (assign) BOOL privateList;
-
 @property (nonatomic, retain) NSDate *receivedDate;
+
+- (void)setDatabase:(LKSqliteDatabase *)db;
 
 @end

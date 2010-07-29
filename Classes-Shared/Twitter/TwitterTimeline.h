@@ -29,15 +29,13 @@
 
 	id <TwitterTimelineDelegate> delegate;
 }
-@property (nonatomic, retain) LKSqliteDatabase *database;
-@property (nonatomic, retain) NSString *databaseTableName;
 @property (assign) BOOL noOlderMessages;
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
 
 @property (assign) id delegate;
 
 // Database
-- (void)createTableIfNeeded;
+- (void)setDatabase:(LKSqliteDatabase *)db tableName:(NSString*)tableName temp:(BOOL)temp;
 - (void)deleteCaches;
 
 // Messages (Status Updates or Direct Messages)

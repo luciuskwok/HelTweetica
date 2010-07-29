@@ -17,6 +17,7 @@
 
 #import "TwitterList.h"
 #import "TwitterTimeline.h"
+#import "OAuthClient.h"
 
 
 @implementation TwitterList
@@ -80,6 +81,11 @@
 	[encoder encodeObject:receivedDate forKey:@"receivedDate"];
 }
 
+- (void)setDatabase:(LKSqliteDatabase *)db {
+	NSString *base64ListName = [OAuthClient base64encode: [fullName dataUsingEncoding:NSUTF8StringEncoding]];
+	[self.statuses setDatabase:db tableName:[NSString stringWithFormat:@"List_%@_Statuses", base64ListName] temp:NO];
+}
+
 
 #pragma mark NSSet and debugging
 
@@ -99,6 +105,5 @@
 	}
 	return result;
 }
-
 
 @end

@@ -41,4 +41,7 @@
 - (void) setUserKey: (NSString *) aKey userSecret: (NSString*) aSecret;
 - (NSString *) authorizationHeaderWithURLRequest: (NSURLRequest*) aRequest;
 
+// Class methods.
++ (NSString *)base64encode:(NSData *)data;
+
 @end
