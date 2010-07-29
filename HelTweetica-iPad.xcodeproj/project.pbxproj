@@ -220,6 +220,12 @@
 		E0564B8411FBD4AB000A9753 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564AEC11FBD344000A9753 /* AVFoundation.framework */; };
 		E0564ED411FBD93E000A9753 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564ED211FBD93E000A9753 /* MainWindow-iPad.xib */; };
 		E0564ED511FBD93E000A9753 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564ED311FBD93E000A9753 /* MainWindow.xib */; };
+		E08BC74112017A6400CEEC44 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC73E12017A6400CEEC44 /* NSDate+RelativeDate.m */; };
+		E08BC74212017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */; };
+		E08BC74312017A6400CEEC44 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC73E12017A6400CEEC44 /* NSDate+RelativeDate.m */; };
+		E08BC74412017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */; };
+		E08BC75C12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
+		E08BC75D12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
 		E0CADD4611FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
 		E0CADD4711FD82000075F657 /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4511FD82000075F657 /* LKSqliteStatement.m */; };
 		E0CADD4811FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
@@ -403,6 +409,11 @@
 		E0564B8811FBD4AB000A9753 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0564ED211FBD93E000A9753 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		E0564ED311FBD93E000A9753 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = "Resources-iPad/MainWindow.xib"; sourceTree = "<group>"; };
+		E08BC73D12017A6400CEEC44 /* NSDate+RelativeDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RelativeDate.h"; sourceTree = "<group>"; };
+		E08BC73E12017A6400CEEC44 /* NSDate+RelativeDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RelativeDate.m"; sourceTree = "<group>"; };
+		E08BC73F12017A6400CEEC44 /* NSString+HTMLFormatted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTMLFormatted.h"; sourceTree = "<group>"; };
+		E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTMLFormatted.m"; sourceTree = "<group>"; };
+		E08BC75B12017BD500CEEC44 /* dm-row-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "dm-row-template.html"; path = "Resources-Shared/dm-row-template.html"; sourceTree = "<group>"; };
 		E0CADD4211FD82000075F657 /* LKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteDatabase.h; sourceTree = "<group>"; };
 		E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteDatabase.m; sourceTree = "<group>"; };
 		E0CADD4411FD82000075F657 /* LKSqliteStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteStatement.h; sourceTree = "<group>"; };
@@ -656,16 +667,20 @@
 		E0564A3B11FBD2E7000A9753 /* HTML Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E0564A3C11FBD2E7000A9753 /* ConversationHTMLController.h */,
-				E0564A3D11FBD2E7000A9753 /* ConversationHTMLController.m */,
-				E0564A3E11FBD2E7000A9753 /* LKWebView.h */,
-				E0564A3F11FBD2E7000A9753 /* LKWebView.m */,
-				E0564A4011FBD2E7000A9753 /* SearchResultsHTMLController.h */,
-				E0564A4111FBD2E7000A9753 /* SearchResultsHTMLController.m */,
 				E0564A4211FBD2E7000A9753 /* TimelineHTMLController.h */,
 				E0564A4311FBD2E7000A9753 /* TimelineHTMLController.m */,
+				E0564A3C11FBD2E7000A9753 /* ConversationHTMLController.h */,
+				E0564A3D11FBD2E7000A9753 /* ConversationHTMLController.m */,
+				E0564A4011FBD2E7000A9753 /* SearchResultsHTMLController.h */,
+				E0564A4111FBD2E7000A9753 /* SearchResultsHTMLController.m */,
 				E0564A4411FBD2E7000A9753 /* UserPageHTMLController.h */,
 				E0564A4511FBD2E7000A9753 /* UserPageHTMLController.m */,
+				E08BC73D12017A6400CEEC44 /* NSDate+RelativeDate.h */,
+				E08BC73E12017A6400CEEC44 /* NSDate+RelativeDate.m */,
+				E08BC73F12017A6400CEEC44 /* NSString+HTMLFormatted.h */,
+				E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */,
+				E0564A3E11FBD2E7000A9753 /* LKWebView.h */,
+				E0564A3F11FBD2E7000A9753 /* LKWebView.m */,
 			);
 			name = "HTML Controllers";
 			path = "Classes-Shared/HTML Controllers";
@@ -764,6 +779,7 @@
 				E0564AB911FBD325000A9753 /* action-4-on.png */,
 				E0564ABA11FBD325000A9753 /* action-4.png */,
 				E0564ABB11FBD325000A9753 /* basic-template.html */,
+				E08BC75B12017BD500CEEC44 /* dm-row-template.html */,
 				E0564ABC11FBD325000A9753 /* load-gap-template.html */,
 				E0564ABD11FBD325000A9753 /* lock.png */,
 				E0564AC011FBD325000A9753 /* profile-image-proxy.png */,
@@ -901,6 +917,7 @@
 				E0564ED411FBD93E000A9753 /* MainWindow-iPad.xib in Resources */,
 				E0564ED511FBD93E000A9753 /* MainWindow.xib in Resources */,
 				E0D1509911FD2DE900452E63 /* CreationStatement.sql in Resources */,
+				E08BC75C12017BD500CEEC44 /* dm-row-template.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -960,6 +977,7 @@
 				E0564B4811FBD4AB000A9753 /* user-page-template.html in Resources */,
 				E0564B4911FBD4AB000A9753 /* verified.png in Resources */,
 				E0D1509A11FD2DE900452E63 /* CreationStatement.sql in Resources */,
+				E08BC75D12017BD500CEEC44 /* dm-row-template.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1025,6 +1043,8 @@
 				E0F1831E11FDB53900DEDE0D /* TwitterStatusUpdate.m in Sources */,
 				E0F1838A11FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */,
 				E0DCF6F51200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m in Sources */,
+				E08BC74112017A6400CEEC44 /* NSDate+RelativeDate.m in Sources */,
+				E08BC74212017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1088,6 +1108,8 @@
 				E0F1832111FDB53900DEDE0D /* TwitterStatusUpdate.m in Sources */,
 				E0F1838B11FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */,
 				E0DCF6F61200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m in Sources */,
+				E08BC74312017A6400CEEC44 /* NSDate+RelativeDate.m in Sources */,
+				E08BC74412017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

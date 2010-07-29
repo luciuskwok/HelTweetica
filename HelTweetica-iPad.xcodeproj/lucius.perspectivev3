@@ -266,17 +266,17 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>E05649CC11FBCEE6000A9753</string>
-								<string>E05649E611FBD2D8000A9753</string>
 								<string>E05649CF11FBCF0C000A9753</string>
+								<string>E0564A3B11FBD2E7000A9753</string>
 								<string>E0564A4911FBD2E7000A9753</string>
 								<string>29B97323FDCFA39411CA2CEA</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>10</integer>
-									<integer>4</integer>
-									<integer>1</integer>
+									<integer>14</integer>
+									<integer>12</integer>
+									<integer>8</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -316,7 +316,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E05648CD11FBCB3D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Analyze.m</string>
+								<string>TimelineHTMLController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -324,11 +324,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E05648CE11FBCB3D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Analyze.m</string>
+										<string>TimelineHTMLController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E08BC6C4120166F800CEEC44</string>
+										<string>E08BC6F812016F7F00CEEC44</string>
 										<key>history</key>
 										<array>
 											<string>E0564B0011FBD458000A9753</string>
@@ -355,7 +355,6 @@
 											<string>E0DCF77112013B52002CD8C7</string>
 											<string>E0DCF77212013B52002CD8C7</string>
 											<string>E0DCF77812013B74002CD8C7</string>
-											<string>E08BC62F12015ABE00CEEC44</string>
 											<string>E08BC63012015ABE00CEEC44</string>
 											<string>E08BC64712015EFB00CEEC44</string>
 											<string>E08BC64A12015EFB00CEEC44</string>
@@ -369,7 +368,10 @@
 											<string>E08BC6A31201659E00CEEC44</string>
 											<string>E08BC6A5120165D100CEEC44</string>
 											<string>E08BC6AB120165FE00CEEC44</string>
-											<string>E08BC6BD1201664C00CEEC44</string>
+											<string>E08BC6D812016D9D00CEEC44</string>
+											<string>E08BC6D912016D9D00CEEC44</string>
+											<string>E08BC6DA12016D9D00CEEC44</string>
+											<string>E08BC6DB12016D9D00CEEC44</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -686,7 +688,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E08BC6C3120166EB00CEEC44</string>
 		<string>E08BC63412015AC400CEEC44</string>
 		<string>E08BC63612015AC400CEEC44</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-iPad.xcodeproj</string>

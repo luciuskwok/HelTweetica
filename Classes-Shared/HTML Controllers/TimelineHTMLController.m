@@ -48,6 +48,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if (self) {
 		
 		// Load the HTML templates.
+		directMessageRowTemplate = [[self loadHTMLTemplate:@"dm-row-template"] retain];
 		tweetRowTemplate = [[self loadHTMLTemplate:@"tweet-row-template"] retain];
 		tweetMentionRowTemplate = [[self loadHTMLTemplate:@"tweet-row-mention-template"] retain];
 		tweetGapRowTemplate = [[self loadHTMLTemplate:@"load-gap-template"] retain];
@@ -73,6 +74,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[messages release];
 	[actions release];
 	
+	[directMessageRowTemplate release];
 	[tweetRowTemplate release];
 	[tweetMentionRowTemplate release];
 	[tweetGapRowTemplate release];
@@ -155,30 +157,44 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[timeline loadOlderWithMaxIdentifier:maxIdentifier];
 }
 
-- (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
-	// Twitter cache.
-	if ([action.twitterMethod hasPrefix:@"direct_messages"]) {
-		[twitter addDirectMessages:action.loadedMessages];
-	} else {
-		[twitter addStatusUpdates:action.loadedMessages];
-		[twitter addStatusUpdates:action.retweetedMessages];
-	}
-	[twitter addOrReplaceUsers:action.users];
-	
-	// Timeline
-	[aTimeline addMessages:action.loadedMessages updateGap:YES];
-
+- (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterAction *)action {
 	isLoading = NO;
 	
-	if (timeline == aTimeline) {
-		// User may have changed timelines or accounts by the time this method is called, because network operations can take a while.
+	if ([action isKindOfClass:[TwitterLoadTimelineAction class]]) {
+		TwitterLoadTimelineAction *statusUpdateAction = (TwitterLoadTimelineAction *)action;
+
+		// Twitter cache.
+		[twitter addStatusUpdates:statusUpdateAction.loadedMessages];
+		[twitter addStatusUpdates:statusUpdateAction.retweetedMessages];
+		[twitter addOrReplaceUsers:statusUpdateAction.users];
+
+		// Timeline
+		[aTimeline addMessages:statusUpdateAction.loadedMessages updateGap:YES];
+
+		if (timeline == aTimeline) {
+			// To be safe, only update Favorites if the same timeline is still selected.
+			[account addFavorites:statusUpdateAction.favoriteMessages];
+				
+			// Load latest status updates into messages.
+			self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
+			[self rewriteTweetArea];
+		}
+
+	} else if ([action isKindOfClass:[TwitterLoadDirectMessagesAction class]]) {
+		TwitterLoadDirectMessagesAction *directMessagesAction = (TwitterLoadDirectMessagesAction *)action;
 		
-		// To be safe, only update Favorites if a different timeline was not selected.
-		[account addFavorites:action.favoriteMessages];
-	
-		// Update our array of messages with the latest in the timeline.
-		self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
-		[self rewriteTweetArea];	
+		// Twitter cache.
+		[twitter addDirectMessages:directMessagesAction.loadedMessages];
+		[twitter addOrReplaceUsers:directMessagesAction.users];
+
+		// Timeline
+		[aTimeline addMessages:directMessagesAction.loadedMessages updateGap:YES];
+
+		if (timeline == aTimeline) {
+			// Load latest status updates into messages.
+			self.messages = [timeline directMessagesWithLimit: maxTweetsShown];
+			[self rewriteTweetArea];
+		}
 	}
 }
 
@@ -448,6 +464,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	} else if ([action isEqualToString:kMentionsIdentifier]) { // Mentions
 		self.customPageTitle = nil; // Reset the custom page title.
 		[self selectMentionsTimeline];
+	} else if ([action isEqualToString:kDirectMessagesIdentifier]) { // Mentions
+		self.customPageTitle = nil; // Reset the custom page title.
+		[self selectDirectMessageTimeline];
 	} else if ([action isEqualToString:kFavoritesIdentifier]) { // Favorites
 		self.customPageTitle = nil; // Reset the custom page title.
 		[self selectFavoritesTimeline];
@@ -570,7 +589,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	
 	[html appendString:@"<div class='tweet_table'> "];
 
-	// Template for tweet_row
+	// Rows of status updates or direct messages.
 	for (int index=0; index<messages.count; index++) {
 		[html appendString: [self tweetRowHTMLForRow:index]];
 	}
@@ -601,51 +620,11 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	return tweetRowTemplate;
 }
 
-- (NSString *)tweetRowHTMLForRow:(int)row {
-	TwitterStatusUpdate *message = [messages objectAtIndex:row];
-	TwitterStatusUpdate *retweeterMessage = nil;
-	
-	// Skip messages with invalid identifiers
-	if ([message.identifier compare:[NSNumber numberWithInt:10000]] == NSOrderedAscending) return @"";
-	
-	// Swap retweeted message with root message
-	if ([message.retweetedStatusIdentifier longLongValue] != 0) {
-		retweeterMessage = message;
-		message = [twitter statusUpdateWithIdentifier:message.retweetedStatusIdentifier];
-	}
-	
-	// Favorites
-	BOOL isFavorite = [account messageIsFavorite:message.identifier];
-	
-	// Set up dictionary with variables to substitute
-	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
-	if (message.userScreenName)
-		[substitutions setObject:message.userScreenName forKey:@"screenName"];
-	if (message.identifier)
-		[substitutions setObject:[message.identifier stringValue] forKey:@"messageIdentifier"];
-	if (message.profileImageURL)
-		[substitutions setObject:message.profileImageURL forKey:@"profileImageURL"];
-	if (retweeterMessage)
-		[substitutions setObject:@"<img src='retweet.png'>" forKey:@"retweetIcon"];
-	if ([message isLocked])
-		[substitutions setObject:@"<img src='lock.png'>" forKey:@"lockIcon"];
-	if (message.text)
-		[substitutions setObject:[self htmlFormattedString:message.text] forKey:@"content"];
-	if (message.createdDate) 
-		[substitutions setObject:[self timeStringSinceNow: message.createdDate] forKey:@"createdDate"];
-	if (message.source) 
-		[substitutions setObject:message.source forKey:@"via"];
-	if (message.inReplyToScreenName) 
-		[substitutions setObject:message.inReplyToScreenName forKey:@"inReplyToScreenName"];
-	if (retweeterMessage.userScreenName) 
-		[substitutions setObject:retweeterMessage.userScreenName forKey:@"retweetedBy"];
-	if (isFavorite) 
-		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
-	if ([self.customTabName isEqualToString:kDirectMessagesIdentifier] == NO) 
-		[substitutions setObject:@"YES" forKey:@"actions"];
+- (NSString *)htmlWithTemplate:(NSString *)template substitutions:(NSDictionary *)substitutions {
+	if (template == nil) return nil;
 	
 	// Use scanner to replace curly-bracketed variables with values
-	NSScanner *scanner = [NSScanner scannerWithString:[self tweetRowTemplateForRow: row]];
+	NSScanner *scanner = [NSScanner scannerWithString:template];
 	NSMutableString *tweetRowHTML = [[[NSMutableString alloc] init] autorelease];
 	NSString *scannedString, *key, *value;
 	BOOL displayBlock = YES;
@@ -686,19 +665,62 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[scanner scanString:@"}" intoString:nil];
 	}
 	
-	// Append "Load gap" row if needed
-	BOOL gap = [timeline hasGapAfter:message.identifier];
-	BOOL endRow = (row >= maxTweetsShown - 1 || row >= messages.count - 1);
-	NSString *messageIdentifier = [message.identifier stringValue];
-	if (retweeterMessage) 
-		messageIdentifier = [retweeterMessage.identifier stringValue];
-	if (gap && !endRow) {
-		NSMutableString *gapRowHTML = [NSMutableString stringWithString:tweetGapRowTemplate];
-		[gapRowHTML replaceOccurrencesOfString:@"{gapIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, gapRowHTML.length)];
-		[tweetRowHTML appendString:gapRowHTML];
+	return tweetRowHTML;
+}
+
+- (NSString *)tweetRowHTMLForRow:(int)row {
+	id message = [messages objectAtIndex:row];
+	NSMutableString *gapRowHTML = nil;
+	NSString *template = nil;
+	
+	// Skip messages with invalid identifiers
+	if ([[message identifier] compare:[NSNumber numberWithInt:10000]] == NSOrderedAscending) return @"";
+
+	// This is very non-objective-c to test for the object type, since the object should be able to do substitutions by itself.
+	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
+	
+	if ([message isKindOfClass:[TwitterStatusUpdate class]]) {
+		// Status Updates.
+		TwitterStatusUpdate *statusUpdate = (TwitterStatusUpdate *)message;
+		
+		// Special handling for new-style retweets.
+		if ([statusUpdate.retweetedStatusIdentifier longLongValue] != 0) {
+			[substitutions setObject:@"<img src='retweet.png'>" forKey:@"retweetIcon"];
+			if (statusUpdate.userScreenName) 
+				[substitutions setObject:statusUpdate.userScreenName forKey:@"retweetedBy"];
+			message = [twitter statusUpdateWithIdentifier:statusUpdate.retweetedStatusIdentifier];
+		}
+
+		// Favorites
+		if ([account messageIsFavorite:[message identifier]]) 
+			[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
+		
+		// Append "Load gap" row if needed
+		BOOL gap = [timeline hasGapAfter:statusUpdate.identifier];
+		BOOL endRow = (row >= maxTweetsShown - 1 || row >= messages.count - 1);
+		NSString *messageIdentifier = [statusUpdate.identifier stringValue];
+		if (gap && !endRow) {
+			gapRowHTML = [NSMutableString stringWithString:tweetGapRowTemplate];
+			[gapRowHTML replaceOccurrencesOfString:@"{gapIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, gapRowHTML.length)];
+		}
+		
+		// Status update template
+		template = [self tweetRowTemplateForRow: row];
+		
+	} else if ([message isKindOfClass:[TwitterDirectMessage class]]) {
+		// Direct message template
+		template = directMessageRowTemplate;
 	}
 	
-	return tweetRowHTML;
+	// Add substitutions from message.
+	[substitutions addEntriesFromDictionary:[message htmlSubstitutions]];
+	
+	// Load template and apply substitutions.
+	NSString *html = [self htmlWithTemplate:template substitutions:substitutions];
+	if (gapRowHTML != nil) 
+		html = [html stringByAppendingString:gapRowHTML];
+	
+	return html;
 }
 
 - (NSString*) tweetAreaFooterHTML {
@@ -722,37 +744,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	return result;
 }
 
-- (NSString*) timeStringSinceNow: (NSDate*) date {
-	if (date == nil) return nil;
-	
-	NSString *result = nil;
-	NSTimeInterval timeSince = -[date timeIntervalSinceNow] / 60.0 ; // in minutes
-	if (timeSince < 48.0 * 60.0) { // If under 48 hours, report relative time
-		int value;
-		NSString *units;
-		if (timeSince <= 1.5) { // report in seconds
-			value = floor (timeSince * 60.0);
-			units = @"second";
-		} else if (timeSince < 90.0) { // report in minutes
-			value = floor (timeSince);
-			units = @"minute";
-		} else { // report in hours
-			value = floor (timeSince / 60.0);
-			units = @"hour";
-		}
-		if (value == 1) {
-			result = [NSString stringWithFormat:@"1 %@ ago", units];
-		} else {
-			result = [NSString stringWithFormat:@"%d %@s ago", value, units];
-		}
-	} else { // 48 hours or more, display the date
-		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-		[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-		[dateFormatter setDateStyle:NSDateFormatterShortStyle];
-		result = [dateFormatter stringFromDate:date];
-	}
-	return result;
-}
 
 - (void) replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template {
 	// Find beginning and end of block tags
@@ -773,174 +764,5 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	}
 }
 
-- (NSString *)stringWithLinksToURLsWithPrefix:(NSString *)prefix inString:(NSString *)string {
-	NSMutableString *result = [NSMutableString string];
-	NSScanner *scanner = [NSScanner scannerWithString:string];
-	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"];
-	[scanner setCharactersToBeSkipped:nil];
-	NSString *scanned;
-	
-	while ([scanner isAtEnd] == NO) {
-		if ([scanner scanUpToString:prefix intoString:&scanned]) 
-			[result appendString:scanned];
-		if ([scanner scanUpToCharactersFromSet:nonURLSet intoString:&scanned]) {
-			// Replace URLs with link text
-			NSString *linkText = [scanned substringFromIndex: [scanned hasPrefix:@"https"] ? 8 : 7];
-			if ([linkText length] > 29) {
-				linkText = [NSString stringWithFormat: @"%@...", [linkText substringToIndex:26]];
-			}
-			[result appendFormat: @"<a href='%@'>%@</a>", scanned, linkText];
-		}
-	}
-	return result;
-}
-
-/*
-- (NSString *)stringWithAction:(NSString*)action prefix:(NSString *)prefix removePrefix:(BOOL)removePrefix inString:(NSString *)string {
-	NSMutableString *result = [NSMutableString string];
-	NSScanner *scanner = [NSScanner scannerWithString:string];
-	NSCharacterSet *endSet = [NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyz_0123456789"];
-	[scanner setCharactersToBeSkipped:nil];
-	NSString *scanned;
-	
-	while ([scanner isAtEnd] == NO) {
-		if ([scanner scanUpToString:prefix intoString:&scanned]) 
-			[result appendString:scanned];
-		if ([scanner scanUpToCharactersFromSet:endSet intoString:&scanned]) {
-			NSString *linkText = scanned;
-			if ([linkText length] > 30)
-				linkText = [NSString stringWithFormat: @"%@...", [linkText substringToIndex:28]];
-			if (removePrefix && [scanned hasPrefix:prefix])
-				scanned = [scanned substringFromIndex:prefix.length];
-			[result appendFormat: @"<a href='action:%@/%@'>%@</a>", action, scanned, linkText];
-		}
-	}
-	return result;
-}
-
-- (NSString *)stringWithActionLinksInString:(NSString *)string {
-	string = [self stringWithAction:@"user" prefix:@"@" removePrefix:YES inString:string];
-	string = [self stringWithAction:@"search" prefix:@"#" removePrefix:NO inString:string];
-	return string;
-}
- */
-
-- (NSString *)wordInString:(NSString *)string startingAtIndex:(unsigned int)index {
-	if (index >= string.length) return nil;
-	
-	NSScanner *scanner = [NSScanner scannerWithString:[string substringFromIndex:index]];
-	NSCharacterSet *wordSet = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789"];
-	[scanner setCharactersToBeSkipped:nil];
-	NSString *result = nil;
-	if ([scanner scanCharactersFromSet:wordSet intoString:&result])
-		return result;
-	return nil;
-}
-
-- (NSString *)htmlFormattedString:(NSString *)string {
-	
-	// Add link tags to URLs
-	string = [self stringWithLinksToURLsWithPrefix:@"http://" inString:string];
-	string = [self stringWithLinksToURLsWithPrefix:@"https://" inString:string];
-	
-	/* 
-	// Process text outside of HTML tags.
-	NSMutableString *result = [NSMutableString string];
-	NSScanner *htmlScanner = [NSScanner scannerWithString:string];
-	[htmlScanner setCharactersToBeSkipped:nil];
-	NSString *scanned;
-	while ([htmlScanner isAtEnd] == NO) {
-		if ([htmlScanner scanUpToString:@"<" intoString:&scanned]) {
-			// Process text up to tag
-			[result appendString:[self stringWithActionLinksInString:scanned]];
-		}
-		if ([htmlScanner scanUpToString:@">" intoString:&scanned]) {
-			// Copy tag whole
-			[result appendString:scanned];
-		}
-		if ([htmlScanner scanString:@">" intoString:nil]) {
-			// Close the tag
-			[result appendString:@">"];
-		}
-	}
-	 */
-	
-
-	// Move to a mutable string
-	NSMutableString *result = [NSMutableString stringWithString:string];
-	
-	// Replace newlines and carriage returns with <br>
-	[result replaceOccurrencesOfString:@"\r\n" withString:@"<br>" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\n" withString:@"<br>" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\r" withString:@"<br>" options:0 range:NSMakeRange(0, result.length)];
-	
-	// Replace tabs with a non-breaking space followed by a normal space
-	[result replaceOccurrencesOfString:@"\t" withString:@"&nbsp; " options:0 range:NSMakeRange(0, result.length)];
-	
-	// Remove NULs
-	[result replaceOccurrencesOfString:@"\0" withString:@"" options:0 range:NSMakeRange(0, result.length)];
-	
-	
-	// Process letters outside of HTML tags. Break up long words with soft hyphens and detect @user strings.
-	NSCharacterSet *whitespace = [NSCharacterSet whitespaceCharacterSet];
-	unsigned int index = 0;
-	unsigned int wordLength = 0;
-	BOOL isInsideTag = NO;
-	unichar c, previousChar = 0;
-	while (index < result.length) {
-		c = [result characterAtIndex:index];
-		if (c == '<') {
-			isInsideTag = YES;
-		} else if (c == '>') {
-			isInsideTag = NO;
-			wordLength = 0;
-		} else if (c == 160) { // non-breaking space
-			wordLength++;
-		} else if ([whitespace characterIsMember:c]) {
-			wordLength = 0;
-		} else {
-			wordLength++;
-		}
-		
-		if (isInsideTag == NO) {
-			// Break up words longer than 13 chars
-			if (wordLength >= 13) {
-				[result replaceCharactersInRange:NSMakeRange(index, 0) withString:@"&shy;"]; // soft hyphen.
-				index += 5;
-				wordLength = 7; // Reset to 7 so that every 5 chars over 13, it gets a soft hyphen.
-			}
-			
-			NSString *foundWord, *insertHTML;
-			
-			// @username: action link to User Page
-			if (c == '@') {
-				foundWord = [self wordInString:result startingAtIndex:index+1];
-				if (foundWord.length > 0) {
-					insertHTML = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", foundWord, foundWord];
-					[result replaceCharactersInRange: NSMakeRange(index, foundWord.length+1) withString: insertHTML];
-					index += insertHTML.length;
-					wordLength = 0;
-				}
-			}
-			
-			// #hashtag: action link to Search
-			if (c == '#' && previousChar != '&') {
-				foundWord = [self wordInString:result startingAtIndex:index+1];
-				if (foundWord.length > 0) {
-					insertHTML = [NSString stringWithFormat: @"<a href='action:search/#%@'>#%@</a>", foundWord, foundWord];
-					[result replaceCharactersInRange: NSMakeRange(index, foundWord.length+1) withString: insertHTML];
-					index += insertHTML.length;
-					wordLength = 0;
-				}
-			}
-			
-		}
-		
-		previousChar = c;
-		index++;
-	}
-	
-	return result;
-}	
 
 @end

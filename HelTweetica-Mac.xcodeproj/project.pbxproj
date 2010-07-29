@@ -110,6 +110,9 @@
 		E0564E1A11FBD871000A9753 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564E1911FBD871000A9753 /* WebKit.framework */; };
 		E0564EC411FBD881000A9753 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		E0564EC511FBD888000A9753 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
+		E08BC723120177DB00CEEC44 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC722120177DB00CEEC44 /* NSDate+RelativeDate.m */; };
+		E08BC72E1201793C00CEEC44 /* NSString+HTMLFormatted.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC72D1201793C00CEEC44 /* NSString+HTMLFormatted.m */; };
+		E08BC74812017BC000CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC74712017BC000CEEC44 /* dm-row-template.html */; };
 		E0A3F7DB11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A3F7DA11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m */; };
 		E0D14E5911FCD4C400452E63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */; };
 		E0D14F6911FD024A00452E63 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */; };
@@ -261,6 +264,11 @@
 		E0564CB311FBD6DA000A9753 /* HelTweetica_Mac_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweetica_Mac_Prefix.pch; sourceTree = "<group>"; };
 		E0564E0B11FBD833000A9753 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		E0564E1911FBD871000A9753 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		E08BC721120177DB00CEEC44 /* NSDate+RelativeDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RelativeDate.h"; sourceTree = "<group>"; };
+		E08BC722120177DB00CEEC44 /* NSDate+RelativeDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RelativeDate.m"; sourceTree = "<group>"; };
+		E08BC72C1201793C00CEEC44 /* NSString+HTMLFormatted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTMLFormatted.h"; sourceTree = "<group>"; };
+		E08BC72D1201793C00CEEC44 /* NSString+HTMLFormatted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTMLFormatted.m"; sourceTree = "<group>"; };
+		E08BC74712017BC000CEEC44 /* dm-row-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "dm-row-template.html"; sourceTree = "<group>"; };
 		E0A3F7D911FF78130092BD8A /* TwitterLoadDirectMessagesAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoadDirectMessagesAction.h; sourceTree = "<group>"; };
 		E0A3F7DA11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadDirectMessagesAction.m; sourceTree = "<group>"; };
 		E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -404,6 +412,10 @@
 				E0564C0211FBD6A0000A9753 /* UserPageHTMLController.m */,
 				E0564BFB11FBD6A0000A9753 /* LKWebView.h */,
 				E0564BFC11FBD6A0000A9753 /* LKWebView.m */,
+				E08BC721120177DB00CEEC44 /* NSDate+RelativeDate.h */,
+				E08BC722120177DB00CEEC44 /* NSDate+RelativeDate.m */,
+				E08BC72C1201793C00CEEC44 /* NSString+HTMLFormatted.h */,
+				E08BC72D1201793C00CEEC44 /* NSString+HTMLFormatted.m */,
 			);
 			path = "HTML Controllers";
 			sourceTree = "<group>";
@@ -517,6 +529,7 @@
 				E0564C7911FBD6AC000A9753 /* action-4-on.png */,
 				E0564C7A11FBD6AC000A9753 /* action-4.png */,
 				E0564C7B11FBD6AC000A9753 /* basic-template.html */,
+				E08BC74712017BC000CEEC44 /* dm-row-template.html */,
 				E0564C7C11FBD6AC000A9753 /* load-gap-template.html */,
 				E0564C7D11FBD6AC000A9753 /* lock.png */,
 				E0564C8011FBD6AC000A9753 /* profile-image-proxy.png */,
@@ -659,6 +672,7 @@
 				E0564CB011FBD6AC000A9753 /* user-page-template.html in Resources */,
 				E0564CB111FBD6AC000A9753 /* verified.png in Resources */,
 				E0D1509C11FD2E1400452E63 /* CreationStatement.sql in Resources */,
+				E08BC74812017BC000CEEC44 /* dm-row-template.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,6 +733,8 @@
 				E0F182EB11FDB1C300DEDE0D /* TwitterDirectMessage.m in Sources */,
 				E0F1838511FDBBE800DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */,
 				E0A3F7DB11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m in Sources */,
+				E08BC723120177DB00CEEC44 /* NSDate+RelativeDate.m in Sources */,
+				E08BC72E1201793C00CEEC44 /* NSString+HTMLFormatted.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

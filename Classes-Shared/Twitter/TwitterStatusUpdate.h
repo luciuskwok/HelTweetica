@@ -59,5 +59,6 @@
 - (id)databaseValueForKey:(NSString *)key;
 - (void) setValue:(id)value forTwitterKey:(NSString*)key;
 
+- (NSDictionary *)htmlSubstitutions;
 
 @end

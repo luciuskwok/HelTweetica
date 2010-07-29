@@ -20,6 +20,7 @@
 #import "TwitterFriendshipsAction.h"
 #import "TwitterShowFriendshipsAction.h"
 #import "TwitterUserInfoAction.h"
+#import "NSString+HTMLFormatted.h"
 
 
 @implementation UserPageHTMLController
@@ -218,7 +219,7 @@
 }
 
 - (NSString*)webURLHTML:(NSString*)url {
-	return [self htmlFormattedString:url];
+	return [url HTMLFormatted];
 }	
 
 - (NSString *)userInfoHTML {
@@ -235,7 +236,7 @@
 	NSString *fullName = user.fullName ? user.fullName : @"";
 	NSString *location = user.location ? user.location : @"";
 	NSString *web = user.webURL ? [self webURLHTML:user.webURL] : @"";
-	NSString *bio = user.bio ? [self htmlFormattedString: user.bio] : @"";
+	NSString *bio = user.bio ? [user.bio HTMLFormatted] : @"";
 	
 	NSString *friendsCount = user.friendsCount ? [self formattedNumber:user.friendsCount] : @"";
 	NSString *followersCount = user.followersCount ? [self formattedNumber:user.followersCount] : @"";

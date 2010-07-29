@@ -16,6 +16,9 @@
 
 
 #import "TwitterStatusUpdate.h"
+#import "NSDate+RelativeDate.h"
+#import "NSString+HTMLFormatted.h"
+
 
 @implementation TwitterStatusUpdate
 @synthesize identifier, userIdentifier, userScreenName;
@@ -156,4 +159,34 @@
 	
 	// Other values are usually taken from elsewhere, for example: the user dictionary embedded in the status update in timelines.
 }
+
+#pragma mark HTML 
+
+- (NSDictionary *)htmlSubstitutions {
+	
+	// Set up dictionary with variables to substitute
+	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
+	if (self.userScreenName)
+		[substitutions setObject:self.userScreenName forKey:@"screenName"];
+	if (self.identifier)
+		[substitutions setObject:[self.identifier stringValue] forKey:@"messageIdentifier"];
+	if (self.profileImageURL)
+		[substitutions setObject:self.profileImageURL forKey:@"profileImageURL"];
+	if ([self isLocked])
+		[substitutions setObject:@"<img src='lock.png'>" forKey:@"lockIcon"];
+	if (self.text)
+		[substitutions setObject:[self.text HTMLFormatted] forKey:@"content"];
+	if (self.createdDate) 
+		[substitutions setObject:[self.createdDate relativeDateSinceNow] forKey:@"createdDate"];
+	if (self.source) 
+		[substitutions setObject:self.source forKey:@"via"];
+	if (self.inReplyToScreenName) 
+		[substitutions setObject:self.inReplyToScreenName forKey:@"inReplyToScreenName"];
+
+	// Always show action buttons on right side of page.
+	[substitutions setObject:@"YES" forKey:@"actions"];
+	
+	return substitutions;
+}
+
 @end

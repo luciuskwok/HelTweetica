@@ -24,7 +24,7 @@
 #import "TwitterList.h"
 
 
-@class TwitterAction, TwitterLoadTimelineAction;
+@class TwitterAction;
 @protocol TimelineHTMLControllerDelegate;
 
 @interface TimelineHTMLController : NSObject {
@@ -36,6 +36,7 @@
 	NSArray *messages;
 	NSMutableArray *actions;
 
+	NSString *directMessageRowTemplate;
 	NSString *tweetRowTemplate;
 	NSString *tweetMentionRowTemplate;
 	NSString *tweetGapRowTemplate;
@@ -83,7 +84,7 @@
 // Loading
 - (void)loadTimeline:(TwitterTimeline *)aTimeline;
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier;
-- (void)timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action;
+- (void)timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterAction *)action;
 - (void)loadList:(TwitterList*)list;
 
 // Twitter actions
@@ -116,9 +117,7 @@
 - (NSString *)tweetRowTemplateForRow:(int)row;
 - (NSString *)tweetRowHTMLForRow:(int)row;
 - (NSString *)tweetAreaFooterHTML;
-- (NSString *)timeStringSinceNow: (NSDate*) date;
 - (void)replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template;
-- (NSString *)htmlFormattedString:(NSString*)string;
 
 @end
 

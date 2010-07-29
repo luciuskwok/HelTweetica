@@ -9,7 +9,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = E05648C211FBCB36000A9753 /* iPhone */;
-		activeSDKPreference = iphonesimulator3.2;
+		activeSDKPreference = iphoneos3.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* iPhone */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* iPhone */,
@@ -197,6 +197,14 @@
 			E08BC6BE1201664C00CEEC44 /* PBXTextBookmark */ = E08BC6BE1201664C00CEEC44 /* PBXTextBookmark */;
 			E08BC6C2120166EB00CEEC44 /* PBXTextBookmark */ = E08BC6C2120166EB00CEEC44 /* PBXTextBookmark */;
 			E08BC6C4120166F800CEEC44 /* PBXTextBookmark */ = E08BC6C4120166F800CEEC44 /* PBXTextBookmark */;
+			E08BC6CF1201699A00CEEC44 /* PBXTextBookmark */ = E08BC6CF1201699A00CEEC44 /* PBXTextBookmark */;
+			E08BC6D812016D9D00CEEC44 /* PBXTextBookmark */ = E08BC6D812016D9D00CEEC44 /* PBXTextBookmark */;
+			E08BC6D912016D9D00CEEC44 /* PBXTextBookmark */ = E08BC6D912016D9D00CEEC44 /* PBXTextBookmark */;
+			E08BC6DA12016D9D00CEEC44 /* PBXTextBookmark */ = E08BC6DA12016D9D00CEEC44 /* PBXTextBookmark */;
+			E08BC6DB12016D9D00CEEC44 /* PBXTextBookmark */ = E08BC6DB12016D9D00CEEC44 /* PBXTextBookmark */;
+			E08BC6DC12016D9D00CEEC44 /* PBXTextBookmark */ = E08BC6DC12016D9D00CEEC44 /* PBXTextBookmark */;
+			E08BC6EF12016F7000CEEC44 /* PBXTextBookmark */ = E08BC6EF12016F7000CEEC44 /* PBXTextBookmark */;
+			E08BC6F812016F7F00CEEC44 /* PBXTextBookmark */ = E08BC6F812016F7F00CEEC44 /* PBXTextBookmark */;
 			E0CADD5911FD83750075F657 = E0CADD5911FD83750075F657 /* PBXTextBookmark */;
 			E0CADD5A11FD83750075F657 = E0CADD5A11FD83750075F657 /* PBXTextBookmark */;
 			E0CADD5E11FD83750075F657 = E0CADD5E11FD83750075F657 /* PBXTextBookmark */;
@@ -357,9 +365,9 @@
 	};
 	E05649EB11FBD2D8000A9753 /* Analyze.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {901, 4086}}";
+			sepNavIntBoundsRect = "{{0, 0}, {901, 3870}}";
 			sepNavSelRange = "{6608, 0}";
-			sepNavVisRange = "{5204, 1684}";
+			sepNavVisRange = "{1687, 1703}";
 		};
 	};
 	E05649F611FBD2D8000A9753 /* RootViewController.h */ = {
@@ -434,9 +442,16 @@
 	};
 	E0564A3D11FBD2E7000A9753 /* ConversationHTMLController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {631, 3852}}";
+			sepNavIntBoundsRect = "{{0, 0}, {901, 3420}}";
 			sepNavSelRange = "{4266, 0}";
-			sepNavVisRange = "{3760, 1340}";
+			sepNavVisRange = "{3601, 1549}";
+		};
+	};
+	E0564A3E11FBD2E7000A9753 /* LKWebView.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {901, 903}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 2025}";
 		};
 	};
 	E0564A4111FBD2E7000A9753 /* SearchResultsHTMLController.m */ = {
@@ -448,9 +463,9 @@
 	};
 	E0564A4311FBD2E7000A9753 /* TimelineHTMLController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {631, 17262}}";
-			sepNavSelRange = "{2191, 0}";
-			sepNavVisRange = "{1655, 961}";
+			sepNavIntBoundsRect = "{{0, 0}, {901, 13788}}";
+			sepNavSelRange = "{17010, 0}";
+			sepNavVisRange = "{16333, 1964}";
 		};
 	};
 	E0564A4511FBD2E7000A9753 /* UserPageHTMLController.m */ = {
@@ -539,9 +554,9 @@
 	};
 	E0564A5E11FBD2E7000A9753 /* TwitterTimeline.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1002, 6840}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1002, 6768}}";
 			sepNavSelRange = "{6859, 0}";
-			sepNavVisRange = "{6199, 939}";
+			sepNavVisRange = "{6129, 1226}";
 		};
 	};
 	E0564A6011FBD2E7000A9753 /* TwitterUser.m */ = {
@@ -1483,6 +1498,86 @@
 		rType = 0;
 		vrLen = 1684;
 		vrLoc = 5204;
+	};
+	E08BC6CF1201699A00CEEC44 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649EB11FBD2D8000A9753 /* Analyze.m */;
+		name = "Analyze.m: 170";
+		rLen = 0;
+		rLoc = 6608;
+		rType = 0;
+		vrLen = 1746;
+		vrLoc = 1687;
+	};
+	E08BC6D812016D9D00CEEC44 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649EB11FBD2D8000A9753 /* Analyze.m */;
+		name = "Analyze.m: 170";
+		rLen = 0;
+		rLoc = 6608;
+		rType = 0;
+		vrLen = 1703;
+		vrLoc = 1687;
+	};
+	E08BC6D912016D9D00CEEC44 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A3D11FBD2E7000A9753 /* ConversationHTMLController.m */;
+		name = "ConversationHTMLController.m: 104";
+		rLen = 0;
+		rLoc = 4266;
+		rType = 0;
+		vrLen = 1549;
+		vrLoc = 3601;
+	};
+	E08BC6DA12016D9D00CEEC44 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A3E11FBD2E7000A9753 /* LKWebView.h */;
+		name = "LKWebView.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 2025;
+		vrLoc = 0;
+	};
+	E08BC6DB12016D9D00CEEC44 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4311FBD2E7000A9753 /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 38";
+		rLen = 0;
+		rLoc = 2191;
+		rType = 0;
+		vrLen = 1892;
+		vrLoc = 1115;
+	};
+	E08BC6DC12016D9D00CEEC44 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4311FBD2E7000A9753 /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 453";
+		rLen = 27;
+		rLoc = 17807;
+		rType = 0;
+		vrLen = 1969;
+		vrLoc = 16010;
+	};
+	E08BC6EF12016F7000CEEC44 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4311FBD2E7000A9753 /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 467";
+		rLen = 27;
+		rLoc = 17807;
+		rType = 0;
+		vrLen = 1964;
+		vrLoc = 16333;
+	};
+	E08BC6F812016F7F00CEEC44 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4311FBD2E7000A9753 /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 467";
+		rLen = 27;
+		rLoc = 17807;
+		rType = 0;
+		vrLen = 1964;
+		vrLoc = 16333;
 	};
 	E0CADD4211FD82000075F657 /* LKSqliteDatabase.h */ = {
 		uiCtxt = {

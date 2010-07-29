@@ -7,6 +7,8 @@
 //
 
 #import "TwitterDirectMessage.h"
+#import "NSDate+RelativeDate.h"
+#import "NSString+HTMLFormatted.h"
 
 
 @implementation TwitterDirectMessage
@@ -121,4 +123,24 @@
 	
 	// receivedDate is set by action.
 }
+
+#pragma mark HTML 
+
+- (NSDictionary *)htmlSubstitutions {
+	// Set up dictionary with variables to substitute
+	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
+	if (self.identifier)
+		[substitutions setObject:[self.identifier stringValue] forKey:@"messageIdentifier"];
+	if (self.createdDate)
+		[substitutions setObject:[self.createdDate relativeDateSinceNow] forKey:@"createdDate"];
+	if (self.senderScreenName)
+		[substitutions setObject:self.senderScreenName forKey:@"senderScreenName"];
+	if (self.recipientScreenName)
+		[substitutions setObject:self.recipientScreenName forKey:@"recipientScreenName"];
+	if (self.text)
+		[substitutions setObject:[self.text HTMLFormatted] forKey:@"text"];
+	
+	return substitutions;
+}
+
 @end
