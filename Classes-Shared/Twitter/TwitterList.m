@@ -86,7 +86,7 @@
 	if ([tableIdentifier longLongValue] == 0) {
 		tableIdentifier = [NSNumber numberWithUnsignedInteger:[fullName hash]];
 	}
-	[self.statuses setDatabase:db tableName:[NSString stringWithFormat:@"List_%@_Statuses", identifier] temp:NO];
+	[self.statuses setDatabase:db tableName:[NSString stringWithFormat:@"List_%@_Statuses", tableIdentifier] temp:NO];
 }
 
 
