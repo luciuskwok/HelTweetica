@@ -31,7 +31,7 @@
 		self.query = aQuery;
 		
 		// Replace HTML controller with specific one for User Pages
-		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery] autorelease];
+		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery database:twitter.database] autorelease];
 		controller.twitter = twitter;
 		controller.delegate = self;
 		self.timelineHTMLController = controller;

@@ -83,7 +83,6 @@
 	if (idString.length == 0) {
 		idString = screenName;
 		NSLog (@"User identifier is an empty string. Using screen name instead.");
-		return;
 	}
 	
 	homeTimeline.database = database;

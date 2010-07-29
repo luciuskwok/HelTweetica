@@ -110,7 +110,7 @@
 	}
 	
 	// Copy credentials from old query to new one.
-	SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery database:appDelegate.twitter.database] autorelease];
+	SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery database:htmlController.twitter.database] autorelease];
 	controller.twitter = htmlController.twitter;
 	controller.account = htmlController.account;
 	controller.delegate = self;

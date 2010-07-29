@@ -144,7 +144,7 @@ enum {
 - (IBAction)instapaper: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		NSString *cancelButton = NSLocalizedString (@"Cancel", @"alert button");
-		NSString *saveButton = NSLocalizedString (@"Save to Instapaper", @"alert button");
+		NSString *saveButton = NSLocalizedString (@"Read Later", @"alert button");
 		NSString *settingsButton = NSLocalizedString (@"Instapaper Settings...", @"alert button");
 		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle: cancelButton destructiveButtonTitle: nil otherButtonTitles: saveButton, settingsButton, nil];
 		sheet.tag = kInstapaperActionSheetTag;

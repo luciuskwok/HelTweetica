@@ -124,11 +124,12 @@
 	if (existingUser) {
 		[existingUser updateValuesWithUser:action.userResult];
 		[twitter addUsers:[NSSet setWithObject:existingUser]];
+		self.user = existingUser;
 	} else {
 		[twitter addUsers:[NSSet setWithObject:action.userResult]];
+		self.user = action.userResult;
 	}
 	[twitter addStatusUpdates:[NSArray arrayWithObjects: action.latestStatus, action.retweetedStatus, nil]];
-	self.user = action.userResult;
 	[self rewriteUserInfoArea];
 }
 
