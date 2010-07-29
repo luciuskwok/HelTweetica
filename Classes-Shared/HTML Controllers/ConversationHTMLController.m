@@ -52,6 +52,12 @@
 	
 #pragma mark TwitterActions
 
+- (void)loadCachedRepliesToMessage:(NSNumber*)messageIdentifier {
+	NSSet *replies = [twitter statusUpdatesInReplyToStatusIdentifier:messageIdentifier];
+	if (replies.count > 0)
+		[relevantMessages unionSet:replies];
+}
+
 - (void)loadMessage:(NSNumber*)messageIdentifier {
 	// Check if message is already loaded
 	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier:messageIdentifier];
@@ -66,16 +72,8 @@
 		[self startTwitterAction:action];
 	}
 	
-	// Also load all cached replies to this message
-	NSSet *replies = [twitter statusUpdatesInReplyToStatusIdentifier:messageIdentifier];
-	if (replies.count > 0) {
-		[relevantMessages unionSet:replies];
-	}
-	
-	// Sort by date, then by identifier, descending.
-	NSSortDescriptor *createdDateDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO] autorelease];
-	NSSortDescriptor *identifierDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
-	self.messages = [[relevantMessages allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects: createdDateDescriptor, identifierDescriptor, nil]];
+	// Load all cached replies to this message
+	[self loadCachedRepliesToMessage:messageIdentifier];
 }
 
 - (void)loadingComplete {
@@ -86,9 +84,7 @@
 
 - (void)didLoadMessage:(TwitterLoadTimelineAction *)action {
 	// Add loaded message to array.
-	NSMutableSet *messageSet = [NSMutableSet setWithArray:messages];
-	[messageSet addObjectsFromArray:action.loadedMessages];
-	self.messages = [messageSet allObjects];
+	[relevantMessages addObjectsFromArray:action.loadedMessages];
 	
 	// Synchronized users and messages with Twitter cache.
 	[twitter addStatusUpdates:action.loadedMessages];
@@ -105,12 +101,14 @@
 }
 
 - (void)loadInReplyToMessage:(TwitterStatusUpdate*)message {
-	NSNumber *identifier = message.inReplyToStatusIdentifier;
+	// Load all cached replies to this message
+	[self loadCachedRepliesToMessage:message.identifier];
 	
-	if ([identifier longLongValue] > 10000) {
+	if ([message.inReplyToStatusIdentifier longLongValue] > 10000) {
 		// Load next message
-		[self loadMessage:identifier];
+		[self loadMessage:message.inReplyToStatusIdentifier];
 	} else {
+
 		// No more messages
 		[self loadingComplete];
 	}
@@ -166,6 +164,15 @@
 	}
 	
 	return result;
+}
+
+- (void)rewriteTweetArea {
+	// Set the messages to a list of messages sorted by date descending.
+	// Sort by date, then by identifier, descending.
+	NSSortDescriptor *createdDateDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO] autorelease];
+	NSSortDescriptor *identifierDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
+	self.messages = [[relevantMessages allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects: createdDateDescriptor, identifierDescriptor, nil]];
+	[super rewriteTweetArea];
 }
 
 @end

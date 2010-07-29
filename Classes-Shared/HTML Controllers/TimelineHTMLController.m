@@ -28,7 +28,7 @@
 
 
 // Constants
-enum { kDefaultMaxTweetsShown = 300 };
+enum { kDefaultMaxTweetsShown = 500 };
 static NSString *kTimelineIdentifier = @"Timeline";
 static NSString *kMentionsIdentifier = @"Mentions";
 static NSString *kDirectMessagesIdentifier = @"Direct";
