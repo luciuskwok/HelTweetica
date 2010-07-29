@@ -82,8 +82,11 @@
 }
 
 - (void)setDatabase:(LKSqliteDatabase *)db {
-	NSString *base64ListName = [OAuthClient base64encode: [fullName dataUsingEncoding:NSUTF8StringEncoding]];
-	[self.statuses setDatabase:db tableName:[NSString stringWithFormat:@"List_%@_Statuses", base64ListName] temp:NO];
+	NSNumber *tableIdentifier = identifier;
+	if ([tableIdentifier longLongValue] == 0) {
+		tableIdentifier = [NSNumber numberWithUnsignedInteger:[fullName hash]];
+	}
+	[self.statuses setDatabase:db tableName:[NSString stringWithFormat:@"List_%@_Statuses", identifier] temp:NO];
 }
 
 
