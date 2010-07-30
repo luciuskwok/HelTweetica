@@ -70,7 +70,7 @@
 	isLoading = NO;
 	
 	if (timeline == aTimeline) {
-		self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
+		self.messages = [timeline messagesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];	
 	}
 }

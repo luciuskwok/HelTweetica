@@ -56,6 +56,8 @@
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
+	[webView close];
+	
 	htmlController.delegate = nil;
 	[htmlController invalidateRefreshTimer];
 	[htmlController release];
@@ -105,9 +107,13 @@
 	// Set up additional web view preferences that aren't set up in IB.
 	[self.webView setPreferencesIdentifier:@"HelTweeticaWebPrefs"];
 	WebPreferences *prefs = self.webView.preferences;
+	[prefs setJavaEnabled:NO];
+	[prefs setJavaScriptEnabled:YES];
+	[prefs setPlugInsEnabled:NO];
 	[prefs setUsesPageCache:NO];
 	[prefs setCacheModel:WebCacheModelDocumentViewer];
 	[prefs setPrivateBrowsingEnabled:YES];
+	[webView setMaintainsBackForwardList:NO]; 
 	
 	htmlController.webView = self.webView;
 	[htmlController selectHomeTimeline];
@@ -131,10 +137,6 @@
 	[htmlController loadTimeline:htmlController.timeline];
 	
 }	
-
-- (BOOL)windowShouldClose {
-	return YES;
-}
 
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	self.currentSheet = nil;
@@ -621,7 +623,7 @@
 		index = 0;
 	} else if (timeline == htmlController.account.mentions) {
 		index = 1;
-	} else if (timeline == htmlController.account.directMessagesReceived) {
+	} else if (timeline == htmlController.account.directMessages) {
 		index = 2;
 	} else if (timeline == htmlController.account.favorites) {
 		index = 3;

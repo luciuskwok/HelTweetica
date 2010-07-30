@@ -37,20 +37,21 @@
 // Database
 - (void)setDatabase:(LKSqliteDatabase *)db tableName:(NSString*)tableName temp:(BOOL)temp;
 - (void)deleteCaches;
+- (void)limitDatabaseTableSize;
 
 // Messages (Status Updates or Direct Messages)
 - (void)addMessages:(NSArray*)messages;
 - (void)addMessages:(NSArray*)messages updateGap:(BOOL)updateGap;
 - (void)removeIdentifier:(NSNumber *)identifier;
 - (BOOL)containsIdentifier:(NSNumber *)identifier;
-- (NSArray *)statusUpdatesWithLimit:(int)limit;
-- (NSArray *)statusUpdatesSinceDate:(NSDate*)date;
-- (NSArray *)directMessagesWithLimit:(int)limit;
+- (NSArray *)messagesWithLimit:(int)limit;
+- (NSArray *)messagesSinceDate:(NSDate*)date;
 
 // Gap
 - (BOOL)hasGapAfter:(NSNumber *)identifier;
 
 // Loading from Twitter
+- (void)reloadAll;
 - (void)reloadNewer;
 - (void)didReloadNewer:(TwitterLoadTimelineAction *)action;
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier;

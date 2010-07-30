@@ -17,13 +17,15 @@
 
 #import "TwitterAccount.h"
 #import "TwitterTimeline.h"
+#import "TwitterDirectMessageTimeline.h"
 #import "TwitterStatusUpdate.h"
 #import "TwitterList.h"
+#import "TwitterDirectMessageTimeline.h"
 
 
 @implementation TwitterAccount
 @synthesize identifier, screenName, xAuthToken, xAuthSecret;
-@synthesize homeTimeline, mentions, directMessagesReceived, directMessagesSent, favorites, lists, listSubscriptions, savedSearches;
+@synthesize homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
 - (id)init {
 	// Initialize a blank account
@@ -31,8 +33,7 @@
 	if (self) {
 		self.homeTimeline = [[[TwitterTimeline alloc] init] autorelease];
 		self.mentions = [[[TwitterTimeline alloc] init] autorelease];
-		self.directMessagesReceived = [[[TwitterTimeline alloc] init] autorelease];
-		self.directMessagesSent = [[[TwitterTimeline alloc] init] autorelease];
+		self.directMessages = [[[TwitterDirectMessageTimeline alloc] init] autorelease];
 		self.favorites = [[[TwitterTimeline alloc] init] autorelease];
 		self.lists = [NSMutableArray array];
 		self.listSubscriptions = [NSMutableArray array];
@@ -65,8 +66,7 @@
 	
 	[homeTimeline release];
 	[mentions release];
-	[directMessagesReceived release];
-	[directMessagesSent release];
+	[directMessages release];
 	[favorites release];
 	[lists release];
 	[listSubscriptions release];
@@ -88,10 +88,8 @@
 
 	[homeTimeline setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_HomeTimeline", idString] temp:NO];
 	[mentions setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Mentions", idString] temp:NO];
-	[directMessagesReceived setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_DirectMessagesReceived", idString] temp:NO];
-	[directMessagesSent setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_DirectMessagesSent", idString] temp:NO];
+	[directMessages setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_DirectMessages", idString] temp:NO];
 	[favorites setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Favorites", idString] temp:NO];
-
 }
 
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {
@@ -126,8 +124,7 @@
 - (void)deleteCaches {
 	[homeTimeline deleteCaches];
 	[mentions deleteCaches];
-	[directMessagesReceived deleteCaches];
-	[directMessagesSent deleteCaches];
+	[directMessages deleteCaches];
 	[favorites deleteCaches];
 }
 

@@ -226,6 +226,8 @@
 		E08BC74412017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */; };
 		E08BC75C12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
 		E08BC75D12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
+		E0B106911202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */; };
+		E0B106921202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */; };
 		E0CADD4611FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
 		E0CADD4711FD82000075F657 /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4511FD82000075F657 /* LKSqliteStatement.m */; };
 		E0CADD4811FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
@@ -414,6 +416,8 @@
 		E08BC73F12017A6400CEEC44 /* NSString+HTMLFormatted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTMLFormatted.h"; sourceTree = "<group>"; };
 		E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTMLFormatted.m"; sourceTree = "<group>"; };
 		E08BC75B12017BD500CEEC44 /* dm-row-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "dm-row-template.html"; path = "Resources-Shared/dm-row-template.html"; sourceTree = "<group>"; };
+		E0B1068F1202A1AD00780E62 /* TwitterDirectMessageTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessageTimeline.h; sourceTree = "<group>"; };
+		E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDirectMessageTimeline.m; sourceTree = "<group>"; };
 		E0CADD4211FD82000075F657 /* LKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteDatabase.h; sourceTree = "<group>"; };
 		E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteDatabase.m; sourceTree = "<group>"; };
 		E0CADD4411FD82000075F657 /* LKSqliteStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteStatement.h; sourceTree = "<group>"; };
@@ -725,6 +729,8 @@
 				E0F1831911FDB53900DEDE0D /* TwitterStatusJSONParser.m */,
 				E0F1838811FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.h */,
 				E0F1838911FDBDD400DEDE0D /* TwitterDirectMessageJSONParser.m */,
+				E0B1068F1202A1AD00780E62 /* TwitterDirectMessageTimeline.h */,
+				E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */,
 				E0564A5D11FBD2E7000A9753 /* TwitterTimeline.h */,
 				E0564A5E11FBD2E7000A9753 /* TwitterTimeline.m */,
 				E0564A5F11FBD2E7000A9753 /* TwitterUser.h */,
@@ -1045,6 +1051,7 @@
 				E0DCF6F51200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m in Sources */,
 				E08BC74112017A6400CEEC44 /* NSDate+RelativeDate.m in Sources */,
 				E08BC74212017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */,
+				E0B106911202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1110,6 +1117,7 @@
 				E0DCF6F61200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m in Sources */,
 				E08BC74312017A6400CEEC44 /* NSDate+RelativeDate.m in Sources */,
 				E08BC74412017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */,
+				E0B106921202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

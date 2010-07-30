@@ -16,7 +16,6 @@
 
 #import "TwitterTimeline.h"
 #import "TwitterStatusUpdate.h"
-#import "TwitterDirectMessage.h"
 #import "TwitterLoadTimelineAction.h"
 #import "LKSqliteDatabase.h"
 
@@ -131,11 +130,11 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	return NO;
 }
 
-- (void)limitTimelineLength:(int)maxLength {
+- (void)limitDatabaseTableSize {
 	// SQL command to remove oldest rows sorted by createdDate to keep timeline to maxLength.
 }	
 
-- (NSArray *)statusUpdatesWithLimit:(int)limit {
+- (NSArray *)messagesWithLimit:(int)limit {
 	// SQL command to select rows up to limit sorted by createdDate.
 	if (limit <= 0) return nil;
 	if (database == nil)
@@ -154,7 +153,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	return statuses;
 }
 
-- (NSArray *)statusUpdatesSinceDate:(NSDate*)date {
+- (NSArray *)messagesSinceDate:(NSDate*)date {
 	// SQL command to select rows up to limit sorted by createdDate.
 	if (date == nil) return nil;
 	if (database == nil)
@@ -176,24 +175,6 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	
 }
 
-- (NSArray *)directMessagesWithLimit:(int)limit {
-	// SQL command to select rows up to limit sorted by createdDate.
-	if (limit <= 0) return nil;
-	if (database == nil)
-		NSLog(@"TwitterTimeline is missing its database connection.");
-	
-	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier order by DirectMessages.CreatedDate desc limit %d", databaseTableName, databaseTableName, limit];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
-	NSMutableArray *messages = [NSMutableArray arrayWithCapacity:limit];
-	TwitterDirectMessage *message;
-	
-	while ([statement step] == SQLITE_ROW) { // Row has data.
-		message = [[[TwitterDirectMessage alloc] initWithDictionary:[statement rowData]] autorelease];
-		[messages addObject:message];
-	}
-	
-	return messages;
-}
 
 - (BOOL)hasGapAfter:(NSNumber *)identifier {
 	// SQL to check if message in timeline has the gapAfter flag set.
@@ -246,51 +227,59 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 #pragma mark Loading
 
-- (void)reloadNewer {
-	TwitterLoadTimelineAction *action = self.loadAction;
-	if (action == nil) return; // No action to reload.
+- (void)reloadAll {
+	// Load all the latest messages, without limiting by the newest or older than criteria. 
 	
-	// Reset "since_id" and "max_id" parameters in case it was set from previous uses.
-	[action.parameters removeObjectForKey:@"max_id"];
-	[action.parameters removeObjectForKey:@"since_id"];
-	
-	if ([action.twitterMethod isEqualToString:@"favorites"] == NO) { // Only do this for non-Favorites timelines
-		// Set the since_id parameter if there already are messages in the current timeline, except for the favorites timeline, because older tweets can be faved.
-		NSNumber *newerThan = nil;
-		
-		// Skip past retweets because account user's own RTs don't show up in the home timeline.
-		int messageIndex = 0;
-		TwitterStatusUpdate *message;
-		NSArray *messages = [self statusUpdatesWithLimit:50];
-		
-		while (messageIndex < messages.count) {
-			message = [messages objectAtIndex:messageIndex];
-			messageIndex++;
-			if (message.retweetedStatusIdentifier == nil) break;
-		}
-		// On exit, messageIndex points to the message one index after the first non-RT message.
-		
-		if (messageIndex < messages.count) {
-			message = [messages objectAtIndex:messageIndex];
-			newerThan = message.identifier;
-		}
-		
-		if (newerThan)
-			[action.parameters setObject:newerThan forKey:@"since_id"];
-	}
-	
-	// Set the default load count. (Note that searches use rpp instead of count, so this will have no effect on search actions.) 
-	[action setCount:[self defaultLoadCount]];
+	// Reset "since_id" and "max_id" parameters in case it was set from previous uses. Update the count (max number of messages to return.)
+	[loadAction.parameters removeObjectForKey:@"max_id"];
+	[loadAction.parameters removeObjectForKey:@"since_id"];
+	[loadAction setCount:[self defaultLoadCount]];
 	
 	// Prepare action and start it. 
-	action.completionTarget= self;
-	action.completionAction = @selector(didReloadNewer:);
-	[delegate startTwitterAction:action];
+	loadAction.completionTarget= self;
+	loadAction.completionAction = @selector(didReloadNewer:);
+	[delegate startTwitterAction:loadAction];
+}
+
+- (void)reloadNewer {
+	// Load messages newer than what we have locally.
+	
+	// Reset "since_id" and "max_id" parameters in case it was set from previous uses.
+	[loadAction.parameters removeObjectForKey:@"max_id"];
+	[loadAction.parameters removeObjectForKey:@"since_id"];
+	
+	// Limit the query to messages newer than what we already have. 
+	NSArray *messages = [self messagesWithLimit:50];
+	if (messages.count >= 2) { // Minimum of two messages for this to work.
+		NSNumber *newerThan = nil;
+		int overlap = 0;
+		// Skip past retweets because account user's own RTs don't show up in the home timeline.
+		for (TwitterStatusUpdate *update in messages) {
+			if (update.retweetedStatusIdentifier == nil)
+				overlap++;
+			if (overlap == 2) { // Load messages newer than second non-RT in the local cache, so that at least 1 message overlaps.
+				newerThan = update.identifier;
+				break;
+			}
+		}
+		
+		// Set the parameter for limiting the request to messages newer than our latest message.
+		if (newerThan)
+			[loadAction.parameters setObject:newerThan forKey:@"since_id"];
+	}
+		
+	// Set the default load count. (Note that searches use rpp instead of count, so this will have no effect on search actions.) 
+	[loadAction setCount:[self defaultLoadCount]];
+	
+	// Prepare action and start it. 
+	loadAction.completionTarget= self;
+	loadAction.completionAction = @selector(didReloadNewer:);
+	[delegate startTwitterAction:loadAction];
 }
 
 - (void)didReloadNewer:(TwitterLoadTimelineAction *)action {
 	// Limit the length of the timeline
-	[self limitTimelineLength:kMaxNumberOfMessagesInATimeline];
+	[self limitDatabaseTableSize];
 	
 	// Also start an action to load RTs that the account's user has posted within the loaded timeline
 	NSNumber *sinceIdentifier = nil;
@@ -361,7 +350,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	// TODO: load account user's own RTs within the range from max_id in the action to since_id of last tweet in action.messages.
 	
 	// Limit the length of the timeline
-	[self limitTimelineLength:kMaxNumberOfMessagesInATimeline];
+	[self limitDatabaseTableSize];
 	
 	// Call delegate so it can update the UI and Twitter cache.
 	if ([delegate respondsToSelector:@selector(timeline:didLoadWithAction:)]) 

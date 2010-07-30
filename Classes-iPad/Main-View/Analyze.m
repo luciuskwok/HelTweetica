@@ -143,8 +143,8 @@
 	NSTimeInterval seconds = duration * 60.0 * 60.0;
 	NSDate *sinceDate = [NSDate dateWithTimeIntervalSinceNow:-seconds];
 	
-	NSArray *messages = [account.homeTimeline statusUpdatesSinceDate:sinceDate];
-	NSArray *favorites = [account.favorites statusUpdatesSinceDate:sinceDate];
+	NSArray *messages = [account.homeTimeline messagesSinceDate:sinceDate];
+	NSArray *favorites = [account.favorites messagesSinceDate:sinceDate];
 	NSMutableArray *analysis = [self analyzeMessages:messages favorites:favorites];
 	
 	// Sort analysis by count

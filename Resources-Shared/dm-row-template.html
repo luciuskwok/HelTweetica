@@ -6,12 +6,10 @@
 	
 	<div class='tweet_content'>
 		<span class='screen_name'>
-			From: <a href='action:user/{senderScreenName}'>{senderScreenName}</a>.
-			To: <a href='action:user/{recipientScreenName}'>{recipientScreenName}</a>.
+			<a href='action:user/{senderScreenName}'>{senderScreenName}</a>
 		</span>
-		
+		to <a href='action:user/{recipientScreenName}'>{recipientScreenName}</a>:
 		{text}
-		
 		<span class='time'>
 			<nobr><a href='action:conversation/{messageIdentifier}'>{createdDate}</a></nobr>
 		</span>

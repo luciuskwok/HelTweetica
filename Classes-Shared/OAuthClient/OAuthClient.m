@@ -23,7 +23,7 @@
 
 
 @interface OAuthClient (Private)
-- (NSString*) URLEncodeString: (NSString*) aString;
+- (NSString *) URLEncodeString: (NSString*) aString;
 - (NSString *) signatureBaseStringWithURLRequest: (NSURLRequest*) urlRequest;
 - (NSString *) signatureWithText: (NSString*) aText secret: (NSString*) aSecret;
 - (NSString *) base64encode: (NSData*) data;

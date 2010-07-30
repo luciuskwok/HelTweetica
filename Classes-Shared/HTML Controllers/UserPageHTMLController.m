@@ -61,7 +61,7 @@
 	
 	self.customPageTitle = nil;
 	self.timeline = user.statuses;
-	self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
+	self.messages = [timeline messagesWithLimit: maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/user_timeline"] autorelease];
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	[self loadTimeline: timeline];
@@ -79,7 +79,7 @@
 	
 	self.customPageTitle = [NSString stringWithFormat:@"%@&rsquo;s <b>favorites</b>", user.screenName];
 	self.timeline = user.favorites;
-	self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
+	self.messages = [timeline messagesWithLimit: maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	[self.timeline.loadAction.parameters setObject:screenName forKey:@"id"];
 	// Favorites always loads 20 per page. Cannot change the count.

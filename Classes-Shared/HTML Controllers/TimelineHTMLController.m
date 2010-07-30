@@ -91,7 +91,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)selectHomeTimeline {
 	self.customTabName = kTimelineIdentifier;
 	self.timeline = account.homeTimeline;
-	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
 	[self startLoadingCurrentTimeline];
 }
@@ -99,23 +98,20 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)selectMentionsTimeline {
 	self.customTabName = kMentionsIdentifier;
 	self.timeline = account.mentions;
-	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
 	[self startLoadingCurrentTimeline];
 }
 
 - (void)selectDirectMessageTimeline {
 	self.customTabName = kDirectMessagesIdentifier;
-	self.timeline = account.directMessagesReceived;
-	self.messages = [timeline directMessagesWithLimit:maxTweetsShown];
-	self.timeline.loadAction = [[[TwitterLoadDirectMessagesAction alloc] initWithTwitterMethod:@"direct_messages"] autorelease];
+	self.timeline = account.directMessages;
+	self.timeline.loadAction = nil; // TwitterDirectMessageTimeline sets its own load action.
 	[self startLoadingCurrentTimeline];
 }
 
 - (void)selectFavoritesTimeline {
 	self.customTabName = kFavoritesIdentifier;
 	self.timeline = account.favorites;
-	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	// Favorites always loads 20 per page. Cannot change the count.
 	[self startLoadingCurrentTimeline];
@@ -123,9 +119,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (void)startLoadingCurrentTimeline {
 	suppressNetworkErrorAlerts = NO;
-	if (noInternetConnection == NO) {
-		[self loadTimeline:timeline];
-	}
+	[self loadTimeline:timeline];
 	[self rewriteTweetArea];
 	
 	// Notify delegate that a different timeline was selected.
@@ -136,11 +130,19 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 #pragma mark Loading
 
 - (void)loadTimeline:(TwitterTimeline*)aTimeline {
-	isLoading = YES;
 	self.timeline = aTimeline;
-	self.messages = [timeline statusUpdatesWithLimit:maxTweetsShown];
 	timeline.delegate = self;
-	[timeline reloadNewer];
+	self.messages = [timeline messagesWithLimit:maxTweetsShown];
+
+	if (noInternetConnection == NO) {
+		isLoading = YES;
+		if (timeline == account.favorites) {
+			// Reload messages ignoring what's already local in case there are gaps in our version of the timeline.
+			[timeline reloadAll];
+		} else {
+			[timeline reloadNewer];
+		}
+	}
 }
 
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier {
@@ -174,10 +176,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		if (timeline == aTimeline) {
 			// To be safe, only update Favorites if the same timeline is still selected.
 			[account addFavorites:statusUpdateAction.favoriteMessages];
-				
-			// Load latest status updates into messages.
-			self.messages = [timeline statusUpdatesWithLimit: maxTweetsShown];
-			[self rewriteTweetArea];
 		}
 
 	} else if ([action isKindOfClass:[TwitterLoadDirectMessagesAction class]]) {
@@ -189,12 +187,12 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 		// Timeline
 		[aTimeline addMessages:directMessagesAction.loadedMessages updateGap:YES];
+	}
 
-		if (timeline == aTimeline) {
-			// Load latest status updates into messages.
-			self.messages = [timeline directMessagesWithLimit: maxTweetsShown];
-			[self rewriteTweetArea];
-		}
+	// Load latest messages.
+	if (timeline == aTimeline) {
+		self.messages = [timeline messagesWithLimit: maxTweetsShown];
+		[self rewriteTweetArea];
 	}
 }
 
@@ -234,6 +232,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 #pragma mark TwitterAction
 
 - (void)startTwitterAction:(TwitterAction*)action {
+	if (action == nil) return;
+	
 	// Add the action to the array of actions, and updates the network activity spinner
 	[actions addObject: action];
 	

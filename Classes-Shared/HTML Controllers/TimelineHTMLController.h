@@ -20,6 +20,7 @@
 #import "Twitter.h"
 #import "TwitterAccount.h"
 #import "TwitterTimeline.h"
+#import "TwitterDirectMessageTimeline.h"
 #import "TwitterStatusUpdate.h"
 #import "TwitterList.h"
 

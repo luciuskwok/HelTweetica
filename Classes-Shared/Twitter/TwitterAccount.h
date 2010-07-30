@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class TwitterStatusUpdate, TwitterTimeline, LKSqliteDatabase;
+@class TwitterStatusUpdate, TwitterTimeline, TwitterDirectMessageTimeline, LKSqliteDatabase;
 
 
 @interface TwitterAccount : NSObject {
@@ -30,8 +30,7 @@
 	// Cached data. References to sqlite db.
 	TwitterTimeline *homeTimeline;
 	TwitterTimeline *mentions;
-	TwitterTimeline *directMessagesReceived;
-	TwitterTimeline *directMessagesSent;
+	TwitterDirectMessageTimeline *directMessages;
 	TwitterTimeline *favorites;
 	NSMutableArray *lists;
 	NSMutableArray *listSubscriptions;
@@ -44,8 +43,7 @@
 
 @property (nonatomic, retain) TwitterTimeline *homeTimeline;
 @property (nonatomic, retain) TwitterTimeline *mentions;
-@property (nonatomic, retain) TwitterTimeline *directMessagesReceived;
-@property (nonatomic, retain) TwitterTimeline *directMessagesSent;
+@property (nonatomic, retain) TwitterDirectMessageTimeline *directMessages;
 @property (nonatomic, retain) TwitterTimeline *favorites;
 @property (nonatomic, retain) NSMutableArray *lists;
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
