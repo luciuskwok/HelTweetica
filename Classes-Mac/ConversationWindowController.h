@@ -19,7 +19,7 @@
 
 @class Twitter, TwitterAccount;
 
-@interface ConversationWindowController : MainWindowController {
+@interface ConversationWindowController : MainWindowController <TimelineHTMLControllerDelegate> {
 	NSNumber *messageIdentifier;
 }
 @property (nonatomic, retain) NSNumber *messageIdentifier;

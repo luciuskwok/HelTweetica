@@ -1,15 +1,15 @@
 //
-//  AllStarsLoadURLAction.m
+//  LKLoadURLAction.m
 //  HelTweetica
 //
 //  Created by Lucius Kwok on 7/24/10.
 //  Copyright 2010 Felt Tip Inc. All rights reserved.
 //
 
-#import "AllStarsLoadURLAction.h"
+#import "LKLoadURLAction.h"
 
 
-@implementation AllStarsLoadURLAction
+@implementation LKLoadURLAction
 @synthesize connection, receivedData, identifier, delegate;
 
 - (void)dealloc {

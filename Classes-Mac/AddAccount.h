@@ -15,21 +15,23 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "TwitterAction.h"
 @class Twitter;
 @class TwitterAccount;
 @protocol AddAccountDelegate;
 
-@interface AddAccount : NSWindowController {
+
+@interface AddAccount : NSWindowController <TwitterActionDelegate> {
 	IBOutlet NSTextField *usernameField;
 	IBOutlet NSSecureTextField *passwordField;
 	Twitter *twitter;
 	NSString *screenName;
-	id <AddAccountDelegate> delegate;
+	id delegate;
 }
 @property (assign) NSTextField *usernameField;
 @property (assign) NSSecureTextField *passwordField;
 @property (nonatomic, retain) NSString *screenName;
-@property (assign) id delegate;
+@property (assign) id <AddAccountDelegate> delegate;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;
 - (void)askInWindow:(NSWindow *)window modalDelegate:(id)del didEndSelector:(SEL)sel;

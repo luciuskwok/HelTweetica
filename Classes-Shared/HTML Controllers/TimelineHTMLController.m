@@ -16,7 +16,6 @@
 
 #import "TimelineHTMLController.h"
 
-#import "TwitterAction.h"
 #import "TwitterFavoriteAction.h"
 #import "TwitterRetweetAction.h"
 #import "TwitterUpdateStatusAction.h"
@@ -328,8 +327,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 #pragma mark TwitterAction - Misc
 
-- (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier {
+- (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier location:(CLLocation *)location {
 	TwitterUpdateStatusAction *action = [[[TwitterUpdateStatusAction alloc] initWithText:text inReplyTo:messageIdentifier] autorelease];
+	[action setLocation:location];
 	action.completionTarget= self;
 	action.completionAction = @selector(didUpdateStatus:);
 	[self startTwitterAction:action];

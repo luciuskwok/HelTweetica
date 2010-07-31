@@ -62,7 +62,7 @@
 	if (orderedControllers != nil) {
 		[orderedControllers makeObjectsPerformSelector:@selector(showWindow:) withObject:nil];
 		if (orderedControllers.count > 0) {
-			[[orderedControllers objectAtIndex:0] makeKeyAndOrderFront:nil];
+			[[[orderedControllers objectAtIndex:0] window] makeKeyAndOrderFront:nil];
 		}
 	} else {
 		[self newMainWindowWithAccount:nil];

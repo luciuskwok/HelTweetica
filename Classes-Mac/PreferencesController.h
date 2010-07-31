@@ -16,9 +16,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import "Twitter.h"
+#import "AddAccount.h"
 
 
-@interface PreferencesController : NSWindowController {
+@interface PreferencesController : NSWindowController <AddAccountDelegate> {
 	IBOutlet NSTableView *tableView;
 	Twitter *twitter;
 	NSWindowController *currentSheet;

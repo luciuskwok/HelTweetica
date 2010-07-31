@@ -50,7 +50,7 @@ enum { kTwitterCharacterMax = 140 };
 		
 		// Content size for popover
 		if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
-			[self setContentSizeForViewInPopover: CGSizeMake(320, 240)];
+			[self setContentSizeForViewInPopover: CGSizeMake(480, 320)];
 		}
 		
 	}
@@ -183,7 +183,10 @@ enum { kTwitterCharacterMax = 140 };
 			return;
 		}
 		
-		[delegate compose:self didSendMessage:normalizedText inReplyTo:inReplyTo];
+		// Location
+		CLLocation *location = nil;
+		
+		[delegate compose:self didSendMessage:normalizedText inReplyTo:inReplyTo location:location];
 	}
 	
 	self.messageContent = nil;

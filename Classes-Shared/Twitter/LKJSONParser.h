@@ -17,6 +17,8 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol LKJSONParserDelegate;
+
 
 @interface LKJSONParser : NSObject {
 	// Parser state
@@ -27,7 +29,7 @@
 	id delegate;
 }
 @property (nonatomic, retain) NSString *keyPath;
-@property (assign) id delegate;
+@property (assign) id <LKJSONParserDelegate> delegate;
 
 - (id) initWithData:(NSData*)jsonData;
 - (void) parse;

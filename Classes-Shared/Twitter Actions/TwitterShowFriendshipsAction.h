@@ -15,9 +15,10 @@
 
 #import <Foundation/Foundation.h>
 #import "TwitterAction.h"
+#import "LKJSONParser.h"
 
 
-@interface TwitterShowFriendshipsAction : TwitterAction {
+@interface TwitterShowFriendshipsAction : TwitterAction <LKJSONParserDelegate> {
 	BOOL sourceFollowsTarget;
 	BOOL targetFollowsSource;
 	BOOL valid;

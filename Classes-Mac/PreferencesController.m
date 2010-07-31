@@ -132,5 +132,10 @@
 -  (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {	self.currentSheet = nil;
 }
 
+#pragma mark AddAccount delegate
+
+- (void)didLoginToAccount:(TwitterAccount *)anAccount {
+	[self.tableView reloadData];
+}
 
 @end

@@ -16,7 +16,6 @@
 
 
 #import "AllStarsViewController.h"
-#import "AllStarsLoadURLAction.h"
 #import "AllStarsMessageViewController.h"
 #import "SoundEffects.h"
 #import "TwitterStatusUpdate.h"
@@ -122,7 +121,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 		image = [profileImages objectForKey:largeImageURLString];
 		if (image == nil) {
 			// Start an action to load the url.
-			AllStarsLoadURLAction *action = [[[AllStarsLoadURLAction alloc] init] autorelease];
+			LKLoadURLAction *action = [[[LKLoadURLAction alloc] init] autorelease];
 			action.delegate = self;
 			action.identifier = message.profileImageURL;
 			[action loadURL:[NSURL URLWithString:largeImageURLString]];
@@ -175,7 +174,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	return result;
 }
 
-- (void)loadURLAction:(AllStarsLoadURLAction*)action didLoadData:(NSData*)data {
+- (void)loadURLAction:(LKLoadURLAction*)action didLoadData:(NSData*)data {
 	UIImage *avatarImage = [[[UIImage alloc] initWithData:data] autorelease];
 	if (avatarImage != nil) {
 		CGSize imageSize = avatarImage.size;
@@ -200,7 +199,7 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 	[appDelegate decrementNetworkActionCount];
 }
 
-- (void)loadURLAction:(AllStarsLoadURLAction*)action didFailWithError:(NSError*)error {
+- (void)loadURLAction:(LKLoadURLAction*)action didFailWithError:(NSError*)error {
 	// TODO: Replace avatar image with a placeholder to indicate network action got an error.
 	[loadURLActions removeObject:action];
 	[appDelegate decrementNetworkActionCount];

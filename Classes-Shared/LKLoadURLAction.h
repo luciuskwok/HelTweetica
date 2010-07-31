@@ -1,5 +1,5 @@
 //
-//  AllStarsLoadURLAction.h
+//  LKLoadURLAction.h
 //  HelTweetica
 //
 //  Created by Lucius Kwok on 7/24/10.
@@ -7,21 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-@protocol AllStarsLoadURLActionDelegate;
+@protocol LKLoadURLActionDelegate;
 
 
-@interface AllStarsLoadURLAction : NSObject {
+@interface LKLoadURLAction : NSObject {
 	NSURLConnection *connection;
 	NSMutableData *receivedData;
 	NSString *identifier;
 	NSInteger statusCode;
 	BOOL isLoading;
-	id <AllStarsLoadURLActionDelegate> delegate;
+	id delegate;
 }
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSMutableData *receivedData;
 @property (nonatomic, retain) NSString *identifier;
-@property (nonatomic, assign) id delegate;
+@property (nonatomic, assign) id<LKLoadURLActionDelegate> delegate;
 
 - (void)loadURL:(NSURL*)url;
 
@@ -29,8 +29,8 @@
 
 
 
-@protocol AllStarsLoadURLActionDelegate <NSObject>
-- (void)loadURLAction:(AllStarsLoadURLAction*)action didLoadData:(NSData*)data;
-- (void)loadURLAction:(AllStarsLoadURLAction*)action didFailWithError:(NSError*)error;
+@protocol LKLoadURLActionDelegate <NSObject>
+- (void)loadURLAction:(LKLoadURLAction*)action didLoadData:(NSData*)data;
+- (void)loadURLAction:(LKLoadURLAction*)action didFailWithError:(NSError*)error;
 @end
 

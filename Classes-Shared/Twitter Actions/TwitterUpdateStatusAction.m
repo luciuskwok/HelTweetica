@@ -30,6 +30,16 @@
 	return self;
 }
 
+- (void)setLocation:(CLLocation *)location {
+	if (location == nil) return;
+	
+	NSString *longitude = [NSString stringWithFormat:@"%1.9f", location.coordinate.longitude];
+	NSString *latitude = [NSString stringWithFormat:@"%1.9f", location.coordinate.latitude];
+	
+	[parameters setObject:longitude forKey:@"long"];
+	[parameters setObject:latitude forKey:@"lat"];
+}
+
 - (void) start {
 	[self startPostRequest];
 }

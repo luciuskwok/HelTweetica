@@ -379,9 +379,9 @@
 
 #pragma mark Popover delegate methods
 
-- (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo {
+- (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location {
 	[self closeAllPopovers];
-	[timelineHTMLController updateStatus:text inReplyTo:inReplyTo];
+	[timelineHTMLController updateStatus:text inReplyTo:inReplyTo location:location];
 }
 
 - (void) compose:(ComposeViewController*)aCompose didRetweetMessage:(NSNumber*)identifier {

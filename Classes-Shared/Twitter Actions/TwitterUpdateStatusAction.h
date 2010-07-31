@@ -14,6 +14,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "TwitterAction.h"
 #import "TwitterStatusUpdate.h"
 
@@ -21,6 +22,7 @@
 @interface TwitterUpdateStatusAction : TwitterAction {
 }
 
-- (id) initWithText:(NSString*)text inReplyTo:(NSNumber*)replyTo;
+- (id)initWithText:(NSString*)text inReplyTo:(NSNumber*)replyTo;
+- (void)setLocation:(CLLocation *)location;
 
 @end

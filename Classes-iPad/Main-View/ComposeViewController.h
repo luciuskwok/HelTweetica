@@ -16,7 +16,9 @@
 
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 #import "Twitter.h"
+
 
 @protocol ComposeViewControllerDelegate;
 
@@ -60,7 +62,7 @@
 @end
 
 @protocol ComposeViewControllerDelegate <NSObject>
-- (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo;
+- (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location;
 - (void) compose:(ComposeViewController*)aCompose didRetweetMessage:(NSNumber*)identifier;
 @end
 

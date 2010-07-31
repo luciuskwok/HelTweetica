@@ -33,7 +33,7 @@
 	
 	id completionTarget;
 	SEL completionAction;
-	id <TwitterActionDelegate> delegate;
+	id delegate;
 	
 	HelTweeticaAppDelegate *appDelegate;
 }
@@ -51,7 +51,7 @@
 
 @property (assign) id completionTarget;
 @property (assign) SEL completionAction;
-@property (assign) id delegate; // delegate is retained while a NSURLConnection is active, and released if it finished loading or failed with an error.
+@property (assign) id <TwitterActionDelegate> delegate; // delegate is retained while a NSURLConnection is active, and released if it finished loading or failed with an error.
 
 - (void) start;
 	// Subclasses should override -start to call the appropriate post or get request method.
@@ -72,6 +72,7 @@
 @end
 
 @protocol TwitterActionDelegate <NSObject>
+@optional
 - (void) twitterActionDidFinishLoading:(TwitterAction*)aConnection;
 - (void) twitterAction:(TwitterAction*)aConnection didFailWithError:(NSError*)error;
 @end

@@ -27,12 +27,12 @@
 	BOOL noOlderMessages;
 	TwitterLoadTimelineAction *loadAction;
 
-	id <TwitterTimelineDelegate> delegate;
+	id delegate;
 }
 @property (assign) BOOL noOlderMessages;
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
 
-@property (assign) id delegate;
+@property (assign) id <TwitterTimelineDelegate> delegate;
 
 // Database
 - (void)setDatabase:(LKSqliteDatabase *)db tableName:(NSString*)tableName temp:(BOOL)temp;

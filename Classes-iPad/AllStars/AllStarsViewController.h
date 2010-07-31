@@ -16,11 +16,13 @@
 
 
 #import <UIKit/UIKit.h>
+#import "LKLoadURLAction.h"
+
 @class AllStarsMessageViewController;
 @class HelTweeticaAppDelegate;
 
 
-@interface AllStarsViewController : UIViewController {
+@interface AllStarsViewController : UIViewController <LKLoadURLActionDelegate> {
 	NSArray *timeline;
 	IBOutlet UIScrollView *scrollView;
 	NSMutableArray *allButtons;

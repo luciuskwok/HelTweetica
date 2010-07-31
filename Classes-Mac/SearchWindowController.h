@@ -19,7 +19,7 @@
 
 @class Twitter, TwitterAccount;
 
-@interface SearchWindowController : MainWindowController {
+@interface SearchWindowController : MainWindowController <TimelineHTMLControllerDelegate> {
 	IBOutlet NSButton *saveButton;
 	NSString *query;
 }

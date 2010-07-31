@@ -25,7 +25,7 @@
 @class HelTweeticaAppDelegate;
 
 
-@interface MainWindowController : NSWindowController <AddAccountDelegate, ComposeDelegate> {
+@interface MainWindowController : NSWindowController <AddAccountDelegate, ComposeDelegate, TimelineHTMLControllerDelegate> {
 	IBOutlet LKWebView *webView;
 	IBOutlet NSPopUpButton *usersPopUp;
 	IBOutlet NSSegmentedControl *timelineSegmentedControl;

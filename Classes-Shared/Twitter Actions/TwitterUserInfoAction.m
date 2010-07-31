@@ -17,7 +17,6 @@
 #import "TwitterUserInfoAction.h"
 #import "TwitterUser.h"
 #import "TwitterStatusUpdate.h"
-#import "LKJSONParser.h"
 
 
 @implementation TwitterUserInfoAction

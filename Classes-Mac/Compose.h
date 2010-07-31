@@ -15,35 +15,48 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import <CoreLocation/CoreLocation.h>
+#import "LKLoadURLAction.h"
+
+
 @protocol ComposeDelegate;
 
-@interface Compose : NSWindowController {
+@interface Compose : NSWindowController <CLLocationManagerDelegate, LKLoadURLActionDelegate> {
 	IBOutlet NSTextField *textField;
 	IBOutlet NSTextField *charactersRemaining;
+	IBOutlet NSTextField *tooLongLabel;
 	IBOutlet NSSegmentedControl *retweetStyleControl;
-	IBOutlet NSTextField *retweetStyleLabel;
+	IBOutlet NSButton *shrinkURLButton;
+	IBOutlet NSButton *locationButton;
 	IBOutlet NSButton *tweetButton;
+	IBOutlet NSProgressIndicator *activityIndicator;
 	
 	NSString *messageContent;
 	NSNumber *inReplyTo;
 	NSString *originalRetweetContent;
 	BOOL newStyleRetweet;
 	
-	id <ComposeDelegate> delegate;
+	CLLocationManager *locationManager;
+	NSMutableSet *actions;
+	
+	id delegate;
 }
 
 @property (assign) NSTextField *textField;
 @property (assign) NSTextField *charactersRemaining;
+@property (assign) NSTextField *tooLongLabel;
 @property (assign) NSSegmentedControl *retweetStyleControl;
-@property (assign) NSTextField *retweetStyleLabel;
+@property (assign) NSButton *shrinkURLButton;
+@property (assign) NSButton *locationButton;
 @property (assign) NSButton *tweetButton;
+@property (assign) NSProgressIndicator *activityIndicator;
 
 @property (nonatomic, retain) NSString *messageContent;
 @property (nonatomic, retain) NSNumber *inReplyTo;
 @property (nonatomic, retain) NSString *originalRetweetContent;
 @property (assign) BOOL newStyleRetweet;
 
-@property (assign) id delegate;
+@property (assign) id <ComposeDelegate> delegate;
 
 // UI updating
 - (void)updateCharacterCount;
@@ -52,9 +65,12 @@
 - (void) askInWindow:(NSWindow *)aWindow modalDelegate:(id)del didEndSelector:(SEL)sel;
 
 // Actions
+- (IBAction)selectRetweetStyle:(id)sender;
+- (IBAction)location:(id)sender;
+- (IBAction)shrinkURLs:(id)sender;
+- (IBAction)camera:(id)sender;
 - (IBAction)tweet:(id)sender;
 - (IBAction)close:(id)sender;
-- (IBAction)selectRetweetStyle:(id)sender;
 
 // Defaults
 - (void)loadFromUserDefaults;
@@ -63,6 +79,6 @@
 @end
 
 @protocol ComposeDelegate
-- (void) compose:(Compose*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo;
+- (void) compose:(Compose*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location;
 - (void) compose:(Compose*)aCompose didRetweetMessage:(NSNumber*)identifier;
 @end

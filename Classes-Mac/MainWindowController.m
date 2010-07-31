@@ -511,8 +511,8 @@
 	self.currentSheet = compose;
 }
 
-- (void) compose:(Compose*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo {
-	[htmlController updateStatus:text inReplyTo:inReplyTo];
+- (void) compose:(Compose*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location {
+	[htmlController updateStatus:text inReplyTo:inReplyTo location:location];
 }
 
 - (void) compose:(Compose*)aCompose didRetweetMessage:(NSNumber*)identifier {

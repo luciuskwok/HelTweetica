@@ -15,6 +15,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "LKWebView.h"
 
 #import "Twitter.h"
@@ -23,12 +24,13 @@
 #import "TwitterDirectMessageTimeline.h"
 #import "TwitterStatusUpdate.h"
 #import "TwitterList.h"
+#import "TwitterAction.h"
 
-
-@class TwitterAction;
 @protocol TimelineHTMLControllerDelegate;
 
-@interface TimelineHTMLController : NSObject {
+
+
+@interface TimelineHTMLController : NSObject <TwitterTimelineDelegate, TwitterActionDelegate> {
 	LKWebView *webView;
 	
 	Twitter *twitter;
@@ -56,7 +58,7 @@
 	
 	NSTimer *refreshTimer;
 
-	id <TimelineHTMLControllerDelegate> delegate;
+	id delegate;
 }
 
 @property (nonatomic, retain) LKWebView *webView;
@@ -75,7 +77,7 @@
 @property (assign) BOOL noInternetConnection;
 @property (assign) BOOL suppressNetworkErrorAlerts;
 
-@property (assign) id delegate;
+@property (assign) id <TimelineHTMLControllerDelegate> delegate;
 
 // Timeline selection
 - (void)selectHomeTimeline;
@@ -94,7 +96,7 @@
 - (void)startTwitterAction:(TwitterAction*)action;
 - (void)handleTwitterStatusCode:(int)code;
 - (void)twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error;
-- (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier;
+- (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier location:(CLLocation *)location;
 - (void)fave: (NSNumber*) messageIdentifier;
 - (void)retweet:(NSNumber*)messageIdentifier;
 
@@ -125,6 +127,8 @@
 
 
 @protocol TimelineHTMLControllerDelegate <NSObject> 
+@required
 - (void)showAlertWithTitle:(NSString *)aTitle message:(NSString *)aMessage;
+@optional
 - (void)didSelectTimeline:(TwitterTimeline *)timeline;
 @end

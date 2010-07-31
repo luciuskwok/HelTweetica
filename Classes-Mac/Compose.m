@@ -15,10 +15,11 @@
  */
 
 #import "Compose.h"
+#import "LKLoadURLAction.h"
 
 
 @implementation Compose
-@synthesize textField, charactersRemaining, retweetStyleControl, retweetStyleLabel, tweetButton;
+@synthesize textField, charactersRemaining, tooLongLabel, retweetStyleControl, shrinkURLButton, locationButton, tweetButton, activityIndicator;
 @synthesize messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
 @synthesize delegate;
 
@@ -29,6 +30,7 @@ enum { kTwitterCharacterMax = 140 };
 - (id)init {
 	self = [self initWithWindowNibName:@"Compose"];
 	if (self) {
+		actions = [[NSMutableSet alloc] init];
 	}
 	return self;
 }
@@ -38,6 +40,9 @@ enum { kTwitterCharacterMax = 140 };
 	[inReplyTo release];
 	[originalRetweetContent release];
 	
+	[locationManager release];
+	[actions release];
+	
 	[super dealloc];
 }
 
@@ -46,6 +51,16 @@ enum { kTwitterCharacterMax = 140 };
 	if (messageContent != nil) {
 		[textField setStringValue:messageContent];
 		[self updateCharacterCount];
+	}
+	
+	// Location
+	locationManager = [[CLLocationManager alloc] init];
+	locationManager.distanceFilter = 45.0; // meters
+	locationManager.desiredAccuracy = 15.0; // meters
+	BOOL useLocation = [[NSUserDefaults standardUserDefaults] boolForKey:@"useLocation"];
+	[locationButton setState:useLocation? NSOnState : NSOffState];
+	if (useLocation) {
+		[locationManager startUpdatingLocation];
 	}
 	
 	// Text field
@@ -64,7 +79,6 @@ enum { kTwitterCharacterMax = 140 };
 		[self setNewStyleRetweet:newStyleRetweet];
 	} else {
 		[retweetStyleControl setHidden:YES];
-		[retweetStyleLabel setHidden:YES];
 	}
 	
 }
@@ -75,15 +89,17 @@ enum { kTwitterCharacterMax = 140 };
 - (void)updateCharacterCount {
 	if (originalRetweetContent && newStyleRetweet) { // New-style RT doesn't require counting chars
 		[charactersRemaining setStringValue: @""];
+		[tooLongLabel setHidden:YES];
 		[tweetButton setEnabled: YES];
 	} else {
 		// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
 		NSString *string = [textField stringValue];
 		int remaining = kTwitterCharacterMax - [[string precomposedStringWithCanonicalMapping] length];
+		[charactersRemaining setStringValue:[NSString stringWithFormat:@"%d", remaining]];
 		if (remaining < 0) {
-			[charactersRemaining setStringValue:[NSString stringWithFormat:@"Too long! %d", remaining]];
+			[tooLongLabel setHidden:NO];
 		} else {
-			[charactersRemaining setStringValue:[NSString stringWithFormat:@"%d", remaining]];
+			[tooLongLabel setHidden:YES];
 		}
 		// Verify message length and account for Send button
 		[tweetButton setEnabled: (remaining < kTwitterCharacterMax) && (remaining >= 0)];
@@ -101,11 +117,15 @@ enum { kTwitterCharacterMax = 140 };
 		[textField setStringValue: originalRetweetContent];
 		[textField setEditable: NO];
 		[textField setEnabled: NO];
+		[shrinkURLButton setEnabled:NO];
+		[locationButton setEnabled:NO];
 	} else {
 		// Allow editing
 		[textField setEditable: YES];
 		[textField setEnabled: YES];
  		[textField becomeFirstResponder];
+		[shrinkURLButton setEnabled:YES];
+		[locationButton setEnabled:YES];
 	}
 	
 	[self updateCharacterCount];
@@ -130,14 +150,35 @@ enum { kTwitterCharacterMax = 140 };
 }
 
 
-#pragma mark Actions
+#pragma mark IBActions
+
+- (IBAction)selectRetweetStyle:(id)sender {
+	int index = [sender selectedSegment];
+	self.newStyleRetweet = (index == 0);
+}
+
+- (IBAction)location:(id)sender {
+	// Update button and defaults.
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	BOOL useLocation = ![defaults boolForKey:@"useLocation"];
+	[locationButton setState:useLocation? NSOnState : NSOffState];
+	[defaults setBool:useLocation forKey:@"useLocation"];
+	
+	// Get location.
+	if (useLocation) {
+		[locationManager startUpdatingLocation];
+	} else {
+		[locationManager stopUpdatingLocation];
+	}
+}
+
+- (IBAction)camera:(id)sender {
+}
 
 - (IBAction)tweet:(id)sender {
 	// End editing of current text field and save to defaults
 	[[self window] makeFirstResponder:[self window]];
 	[self saveToUserDefaults];
-	
-	// TODO: [self endSheetWithReturnCode:1];
 	
 	if (originalRetweetContent && newStyleRetweet) {
 		// New-style retweet.
@@ -152,7 +193,13 @@ enum { kTwitterCharacterMax = 140 };
 			return;
 		}
 		
-		[delegate compose:self didSendMessage:normalizedText inReplyTo:inReplyTo];
+		// Location
+		CLLocation *location = nil;
+		if ([locationButton state] == NSOnState) {
+			location = [locationManager location];
+		}
+
+		[delegate compose:self didSendMessage:normalizedText inReplyTo:inReplyTo location:location];
 	}
 	
 	self.messageContent = nil;
@@ -167,15 +214,81 @@ enum { kTwitterCharacterMax = 140 };
 	[[self window] makeFirstResponder:[self window]];
 	[self saveToUserDefaults];
 	
+	// Location
+	[locationManager stopUpdatingLocation];
+	
 	// Close sheet
 	[self endSheetWithReturnCode:0];
 }
 
-- (IBAction)selectRetweetStyle:(id)sender {
-	int index = [sender selectedSegment];
-	self.newStyleRetweet = (index == 0);
+#pragma mark URL shortening
+
+- (void)shrinkURLsWithPrefix:(NSString *)prefix inString:(NSString *)string minLength:(int)minLength {
+	// URL shortener setup.
+	// bit.ly requires an API key so we don't use this:  = @"http://api.bit.ly/v3/shorten?format=txt&longUrl=";
+	NSString *shortenerPrefix = @"http://is.gd/api.php?longurl=";
+	
+	// Scanner setup.
+	NSScanner *scanner = [NSScanner scannerWithString:string];
+	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"];
+	[scanner setCharactersToBeSkipped:nil];
+	NSString *longUrl;
+	
+	while ([scanner isAtEnd] == NO) {
+		[scanner scanUpToString:prefix intoString:nil];
+		if ([scanner scanUpToCharactersFromSet:nonURLSet intoString:&longUrl]) {
+			if (longUrl.length >= minLength) {
+				// Start an action to request a short URL for this long URL.
+				NSString *request = [shortenerPrefix stringByAppendingString:[longUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+				LKLoadURLAction *action = [[[LKLoadURLAction alloc] init] autorelease];
+				action.identifier = longUrl;
+				action.delegate = self;
+				[action loadURL:[NSURL URLWithString:request]];
+				
+				// Start network activity indicator.
+				[activityIndicator setHidden: NO];
+				[activityIndicator startAnimation:nil];
+			}
+		}
+	}
 }
 
+- (void)removeAction:(LKLoadURLAction *)action {
+	[actions removeObject:action];
+	
+	if (actions.count == 0) {
+		// Stop network activity indicator.
+		[activityIndicator stopAnimation:nil];
+		[activityIndicator setHidden: YES];
+	}
+}	
+
+- (void)loadURLAction:(LKLoadURLAction*)action didLoadData:(NSData*)data {
+	NSString *longURL = action.identifier;
+	NSString *shortURL = [[[NSString alloc] initWithData:action.receivedData encoding:NSUTF8StringEncoding] autorelease];
+	if (longURL != nil) {
+		if ([shortURL hasPrefix:@"http"]) {
+			NSString *text = [textField stringValue];
+			text = [text stringByReplacingOccurrencesOfString:longURL withString:shortURL];
+			[textField setStringValue:text];
+		} else {
+			// Log the error message
+			NSLog (@"is.gd returned the error: %@", shortURL);
+		}
+	}
+	[self removeAction:action];
+}
+
+- (void)loadURLAction:(LKLoadURLAction*)action didFailWithError:(NSError*)error {
+	[self removeAction:action];
+}
+
+- (IBAction)shrinkURLs:(id)sender {
+	const int kMinLengthToShorten = 23;
+	
+	[self shrinkURLsWithPrefix:@"http://" inString:[textField stringValue] minLength:kMinLengthToShorten];
+	[self shrinkURLsWithPrefix:@"https://" inString:[textField stringValue] minLength:kMinLengthToShorten];
+}
 
 #pragma mark Defaults
 

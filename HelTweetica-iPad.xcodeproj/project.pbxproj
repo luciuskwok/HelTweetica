@@ -21,7 +21,6 @@
 		E0524CCD1203E9BA00EF28F8 /* dm-button.png in Resources */ = {isa = PBXBuildFile; fileRef = E0524CCB1203E9BA00EF28F8 /* dm-button.png */; };
 		E0524CD51203F0B800EF28F8 /* fave-spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = E0524CD41203F0B800EF28F8 /* fave-spinner.gif */; };
 		E0524CD61203F0B800EF28F8 /* fave-spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = E0524CD41203F0B800EF28F8 /* fave-spinner.gif */; };
-		E0564A1211FBD2D8000A9753 /* AllStarsLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E05649D411FBD2D8000A9753 /* AllStarsLoadURLAction.m */; };
 		E0564A1311FBD2D8000A9753 /* AllStarsMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E05649D611FBD2D8000A9753 /* AllStarsMessageViewController.m */; };
 		E0564A1411FBD2D8000A9753 /* AllStarsMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E05649D711FBD2D8000A9753 /* AllStarsMessageViewController.xib */; };
 		E0564A1511FBD2D8000A9753 /* AllStarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E05649D911FBD2D8000A9753 /* AllStarsViewController.m */; };
@@ -174,7 +173,6 @@
 		E0564B4811FBD4AB000A9753 /* user-page-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564ACB11FBD325000A9753 /* user-page-template.html */; };
 		E0564B4911FBD4AB000A9753 /* verified.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564ACC11FBD325000A9753 /* verified.png */; };
 		E0564B4B11FBD4AB000A9753 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
-		E0564B4C11FBD4AB000A9753 /* AllStarsLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E05649D411FBD2D8000A9753 /* AllStarsLoadURLAction.m */; };
 		E0564B4D11FBD4AB000A9753 /* AllStarsMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E05649D611FBD2D8000A9753 /* AllStarsMessageViewController.m */; };
 		E0564B4E11FBD4AB000A9753 /* AllStarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E05649D911FBD2D8000A9753 /* AllStarsViewController.m */; };
 		E0564B4F11FBD4AB000A9753 /* SoundEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = E05649E111FBD2D8000A9753 /* SoundEffects.m */; };
@@ -236,6 +234,8 @@
 		E08BC74412017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */; };
 		E08BC75C12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
 		E08BC75D12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
+		E0AB22D0120416E200C22FB8 /* LKLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AB22CF120416E200C22FB8 /* LKLoadURLAction.m */; };
+		E0AB22D1120416E200C22FB8 /* LKLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AB22CF120416E200C22FB8 /* LKLoadURLAction.m */; };
 		E0B106911202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */; };
 		E0B106921202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */; };
 		E0CADD4611FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
@@ -270,8 +270,6 @@
 		E0524CCB1203E9BA00EF28F8 /* dm-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dm-button.png"; path = "Resources-Shared/dm-button.png"; sourceTree = "<group>"; };
 		E0524CD41203F0B800EF28F8 /* fave-spinner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = "fave-spinner.gif"; path = "Resources-Shared/fave-spinner.gif"; sourceTree = "<group>"; };
 		E05649D111FBD2C7000A9753 /* HelTweetica_iPad_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweetica_iPad_Prefix.pch; sourceTree = "<group>"; };
-		E05649D311FBD2D8000A9753 /* AllStarsLoadURLAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllStarsLoadURLAction.h; sourceTree = "<group>"; };
-		E05649D411FBD2D8000A9753 /* AllStarsLoadURLAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllStarsLoadURLAction.m; sourceTree = "<group>"; };
 		E05649D511FBD2D8000A9753 /* AllStarsMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllStarsMessageViewController.h; sourceTree = "<group>"; };
 		E05649D611FBD2D8000A9753 /* AllStarsMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllStarsMessageViewController.m; sourceTree = "<group>"; };
 		E05649D711FBD2D8000A9753 /* AllStarsMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllStarsMessageViewController.xib; sourceTree = "<group>"; };
@@ -432,6 +430,8 @@
 		E08BC73F12017A6400CEEC44 /* NSString+HTMLFormatted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTMLFormatted.h"; sourceTree = "<group>"; };
 		E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTMLFormatted.m"; sourceTree = "<group>"; };
 		E08BC75B12017BD500CEEC44 /* dm-row-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "dm-row-template.html"; path = "Resources-Shared/dm-row-template.html"; sourceTree = "<group>"; };
+		E0AB22CE120416E200C22FB8 /* LKLoadURLAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKLoadURLAction.h; path = "Classes-Shared/LKLoadURLAction.h"; sourceTree = "<group>"; };
+		E0AB22CF120416E200C22FB8 /* LKLoadURLAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKLoadURLAction.m; path = "Classes-Shared/LKLoadURLAction.m"; sourceTree = "<group>"; };
 		E0B1068F1202A1AD00780E62 /* TwitterDirectMessageTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessageTimeline.h; sourceTree = "<group>"; };
 		E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDirectMessageTimeline.m; sourceTree = "<group>"; };
 		E0CADD4211FD82000075F657 /* LKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteDatabase.h; sourceTree = "<group>"; };
@@ -570,6 +570,8 @@
 				E0564A4A11FBD2E7000A9753 /* (HelTweeticaConsumerToken).h */,
 				E0564A3911FBD2E7000A9753 /* HelTweeticaAppDelegate.h */,
 				E0564A3A11FBD2E7000A9753 /* HelTweeticaAppDelegate.m */,
+				E0AB22CE120416E200C22FB8 /* LKLoadURLAction.h */,
+				E0AB22CF120416E200C22FB8 /* LKLoadURLAction.m */,
 				E0564A3B11FBD2E7000A9753 /* HTML Controllers */,
 				E0564A4611FBD2E7000A9753 /* OAuthClient */,
 				E0564A4911FBD2E7000A9753 /* Twitter */,
@@ -581,8 +583,6 @@
 		E05649D211FBD2D8000A9753 /* AllStars */ = {
 			isa = PBXGroup;
 			children = (
-				E05649D311FBD2D8000A9753 /* AllStarsLoadURLAction.h */,
-				E05649D411FBD2D8000A9753 /* AllStarsLoadURLAction.m */,
 				E05649D511FBD2D8000A9753 /* AllStarsMessageViewController.h */,
 				E05649D611FBD2D8000A9753 /* AllStarsMessageViewController.m */,
 				E05649D711FBD2D8000A9753 /* AllStarsMessageViewController.xib */,
@@ -1025,7 +1025,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				E0564A1211FBD2D8000A9753 /* AllStarsLoadURLAction.m in Sources */,
 				E0564A1311FBD2D8000A9753 /* AllStarsMessageViewController.m in Sources */,
 				E0564A1511FBD2D8000A9753 /* AllStarsViewController.m in Sources */,
 				E0564A1C11FBD2D8000A9753 /* SoundEffects.m in Sources */,
@@ -1083,6 +1082,7 @@
 				E08BC74212017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */,
 				E0B106911202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */,
 				E0524CC11203E24000EF28F8 /* TwitterDirectMessageConversation.m in Sources */,
+				E0AB22D0120416E200C22FB8 /* LKLoadURLAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1091,7 +1091,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0564B4B11FBD4AB000A9753 /* main.m in Sources */,
-				E0564B4C11FBD4AB000A9753 /* AllStarsLoadURLAction.m in Sources */,
 				E0564B4D11FBD4AB000A9753 /* AllStarsMessageViewController.m in Sources */,
 				E0564B4E11FBD4AB000A9753 /* AllStarsViewController.m in Sources */,
 				E0564B4F11FBD4AB000A9753 /* SoundEffects.m in Sources */,
@@ -1150,6 +1149,7 @@
 				E08BC74412017A6400CEEC44 /* NSString+HTMLFormatted.m in Sources */,
 				E0B106921202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */,
 				E0524CC21203E24000EF28F8 /* TwitterDirectMessageConversation.m in Sources */,
+				E0AB22D1120416E200C22FB8 /* LKLoadURLAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

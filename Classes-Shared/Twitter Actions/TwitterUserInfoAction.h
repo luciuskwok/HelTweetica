@@ -15,9 +15,10 @@
 
 #import <Foundation/Foundation.h>
 #import "TwitterAction.h"
+#import "LKJSONParser.h"
 @class TwitterUser, TwitterStatusUpdate;
 
-@interface TwitterUserInfoAction : TwitterAction {
+@interface TwitterUserInfoAction : TwitterAction <LKJSONParserDelegate> {
 	TwitterUser *userResult;
 	TwitterStatusUpdate *latestStatus;
 	TwitterStatusUpdate *retweetedStatus;
