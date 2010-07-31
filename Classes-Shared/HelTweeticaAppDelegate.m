@@ -52,7 +52,7 @@
 		NS_DURING 
 		{
 			orderedControllers = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-			self.windowControllers = [NSSet setWithArray:orderedControllers];
+			self.windowControllers = [NSMutableSet setWithArray:orderedControllers];
 		}
 		NS_HANDLER
 		{

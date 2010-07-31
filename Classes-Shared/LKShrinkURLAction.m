@@ -51,8 +51,10 @@
 }
 
 - (void)load {
+	// bit.ly requires an API key so we don't use this: http://api.bit.ly/v3/shorten?format=txt&longUrl=
+	// TinyURL http://tinyurl.com/api-create.php?url=SOURCE_URL
+	
 	// URL shortener setup.
-	// bit.ly requires an API key so we don't use this:  = @"http://api.bit.ly/v3/shorten?format=txt&longUrl=";
 	NSString *shortenerPrefix = @"http://is.gd/api.php?longurl=";
 	NSString *request = [shortenerPrefix stringByAppendingString:[identifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	
