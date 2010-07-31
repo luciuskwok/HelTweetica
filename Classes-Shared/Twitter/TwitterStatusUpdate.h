@@ -31,6 +31,9 @@
 	NSNumber *inReplyToUserIdentifier;
 	NSString *inReplyToScreenName;
 	NSNumber *retweetedStatusIdentifier;
+	
+	NSNumber *longitude;
+	NSNumber *latitude;
 
 	NSString *text;
 	NSString *source;
@@ -48,6 +51,9 @@
 @property (nonatomic, retain) NSNumber *inReplyToUserIdentifier;
 @property (nonatomic, retain) NSString *inReplyToScreenName;
 @property (nonatomic, retain) NSNumber *retweetedStatusIdentifier;
+
+@property (nonatomic, retain) NSNumber *longitude;
+@property (nonatomic, retain) NSNumber *latitude;
 
 @property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) NSString *source;

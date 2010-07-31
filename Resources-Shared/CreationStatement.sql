@@ -26,6 +26,8 @@ CREATE TABLE StatusUpdates (
 	inReplyToStatusIdentifier integer,
 	inReplyToUserIdentifier integer,
 	inReplyToScreenName text,
+	longitude float,
+	latitude float,
 	text text,
 	source text,
 	retweetedStatusIdentifier integer,

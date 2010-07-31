@@ -24,12 +24,13 @@
 @synthesize identifier, userIdentifier, userScreenName;
 @synthesize inReplyToStatusIdentifier, inReplyToUserIdentifier, inReplyToScreenName;
 @synthesize profileImageURL, text, source, retweetedStatusIdentifier;
+@synthesize longitude, latitude;
 @synthesize createdDate, receivedDate;
 @synthesize locked;
 
 + (NSArray *)databaseKeys {
 	return [NSArray arrayWithObjects:@"identifier", @"createdDate", @"receivedDate", @"userIdentifier", @"userScreenName", 
-			@"profileImageURL", @"inReplyToStatusIdentifier", @"inReplyToUserIdentifier", @"inReplyToScreenName", @"retweetedStatusIdentifier",
+			@"profileImageURL", @"inReplyToStatusIdentifier", @"inReplyToUserIdentifier", @"inReplyToScreenName", @"retweetedStatusIdentifier", @"longitude", @"latitude", 
 			@"text", @"source", @"locked", nil];
 }
 
@@ -48,6 +49,9 @@
 		self.inReplyToUserIdentifier = [d objectForKey:@"inReplyToUserIdentifier"];
 		self.inReplyToScreenName = [d objectForKey:@"inReplyToScreenName"];
 		self.retweetedStatusIdentifier = [d objectForKey:@"retweetedStatusIdentifier"];
+
+		self.longitude = [d objectForKey:@"longitude"];
+		self.latitude = [d objectForKey:@"latitude"];
 
 		self.text = [d objectForKey:@"text"];
 		self.source = [d objectForKey:@"source"];
@@ -69,6 +73,9 @@
 	[inReplyToUserIdentifier release];
 	[inReplyToScreenName release];
 	[retweetedStatusIdentifier release];
+	
+	[longitude release];
+	[latitude release];
 	
 	[text release];
 	[source release];
@@ -136,6 +143,13 @@
 	return number;
 }
 
+- (NSNumber *)scanDoubleFromString:(NSString *)string {
+	double x = 0;
+	[[NSScanner scannerWithString:string] scanDouble: &x];
+	NSNumber *number = [NSNumber numberWithDouble: x];
+	return number;
+}
+
 // Given a key from the JSON data returned by the Twitter API, put the value in the appropriate ivar.
 - (void) setValue:(id)value forTwitterKey:(NSString*)key {
 	// String and number values
@@ -154,6 +168,12 @@
 			self.inReplyToUserIdentifier = [self scanInt64FromString:value];
 		} else if ([key isEqualToString:@"created_at"]) {
 			self.createdDate = [self dateWithTwitterStatusString:value];
+		} else if ([key isEqualToString:@"coordinates"]) {
+			if (longitude == nil) {
+				self.longitude = [self scanDoubleFromString:value];
+			} else {
+				self.latitude = [self scanDoubleFromString:value];
+			}
 		}
 	}
 	
@@ -161,6 +181,24 @@
 }
 
 #pragma mark HTML 
+
+- (NSString *)stringForURLWithPrefix:(NSString *)prefix {
+	NSString *urlString = nil;
+	NSScanner *scanner = [NSScanner scannerWithString:text];
+	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@"-+?& \t\r\n\"'"];
+	[scanner setCharactersToBeSkipped:nil];
+	
+	while ([scanner isAtEnd] == NO) {
+		[scanner scanUpToString:prefix intoString:nil];
+		if ([scanner scanUpToCharactersFromSet:nonURLSet intoString:&urlString]) {
+			if ([urlString hasSuffix:@"."])
+				urlString = [urlString substringToIndex:urlString.length - 1];
+			return urlString;
+		}
+	}
+	
+	return nil;
+}
 
 - (NSDictionary *)htmlSubstitutions {
 	
@@ -172,8 +210,6 @@
 		[substitutions setObject:[self.identifier stringValue] forKey:@"messageIdentifier"];
 	if (self.profileImageURL)
 		[substitutions setObject:self.profileImageURL forKey:@"profileImageURL"];
-	if ([self isLocked])
-		[substitutions setObject:@"<img src='lock.png'>" forKey:@"lockIcon"];
 	if (self.text)
 		[substitutions setObject:[self.text HTMLFormatted] forKey:@"content"];
 	if (self.createdDate) 
@@ -182,9 +218,62 @@
 		[substitutions setObject:self.source forKey:@"via"];
 	if (self.inReplyToScreenName) 
 		[substitutions setObject:self.inReplyToScreenName forKey:@"inReplyToScreenName"];
+	if ([self isLocked])
+		[substitutions setObject:@"<img src='lock.png'>" forKey:@"lockIcon"];
+	if (self.longitude && self.latitude)
+		[substitutions setObject:@"<img src='geotag.png'>" forKey:@"geotagIcon"];
 
 	// Always show action buttons on right side of page.
 	[substitutions setObject:@"YES" forKey:@"actions"];
+	
+	// Find image previews.
+	NSString *searchResults;
+	NSString *imageURL = nil;
+	NSString *imagePreviewURL = nil;
+	
+	// TwitPic
+	searchResults = [self stringForURLWithPrefix:@"http://twitpic.com/"];
+	if (searchResults.length > 19) {
+		imageURL = searchResults;
+		imagePreviewURL = [NSString stringWithFormat:@"http://twitpic.com/show/thumb/%@", [imageURL lastPathComponent]];
+	}
+	
+	// yFrog
+	searchResults = [self stringForURLWithPrefix:@"http://yfrog.com/"];
+	if (searchResults.length > 17) {
+		imageURL = searchResults;
+		if ([imageURL hasSuffix:@".jpg"]) {
+			imagePreviewURL = [imageURL stringByReplacingOccurrencesOfString:@".jpg" withString:@".th.jpg"];
+		} else {
+			imagePreviewURL = [imageURL stringByAppendingString:@".th.jpg"];
+		}
+
+	}
+	
+	// Moby Picture
+	searchResults = [self stringForURLWithPrefix:@"http://moby.to/"];
+	if (searchResults.length > 15) {
+		imageURL = searchResults;
+		imagePreviewURL = [imageURL stringByAppendingString:@":thumb"];
+	}
+	
+	// Tweet Photo was down http://pic.gd/0f53e6
+		
+	// img.ly
+	searchResults = [self stringForURLWithPrefix:@"http://img.ly/"]; 
+	if (searchResults.length > 14) {
+		imageURL = searchResults;
+		NSString *imageIdentifier = [imageURL lastPathComponent];
+		NSString *imageBase = [imageURL stringByDeletingLastPathComponent];
+		imagePreviewURL = [imageBase stringByAppendingPathComponent:@"show/thumb"];
+		imagePreviewURL = [imagePreviewURL stringByAppendingPathComponent:imageIdentifier];
+	}
+	
+	// Add image URLs.
+	if (imagePreviewURL != nil) {
+		[substitutions setObject:imageURL forKey:@"imageURL"];
+		[substitutions setObject:imagePreviewURL forKey:@"imagePreviewURL"];
+	}
 	
 	return substitutions;
 }

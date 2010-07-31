@@ -110,8 +110,13 @@ p { margin: 0px 0px 20px 0px; }
 }
 .avatar_img { 
 	width: 48px; height: 48px; 
-	padding: 1px; 
-	-webkit-border-radius: 10px; 
+	margin: 1px; 
+	-webkit-border-radius: 8px; 
+}
+.image_preview { 
+	float:right;
+	margin: 0px 0px 0px 5px; 
+	-webkit-border-radius: 8px; 
 }
 .tweet_content { 
 	display: table-cell; 

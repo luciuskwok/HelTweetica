@@ -11,6 +11,10 @@
 			{lockIcon}
 		</span>
 		
+		{Block:imageURL}
+			<a href='{imageURL}'><img class='image_preview' src='{imagePreviewURL}'></a>
+		{/Block:imageURL}
+
 		{content}
 		
 		<span class='time'>
@@ -26,6 +30,7 @@
 			{/Block:retweetedBy} 
 				
 		</span>
+
 	</div><!-- tweet_content -->
 	
 	{Block:actions}

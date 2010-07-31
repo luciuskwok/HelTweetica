@@ -625,9 +625,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if ([account messageIsFavorite:statusUpdate.identifier]) 
 		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
 	
-	// Image preview
-	// TODO: image preview.
-	
 	// Add values from status update.
 	[substitutions addEntriesFromDictionary:[statusUpdate htmlSubstitutions]];
 	
