@@ -16,12 +16,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreLocation/CoreLocation.h>
-#import "LKLoadURLAction.h"
+#import "LKShrinkURLAction.h"
 
 
 @protocol ComposeDelegate;
 
-@interface Compose : NSWindowController <CLLocationManagerDelegate, LKLoadURLActionDelegate> {
+@interface Compose : NSWindowController <LKShrinkURLActionDelegate> {
 	IBOutlet NSTextField *textField;
 	IBOutlet NSTextField *charactersRemaining;
 	IBOutlet NSTextField *tooLongLabel;

@@ -16,20 +16,23 @@
 
 
 #import "ComposeViewController.h"
+#import "HelTweeticaAppDelegate.h"
 
-enum { kTwitterCharacterMax = 140 };
+
+const int kTwitterCharacterMax = 140;
 
 
 @implementation ComposeViewController
-@synthesize messageField, sendButton, retweetStyleButton, charactersRemaining, bottomToolbar;
+@synthesize messageField, sendButton, retweetStyleButton, geotagButton, shrinkURLsButton, charactersRemaining, bottomToolbar;
 @synthesize account, messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
-@synthesize delegate;
+@synthesize locationManager, delegate;
 
 
 - (id)initWithAccount:(TwitterAccount*)anAccount {
 	if (self = [super initWithNibName:@"Compose" bundle:nil]) {
 		// Twitter
 		self.account = anAccount;
+		appDelegate = [[UIApplication sharedApplication] delegate];
 		
 		// Title
 		if (account.screenName == nil) {
@@ -50,7 +53,7 @@ enum { kTwitterCharacterMax = 140 };
 		
 		// Content size for popover
 		if ([UIViewController instancesRespondToSelector:@selector(setContentSizeForViewInPopover:)]) {
-			[self setContentSizeForViewInPopover: CGSizeMake(480, 320)];
+			[self setContentSizeForViewInPopover: CGSizeMake(480, 275)];
 		}
 		
 	}
@@ -61,6 +64,8 @@ enum { kTwitterCharacterMax = 140 };
 	[messageField release];
 	[sendButton release];
 	[retweetStyleButton release];
+	[geotagButton release];
+	[shrinkURLsButton release];
 	[charactersRemaining release];
 	[bottomToolbar release];
 	
@@ -68,6 +73,8 @@ enum { kTwitterCharacterMax = 140 };
 	[messageContent release];
 	[inReplyTo release];
 	[originalRetweetContent release];
+	
+	[locationManager release];
 	
 	[super dealloc];
 }
@@ -85,7 +92,22 @@ enum { kTwitterCharacterMax = 140 };
 }
 
 - (NSString*) retweetStyleButtonTitle {
-	return newStyleRetweet ? NSLocalizedString (@"RT style: New", "button") : NSLocalizedString (@"RT style: Old", "button");
+	return newStyleRetweet ? NSLocalizedString (@"New RT", "button") : NSLocalizedString (@"Old RT", "button");
+}
+
+- (void)updateGeotagButton {
+	BOOL locationEnabled = locationManager.locationServicesEnabled;
+	BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
+	NSString *on = NSLocalizedString (@"Geotag ON", @"button");
+	NSString *off = NSLocalizedString (@"Geotag off", @"button");
+	
+	if (locationEnabled) {
+		[geotagButton setTitle: geotag? on : off];
+		geotagButton.enabled = YES;
+	} else {
+		[geotagButton setTitle: off];
+		geotagButton.enabled = NO;
+	}
 }
 
 - (void) setNewStyleRetweet:(BOOL)x {
@@ -93,13 +115,19 @@ enum { kTwitterCharacterMax = 140 };
 	self.retweetStyleButton.title = [self retweetStyleButtonTitle];
 	if (newStyleRetweet && originalRetweetContent) {
 		// Reinstate original retweet message and disable editing
-		self.messageField.text = originalRetweetContent;
-		self.messageField.editable = NO;
+		messageField.text = originalRetweetContent;
+		messageField.textColor = [UIColor grayColor];
+		messageField.editable = NO;
+		geotagButton.enabled = NO;
+		shrinkURLsButton.enabled = NO;
 	} else {
 		// Allow editing
-		self.messageField.editable = YES;
+		messageField.editable = YES;
+		messageField.textColor = [UIColor blackColor];
+		geotagButton.enabled = YES;
+		shrinkURLsButton.enabled = YES;
 		[self updateCharacterCountWithText: messageField.text];
-		[self.messageField becomeFirstResponder];
+		[messageField becomeFirstResponder];
 	}
 }
 
@@ -121,13 +149,24 @@ enum { kTwitterCharacterMax = 140 };
 		bottomToolbar.items = toolbarItems;
 		[self setNewStyleRetweet:newStyleRetweet];
 	}
+	
+	// Geotag
+	self.locationManager = [[[CLLocationManager alloc] init] autorelease];
+	locationManager.distanceFilter = 45.0; // meters
+	locationManager.desiredAccuracy = 15.0; // meters
+	BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
+	if (geotag) {
+		[locationManager startUpdatingLocation];
+	}
+	[self updateGeotagButton];
 }
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
-    self.messageField = nil;
+	[super viewDidUnload];
+	self.messageField = nil;
 	self.charactersRemaining = nil;
 	self.retweetStyleButton = nil;
+	self.locationManager = nil;
 }
 
 - (void) updateCharacterCountWithText:(NSString *)text {
@@ -167,6 +206,8 @@ enum { kTwitterCharacterMax = 140 };
 	return YES;
 }
 
+#pragma mark IBActions
+
 - (IBAction) close: (id) sender {
 	[self dismissModalViewControllerAnimated:YES];
 }
@@ -185,6 +226,10 @@ enum { kTwitterCharacterMax = 140 };
 		
 		// Location
 		CLLocation *location = nil;
+		BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
+		if (geotag) {
+			location = [locationManager location];
+		}
 		
 		[delegate compose:self didSendMessage:normalizedText inReplyTo:inReplyTo location:location];
 	}
@@ -210,9 +255,55 @@ enum { kTwitterCharacterMax = 140 };
 	
 }
 
+- (IBAction)geotag:(id)sender {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	BOOL geotag = [defaults boolForKey:@"geotag"];
+	[defaults setBool:!geotag forKey:@"geotag"];
+	[self updateGeotagButton];
+	if (geotag) {
+		[locationManager startUpdatingLocation];
+	} else {
+		[locationManager stopUpdatingLocation];
+	}
+}
+
 - (IBAction) toggleRetweetStyle: (id) sender {
 	self.newStyleRetweet = !newStyleRetweet;
 	[self updateCharacterCountWithText:messageField.text];
+}
+
+- (IBAction)camera:(id)sender {
+}
+
+#pragma mark Shrink URLs
+
+- (IBAction)shrinkURLs:(id)sender {
+	NSSet *shrinkActions = [LKShrinkURLAction actionsToShrinkURLsInString:messageField.text];
+	
+	if (shrinkActions.count > 0) {
+		for (LKShrinkURLAction *action in shrinkActions) {
+			action.delegate = self;
+			[action load];
+			[appDelegate incrementNetworkActionCount];
+		}
+	}
+}
+
+- (void)shrinkURLAction:(LKShrinkURLAction *)anAction replacedLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
+	if (longURL != nil) {
+		if ([shortURL hasPrefix:@"http"]) {
+			messageField.text = [messageField.text stringByReplacingOccurrencesOfString:longURL withString:shortURL];
+		} else {
+			// Log the error message
+			NSLog (@"is.gd returned the error: %@", shortURL);
+		}
+	}
+	[appDelegate decrementNetworkActionCount];
+}
+
+- (void)shrinkURLAction:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error {
+	NSLog (@"URL shrinker error: %@", error);
+	[appDelegate decrementNetworkActionCount];
 }
 
 #pragma mark Text view delegate methods

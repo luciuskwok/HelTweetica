@@ -18,14 +18,18 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "Twitter.h"
+#import "LKShrinkURLAction.h"
+@class HelTweeticaAppDelegate;
 
 
 @protocol ComposeViewControllerDelegate;
 
-@interface ComposeViewController : UIViewController {
+@interface ComposeViewController : UIViewController <LKShrinkURLActionDelegate> {
 	IBOutlet UITextView *messageField;
 	IBOutlet UIBarButtonItem *sendButton;
 	IBOutlet UIBarButtonItem *retweetStyleButton;
+	IBOutlet UIBarButtonItem *geotagButton;
+	IBOutlet UIBarButtonItem *shrinkURLsButton;
 	IBOutlet UIBarButtonItem *charactersRemaining;
 	IBOutlet UIToolbar *bottomToolbar;
 	
@@ -35,11 +39,17 @@
 	NSString *originalRetweetContent;
 	BOOL newStyleRetweet;
 	
-	id <ComposeViewControllerDelegate> delegate;
+	CLLocationManager *locationManager;
+	NSMutableSet *actions;
+
+	HelTweeticaAppDelegate *appDelegate;
+	id delegate;
 }
 @property (nonatomic, retain) UITextView *messageField;
 @property (nonatomic, retain) UIBarButtonItem *sendButton;
 @property (nonatomic, retain) UIBarButtonItem *retweetStyleButton;
+@property (nonatomic, retain) UIBarButtonItem *geotagButton;
+@property (nonatomic, retain) UIBarButtonItem *shrinkURLsButton;
 @property (nonatomic, retain) UIBarButtonItem *charactersRemaining;
 @property (nonatomic, retain) UIToolbar *bottomToolbar;
 
@@ -49,17 +59,23 @@
 @property (nonatomic, retain) NSString *originalRetweetContent;
 @property (nonatomic, assign) BOOL newStyleRetweet;
 
-@property (assign) id delegate;
+@property (nonatomic, retain) CLLocationManager *locationManager;
+
+@property (assign) id <ComposeViewControllerDelegate> delegate;
 
 - (id)initWithAccount:(TwitterAccount*)anAccount;
 - (void) loadFromUserDefaults;
 - (void) updateCharacterCountWithText:(NSString *)text;
 
-- (IBAction) close: (id) sender;
-- (IBAction) send: (id) sender;
-- (IBAction) clear: (id) sender;
+- (IBAction)close:(id)sender;
+- (IBAction)send:(id)sender;
+- (IBAction)clear:(id)sender;
+- (IBAction)geotag:(id)sender;
+- (IBAction)shrinkURLs:(id)sender;
+- (IBAction)camera:(id)sender;
 
 @end
+
 
 @protocol ComposeViewControllerDelegate <NSObject>
 - (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location;

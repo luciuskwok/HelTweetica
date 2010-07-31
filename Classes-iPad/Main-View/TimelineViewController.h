@@ -29,7 +29,7 @@
 @class TwitterAction, TwitterLoadTimelineAction, TwitterTimeline;
 
 
-@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, GoToUserViewControllerDelegate> {
+@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, GoToUserViewControllerDelegate, TimelineHTMLControllerDelegate> {
 	IBOutlet LKWebView *webView;
 	IBOutlet UIBarButtonItem *composeButton;
 

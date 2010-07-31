@@ -18,15 +18,16 @@
 #import <UIKit/UIKit.h>
 #import "Twitter.h"
 #import "LoginViewController.h"
+#import "TwitterLoginAction.h"
 
 @protocol AccountsViewControllerDelegate;
 
 
-@interface AccountsViewController : UITableViewController <LoginViewControllerDelegate> {
+@interface AccountsViewController : UITableViewController <LoginViewControllerDelegate, TwitterActionDelegate> {
 	Twitter *twitter;
-	id <AccountsViewControllerDelegate> delegate;
+	id  delegate;
 }
-@property (assign) id delegate;
+@property (assign) id <AccountsViewControllerDelegate> delegate;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;
 - (IBAction) add:(id)sender;

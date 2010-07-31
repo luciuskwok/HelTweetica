@@ -236,6 +236,9 @@
 		E08BC75D12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
 		E0AB22D0120416E200C22FB8 /* LKLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AB22CF120416E200C22FB8 /* LKLoadURLAction.m */; };
 		E0AB22D1120416E200C22FB8 /* LKLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AB22CF120416E200C22FB8 /* LKLoadURLAction.m */; };
+		E0AB238012042B6400C22FB8 /* LKShrinkURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AB237F12042B6400C22FB8 /* LKShrinkURLAction.m */; };
+		E0AB238112042B6400C22FB8 /* LKShrinkURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AB237F12042B6400C22FB8 /* LKShrinkURLAction.m */; };
+		E0AB23DC1204353500C22FB8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AB23DB1204353500C22FB8 /* CoreLocation.framework */; };
 		E0B106911202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */; };
 		E0B106921202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */; };
 		E0CADD4611FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
@@ -432,6 +435,9 @@
 		E08BC75B12017BD500CEEC44 /* dm-row-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "dm-row-template.html"; path = "Resources-Shared/dm-row-template.html"; sourceTree = "<group>"; };
 		E0AB22CE120416E200C22FB8 /* LKLoadURLAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKLoadURLAction.h; path = "Classes-Shared/LKLoadURLAction.h"; sourceTree = "<group>"; };
 		E0AB22CF120416E200C22FB8 /* LKLoadURLAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKLoadURLAction.m; path = "Classes-Shared/LKLoadURLAction.m"; sourceTree = "<group>"; };
+		E0AB237E12042B6400C22FB8 /* LKShrinkURLAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKShrinkURLAction.h; path = "Classes-Shared/LKShrinkURLAction.h"; sourceTree = "<group>"; };
+		E0AB237F12042B6400C22FB8 /* LKShrinkURLAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKShrinkURLAction.m; path = "Classes-Shared/LKShrinkURLAction.m"; sourceTree = "<group>"; };
+		E0AB23DB1204353500C22FB8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E0B1068F1202A1AD00780E62 /* TwitterDirectMessageTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessageTimeline.h; sourceTree = "<group>"; };
 		E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDirectMessageTimeline.m; sourceTree = "<group>"; };
 		E0CADD4211FD82000075F657 /* LKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteDatabase.h; sourceTree = "<group>"; };
@@ -464,6 +470,7 @@
 				E0564AE911FBD33E000A9753 /* AudioToolbox.framework in Frameworks */,
 				E0564AED11FBD344000A9753 /* AVFoundation.framework in Frameworks */,
 				E0F1835011FDB84600DEDE0D /* libsqlite3.dylib in Frameworks */,
+				E0AB23DC1204353500C22FB8 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +550,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				E0AB23DB1204353500C22FB8 /* CoreLocation.framework */,
 				E0564AE411FBD337000A9753 /* MessageUI.framework */,
 				E0564AE811FBD33E000A9753 /* AudioToolbox.framework */,
 				E0564AEC11FBD344000A9753 /* AVFoundation.framework */,
@@ -572,6 +580,8 @@
 				E0564A3A11FBD2E7000A9753 /* HelTweeticaAppDelegate.m */,
 				E0AB22CE120416E200C22FB8 /* LKLoadURLAction.h */,
 				E0AB22CF120416E200C22FB8 /* LKLoadURLAction.m */,
+				E0AB237E12042B6400C22FB8 /* LKShrinkURLAction.h */,
+				E0AB237F12042B6400C22FB8 /* LKShrinkURLAction.m */,
 				E0564A3B11FBD2E7000A9753 /* HTML Controllers */,
 				E0564A4611FBD2E7000A9753 /* OAuthClient */,
 				E0564A4911FBD2E7000A9753 /* Twitter */,
@@ -1083,6 +1093,7 @@
 				E0B106911202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */,
 				E0524CC11203E24000EF28F8 /* TwitterDirectMessageConversation.m in Sources */,
 				E0AB22D0120416E200C22FB8 /* LKLoadURLAction.m in Sources */,
+				E0AB238012042B6400C22FB8 /* LKShrinkURLAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1150,6 +1161,7 @@
 				E0B106921202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */,
 				E0524CC21203E24000EF28F8 /* TwitterDirectMessageConversation.m in Sources */,
 				E0AB22D1120416E200C22FB8 /* LKLoadURLAction.m in Sources */,
+				E0AB238112042B6400C22FB8 /* LKShrinkURLAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

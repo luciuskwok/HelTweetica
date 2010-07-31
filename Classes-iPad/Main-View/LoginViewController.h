@@ -28,12 +28,12 @@
 	Twitter *twitter;
 	NSString *screenName;
 	
-	id <LoginViewControllerDelegate> delegate;
+	id delegate;
 }
 @property (nonatomic, retain) UITextField *usernameField;
 @property (nonatomic, retain) UITextField *passwordField;
 @property (nonatomic, retain) NSString *screenName;
-@property (nonatomic, retain) id delegate;
+@property (nonatomic, retain) id <LoginViewControllerDelegate> delegate;
 
 - (id)initWithTwitter:(Twitter*)aTwitter;
 - (IBAction) cancel: (id) sender;

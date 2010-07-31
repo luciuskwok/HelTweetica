@@ -16,10 +16,10 @@
 
 #import <UIKit/UIKit.h>
 #import "TimelineViewController.h"
+#import "TimelineHTMLController.h"
 
 
-
-@interface ConversationViewController : TimelineViewController {
+@interface ConversationViewController : TimelineViewController <TimelineHTMLControllerDelegate> {
 }
 
 - (id)initWithMessageIdentifier:(NSNumber*)anIdentifier;

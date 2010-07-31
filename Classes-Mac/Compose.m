@@ -15,7 +15,6 @@
  */
 
 #import "Compose.h"
-#import "LKLoadURLAction.h"
 
 
 @implementation Compose
@@ -54,13 +53,17 @@ enum { kTwitterCharacterMax = 140 };
 	}
 	
 	// Location
-	locationManager = [[CLLocationManager alloc] init];
-	locationManager.distanceFilter = 45.0; // meters
-	locationManager.desiredAccuracy = 15.0; // meters
-	BOOL useLocation = [[NSUserDefaults standardUserDefaults] boolForKey:@"useLocation"];
-	[locationButton setState:useLocation? NSOnState : NSOffState];
-	if (useLocation) {
-		[locationManager startUpdatingLocation];
+	if ([CLLocationManager locationServicesEnabled]) {
+		locationManager = [[CLLocationManager alloc] init];
+		locationManager.distanceFilter = 45.0; // meters
+		locationManager.desiredAccuracy = 15.0; // meters
+		BOOL useLocation = [[NSUserDefaults standardUserDefaults] boolForKey:@"useLocation"];
+		[locationButton setState:useLocation? NSOnState : NSOffState];
+		if (useLocation) {
+			[locationManager startUpdatingLocation];
+		}
+	} else {
+		[locationButton setHidden:YES];
 	}
 	
 	// Text field
@@ -223,38 +226,24 @@ enum { kTwitterCharacterMax = 140 };
 
 #pragma mark URL shortening
 
-- (void)shrinkURLsWithPrefix:(NSString *)prefix inString:(NSString *)string minLength:(int)minLength {
-	// URL shortener setup.
-	// bit.ly requires an API key so we don't use this:  = @"http://api.bit.ly/v3/shorten?format=txt&longUrl=";
-	NSString *shortenerPrefix = @"http://is.gd/api.php?longurl=";
+- (IBAction)shrinkURLs:(id)sender {
+	NSSet *shrinkActions = [LKShrinkURLAction actionsToShrinkURLsInString:[textField stringValue]];
 	
-	// Scanner setup.
-	NSScanner *scanner = [NSScanner scannerWithString:string];
-	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"];
-	[scanner setCharactersToBeSkipped:nil];
-	NSString *longUrl;
-	
-	while ([scanner isAtEnd] == NO) {
-		[scanner scanUpToString:prefix intoString:nil];
-		if ([scanner scanUpToCharactersFromSet:nonURLSet intoString:&longUrl]) {
-			if (longUrl.length >= minLength) {
-				// Start an action to request a short URL for this long URL.
-				NSString *request = [shortenerPrefix stringByAppendingString:[longUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-				LKLoadURLAction *action = [[[LKLoadURLAction alloc] init] autorelease];
-				action.identifier = longUrl;
-				action.delegate = self;
-				[action loadURL:[NSURL URLWithString:request]];
-				
-				// Start network activity indicator.
-				[activityIndicator setHidden: NO];
-				[activityIndicator startAnimation:nil];
-			}
+	if (shrinkActions.count > 0) {
+		for (LKShrinkURLAction *action in shrinkActions) {
+			action.delegate = self;
+			[action load];
 		}
+		
+		// Start network activity indicator.
+		[activityIndicator setHidden: NO];
+		[activityIndicator startAnimation:nil];
+		[actions unionSet:shrinkActions];
 	}
 }
 
-- (void)removeAction:(LKLoadURLAction *)action {
-	[actions removeObject:action];
+- (void)removeAction:(LKLoadURLAction *)anAction {
+	[actions removeObject:anAction];
 	
 	if (actions.count == 0) {
 		// Stop network activity indicator.
@@ -263,9 +252,7 @@ enum { kTwitterCharacterMax = 140 };
 	}
 }	
 
-- (void)loadURLAction:(LKLoadURLAction*)action didLoadData:(NSData*)data {
-	NSString *longURL = action.identifier;
-	NSString *shortURL = [[[NSString alloc] initWithData:action.receivedData encoding:NSUTF8StringEncoding] autorelease];
+- (void)shrinkURLAction:(LKShrinkURLAction *)anAction replacedLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
 	if (longURL != nil) {
 		if ([shortURL hasPrefix:@"http"]) {
 			NSString *text = [textField stringValue];
@@ -276,18 +263,12 @@ enum { kTwitterCharacterMax = 140 };
 			NSLog (@"is.gd returned the error: %@", shortURL);
 		}
 	}
-	[self removeAction:action];
+	[self removeAction:anAction];
 }
 
-- (void)loadURLAction:(LKLoadURLAction*)action didFailWithError:(NSError*)error {
-	[self removeAction:action];
-}
-
-- (IBAction)shrinkURLs:(id)sender {
-	const int kMinLengthToShorten = 23;
-	
-	[self shrinkURLsWithPrefix:@"http://" inString:[textField stringValue] minLength:kMinLengthToShorten];
-	[self shrinkURLsWithPrefix:@"https://" inString:[textField stringValue] minLength:kMinLengthToShorten];
+- (void)shrinkURLAction:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error {
+	NSLog (@"URL shrinker error: %@", error);
+	[self removeAction:anAction];
 }
 
 #pragma mark Defaults

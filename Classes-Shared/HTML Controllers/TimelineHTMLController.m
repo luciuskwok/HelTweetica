@@ -28,7 +28,11 @@
 
 
 // Constants
-enum { kDefaultMaxTweetsShown = 500 };
+#ifdef TARGET_PROJECT_MAC
+const int kDefaultMaxTweetsShown = 500;
+#else
+const int kDefaultMaxTweetsShown = 200;
+#endif
 static NSString *kTimelineIdentifier = @"Timeline";
 static NSString *kMentionsIdentifier = @"Mentions";
 static NSString *kDirectMessagesIdentifier = @"Direct";
@@ -38,7 +42,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 @implementation TimelineHTMLController
 @synthesize webView, twitter, account, timeline, messages, actions;
-@synthesize webViewHasValidHTML, isLoading, noInternetConnection, suppressNetworkErrorAlerts;
+@synthesize maxTweetsShown, webViewHasValidHTML, isLoading, noInternetConnection, suppressNetworkErrorAlerts;
 @synthesize customPageTitle, customTabName;
 @synthesize delegate;
 

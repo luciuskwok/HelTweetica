@@ -17,7 +17,7 @@
 #import "TimelineViewController.h"
 
 
-@interface SearchResultsViewController : TimelineViewController {
+@interface SearchResultsViewController : TimelineViewController <TimelineHTMLControllerDelegate> {
 	IBOutlet UIBarButtonItem *saveButton;
 	NSString *query;
 }

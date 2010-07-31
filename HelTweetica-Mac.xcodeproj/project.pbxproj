@@ -120,6 +120,7 @@
 		E08BC74812017BC000CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC74712017BC000CEEC44 /* dm-row-template.html */; };
 		E0A3F7DB11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A3F7DA11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m */; };
 		E0AB22E9120416F500C22FB8 /* LKLoadURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AB22E8120416F500C22FB8 /* LKLoadURLAction.m */; };
+		E0AB238412042BDE00C22FB8 /* LKShrinkURLAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AB238312042BDE00C22FB8 /* LKShrinkURLAction.m */; };
 		E0B105F6120292E400780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B105F5120292E400780E62 /* TwitterDirectMessageTimeline.m */; };
 		E0D14E5911FCD4C400452E63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */; };
 		E0D14F6911FD024A00452E63 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */; };
@@ -287,6 +288,8 @@
 		E0A3F7DA11FF78130092BD8A /* TwitterLoadDirectMessagesAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadDirectMessagesAction.m; sourceTree = "<group>"; };
 		E0AB22E7120416F500C22FB8 /* LKLoadURLAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKLoadURLAction.h; sourceTree = "<group>"; };
 		E0AB22E8120416F500C22FB8 /* LKLoadURLAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKLoadURLAction.m; sourceTree = "<group>"; };
+		E0AB238212042BDE00C22FB8 /* LKShrinkURLAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKShrinkURLAction.h; sourceTree = "<group>"; };
+		E0AB238312042BDE00C22FB8 /* LKShrinkURLAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKShrinkURLAction.m; sourceTree = "<group>"; };
 		E0B105F4120292E400780E62 /* TwitterDirectMessageTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessageTimeline.h; sourceTree = "<group>"; };
 		E0B105F5120292E400780E62 /* TwitterDirectMessageTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDirectMessageTimeline.m; sourceTree = "<group>"; };
 		E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -414,6 +417,8 @@
 				E0564BF711FBD6A0000A9753 /* HelTweeticaAppDelegate.m */,
 				E0AB22E7120416F500C22FB8 /* LKLoadURLAction.h */,
 				E0AB22E8120416F500C22FB8 /* LKLoadURLAction.m */,
+				E0AB238212042BDE00C22FB8 /* LKShrinkURLAction.h */,
+				E0AB238312042BDE00C22FB8 /* LKShrinkURLAction.m */,
 				E0564BF811FBD6A0000A9753 /* HTML Controllers */,
 				E0564C0311FBD6A0000A9753 /* OAuthClient */,
 				E0564C0611FBD6A0000A9753 /* Twitter */,
@@ -773,6 +778,7 @@
 				E0B105F6120292E400780E62 /* TwitterDirectMessageTimeline.m in Sources */,
 				E0524C131203C56B00EF28F8 /* TwitterDirectMessageConversation.m in Sources */,
 				E0AB22E9120416F500C22FB8 /* LKLoadURLAction.m in Sources */,
+				E0AB238412042BDE00C22FB8 /* LKShrinkURLAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

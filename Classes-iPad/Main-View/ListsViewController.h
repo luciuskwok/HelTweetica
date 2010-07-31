@@ -17,11 +17,13 @@
 
 #import <UIKit/UIKit.h>
 #import "TwitterAccount.h"
+#import "TwitterLoadListsAction.h"
+
 
 @protocol ListsViewControllerDelegate;
 @class TwitterList;
 
-@interface ListsViewController : UITableViewController {
+@interface ListsViewController : UITableViewController <TwitterActionDelegate> {
 	TwitterAccount *account;
 
 	NSString *screenName;

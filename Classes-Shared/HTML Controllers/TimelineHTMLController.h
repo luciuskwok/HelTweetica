@@ -72,6 +72,7 @@
 @property (nonatomic, retain) NSString *customPageTitle;
 @property (nonatomic, retain) NSString *customTabName;
 
+@property (assign) int maxTweetsShown;
 @property (assign) BOOL webViewHasValidHTML;
 @property (assign) BOOL isLoading;
 @property (assign) BOOL noInternetConnection;

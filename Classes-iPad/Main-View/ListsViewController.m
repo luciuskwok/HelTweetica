@@ -17,7 +17,6 @@
 
 #import "ListsViewController.h"
 #import "TwitterList.h"
-#import "TwitterLoadListsAction.h"
 
 
 @implementation ListsViewController
