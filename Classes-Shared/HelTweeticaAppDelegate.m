@@ -46,20 +46,27 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Reload previous window states
-	NSData *windowState = [[NSUserDefaults standardUserDefaults] objectForKey:@"windowState"];
-	if (windowState) {
+	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"orderedWindowControllers"];
+	NSArray *orderedControllers = nil;
+	if (data) {
 		NS_DURING 
 		{
-			self.windowControllers = [NSKeyedUnarchiver unarchiveObjectWithData:windowState];
+			orderedControllers = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+			self.windowControllers = [NSSet setWithArray:orderedControllers];
 		}
 		NS_HANDLER
 		{
-			windowState = nil;
 		}
 		NS_ENDHANDLER
 	}
-	if (windowState == nil)
+	if (orderedControllers != nil) {
+		[orderedControllers makeObjectsPerformSelector:@selector(showWindow:) withObject:nil];
+		if (orderedControllers.count > 0) {
+			[[orderedControllers objectAtIndex:0] makeKeyAndOrderFront:nil];
+		}
+	} else {
 		[self newMainWindowWithAccount:nil];
+	}
 	
 	// Listen for window closing notifications
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -69,17 +76,23 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
 	// Save window positions
 	int index = 1;
-	for (MainWindowController *controller in windowControllers) {
-		// Window frame
-		NSString *frameName = [NSString stringWithFormat:@"OpenWindow%d", index];
-		[controller.window setFrameAutosaveName:frameName];
-		[controller.window saveFrameUsingName:frameName];
-		index++;
+	NSArray *windows = [NSApp orderedWindows];
+	NSMutableArray *orderedControllers = [NSMutableArray array];
+	for (NSWindow *window in windows) {
+		MainWindowController *controller = [window windowController];
+		if ([controller isKindOfClass:[MainWindowController class]]) {
+			// Window frame
+			NSString *frameName = [NSString stringWithFormat:@"OpenWindow%d", index];
+			[controller.window setFrameAutosaveName:frameName];
+			[controller.window saveFrameUsingName:frameName];
+			[orderedControllers addObject:controller];
+			index++;
+		}
 	}
 	
 	// Save window states for next launch.
-	NSData *windowState = [NSKeyedArchiver archivedDataWithRootObject:windowControllers];
-	[[NSUserDefaults standardUserDefaults] setObject:windowState forKey:@"windowState"];
+	NSData *windowState = [NSKeyedArchiver archivedDataWithRootObject:orderedControllers];
+	[[NSUserDefaults standardUserDefaults] setObject:windowState forKey:@"orderedWindowControllers"];
 
 	// Save account settings.
 	[twitter saveUserDefaults];
@@ -139,18 +152,11 @@
 
 #pragma mark Networking
 
-// TODO: add a network activity spinner
 - (void) incrementNetworkActionCount {
-	networkActionCount++;
-	//[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	// Do nothing at the app level. Each window should have its own spinner, which may replace the reload button.
 }
 
 - (void) decrementNetworkActionCount {
-	networkActionCount--;
-	if (networkActionCount <= 0) {
-		networkActionCount = 0;
-		//[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	}
 }
 
 #else
