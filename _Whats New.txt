@@ -2,12 +2,35 @@
 
 == HelTweetica for iPad ==
 
+Version 2.0
+- Twitter Lists, Search, and Saved Searches.
+- "The Conversation" page shows the reply chain of tweets.
+- User Pages: shows info about a user, their latest tweets, their lists, and their favorites. Lets you follow and unfollow people.
+- Both new-style and old-style retweets are supported.
+- Better support for showing your own retweets.
+- Faster loading of tweets.
+- Better caching of tweets, and loading of gaps.
+- Mentions are highlighted in blue.
+- Fixes bug with '@' inside of link URLs.
+- Fixes bug where username was case-sensitive in the Accounts login.
+- Fixes bug where network error alerts were not being shown.
+- FIxes bug where in-reply-to-username was set incorrectly.
+
+Version 2.0.1 
+	Fixes a timeline bug with out-of-order messages, messages stuck at the top of timelines, and retweets not being recognized.
+	Fixes a bug with certain characters being turned into hash-tags.
+	Fixes a bug with highlighting mentions.
+	Fixes a layout bug with the User Page.
+	(Submitted 2010-06-21 1:00 am. In review 2010-06-26 13:18 PDT. Approved at 2:08 pm EDT.)
+	
 What's New in Version 2.1
-* Fixed a layout issue which was causing pages to load much slower than necessary.
+* New Direct Message view.
+* Much faster overall.
 
 
 == HelTweetica for Mac  ==
 
 What's New in Version 1.1
+* New Direct Message view.
+* Much faster overall.
 * Windows are saved on quit and recreated on relaunch.
-* Fixed a layout issue which was causing pages to load much slower than necessary.

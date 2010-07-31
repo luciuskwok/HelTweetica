@@ -89,6 +89,7 @@
 	[homeTimeline setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_HomeTimeline", idString] temp:NO];
 	[mentions setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Mentions", idString] temp:NO];
 	[directMessages setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_DirectMessages", idString] temp:NO];
+	directMessages.accountIdentifier = identifier;
 	[favorites setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Favorites", idString] temp:NO];
 }
 

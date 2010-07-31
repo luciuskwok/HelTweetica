@@ -64,7 +64,6 @@
 - (IBAction) compose: (id) sender;
 - (void)retweet:(NSNumber*)identifier;
 - (void)replyToMessage: (NSNumber*)identifier;
-- (void)directMessageWithTweet:(NSNumber*)identifier;
 
 // Popovers
 - (BOOL)closeAllPopovers;

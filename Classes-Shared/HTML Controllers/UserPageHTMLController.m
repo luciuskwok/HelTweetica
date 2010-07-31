@@ -276,10 +276,10 @@
 	return html;
 }
 
-- (NSString *)tweetRowTemplateForRow:(int)row {
-	if (row == 0 && self.customPageTitle == nil)
+- (NSString *)templateForRowIndex:(int)rowIndex {
+	if (rowIndex == 0 && self.customPageTitle == nil)
 		return highlightedTweetRowTemplate;
-	return [super tweetRowTemplateForRow:row];
+	return [super templateForRowIndex:rowIndex];
 }
 
 - (NSString*) tweetAreaFooterHTML {

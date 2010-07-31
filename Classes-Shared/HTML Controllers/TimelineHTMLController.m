@@ -24,6 +24,7 @@
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterLoadListsAction.h"
 #import "TwitterLoadSavedSearchesAction.h"
+#import "TwitterDirectMessageConversation.h"
 
 
 
@@ -49,6 +50,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		
 		// Load the HTML templates.
 		directMessageRowTemplate = [[self loadHTMLTemplate:@"dm-row-template"] retain];
+		directMessageRowSectionOpenTemplate = [[self loadHTMLTemplate:@"dm-row-section-open"] retain];
+		directMessageRowSectionCloseHTML = [[self loadHTMLTemplate:@"dm-row-section-close"] retain];
 		tweetRowTemplate = [[self loadHTMLTemplate:@"tweet-row-template"] retain];
 		tweetMentionRowTemplate = [[self loadHTMLTemplate:@"tweet-row-mention-template"] retain];
 		tweetGapRowTemplate = [[self loadHTMLTemplate:@"load-gap-template"] retain];
@@ -75,6 +78,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[actions release];
 	
 	[directMessageRowTemplate release];
+	[directMessageRowSectionOpenTemplate release];
+	[directMessageRowSectionCloseHTML release];
+	
 	[tweetRowTemplate release];
 	[tweetMentionRowTemplate release];
 	[tweetGapRowTemplate release];
@@ -186,7 +192,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[twitter addOrReplaceUsers:directMessagesAction.users];
 
 		// Timeline
-		[aTimeline addMessages:directMessagesAction.loadedMessages updateGap:YES];
+		TwitterDirectMessageTimeline *dmTimeline = (TwitterDirectMessageTimeline *)aTimeline;
+		[dmTimeline addMessages:directMessagesAction.loadedMessages sent:([action.twitterMethod hasSuffix:@"sent"])];
 	}
 
 	// Load latest messages.
@@ -376,6 +383,13 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	action.completionTarget= self;
 	action.completionAction = @selector(didFave:);
 	[self startTwitterAction:action];
+	
+	// Change the star to a spinner.
+	// Change the display of the star next to tweet in root view
+	NSString *element = [NSString stringWithFormat:@"star-%@", [message.identifier stringValue]];
+	NSString *html = @"<img src='fave-spinner.gif'>";
+	[self.webView setDocumentElement:element innerHTML:html];
+	
 }
 
 - (void)didFave:(TwitterFavoriteAction *)action {
@@ -531,6 +545,117 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 #pragma mark HTML
 
+- (NSString *)htmlWithTemplate:(NSString *)template substitutions:(NSDictionary *)substitutions {
+	if (template == nil) return nil;
+	
+	// Use scanner to replace curly-bracketed variables with values
+	NSScanner *scanner = [NSScanner scannerWithString:template];
+	NSMutableString *tweetRowHTML = [[[NSMutableString alloc] init] autorelease];
+	NSString *scannedString, *key, *value;
+	BOOL displayBlock = YES;
+	
+	// Set scanner to include whitespace
+	[scanner setCharactersToBeSkipped:nil];
+	
+	while ([scanner isAtEnd] == NO) {
+		// Scan characters up to opening of variable curly brace
+		if ([scanner scanUpToString:@"{" intoString:&scannedString] && displayBlock) {
+			[tweetRowHTML appendString:scannedString];
+		}
+		
+		// Scan name of variable or block
+		if ([scanner scanUpToString:@"}" intoString:&scannedString]) {
+			if ([scannedString hasPrefix:@"{Block:"]) {
+				// Block
+				if ([scannedString length] > 7) {
+					key = [scannedString substringFromIndex:7];
+					value = [substitutions objectForKey:key];
+					displayBlock = (value != nil);
+				}
+			} else if ([scannedString hasPrefix:@"{/Block"]) {
+				// End Block
+				displayBlock = YES;
+			} else {
+				// Variable
+				if (displayBlock && [scannedString length] > 1) {
+					key = [scannedString substringFromIndex:1];
+					value = [substitutions objectForKey:key];
+					if (value) 
+						[tweetRowHTML appendString:value];
+				}
+			}
+		}
+		
+		// Scan past closing curly brace
+		[scanner scanString:@"}" intoString:nil];
+	}
+	
+	return tweetRowHTML;
+}
+
+- (NSString *)htmlWithStatusUpdate:(TwitterStatusUpdate *)statusUpdate rowIndex:(int)rowIndex {
+	// Skip rows with invalid identifiers.
+	if ([statusUpdate.identifier longLongValue] < 1000) return @"";
+	
+	BOOL lastRow = (rowIndex >= maxTweetsShown - 1 || rowIndex >= messages.count - 1);
+	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
+	NSMutableString *gapRowHTML = nil;
+	
+	// Append "Load gap" row if needed
+	BOOL gap = [timeline hasGapAfter:statusUpdate.identifier];
+	NSString *messageIdentifier = [statusUpdate.identifier stringValue];
+	if ((gap == YES) && (lastRow == NO)) {
+		gapRowHTML = [NSMutableString stringWithString:tweetGapRowTemplate];
+		[gapRowHTML replaceOccurrencesOfString:@"{gapIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, gapRowHTML.length)];
+	}
+	
+	// Special handling for new-style retweets.
+	if ([statusUpdate.retweetedStatusIdentifier longLongValue] != 0) {
+		[substitutions setObject:@"<img src='retweet.png'>" forKey:@"retweetIcon"];
+		if (statusUpdate.userScreenName) 
+			[substitutions setObject:statusUpdate.userScreenName forKey:@"retweetedBy"];
+		statusUpdate = [twitter statusUpdateWithIdentifier:statusUpdate.retweetedStatusIdentifier];
+	}
+	
+	// Favorites
+	if ([account messageIsFavorite:statusUpdate.identifier]) 
+		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
+	
+	// Add values from status update.
+	[substitutions addEntriesFromDictionary:[statusUpdate htmlSubstitutions]];
+	
+	// Load template and apply substitutions.
+	NSString *template = [self templateForRowIndex: rowIndex];
+	NSString *html = [self htmlWithTemplate:template substitutions:substitutions];
+	if (gapRowHTML != nil) 
+		html = [html stringByAppendingString:gapRowHTML];
+	
+	return html;
+}
+
+- (NSString *)htmlWithDirectMessageConversation:(TwitterDirectMessageConversation *)conversation rowIndex:(int)rowIndex {
+	// Each row in the messages array corresponds to one conversation with one user. Each conversation has a subarray of direct messages, sorted by date, newest first. 
+
+	NSMutableString *html = [NSMutableString string];
+	
+	// Open the row and substitute the user screenName and profileImageURL in the template.
+	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
+	TwitterUser *user = [twitter userWithIdentifier:conversation.user];
+	[substitutions setObject:user.screenName forKey:@"screenName"];
+	[substitutions setObject:user.profileImageURL forKey:@"profileImageURL"];
+	[html appendString:[self htmlWithTemplate:directMessageRowSectionOpenTemplate substitutions:substitutions]];
+	
+	// Loop through each message
+	for (TwitterDirectMessage *message in conversation.messages) {
+		[html appendString:[self htmlWithTemplate:directMessageRowTemplate substitutions:[message htmlSubstitutions]]];
+	}
+	
+	// Close the row.
+	[html appendString:directMessageRowSectionCloseHTML];
+	
+	return html;
+}
+
 - (NSString *)loadHTMLTemplate:(NSString *)templateName {
 	// Load main template
 	NSError *error = nil;
@@ -590,8 +715,14 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[html appendString:@"<div class='tweet_table'> "];
 
 	// Rows of status updates or direct messages.
+	id rowItem;
 	for (int index=0; index<messages.count; index++) {
-		[html appendString: [self tweetRowHTMLForRow:index]];
+		rowItem = [messages objectAtIndex:index];
+		if ([rowItem isKindOfClass:[TwitterStatusUpdate class]]) {
+			[html appendString:[self htmlWithStatusUpdate:rowItem rowIndex:index]];
+		} else if ([rowItem isKindOfClass:[TwitterDirectMessageConversation class]]) {
+			[html appendString:[self htmlWithDirectMessageConversation:rowItem rowIndex:index]];
+		}
 	}
 	
 	[html appendString:@"</div> "]; // Close tweet_table
@@ -604,10 +735,10 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	return html;
 }
 
-- (NSString *)tweetRowTemplateForRow:(int)row {
+- (NSString *)templateForRowIndex:(int)rowIndex {
 	// Highlight Mentions
 	NSString *screenName = [NSString stringWithFormat:@"@%@", account.screenName];
-	TwitterStatusUpdate *message = [messages objectAtIndex:row];
+	TwitterStatusUpdate *message = [messages objectAtIndex:rowIndex];
 	if (message.retweetedStatusIdentifier) {
 		TwitterStatusUpdate *retweeted = [twitter statusUpdateWithIdentifier:message.retweetedStatusIdentifier];
 		if (retweeted)
@@ -618,109 +749,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		return tweetMentionRowTemplate;
 	
 	return tweetRowTemplate;
-}
-
-- (NSString *)htmlWithTemplate:(NSString *)template substitutions:(NSDictionary *)substitutions {
-	if (template == nil) return nil;
-	
-	// Use scanner to replace curly-bracketed variables with values
-	NSScanner *scanner = [NSScanner scannerWithString:template];
-	NSMutableString *tweetRowHTML = [[[NSMutableString alloc] init] autorelease];
-	NSString *scannedString, *key, *value;
-	BOOL displayBlock = YES;
-	
-	// Set scanner to include whitespace
-	[scanner setCharactersToBeSkipped:nil];
-	
-	while ([scanner isAtEnd] == NO) {
-		// Scan characters up to opening of variable curly brace
-		if ([scanner scanUpToString:@"{" intoString:&scannedString] && displayBlock) {
-			[tweetRowHTML appendString:scannedString];
-		}
-		
-		// Scan name of variable or block
-		if ([scanner scanUpToString:@"}" intoString:&scannedString]) {
-			if ([scannedString hasPrefix:@"{Block:"]) {
-				// Block
-				if ([scannedString length] > 7) {
-					key = [scannedString substringFromIndex:7];
-					value = [substitutions objectForKey:key];
-					displayBlock = (value != nil);
-				}
-			} else if ([scannedString hasPrefix:@"{/Block"]) {
-				// End Block
-				displayBlock = YES;
-			} else {
-				// Variable
-				if (displayBlock && [scannedString length] > 1) {
-					key = [scannedString substringFromIndex:1];
-					value = [substitutions objectForKey:key];
-					if (value) 
-						[tweetRowHTML appendString:value];
-				}
-			}
-		}
-		
-		// Scan past closing curly brace
-		[scanner scanString:@"}" intoString:nil];
-	}
-	
-	return tweetRowHTML;
-}
-
-- (NSString *)tweetRowHTMLForRow:(int)row {
-	id message = [messages objectAtIndex:row];
-	NSMutableString *gapRowHTML = nil;
-	NSString *template = nil;
-	
-	// Skip messages with invalid identifiers
-	if ([[message identifier] compare:[NSNumber numberWithInt:10000]] == NSOrderedAscending) return @"";
-
-	// This is very non-objective-c to test for the object type, since the object should be able to do substitutions by itself.
-	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
-	
-	if ([message isKindOfClass:[TwitterStatusUpdate class]]) {
-		// Status Updates.
-		TwitterStatusUpdate *statusUpdate = (TwitterStatusUpdate *)message;
-		
-		// Special handling for new-style retweets.
-		if ([statusUpdate.retweetedStatusIdentifier longLongValue] != 0) {
-			[substitutions setObject:@"<img src='retweet.png'>" forKey:@"retweetIcon"];
-			if (statusUpdate.userScreenName) 
-				[substitutions setObject:statusUpdate.userScreenName forKey:@"retweetedBy"];
-			message = [twitter statusUpdateWithIdentifier:statusUpdate.retweetedStatusIdentifier];
-		}
-
-		// Favorites
-		if ([account messageIsFavorite:[message identifier]]) 
-			[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
-		
-		// Append "Load gap" row if needed
-		BOOL gap = [timeline hasGapAfter:statusUpdate.identifier];
-		BOOL endRow = (row >= maxTweetsShown - 1 || row >= messages.count - 1);
-		NSString *messageIdentifier = [statusUpdate.identifier stringValue];
-		if (gap && !endRow) {
-			gapRowHTML = [NSMutableString stringWithString:tweetGapRowTemplate];
-			[gapRowHTML replaceOccurrencesOfString:@"{gapIdentifier}" withString:messageIdentifier options:0 range:NSMakeRange(0, gapRowHTML.length)];
-		}
-		
-		// Status update template
-		template = [self tweetRowTemplateForRow: row];
-		
-	} else if ([message isKindOfClass:[TwitterDirectMessage class]]) {
-		// Direct message template
-		template = directMessageRowTemplate;
-	}
-	
-	// Add substitutions from message.
-	[substitutions addEntriesFromDictionary:[message htmlSubstitutions]];
-	
-	// Load template and apply substitutions.
-	NSString *html = [self htmlWithTemplate:template substitutions:substitutions];
-	if (gapRowHTML != nil) 
-		html = [html stringByAppendingString:gapRowHTML];
-	
-	return html;
 }
 
 - (NSString*) tweetAreaFooterHTML {

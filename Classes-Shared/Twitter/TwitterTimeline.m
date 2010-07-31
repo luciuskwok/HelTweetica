@@ -154,7 +154,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (NSArray *)messagesSinceDate:(NSDate*)date {
-	// SQL command to select rows up to limit sorted by createdDate.
+	// SQL command to select rows not older than date sorted by createdDate.
 	if (date == nil) return nil;
 	if (database == nil)
 		NSLog(@"TwitterTimeline is missing its database connection.");

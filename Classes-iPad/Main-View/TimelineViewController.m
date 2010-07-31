@@ -188,21 +188,18 @@
 	[self presentViewController: compose inNavControllerInPopoverFromItem: composeButton];
 }
 
-- (void) directMessageWithTweet:(NSNumber*)identifier {
+- (void)directMessageWithScreenName:(NSString*)screenName {
 	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
 	[compose loadFromUserDefaults];
 	compose.delegate = self;
-	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: identifier];
 	
 	// Insert d username in beginnig of message. This preserves any other people being replied to.
-	if (message != nil) {
-		NSString *replyUsername = message.userScreenName;
+	if (screenName != nil) {
 		if (compose.messageContent != nil) {
-			compose.messageContent = [NSString stringWithFormat:@"d %@ %@", replyUsername, compose.messageContent];
+			compose.messageContent = [NSString stringWithFormat:@"d %@ %@", screenName, compose.messageContent];
 		} else {
-			compose.messageContent = [NSString stringWithFormat:@"d %@ ", replyUsername];
+			compose.messageContent = [NSString stringWithFormat:@"d %@ ", screenName];
 		}
-		compose.inReplyTo = identifier;
 		compose.originalRetweetContent = nil;
 	}
 	
@@ -313,7 +310,7 @@
 		} else if ([actionName hasPrefix:@"reply"]) { // Public reply to the sender
 			[self replyToMessage:messageIdentifier];
 		} else if ([actionName hasPrefix:@"dm"]) { // Direct message the sender
-			[self directMessageWithTweet:messageIdentifier];
+			[self directMessageWithScreenName:[actionName lastPathComponent]];
 		} else if ([actionName hasPrefix:@"user"]) { // Show user page
 			[self showUserPage:[actionName lastPathComponent]];
 		} else if ([actionName hasPrefix:@"search"]) { // Show search page

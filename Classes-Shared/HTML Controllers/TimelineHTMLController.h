@@ -38,6 +38,8 @@
 	NSMutableArray *actions;
 
 	NSString *directMessageRowTemplate;
+	NSString *directMessageRowSectionOpenTemplate;
+	NSString *directMessageRowSectionCloseHTML;
 	NSString *tweetRowTemplate;
 	NSString *tweetMentionRowTemplate;
 	NSString *tweetGapRowTemplate;
@@ -115,8 +117,7 @@
 - (NSString *)currentAccountHTML;
 - (NSString *)tabAreaHTML;
 - (NSString *)tweetAreaHTML;
-- (NSString *)tweetRowTemplateForRow:(int)row;
-- (NSString *)tweetRowHTMLForRow:(int)row;
+- (NSString *)templateForRowIndex:(int)rowIndex;
 - (NSString *)tweetAreaFooterHTML;
 - (void)replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template;
 

@@ -8,6 +8,7 @@
 
 #import "TwitterDirectMessageTimeline.h"
 #import "TwitterDirectMessage.h"
+#import "TwitterDirectMessageConversation.h"
 #import "TwitterLoadDirectMessagesAction.h"
 #import "TwitterLoadTimelineAction.h"
 #import "LKSqliteDatabase.h"
@@ -22,10 +23,15 @@ enum {
 
 
 @implementation TwitterDirectMessageTimeline
+@synthesize accountIdentifier;
+
 
 - (void)dealloc {
+	[accountIdentifier release];
 	[super dealloc];
 }
+
+#pragma mark Database
 
 - (void)setDatabase:(LKSqliteDatabase *)db tableName:(NSString*)tableName temp:(BOOL)temp {
 	if (database != db) {
@@ -48,20 +54,20 @@ enum {
 	if (database == nil)
 		NSLog(@"TwitterTimeline is missing its database connection.");
 	
-	NSString *where = nil;
+	NSString *whereClause = nil;
 	switch (filter) {
 		case kSentMessagesOnly:
-			where = [NSString stringWithFormat:@"where %@.sent == 1", databaseTableName];
+			whereClause = [NSString stringWithFormat:@"where %@.sent == 1", databaseTableName];
 			break;
 		case kReceivedMessagesOnly:
-			where = [NSString stringWithFormat:@"where %@.sent == 0", databaseTableName];
+			whereClause = [NSString stringWithFormat:@"where %@.sent == 0", databaseTableName];
 			break;
 		default:
-			where = @"";
+			whereClause = @"";
 			break;
 	}
 	
-	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier %@ order by DirectMessages.CreatedDate desc limit %d", databaseTableName, databaseTableName, where, limit];
+	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier %@ order by DirectMessages.createdDate desc limit %d", databaseTableName, databaseTableName, whereClause, limit];
 	LKSqliteStatement *statement = [database statementWithQuery:query];
 	NSMutableArray *messages = [NSMutableArray arrayWithCapacity:limit];
 	TwitterDirectMessage *message;
@@ -74,9 +80,97 @@ enum {
 	return messages;
 }
 
-- (NSArray *)messagesWithLimit:(int)limit {
-	return [self directMessagesWithLimit:limit filter:kAllMessages];
+- (void)addMessages:(NSArray *)messages sent:(BOOL)sent {
+	if (messages.count == 0) return;
+	if (database == nil)
+		NSLog(@"TwitterTimeline is missing its database connection.");
+	
+	// Check if oldest message exists in timeline.
+	id last = [messages lastObject];
+	BOOL hasGap = ([self containsIdentifier:[last identifier]] == NO);
+	
+	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
+	NSArray *allKeys = [NSArray arrayWithObjects:@"identifier", @"createdDate", @"gapAfter", @"sent", nil];
+	NSString *query = [database queryWithCommand:@"Insert or replace into" table:databaseTableName keys:allKeys];
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	
+	for (id message in messages) {
+		// Bind variables.
+		[statement bindNumber:[message identifier] atIndex:1];
+		[statement bindDate:[message createdDate] atIndex:2];
+		[statement bindInteger:sent? 1:0 atIndex:3];
+		
+		int gapAfter = (hasGap && [message isEqual:last])? 1 : 0;
+		[statement bindInteger:gapAfter atIndex:3];
+		
+		// Execute and reset.
+		[statement step];
+		[statement reset];
+	}
+	
 }
+
+#pragma mark Conversations
+
+- (NSArray *)usersSortedByMostRecentDirectMessage {
+	NSMutableArray *users = [NSMutableArray array];
+	
+	// Get sender and recipient identifiers for rows in this timeline.
+	const int kRowCountLimit = 1000;
+	NSString *columnsToSelect = @"DirectMessages.senderIdentifier, DirectMessages.recipientIdentifier";
+	NSString *query = [NSString stringWithFormat:@"Select %@ from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier order by DirectMessages.createdDate desc limit %d", columnsToSelect, databaseTableName, databaseTableName, kRowCountLimit];
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	NSNumber *sender, *recipient;
+	
+	while ([statement step] == SQLITE_ROW) { // Row has data.
+		// Add all users excluding yourself.
+		sender = [statement objectForColumnIndex:0];
+		recipient = [statement objectForColumnIndex:1];
+		
+		if ([sender isEqualToNumber:accountIdentifier] == NO && [users containsObject:sender] == NO) {
+			[users addObject:sender];
+		} else if ([recipient isEqualToNumber:accountIdentifier] == NO && [users containsObject:recipient] == NO) {
+			[users addObject:recipient];
+		}
+	}
+	
+	return users;
+}
+
+- (NSArray *)directMessagesWithUserIdentifier:(NSNumber *)userIdentifier {
+	NSMutableArray *messages = [NSMutableArray array];
+	
+	// Get rows where either sender or recipient match the user identifier.
+	const int kRowCountLimit = 1000;
+	NSString *whereClause = [NSString stringWithFormat:@"where DirectMessages.senderIdentifier == %@ or DirectMessages.recipientIdentifier == %@", [userIdentifier stringValue], [userIdentifier stringValue]];
+	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier %@ order by DirectMessages.createdDate desc limit %d", databaseTableName, databaseTableName, whereClause, kRowCountLimit];
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	TwitterDirectMessage *message;
+	
+	while ([statement step] == SQLITE_ROW) { // Row has data.
+		message = [[[TwitterDirectMessage alloc] initWithDictionary:[statement rowData]] autorelease];
+		[messages addObject:message];
+	}
+	
+	return messages;
+}
+
+- (NSArray *)messagesWithLimit:(int)limit {
+	// Returns an array of direct message groups, which contain user info and a subarray of messages.
+	
+	// Get array of users sorted by most recent direct message, and create a sorted list of conversations with it.
+	NSArray *sortedUsers = [self usersSortedByMostRecentDirectMessage];
+	NSMutableArray *conversations = [NSMutableArray array];
+	for (NSNumber *user in sortedUsers) {
+		TwitterDirectMessageConversation *conversation = [[[TwitterDirectMessageConversation alloc] init] autorelease];
+		conversation.user = user;
+		conversation.messages = [self directMessagesWithUserIdentifier:user];
+		[conversations addObject:conversation];
+	}
+	
+	return conversations;
+}
+
 
 #pragma mark Loading from Twitter servers
 
@@ -114,5 +208,6 @@ enum {
 	if ([delegate respondsToSelector:@selector(timeline:didLoadWithAction:)]) 
 		[delegate timeline:self didLoadWithAction:action];
 }
+
 
 @end

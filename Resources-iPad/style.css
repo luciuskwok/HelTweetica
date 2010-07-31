@@ -144,6 +144,12 @@ p { margin: 0px 0px 20px 0px; }
 	border-bottom: 1px solid #ccc;
 }
 
+.direct_message_header {
+	font-size: 20px; 
+	line-height: 20px;
+	color: #888;
+}
+
 .status {
 	text-align: center;
 	margin: 20px;

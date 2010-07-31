@@ -141,8 +141,8 @@
 	return [self loadHTMLTemplate:@"basic-template"];
 }
 
-- (NSString *)tweetRowTemplateForRow:(int)row {
-	TwitterStatusUpdate *message = [messages objectAtIndex:row];
+- (NSString *)templateForRowIndex:(int)rowIndex {
+	TwitterStatusUpdate *message = [messages objectAtIndex:rowIndex];
 	if ([message.identifier isEqualToNumber:selectedMessageIdentifier])
 		return highlightedTweetRowTemplate;
 	return tweetRowTemplate;
