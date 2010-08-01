@@ -169,10 +169,10 @@
 		} else if ([key isEqualToString:@"created_at"]) {
 			self.createdDate = [self dateWithTwitterStatusString:value];
 		} else if ([key isEqualToString:@"coordinates"]) {
-			if (longitude == nil) {
-				self.longitude = [self scanDoubleFromString:value];
-			} else {
+			if (latitude == nil) {
 				self.latitude = [self scanDoubleFromString:value];
+			} else {
+				self.longitude = [self scanDoubleFromString:value];
 			}
 		}
 	}
@@ -185,12 +185,13 @@
 - (NSString *)stringForURLWithPrefix:(NSString *)prefix {
 	NSString *urlString = nil;
 	NSScanner *scanner = [NSScanner scannerWithString:text];
-	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@"-+?& \t\r\n\"'"];
+	NSCharacterSet *urlSet = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+_-:/."];
+	//NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@"-+?& \t\r\n\"'"];
 	[scanner setCharactersToBeSkipped:nil];
 	
 	while ([scanner isAtEnd] == NO) {
 		[scanner scanUpToString:prefix intoString:nil];
-		if ([scanner scanUpToCharactersFromSet:nonURLSet intoString:&urlString]) {
+		if ([scanner scanCharactersFromSet:urlSet intoString:&urlString]) {
 			if ([urlString hasSuffix:@"."])
 				urlString = [urlString substringToIndex:urlString.length - 1];
 			return urlString;
@@ -220,8 +221,10 @@
 		[substitutions setObject:self.inReplyToScreenName forKey:@"inReplyToScreenName"];
 	if ([self isLocked])
 		[substitutions setObject:@"<img src='lock.png'>" forKey:@"lockIcon"];
-	if (self.longitude && self.latitude)
-		[substitutions setObject:@"<img src='geotag.png'>" forKey:@"geotagIcon"];
+	if (self.longitude && self.latitude) {
+		NSString *geoHTML = [NSString stringWithFormat:@"<a href='http://maps.google.com/maps?q=%1.9f,%1.9f'><img src='geotag.png'></a>", [latitude doubleValue], [longitude doubleValue]];
+		[substitutions setObject:geoHTML forKey:@"geotagIcon"];
+	}
 
 	// Always show action buttons on right side of page.
 	[substitutions setObject:@"YES" forKey:@"actions"];

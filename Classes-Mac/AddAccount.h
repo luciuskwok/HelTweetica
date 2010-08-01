@@ -25,7 +25,6 @@
 	IBOutlet NSTextField *usernameField;
 	IBOutlet NSSecureTextField *passwordField;
 	Twitter *twitter;
-	NSString *screenName;
 	id delegate;
 }
 @property (assign) NSTextField *usernameField;

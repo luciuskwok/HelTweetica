@@ -31,7 +31,6 @@
 
 		self.selectedMessageIdentifier = anIdentifier;
 		self.relevantMessages = [NSMutableSet set];
-		highlightedTweetRowTemplate = [[self loadHTMLTemplate:@"tweet-row-highlighted-template"] retain];
 	}
 	return self;
 }
@@ -39,7 +38,6 @@
 - (void)dealloc {
 	[selectedMessageIdentifier release];
 	[relevantMessages release];
-	[highlightedTweetRowTemplate release];
 	
 	[super dealloc];
 }
@@ -141,11 +139,14 @@
 	return [self loadHTMLTemplate:@"basic-template"];
 }
 
-- (NSString *)templateForRowIndex:(int)rowIndex {
-	TwitterStatusUpdate *message = [messages objectAtIndex:rowIndex];
-	if ([message.identifier isEqualToNumber:selectedMessageIdentifier])
-		return highlightedTweetRowTemplate;
-	return tweetRowTemplate;
+- (NSString *)styleForStatusUpdate:(TwitterStatusUpdate *)statusUpdate rowIndex:(int)rowIndex {
+	NSString *style = [super styleForStatusUpdate:statusUpdate rowIndex:rowIndex];
+	
+	// Selection
+	if ([statusUpdate.identifier isEqualToNumber:selectedMessageIdentifier])
+		style = @"highlighted_tweet_row";
+	
+	return style;
 }
 
 - (NSString*) tweetAreaFooterHTML {

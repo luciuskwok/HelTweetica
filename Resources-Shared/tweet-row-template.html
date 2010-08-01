@@ -1,4 +1,4 @@
-﻿<div class='tweet_row'>
+﻿<div class='tweet_row {tweetRowStyle}'>
 
 	<div class='tweet_avatar'>
 		<a href='action:user/{screenName}'><img class='avatar_img' id='avatar-{messageIdentifier}' src='{profileImageURL}'></a>
@@ -29,6 +29,8 @@
 				retweeted by <a href='action:user/{retweetedBy}'>{retweetedBy}</a>
 			{/Block:retweetedBy}
 		</span>
+		
+		{geotagIcon}
 		
 	</div><!-- tweet_content -->
 	

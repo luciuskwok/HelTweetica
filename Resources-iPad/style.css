@@ -112,11 +112,13 @@ p { margin: 0px 0px 20px 0px; }
 	width: 48px; height: 48px; 
 	margin: 1px; 
 	-webkit-border-radius: 8px; 
+	-webkit-box-shadow: 0px 1px 4px #888;
 }
 .image_preview { 
 	float:right;
 	margin: 0px 0px 0px 5px; 
 	-webkit-border-radius: 8px; 
+	-webkit-box-shadow: 0px 1px 5px #888;
 }
 .tweet_content { 
 	display: table-cell; 
@@ -255,4 +257,8 @@ p { margin: 0px 0px 20px 0px; }
 
 .mention_tweet_row {
 	background: #E0E8FF;
+}
+
+.self_tweet_row {
+	background: #c0b4a9;
 }

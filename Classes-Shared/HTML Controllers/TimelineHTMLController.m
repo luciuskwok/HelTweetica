@@ -56,7 +56,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		directMessageRowSectionOpenTemplate = [[self loadHTMLTemplate:@"dm-row-section-open"] retain];
 		directMessageRowSectionCloseHTML = [[self loadHTMLTemplate:@"dm-row-section-close"] retain];
 		tweetRowTemplate = [[self loadHTMLTemplate:@"tweet-row-template"] retain];
-		tweetMentionRowTemplate = [[self loadHTMLTemplate:@"tweet-row-mention-template"] retain];
 		tweetGapRowTemplate = [[self loadHTMLTemplate:@"load-gap-template"] retain];
 		
 		// Loading template
@@ -85,7 +84,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[directMessageRowSectionCloseHTML release];
 	
 	[tweetRowTemplate release];
-	[tweetMentionRowTemplate release];
 	[tweetGapRowTemplate release];
 	[loadingHTML release];
 	
@@ -620,7 +618,12 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 			[substitutions setObject:statusUpdate.userScreenName forKey:@"retweetedBy"];
 		statusUpdate = [twitter statusUpdateWithIdentifier:statusUpdate.retweetedStatusIdentifier];
 	}
-	
+
+	// Row style
+	NSString *rowStyle = [self styleForStatusUpdate:statusUpdate rowIndex:rowIndex];
+	if (rowStyle != nil) 
+		[substitutions setObject:rowStyle forKey:@"tweetRowStyle"];
+						  
 	// Favorites
 	if ([account messageIsFavorite:statusUpdate.identifier]) 
 		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
@@ -629,12 +632,26 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[substitutions addEntriesFromDictionary:[statusUpdate htmlSubstitutions]];
 	
 	// Load template and apply substitutions.
-	NSString *template = [self templateForRowIndex: rowIndex];
-	NSString *html = [self htmlWithTemplate:template substitutions:substitutions];
+	NSString *html = [self htmlWithTemplate:tweetRowTemplate substitutions:substitutions];
 	if (gapRowHTML != nil) 
 		html = [html stringByAppendingString:gapRowHTML];
 	
 	return html;
+}
+
+- (NSString *)styleForStatusUpdate:(TwitterStatusUpdate *)statusUpdate rowIndex:(int)rowIndex {
+	NSString *style = nil;
+	
+	// Mentions
+	NSRange found = [statusUpdate.text rangeOfString:[NSString stringWithFormat:@"@%@", account.screenName] options:NSCaseInsensitiveSearch];
+	if (found.location != NSNotFound)
+		style = @"mention_tweet_row";
+	
+	// Own tweets
+	if ([statusUpdate.userIdentifier isEqualToNumber:account.identifier] || [statusUpdate.userScreenName isEqualToString:account.screenName])
+		style = @"self_tweet_row";
+
+	return style;
 }
 
 - (NSString *)htmlWithDirectMessageConversation:(TwitterDirectMessageConversation *)conversation rowIndex:(int)rowIndex {
@@ -737,22 +754,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[html appendString:@"</div> "]; // Close footer
 	
 	return html;
-}
-
-- (NSString *)templateForRowIndex:(int)rowIndex {
-	// Highlight Mentions
-	NSString *screenName = [NSString stringWithFormat:@"@%@", account.screenName];
-	TwitterStatusUpdate *message = [messages objectAtIndex:rowIndex];
-	if (message.retweetedStatusIdentifier) {
-		TwitterStatusUpdate *retweeted = [twitter statusUpdateWithIdentifier:message.retweetedStatusIdentifier];
-		if (retweeted)
-			message = retweeted;
-	}
-	NSRange foundRange = [message.text rangeOfString:screenName options:NSCaseInsensitiveSearch];
-	if (foundRange.location != NSNotFound) 
-		return tweetMentionRowTemplate;
-	
-	return tweetRowTemplate;
 }
 
 - (NSString*) tweetAreaFooterHTML {

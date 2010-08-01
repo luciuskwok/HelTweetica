@@ -61,32 +61,14 @@
 	[self loadURL:[NSURL URLWithString:request]];
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
-	isLoading = NO;
-	
-	// Send message to delegate with data.
+- (void)dataFinishedLoading:(NSData *)data {
 	NSString *shortURL = [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease];
-	if ([delegate respondsToSelector:@selector(shrinkURLAction:replacedLongURL:withShortURL:)])
-		[delegate shrinkURLAction:self replacedLongURL:identifier withShortURL:shortURL];
-	
-	// Clean up
-	[delegate release];
-	self.connection = nil;
-	self.receivedData = nil;
-}	
-
-- (void)connection:(NSURLConnection *)aConnection didFailWithError:(NSError *)error {
-	isLoading = NO;
-	statusCode = 0; // Status code is not valid with this kind of error, which is typically a timeout or no network error.
-	
-	// Send message to delegate of failure.
-	if ([delegate respondsToSelector:@selector(shrinkURLAction:didFailWithError:)])
-		[delegate shrinkURLAction:self didFailWithError:error];
-	
-	// Clean up
-	[delegate release];
-	self.connection = nil;
-	self.receivedData = nil;
+	[delegate action:self didReplaceLongURL:identifier withShortURL:shortURL];
 }
+
+- (void)failedWithError:(NSError *)error {
+	[delegate action:self didFailWithError:error];
+}
+
 
 @end

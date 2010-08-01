@@ -155,11 +155,16 @@
 		[self.currentRetweetedUser setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/retweeted_status/"]) {
 		[self.currentRetweetedMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
-	} else if ([keyPath hasPrefix:@"/recipient/"]) {
-		// Ignore these key paths because they're only in DMs.
 	} else if ([keyPath hasPrefix:@"/favorited/"]) {
 		// Special handling for favorites. Instead of a flag in a message, which only is valid for the account requesting the favorite status, put the message in a set of favorites for this action.
 		[favorites addObject:currentMessage];
+	} else if ([keyPath hasPrefix:@"/place/"]) {
+		// Ignore. Place is used for showing the area for geotagging.
+	} else if ([keyPath hasPrefix:@"/coordinates/"]) {
+		// Ignore. Coordinates seems to show geotagging in longitude, latitude format, incorrectly.
+	} else if ([keyPath hasPrefix:@"/geo/"]) {
+		// Parse geotag with coordinates  in latitude, longitude format.
+		[self.currentMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/"]) {
 		[self.currentMessage setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} 

@@ -18,9 +18,9 @@
 @end
 
 
-@protocol LKShrinkURLActionDelegate
-- (void)shrinkURLAction:(LKShrinkURLAction *)anAction replacedLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL;
-- (void)shrinkURLAction:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error;
+@protocol LKShrinkURLActionDelegate <NSObject>
+- (void)action:(LKShrinkURLAction *)anAction didReplaceLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL;
+- (void)action:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error;
 @end
 
 

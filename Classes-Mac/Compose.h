@@ -17,11 +17,13 @@
 #import <Cocoa/Cocoa.h>
 #import <CoreLocation/CoreLocation.h>
 #import "LKShrinkURLAction.h"
+#import "LKUploadPictureAction.h"
+#import "TwitterAccount.h"
 
 
 @protocol ComposeDelegate;
 
-@interface Compose : NSWindowController <LKShrinkURLActionDelegate> {
+@interface Compose : NSWindowController <LKShrinkURLActionDelegate, LKUploadPictureActionDelegate> {
 	IBOutlet NSTextField *textField;
 	IBOutlet NSTextField *charactersRemaining;
 	IBOutlet NSTextField *tooLongLabel;
@@ -29,8 +31,10 @@
 	IBOutlet NSButton *shrinkURLButton;
 	IBOutlet NSButton *locationButton;
 	IBOutlet NSButton *tweetButton;
+	IBOutlet NSButton *pictureButton;
 	IBOutlet NSProgressIndicator *activityIndicator;
 	
+	NSString *senderScreenName;
 	NSString *messageContent;
 	NSNumber *inReplyTo;
 	NSString *originalRetweetContent;
@@ -49,8 +53,10 @@
 @property (assign) NSButton *shrinkURLButton;
 @property (assign) NSButton *locationButton;
 @property (assign) NSButton *tweetButton;
+@property (assign) NSButton *pictureButton;
 @property (assign) NSProgressIndicator *activityIndicator;
 
+@property (nonatomic, retain) NSString *senderScreenName;
 @property (nonatomic, retain) NSString *messageContent;
 @property (nonatomic, retain) NSNumber *inReplyTo;
 @property (nonatomic, retain) NSString *originalRetweetContent;
@@ -68,13 +74,9 @@
 - (IBAction)selectRetweetStyle:(id)sender;
 - (IBAction)location:(id)sender;
 - (IBAction)shrinkURLs:(id)sender;
-- (IBAction)camera:(id)sender;
+- (IBAction)addPicture:(id)sender;
 - (IBAction)tweet:(id)sender;
 - (IBAction)close:(id)sender;
-
-// Defaults
-- (void)loadFromUserDefaults;
-- (void)saveToUserDefaults;
 
 @end
 

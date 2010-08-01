@@ -43,7 +43,6 @@
 	NSString *directMessageRowSectionOpenTemplate;
 	NSString *directMessageRowSectionCloseHTML;
 	NSString *tweetRowTemplate;
-	NSString *tweetMentionRowTemplate;
 	NSString *tweetGapRowTemplate;
 	NSString *loadingHTML;
 
@@ -116,11 +115,11 @@
 
 // HTML
 - (NSString *)loadHTMLTemplate:(NSString *)templateName;
+- (NSString *)styleForStatusUpdate:(TwitterStatusUpdate *)statusUpdate rowIndex:(int)rowIndex;
 - (NSString *)webPageTemplate;
 - (NSString *)currentAccountHTML;
 - (NSString *)tabAreaHTML;
 - (NSString *)tweetAreaHTML;
-- (NSString *)templateForRowIndex:(int)rowIndex;
 - (NSString *)tweetAreaFooterHTML;
 - (void)replaceBlock:(NSString*)blockName display:(BOOL)display inTemplate:(NSMutableString*)template;
 

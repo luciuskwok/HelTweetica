@@ -33,6 +33,7 @@
 
 - (void)dealloc {
 	[twitter release];
+	[screenName release];
 	[super dealloc];
 }
 
@@ -46,6 +47,25 @@
 #pragma mark Login view controller delegate
 
 - (void) loginWithScreenName:(NSString*)aScreenName password:(NSString*)password {
+	// Save password in Keychain because even though Twitter OAuth doesn't require a password, other services such as TwitPic and Bit.ly require the username/password pair.
+	const char *cServiceName = "api.twitter.com";
+	const char *cUser = [aScreenName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char *cPass = [password cStringUsingEncoding:NSUTF8StringEncoding];
+	OSStatus err;
+	SecKeychainItemRef keychainItemRef;
+	
+	// Remove any existing password for this username and replace it with new password.
+	err = SecKeychainFindGenericPassword(nil, strlen(cServiceName), cServiceName, strlen(cUser), cUser, nil, nil, &keychainItemRef);
+	if (err == noErr) {
+		err = SecKeychainItemDelete (keychainItemRef);
+		if (err != noErr)
+			NSLog (@"SecKeychainItemDelete() error: %d", err);
+	}
+	
+	err = SecKeychainAddGenericPassword(nil, strlen(cServiceName), cServiceName, strlen(cUser), cUser, strlen(cPass), cPass, nil);
+	if (err != noErr)
+		NSLog (@"SecKeychainAddGenericPassword() error: %d", err);
+	
 	// Create an account for this username if one doesn't already exist
 	TwitterAccount *account = [twitter accountWithScreenName: aScreenName];
 	if (account == nil) {

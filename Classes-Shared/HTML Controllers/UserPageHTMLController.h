@@ -23,7 +23,6 @@
 	TwitterUser *user;
 	BOOL unauthorized;
 	BOOL notFound;
-	NSString *highlightedTweetRowTemplate;
 }
 @property (nonatomic, retain) TwitterUser *user;
 

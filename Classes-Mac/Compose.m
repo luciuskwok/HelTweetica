@@ -18,8 +18,8 @@
 
 
 @implementation Compose
-@synthesize textField, charactersRemaining, tooLongLabel, retweetStyleControl, shrinkURLButton, locationButton, tweetButton, activityIndicator;
-@synthesize messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
+@synthesize textField, charactersRemaining, tooLongLabel, retweetStyleControl, shrinkURLButton, locationButton, tweetButton, pictureButton, activityIndicator;
+@synthesize senderScreenName, messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
 @synthesize delegate;
 
 
@@ -30,11 +30,20 @@ enum { kTwitterCharacterMax = 140 };
 	self = [self initWithWindowNibName:@"Compose"];
 	if (self) {
 		actions = [[NSMutableSet alloc] init];
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		newStyleRetweet = [defaults boolForKey:@"newStyleRetweet"];
+
+		// Listen for changes to Twitter state data
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self selector:@selector(accountsDidChange:) name:@"accountsDidChange" object:nil];
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[senderScreenName release];
 	[messageContent release];
 	[inReplyTo release];
 	[originalRetweetContent release];
@@ -44,6 +53,30 @@ enum { kTwitterCharacterMax = 140 };
 	
 	[super dealloc];
 }
+
+#pragma mark NSCoding for saving app state
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [self init];
+	if (self) {
+		self.senderScreenName = [aDecoder decodeObjectForKey:@"senderScreenName"];
+		self.messageContent = [aDecoder decodeObjectForKey:@"messageContent"];
+		self.inReplyTo = [aDecoder decodeObjectForKey:@"inReplyTo"];
+		self.originalRetweetContent = [aDecoder decodeObjectForKey:@"originalRetweetContent"];
+		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:senderScreenName forKey:@"senderScreenName"];
+	[aCoder encodeObject:messageContent forKey:@"messageContent"];
+	[aCoder encodeObject:inReplyTo forKey:@"inReplyTo"];
+	[aCoder encodeObject:originalRetweetContent forKey:@"originalRetweetContent"];
+	[aCoder encodeObject:[self.window frameAutosaveName ] forKey:@"windowFrameAutosaveName"];
+}
+
+#pragma mark Window
 
 - (void)windowDidLoad {
 	// Message
@@ -55,8 +88,8 @@ enum { kTwitterCharacterMax = 140 };
 	// Location
 	if ([CLLocationManager locationServicesEnabled]) {
 		locationManager = [[CLLocationManager alloc] init];
-		locationManager.distanceFilter = 45.0; // meters
-		locationManager.desiredAccuracy = 15.0; // meters
+		locationManager.distanceFilter = 100.0; // meters
+		locationManager.desiredAccuracy = 30.0; // meters
 		BOOL useLocation = [[NSUserDefaults standardUserDefaults] boolForKey:@"useLocation"];
 		[locationButton setState:useLocation? NSOnState : NSOffState];
 		if (useLocation) {
@@ -81,9 +114,11 @@ enum { kTwitterCharacterMax = 140 };
 	if (originalRetweetContent != nil) {
 		[self setNewStyleRetweet:newStyleRetweet];
 	} else {
-		[retweetStyleControl setHidden:YES];
+		[retweetStyleControl setEnabled:NO];
 	}
 	
+	// Enable receiving dragged files in window.
+	[self.window registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
 }
 
 
@@ -122,6 +157,7 @@ enum { kTwitterCharacterMax = 140 };
 		[textField setEnabled: NO];
 		[shrinkURLButton setEnabled:NO];
 		[locationButton setEnabled:NO];
+		[pictureButton setEnabled:NO];
 	} else {
 		// Allow editing
 		[textField setEditable: YES];
@@ -129,6 +165,7 @@ enum { kTwitterCharacterMax = 140 };
  		[textField becomeFirstResponder];
 		[shrinkURLButton setEnabled:YES];
 		[locationButton setEnabled:YES];
+		[pictureButton setEnabled:YES];
 	}
 	
 	[self updateCharacterCount];
@@ -158,6 +195,7 @@ enum { kTwitterCharacterMax = 140 };
 - (IBAction)selectRetweetStyle:(id)sender {
 	int index = [sender selectedSegment];
 	self.newStyleRetweet = (index == 0);
+	[[NSUserDefaults standardUserDefaults] setBool: newStyleRetweet forKey:@"newStyleRetweet"];
 }
 
 - (IBAction)location:(id)sender {
@@ -175,13 +213,12 @@ enum { kTwitterCharacterMax = 140 };
 	}
 }
 
-- (IBAction)camera:(id)sender {
+- (IBAction)addPicture:(id)sender {
 }
 
 - (IBAction)tweet:(id)sender {
 	// End editing of current text field and save to defaults
 	[[self window] makeFirstResponder:[self window]];
-	[self saveToUserDefaults];
 	
 	if (originalRetweetContent && newStyleRetweet) {
 		// New-style retweet.
@@ -215,7 +252,6 @@ enum { kTwitterCharacterMax = 140 };
 - (IBAction)close:(id)sender {
 	// End editing of current text field and save to defaults
 	[[self window] makeFirstResponder:[self window]];
-	[self saveToUserDefaults];
 	
 	// Location
 	[locationManager stopUpdatingLocation];
@@ -224,22 +260,20 @@ enum { kTwitterCharacterMax = 140 };
 	[self endSheetWithReturnCode:0];
 }
 
-#pragma mark URL shortening
+#pragma mark Network actions
 
-- (IBAction)shrinkURLs:(id)sender {
-	NSSet *shrinkActions = [LKShrinkURLAction actionsToShrinkURLsInString:[textField stringValue]];
-	
-	if (shrinkActions.count > 0) {
-		for (LKShrinkURLAction *action in shrinkActions) {
-			action.delegate = self;
-			[action load];
-		}
-		
-		// Start network activity indicator.
-		[activityIndicator setHidden: NO];
-		[activityIndicator startAnimation:nil];
-		[actions unionSet:shrinkActions];
-	}
+- (void)addAction:(LKLoadURLAction *)anAction {
+	// Start network activity indicator.
+	[activityIndicator setHidden: NO];
+	[activityIndicator startAnimation:nil];
+	[actions addObject:anAction];
+}
+
+- (void)addActionsFromSet:(NSSet *)set {
+	// Start network activity indicator.
+	[activityIndicator setHidden: NO];
+	[activityIndicator startAnimation:nil];
+	[actions unionSet:set];
 }
 
 - (void)removeAction:(LKLoadURLAction *)anAction {
@@ -252,7 +286,21 @@ enum { kTwitterCharacterMax = 140 };
 	}
 }	
 
-- (void)shrinkURLAction:(LKShrinkURLAction *)anAction replacedLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
+#pragma mark URL shortening
+
+- (IBAction)shrinkURLs:(id)sender {
+	NSSet *shrinkActions = [LKShrinkURLAction actionsToShrinkURLsInString:[textField stringValue]];
+	
+	if (shrinkActions.count > 0) {
+		for (LKShrinkURLAction *action in shrinkActions) {
+			action.delegate = self;
+			[action load];
+		}
+		[self addActionsFromSet:shrinkActions];
+	}
+}
+
+- (void)action:(LKShrinkURLAction *)anAction didReplaceLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
 	if (longURL != nil) {
 		if ([shortURL hasPrefix:@"http"]) {
 			NSString *text = [textField stringValue];
@@ -266,28 +314,108 @@ enum { kTwitterCharacterMax = 140 };
 	[self removeAction:anAction];
 }
 
-- (void)shrinkURLAction:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error {
+- (void)action:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error {
 	NSLog (@"URL shrinker error: %@", error);
 	[self removeAction:anAction];
 }
 
-#pragma mark Defaults
 
-- (void)loadFromUserDefaults {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	self.messageContent = [defaults objectForKey:@"messageContent"];
-	self.inReplyTo = [defaults objectForKey:@"inReplyTo"];
-	self.originalRetweetContent = [defaults objectForKey:@"originalRetweetContent"];
-	self.newStyleRetweet = [defaults boolForKey:@"newStyleRetweet"];
+#pragma mark Picture uploading
+
+- (void)uploadPictureData:(NSData *)data {
+	// Get username and password from keychain.
+	const char *cServiceName = "api.twitter.com";
+	const char *cUser = [senderScreenName cStringUsingEncoding:NSUTF8StringEncoding];
+	void *cPass = nil;
+	UInt32 cPassLength = 0;
+	OSStatus err = SecKeychainFindGenericPassword(nil, strlen(cServiceName), cServiceName, strlen(cUser), cUser, &cPassLength, &cPass, nil);
+	if (err != noErr) {
+		// Should put an error message in the status bar or somewhere.
+		NSLog (@"Password not found for picture uploading. Error %d.", err);
+		return;
+	}
+	
+	// Create and start action.
+	LKUploadPictureAction *action = [[[LKUploadPictureAction alloc] init] autorelease];
+	action.username = senderScreenName;
+	action.password = [[[NSString alloc] initWithBytes:cPass length:cPassLength encoding:NSUTF8StringEncoding] autorelease];
+	action.media = data;
+	[action startUpload];
+	[self addAction:action];
+	
+	// Clean up
+	SecKeychainItemFreeContent (nil, cPass);
+	if (err != noErr) {
+		NSLog (@"SecKeychainItemFreeContent error %d.", err);
+	}
 }
 
-- (void)saveToUserDefaults {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: [textField stringValue] forKey:@"messageContent"];
-	[defaults setObject: inReplyTo forKey:@"inReplyTo"];
-	[defaults setObject: originalRetweetContent forKey:@"originalRetweetContent"];
-	[defaults setBool: newStyleRetweet forKey:@"newStyleRetweet"];
-}	
+- (void)action:(LKUploadPictureAction *)action didUploadPictureWithURL:(NSString *)url {
+	NSString *text = [textField stringValue];
+	if ([text hasSuffix:@" "] == NO && [text hasSuffix:@"\n"] == NO && [text hasSuffix:@"\t"] == NO) 
+		text = [text stringByAppendingString:@" "];
+	text = [text stringByAppendingString:url];
+	[textField setStringValue:text];
+	
+	[self removeAction:action];
+}
+
+- (void)action:(LKUploadPictureAction *)action didFailWithErrorCode:(int)code description:(NSString *)description {
+	NSLog (@"Picture uploading failed with error: %@ (%d)", description, code);
+	[self removeAction:action];
+}
+
+#pragma mark Dragging
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+	NSPasteboard *pboard;
+	NSDragOperation sourceDragMask;
+	
+	sourceDragMask = [sender draggingSourceOperationMask];
+	pboard = [sender draggingPasteboard];
+	
+	if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
+		if (sourceDragMask & NSDragOperationCopy) {
+			return NSDragOperationCopy;
+		}
+	}
+	return NSDragOperationNone;
+}
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender {
+	NSPasteboard *pboard = [sender draggingPasteboard];
+	
+	if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
+		NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
+		if (files.count > 0) {
+			// Only use the first file.
+			NSString *file = [files objectAtIndex:0];
+			NSError *error = nil;
+			NSData *data = [NSData dataWithContentsOfFile:file options:NSDataReadingMapped error:&error];
+			if (data == nil) {
+				NSLog (@"Error opening file %@: %@", file, error);
+			} else {
+				[self uploadPictureData:data];
+			}
+		}
+	}
+	return YES;
+}
+
+#pragma mark Text field delegate
+
+- (BOOL)control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector {
+	if (commandSelector == @selector(insertNewline:)) {
+		// new line action: always insert a line-break character and don’t cause the receiver to end editing
+		[textView insertNewlineIgnoringFieldEditor:self];
+		return YES;
+	} else if (commandSelector == @selector(insertTab:)) {
+		// tab action: always insert a tab character and don’t cause the receiver to end editing
+		[textView insertTabIgnoringFieldEditor:self];
+		return YES;
+	}
+	return NO;
+}
 
 
 @end

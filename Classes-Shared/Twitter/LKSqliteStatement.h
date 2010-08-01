@@ -20,6 +20,7 @@
 - (void)bindString:(NSString*)string atIndex:(int)index;
 - (void)bindNumber:(NSNumber*)number atIndex:(int)index;
 - (void)bindInteger:(SInt64)n atIndex:(int)index;
+- (void)bindDouble:(double)n atIndex:(int)index;
 - (void)bindDate:(NSDate*)date atIndex:(int)index;
 
 - (int)step;

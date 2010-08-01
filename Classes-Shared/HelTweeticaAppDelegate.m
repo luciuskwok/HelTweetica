@@ -22,6 +22,7 @@
 #ifdef TARGET_PROJECT_MAC
 #import "MainWindowController.h"
 #import "PreferencesController.h"
+#import "Compose.h"
 #endif
 
 
@@ -131,7 +132,7 @@
 	NSWindow *aWindow = [notification object];
 	id controller = [aWindow windowController];
 	
-	if ([controller isKindOfClass: [MainWindowController class]]) {
+	if ([controller isKindOfClass: [MainWindowController class]] || [controller isKindOfClass: [Compose class]])  {
 		[[controller retain] autorelease];
 		[windowControllers removeObject: controller];
 	} else if (controller == preferences) {

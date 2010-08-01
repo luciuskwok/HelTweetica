@@ -85,7 +85,7 @@
 	[self setAccount:account];
 }	
 
-#pragma mark NSCoder
+#pragma mark NSCoding for saving app state
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [self init];
@@ -445,10 +445,10 @@
 
 - (IBAction)compose:(id)sender {
 	Compose* compose = [[[Compose alloc] init] autorelease];
-	[compose loadFromUserDefaults];
 	compose.delegate = self;
-	[compose askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
-	self.currentSheet = compose;
+	compose.senderScreenName = htmlController.account.screenName;
+	[compose showWindow:sender];
+	[appDelegate addWindowController:compose];
 }
 
 - (void)retweet:(NSNumber*)identifier {
@@ -456,7 +456,7 @@
 	if (message == nil) return;
 	
 	Compose* compose = [[[Compose alloc] init] autorelease];
-	[compose loadFromUserDefaults];
+	compose.senderScreenName = htmlController.account.screenName;
 	compose.delegate = self;
 	if (message != nil) {
 		// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
@@ -465,13 +465,13 @@
 		compose.inReplyTo = identifier;
 	}
 	
-	[compose askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
-	self.currentSheet = compose;
+	[compose showWindow:nil];
+	[appDelegate addWindowController:compose];
 }
 
 - (void)replyToMessage: (NSNumber*)identifier {
 	Compose* compose = [[[Compose alloc] init] autorelease];
-	[compose loadFromUserDefaults];
+	compose.senderScreenName = htmlController.account.screenName;
 	compose.delegate = self;
 	TwitterStatusUpdate *message = [htmlController.twitter statusUpdateWithIdentifier: identifier];
 	
@@ -488,13 +488,13 @@
 		compose.newStyleRetweet = NO;
 	}
 	
-	[compose askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
-	self.currentSheet = compose;
+	[compose showWindow:nil];
+	[appDelegate addWindowController:compose];
 }
 
 - (void)directMessageWithScreenName:(NSString*)screenName {
 	Compose* compose = [[[Compose alloc] init] autorelease];
-	[compose loadFromUserDefaults];
+	compose.senderScreenName = htmlController.account.screenName;
 	compose.delegate = self;
 	
 	// Insert d username in beginnig of message. This preserves any other people being replied to.
@@ -507,8 +507,8 @@
 		compose.originalRetweetContent = nil;
 	}
 	
-	[compose askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
-	self.currentSheet = compose;
+	[compose showWindow:nil];
+	[appDelegate addWindowController:compose];
 }
 
 - (void) compose:(Compose*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location {

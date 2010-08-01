@@ -18,6 +18,10 @@
 #import "AddAccount.h"
 
 
+// Constants
+NSString *kTableRowDragType = @"tableRowIndexSet";
+
+
 @implementation PreferencesController
 @synthesize tableView, twitter, currentSheet;
 
@@ -44,6 +48,11 @@
 	[alertImage release];
 	[currentSheet release];
 	[super dealloc];
+}
+
+- (void)windowDidLoad { 
+	// Set up table view for dragging
+	[tableView registerForDraggedTypes:[NSArray arrayWithObject:kTableRowDragType]];
 }
 
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
@@ -116,6 +125,41 @@
 		
 	}
 	return result;
+}
+
+#pragma mark Table view drag and drop
+
+- (BOOL)canDragRowsWithIndexes:(NSIndexSet *)rowIndexes atPoint:(NSPoint)mouseDownPoint {
+	int row = [rowIndexes firstIndex];
+	return (row >= 0) && (row < twitter.accounts.count);
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard*)pboard {
+	// Copy the row numbers to the pasteboard.
+	[pboard declareTypes:[NSArray arrayWithObject:kTableRowDragType] owner:self];
+	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:rowIndexes] forType:kTableRowDragType];
+	return YES;
+}
+
+- (NSDragOperation)tableView:(NSTableView*)aTableView validateDrop:(id <NSDraggingInfo>)info proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)op {
+	if (row < 0) row = 0;
+	[aTableView setDropRow:row dropOperation:NSTableViewDropAbove];
+	return NSDragOperationEvery;
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)op {
+	NSData* rowData = [[info draggingPasteboard] dataForType:kTableRowDragType];
+	NSIndexSet* rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+	int dragRow = [rowIndexes firstIndex];
+	
+	if (row > dragRow) row--;
+	
+	id item = [[twitter.accounts objectAtIndex:dragRow] retain];
+	[twitter.accounts removeObjectAtIndex:dragRow];
+	[twitter.accounts insertObject:item atIndex:row];
+	[item release];
+	[aTableView reloadData];
+	return YES;
 }
 
 #pragma mark Alert

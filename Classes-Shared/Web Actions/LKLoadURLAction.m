@@ -31,6 +31,18 @@
 	[delegate retain];
 }
 
+- (void)dataFinishedLoading:(NSData *)data {
+	// Send message to delegate with data.
+	if ([delegate respondsToSelector:@selector(loadURLAction:didLoadData:)])
+		[delegate loadURLAction:self didLoadData:receivedData];
+}
+
+- (void)failedWithError:(NSError *)error {
+	// Send message to delegate of failure.
+	if ([delegate respondsToSelector:@selector(loadURLAction:didFailWithError:)])
+		[delegate loadURLAction:self didFailWithError:error];
+}
+
 #pragma mark NSURLConnection delegate methods
 
 - (void)connection:(NSURLConnection *)aConnection didReceiveResponse:(NSURLResponse *)response {
@@ -46,9 +58,8 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
 	isLoading = NO;
 	
-	// Send message to delegate with data.
-	if ([delegate respondsToSelector:@selector(loadURLAction:didLoadData:)])
-		[delegate loadURLAction:self didLoadData:receivedData];
+	// Allow subclasses to process data.
+	[self dataFinishedLoading:receivedData];
 	
 	// Clean up
 	[delegate release];
@@ -60,9 +71,8 @@
 	isLoading = NO;
 	statusCode = 0; // Status code is not valid with this kind of error, which is typically a timeout or no network error.
 	
-	// Send message to delegate of failure.
-	if ([delegate respondsToSelector:@selector(loadURLAction:didFailWithError:)])
-		[delegate loadURLAction:self didFailWithError:error];
+	// Allow subclasses to handle error.
+	[self failedWithError:error];
 
 	// Clean up
 	[delegate release];

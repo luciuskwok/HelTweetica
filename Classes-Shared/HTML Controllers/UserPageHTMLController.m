@@ -29,15 +29,12 @@
 - (id)init {
 	self = [super init];
 	if (self) {
-		// Special template to highlight the selected message. tweet-row-highlighted-template.html
-		highlightedTweetRowTemplate = [[self loadHTMLTemplate:@"tweet-row-highlighted-template"] retain];
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[user release];
-	[highlightedTweetRowTemplate release];
 	[super dealloc];
 }
 
@@ -276,10 +273,14 @@
 	return html;
 }
 
-- (NSString *)templateForRowIndex:(int)rowIndex {
+- (NSString *)styleForStatusUpdate:(TwitterStatusUpdate *)statusUpdate rowIndex:(int)rowIndex {
+	NSString *style = [super styleForStatusUpdate:statusUpdate rowIndex:rowIndex];
+	if ([style isEqualToString:@"self_tweet_row"])
+		style = nil;
+		
 	if (rowIndex == 0 && self.customPageTitle == nil)
-		return highlightedTweetRowTemplate;
-	return [super templateForRowIndex:rowIndex];
+		style = @"highlighted_tweet_row";
+	return style;
 }
 
 - (NSString*) tweetAreaFooterHTML {

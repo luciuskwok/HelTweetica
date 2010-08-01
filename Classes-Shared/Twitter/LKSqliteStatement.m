@@ -52,13 +52,18 @@
 	if (number == nil) {
 		[self bindNullAtIndex:index];
 	} else {
-		[self bindInteger:[number longLongValue] atIndex:index];
+		[self bindDouble:[number doubleValue] atIndex:index];
 	}
 }
 
 - (void)bindInteger:(SInt64)n atIndex:(int)index {
 	int error = sqlite3_bind_int64(statement, index, n);
 	if (error != SQLITE_OK) NSLog (@"Error result from sqlite3_bind_int64(): %d", error);
+}
+
+- (void)bindDouble:(double)n atIndex:(int)index {
+	int error = sqlite3_bind_double(statement, index, n);
+	if (error != SQLITE_OK) NSLog (@"Error result from sqlite3_bind_double(): %d", error);
 }
 
 - (void)bindDate:(NSDate*)date atIndex:(int)index {
