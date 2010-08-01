@@ -329,7 +329,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0F1A24C1205E7280095BA94</string>
+										<string>E08FEB101206272100549FCA</string>
 										<key>history</key>
 										<array>
 											<string>E0564B0011FBD458000A9753</string>
@@ -356,7 +356,6 @@
 											<string>E0AB23EE1204354300C22FB8</string>
 											<string>E0AB23EF1204354300C22FB8</string>
 											<string>E0AB23F01204354300C22FB8</string>
-											<string>E0AB23F51204354300C22FB8</string>
 											<string>E0AB23F71204354300C22FB8</string>
 											<string>E0AB23F81204354300C22FB8</string>
 											<string>E0AB23F91204354300C22FB8</string>
@@ -372,7 +371,7 @@
 											<string>E0AB24741204410400C22FB8</string>
 											<string>E0AB24751204410400C22FB8</string>
 											<string>E0F19F041204D7BD0095BA94</string>
-											<string>E0F1A039120553380095BA94</string>
+											<string>E0F1A24C1205E7280095BA94</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -412,6 +411,8 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {859, -27}}</string>
+										<key>RubberWindowFrame</key>
+										<string>37 289 1232 739 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -427,9 +428,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {859, -27}}</string>
-										<key>RubberWindowFrame</key>
-										<string>37 289 1232 739 0 0 1680 1028 </string>
+										<string>{{0, 0}, {614, 336}}</string>
 									</dict>
 									<key>Module</key>
 									<string>PBXProjectFindModule</string>
@@ -495,11 +494,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E0F19E0E1204BEE30095BA94</string>
+				<string>E08FEB111206272100549FCA</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>E0F19E0F1204BEE30095BA94</string>
+				<string>E08FEB121206272100549FCA</string>
 				<string>E05648CD11FBCB3D000A9753</string>
-				<string>E0F19E101204BEE30095BA94</string>
+				<string>E08FEB131206272100549FCA</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -689,8 +688,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E0F19E171204BEE30095BA94</string>
-		<string>E0F19E191204BEE30095BA94</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-iPad.xcodeproj</string>
 	</array>
 	<key>WindowString</key>

@@ -17,12 +17,11 @@
 #import "Compose.h"
 #import "TwitterUpdateStatusAction.h"
 #import "TwitterRetweetAction.h"
-#import "ComposeText.h"
 
 
 
 @implementation Compose
-@synthesize textField, charactersRemaining, statusLabel;
+@synthesize textView, charactersRemaining, statusLabel;
 @synthesize accountsPopUp, retweetStyleControl, shrinkURLButton, locationButton, tweetButton, pictureButton, activityIndicator;
 @synthesize twitter, account, messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
 @synthesize delegate;
@@ -111,6 +110,14 @@ enum { kTwitterCharacterMax = 140 };
 
 #pragma mark UI updating
 
+- (void)setTextViewContent:(NSString *)string {
+	// Set the content of the main text view, set the font to the standard font, and move the insertion point to the end.
+	[textView setString:string];
+	[textView setFont:[NSFont systemFontOfSize:13.0f]];
+	[textView setSelectedRange: NSMakeRange (textView.string.length, 0)];
+	[self updateCharacterCount];
+}
+
 - (void)updateCharacterCount {
 	if (originalRetweetContent && newStyleRetweet) { // New-style RT doesn't require counting chars
 		[charactersRemaining setStringValue: @""];
@@ -118,7 +125,7 @@ enum { kTwitterCharacterMax = 140 };
 		[tweetButton setEnabled: YES];
 	} else {
 		// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
-		NSString *string = [textField stringValue];
+		NSString *string = [textView string];
 		int remaining = kTwitterCharacterMax - [[string precomposedStringWithCanonicalMapping] length];
 		[charactersRemaining setStringValue:[NSString stringWithFormat:@"%d", remaining]];
 		if (remaining < 0) {
@@ -139,17 +146,15 @@ enum { kTwitterCharacterMax = 140 };
 	
 	if (newStyleRetweet && originalRetweetContent) {
 		// Reinstate original retweet message and disable editing
-		[textField setStringValue: originalRetweetContent];
-		[textField setEditable: NO];
-		[textField setEnabled: NO];
+		[self setTextViewContent:originalRetweetContent];
+		[textView setEditable: NO];
 		[shrinkURLButton setEnabled:NO];
 		[locationButton setEnabled:NO];
 		[pictureButton setEnabled:NO];
 	} else {
 		// Allow editing
-		[textField setEditable: YES];
-		[textField setEnabled: YES];
- 		[textField becomeFirstResponder];
+		[textView setEditable: YES];
+ 		[textView becomeFirstResponder];
 		[shrinkURLButton setEnabled:YES];
 		[locationButton setEnabled:YES];
 		[pictureButton setEnabled:YES];
@@ -248,8 +253,7 @@ enum { kTwitterCharacterMax = 140 };
 		// Normal tweets, replies, direct messages, and old-style retweets.
 		
 		// Check length
-		NSString *text = [textField stringValue];
-		NSString *normalizedText = [text precomposedStringWithCanonicalMapping];
+		NSString *normalizedText = [[textView string] precomposedStringWithCanonicalMapping];
 		if ((normalizedText.length == 0) || (normalizedText.length > kTwitterCharacterMax)) {
 			return;
 		}
@@ -310,7 +314,7 @@ enum { kTwitterCharacterMax = 140 };
 #pragma mark URL shortening
 
 - (IBAction)shrinkURLs:(id)sender {
-	NSSet *shrinkActions = [LKShrinkURLAction actionsToShrinkURLsInString:[textField stringValue]];
+	NSSet *shrinkActions = [LKShrinkURLAction actionsToShrinkURLsInString:[textView string]];
 	
 	if (shrinkActions.count > 0) {
 		for (LKShrinkURLAction *action in shrinkActions) {
@@ -324,9 +328,9 @@ enum { kTwitterCharacterMax = 140 };
 - (void)action:(LKShrinkURLAction *)anAction didReplaceLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
 	if (longURL != nil) {
 		if ([shortURL hasPrefix:@"http"]) {
-			NSString *text = [textField stringValue];
+			NSString *text = [textView string];
 			text = [text stringByReplacingOccurrencesOfString:longURL withString:shortURL];
-			[textField setStringValue:text];
+			[self setTextViewContent:text];
 		} else {
 			// Log the error message
 			NSLog (@"is.gd returned the error: %@", shortURL);
@@ -344,7 +348,7 @@ enum { kTwitterCharacterMax = 140 };
 
 #pragma mark Picture uploading
 
-- (void)uploadPictureFile:(NSURL *)fileURL replacingText:(NSString *)replace {
+- (void)uploadPictureFile:(NSURL *)fileURL {
 	// Get username and password from keychain.
 	const char *cServiceName = "api.twitter.com";
 	const char *cUser = [account.screenName cStringUsingEncoding:NSUTF8StringEncoding];
@@ -359,7 +363,6 @@ enum { kTwitterCharacterMax = 140 };
 	// Create and start action.
 	LKUploadPictureAction *action = [[[LKUploadPictureAction alloc] initWithFile:fileURL] autorelease];
 	action.delegate = self;
-	action.identifier = replace;
 	action.username = account.screenName;
 	action.password = [[[NSString alloc] initWithBytes:cPass length:cPassLength encoding:NSUTF8StringEncoding] autorelease];
 	[action startUpload];
@@ -373,22 +376,12 @@ enum { kTwitterCharacterMax = 140 };
 }
 
 - (void)action:(LKUploadPictureAction *)action didUploadPictureWithURL:(NSString *)url {
-	NSString *text = [textField stringValue];
+	NSString *text = [textView string];
 	
-	if (action.identifier) {
-		// Replace file path in text with URL to image.
-		text = [text stringByReplacingOccurrencesOfString:action.identifier withString:url];
-	} else {
-		if ([text hasSuffix:@" "] == NO && [text hasSuffix:@"\n"] == NO && [text hasSuffix:@"\t"] == NO) 
-			text = [text stringByAppendingString:@" "];
-		text = [text stringByAppendingString:url];
-	}
-
-	// Text field
-	NSText *fieldEditor = textField.currentEditor;
-	[fieldEditor setString:text];
-	[fieldEditor setSelectedRange: NSMakeRange (fieldEditor.string.length, 0)];
-	
+	if ([text hasSuffix:@" "] == NO && [text hasSuffix:@"\n"] == NO && [text hasSuffix:@"\t"] == NO) 
+		text = [text stringByAppendingString:@" "];
+	text = [text stringByAppendingString:url];
+	[self setTextViewContent:text];
 	[self removeAction:action];
 }
 
@@ -412,19 +405,19 @@ enum { kTwitterCharacterMax = 140 };
 		 NSArray *files = [panel URLs];
 		 if ([files count] > 0) {
 			// Only open first file selected.
-			 [self uploadPictureFile:[files objectAtIndex:0] replacingText:nil];
+			 [self uploadPictureFile:[files objectAtIndex:0]];
 		 }
 	 }
  }
 
 - (BOOL)uploadPictureFilesInText:(NSString *)string {
 	// Detect file paths and turn them into picture uploads. Returns YES if a valid path was found.
-	if (string.length > 0) {
+	if (string.length > 4) {
 		NSString *fileExt = [string pathExtension];
 		if (fileExt != nil) {
 			BOOL hasValidExtension = [[self supportedImageTypes] containsObject:fileExt];			
 			if ([string hasPrefix:@"/"] && hasValidExtension) {
-				[self uploadPictureFile:[NSURL fileURLWithPath:string] replacingText:string];
+				[self uploadPictureFile:[NSURL fileURLWithPath:string]];
 				return YES;
 			}
 		}
@@ -465,7 +458,7 @@ enum { kTwitterCharacterMax = 140 };
 			if ([fileTypes containsObject:[file pathExtension]]) {
 				// Only use the first supported file.
 				NSURL *url = [NSURL fileURLWithPath:file];
-				[self uploadPictureFile:url replacingText:nil];
+				[self uploadPictureFile:url];
 				break;
 			}
 		}
@@ -473,38 +466,16 @@ enum { kTwitterCharacterMax = 140 };
 	return YES;
 }
 
-#pragma mark Text field delegate
+#pragma mark Text view delegate
 
-- (BOOL)control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector {
-	// Intercepts key bindings for commands.
-	if (commandSelector == @selector(insertNewline:)) {
-		// new line action: always insert a line-break character and don’t cause the receiver to end editing
-		[textView insertNewlineIgnoringFieldEditor:self];
-		return YES;
-	} else if (commandSelector == @selector(insertTab:)) {
-		// tab action: always insert a tab character and don’t cause the receiver to end editing
-		[textView insertTabIgnoringFieldEditor:self];
-		return YES;
-	}
-	return NO;
-}
-
-- (void)controlTextDidChange:(NSNotification *)aNotification {
+- (void)textDidChange:(NSNotification *)aNotification {
 	[self updateCharacterCount];
 }
 
 - (BOOL)textView:(NSTextView *)aTextView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString {
-	// Detect file paths and turn them into picture uploads.
-	if (replacementString.length > 0) {
-		NSString *fileExt = [replacementString pathExtension];
-		if (fileExt != nil) {
-			BOOL hasValidExtension = [[self supportedImageTypes] containsObject:fileExt];			
-			if ([replacementString hasPrefix:@"/"] && hasValidExtension) {
-				[self uploadPictureFile:[NSURL fileURLWithPath:replacementString] replacingText:replacementString];
-			}
-		}
-	}
-	return YES;
+	
+	BOOL hasPicture = [self uploadPictureFilesInText:replacementString];
+	return !hasPicture;
 }
 
 #pragma mark Window
@@ -512,9 +483,10 @@ enum { kTwitterCharacterMax = 140 };
 - (void)windowDidLoad {
 	// Message
 	if (messageContent != nil) {
-		[textField setStringValue:messageContent];
+		[self setTextViewContent:messageContent];
+	} else {
+		[self setTextViewContent:@""];
 	}
-	[self updateCharacterCount];
 	
 	// Location
 	if ([CLLocationManager locationServicesEnabled]) {
@@ -530,15 +502,7 @@ enum { kTwitterCharacterMax = 140 };
 		[locationButton setHidden:YES];
 	}
 	
-	// Text field
-	[textField becomeFirstResponder];
-	NSText *text = textField.currentEditor;
-	
-	// Move insertion point to end of string.
-	[text setSelectedRange: NSMakeRange (text.string.length, 0)];
-	
 	// Enable Continous Spelling
-	NSTextView *textView = (NSTextView *)[self.window firstResponder];
 	[textView setContinuousSpellCheckingEnabled:YES];
 	
 	// Retweet style

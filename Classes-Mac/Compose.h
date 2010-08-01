@@ -26,7 +26,7 @@
 @protocol ComposeDelegate;
 
 @interface Compose : NSWindowController <TwitterActionDelegate, LKShrinkURLActionDelegate, LKUploadPictureActionDelegate> {
-	IBOutlet NSTextField *textField;
+	IBOutlet NSTextView *textView;
 	IBOutlet NSTextField *charactersRemaining;
 	IBOutlet NSTextField *statusLabel;
 	
@@ -51,7 +51,7 @@
 	id delegate;
 }
 
-@property (assign) NSTextField *textField;
+@property (assign) NSTextView *textView;
 @property (assign) NSTextField *charactersRemaining;
 @property (assign) NSTextField *statusLabel;
 @property (assign) NSPopUpButton *accountsPopUp;

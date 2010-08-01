@@ -24,6 +24,7 @@
 @interface AddAccount : NSWindowController <TwitterActionDelegate> {
 	IBOutlet NSTextField *usernameField;
 	IBOutlet NSSecureTextField *passwordField;
+	NSString *screenName;
 	Twitter *twitter;
 	id delegate;
 }

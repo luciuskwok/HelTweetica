@@ -360,7 +360,6 @@
 				E0D14F6211FCFE4800452E63 /* Test */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				E023D6C311FD41D600903ABB /* Test-Info.plist */,
 			);
 			name = "HelTweetica-Spare";
 			sourceTree = "<group>";
@@ -369,6 +368,7 @@
 			isa = PBXGroup;
 			children = (
 				E0564CB211FBD6D2000A9753 /* Mac-Info.plist */,
+				E023D6C311FD41D600903ABB /* Test-Info.plist */,
 				E0564CB311FBD6DA000A9753 /* HelTweetica_Mac_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
