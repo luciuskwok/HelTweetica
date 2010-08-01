@@ -117,6 +117,8 @@
 	
 	// Cache policy
 	[request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+	[request setHTTPShouldHandleCookies:NO];
+
 		
 	// Create the download connection
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];

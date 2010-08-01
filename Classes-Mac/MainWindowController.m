@@ -443,10 +443,16 @@
 
 #pragma mark Compose
 
-- (IBAction)compose:(id)sender {
+- (Compose *)standardComposeController {
 	Compose* compose = [[[Compose alloc] init] autorelease];
 	compose.delegate = self;
-	compose.senderScreenName = htmlController.account.screenName;
+	compose.twitter = htmlController.twitter;
+	compose.account = htmlController.account;
+	return compose;
+}
+
+- (IBAction)compose:(id)sender {
+	Compose* compose = [self standardComposeController];
 	[compose showWindow:sender];
 	[appDelegate addWindowController:compose];
 }
@@ -455,9 +461,7 @@
 	TwitterStatusUpdate *message = [htmlController.twitter statusUpdateWithIdentifier: identifier];
 	if (message == nil) return;
 	
-	Compose* compose = [[[Compose alloc] init] autorelease];
-	compose.senderScreenName = htmlController.account.screenName;
-	compose.delegate = self;
+	Compose* compose = [self standardComposeController];
 	if (message != nil) {
 		// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
 		compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.userScreenName, message.text];
@@ -470,9 +474,7 @@
 }
 
 - (void)replyToMessage: (NSNumber*)identifier {
-	Compose* compose = [[[Compose alloc] init] autorelease];
-	compose.senderScreenName = htmlController.account.screenName;
-	compose.delegate = self;
+	Compose* compose = [self standardComposeController];
 	TwitterStatusUpdate *message = [htmlController.twitter statusUpdateWithIdentifier: identifier];
 	
 	// Insert @username in beginning of message. This preserves any other people being replied to.
@@ -493,9 +495,7 @@
 }
 
 - (void)directMessageWithScreenName:(NSString*)screenName {
-	Compose* compose = [[[Compose alloc] init] autorelease];
-	compose.senderScreenName = htmlController.account.screenName;
-	compose.delegate = self;
+	Compose* compose = [self standardComposeController];
 	
 	// Insert d username in beginnig of message. This preserves any other people being replied to.
 	if (screenName != nil) {
@@ -511,14 +511,9 @@
 	[appDelegate addWindowController:compose];
 }
 
-- (void) compose:(Compose*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location {
-	[htmlController updateStatus:text inReplyTo:inReplyTo location:location];
+- (void) composeDidFinish:(Compose*)aCompose {
+	[self refresh:nil];
 }
-
-- (void) compose:(Compose*)aCompose didRetweetMessage:(NSNumber*)identifier {
-	[htmlController retweet:identifier];
-}
-
 
 #pragma mark Misc menu items
 

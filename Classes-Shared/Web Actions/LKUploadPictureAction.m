@@ -10,12 +10,25 @@
 
 
 @implementation LKUploadPictureAction
-@synthesize media, username, password;
+@synthesize username, password, media, fileType;
+
+- (id)initWithFile:(NSURL *)fileURL {
+	self = [super init];
+	if (self) {
+		NSError *error = nil;
+		self.media = [NSData dataWithContentsOfURL:fileURL options:NSDataReadingMapped error:&error];
+		if (media == nil)
+			NSLog (@"Error opening file %@: %@", fileURL, error);
+		self.fileType = [fileURL pathExtension];
+	}
+	return self;
+}
 
 - (void)dealloc {
-	[media release];
 	[username release];
 	[password release];
+	[media release];
+	[fileType release];
 	[super dealloc];
 }
 
@@ -31,49 +44,86 @@
 	return @"----This_is_a_boundary----";
 }
 
-- (NSData *)dataWithMultipartEncodedParameters:(NSDictionary *)parameters {
+- (NSData *)dataWithMultipartEncodedParameters:(NSDictionary *)parameters imageType:(NSString *)imageType {
 	NSMutableData *data = [NSMutableData data];
-	NSString *boundary = [[self multipartBoundaryString] stringByAppendingString:@"\n"];
+	NSData *boundary = [[NSString stringWithFormat:@"--%@\r\n", [self multipartBoundaryString]] dataUsingEncoding:NSUTF8StringEncoding];
+	NSData *crlf = [NSData dataWithBytes:"\r\n" length:2];
+	
+	// Initial boundary.
+	[data appendData:boundary];
 	
 	NSArray *keys = [parameters allKeys];
 	for (NSString *key in keys) {
 		id value = [parameters objectForKey:key];
 		NSString *s;
 		
-		// Add boundary to beginning of section.
-		[data appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
-		
 		// Add content header and data.
 		if ([value isKindOfClass:[NSString class]]) {
-			s = [NSString stringWithFormat:@"Content-disposition: form-data; Name=\"%@\"\n\n%@\n", key, value];
+			s = [NSString stringWithFormat:
+				 @"Content-Disposition: form-data; name=\"%@\"\r\n"
+				 @"\r\n"
+				 @"%@\r\n", 
+				 key, value];
 			[data appendData:[s dataUsingEncoding:NSUTF8StringEncoding]];
 		} else if ([value isKindOfClass:[NSData class]]) {
-			s = [NSString stringWithFormat:@"Content-disposition: form-data; Name=\"%@\"\nContent-transfer-encoding: binary\n\n", key];
+			s = [NSString stringWithFormat:
+				 @"Content-Disposition: form-data; name=\"%@\"; filename=\"picture.jpg\"\r\n" 
+				 @"Content-Type: image/%@\r\n"
+				 @"Content-Transfer-Encoding: binary\r\n\r\n", 
+				 imageType, key];
 			[data appendData:[s dataUsingEncoding:NSUTF8StringEncoding]];
 			[data appendData:value];
+			[data appendData:crlf];
 		}
 		
+		// Boundary after each part..
+		[data appendData:boundary];
 	}
 	
-	// Add boundary to close last section.
-	[data appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	return data;
 }
 
+- (NSData *)dataPartWithName:(NSString *)name value:(NSString *)value {
+	NSString *string = [NSString stringWithFormat:
+						@"Content-Disposition: form-data; name=\"%@\"\r\n"
+						@"\r\n"
+						@"%@\r\n", 
+						name, value];
+	return [string dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (NSData *)dataPartWithName:(NSString *)name data:(NSData *)data fileType:(NSString *)aFileType {
+	NSString *string = [NSString stringWithFormat:
+						@"Content-Disposition: form-data; name=\"%@\"; filename=\"1.%@\"\r\n" 
+						@"Content-Type: image/%@\r\n"
+						@"Content-Transfer-Encoding: binary\r\n\r\n", 
+						name, aFileType, aFileType];
+	NSMutableData *result = [NSMutableData dataWithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+	[result appendData:data];
+	[result appendBytes:"\r\n" length:2];
+	return result;
+}
+
 - (void)startUpload {
-	// Set parameters.
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	[parameters setObject:username forKey:@"username"];
-	[parameters setObject:password forKey:@"password"];
-	[parameters setObject:media forKey:@"media"];
-	
 	// Set up URL request.
-	NSString *urlString = @"http://twitpic.com/api/upload";
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]] autorelease];
+	NSURL *url = [NSURL URLWithString:@"http://twitpic.com/api/upload"];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30.0];
+	[request setHTTPShouldHandleCookies:NO];
 	[request setHTTPMethod:@"POST"];
 	[request setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", [self multipartBoundaryString]] forHTTPHeaderField:@"Content-Type"];
-	[request setHTTPBody: [self dataWithMultipartEncodedParameters:parameters]];
+	
+	// Set parameters.
+	NSMutableData *httpBody = [NSMutableData data];
+	NSData *boundary = [[NSString stringWithFormat:@"--%@\r\n", [self multipartBoundaryString]] dataUsingEncoding:NSUTF8StringEncoding];
+	[httpBody appendData:boundary];
+	[httpBody appendData:[self dataPartWithName:@"username" value:username]];
+	[httpBody appendData:boundary];
+	[httpBody appendData:[self dataPartWithName:@"password" value:password]];
+	[httpBody appendData:boundary];
+	[httpBody appendData:[self dataPartWithName:@"media" data:media fileType:fileType]];
+	[httpBody appendData:boundary];
+	[request setHTTPBody: httpBody];
 	
 	// Create and start the download connection
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately: YES] autorelease];
@@ -90,12 +140,14 @@
 	NSString *value;
 	
 	[scanner scanUpToString:@"<rsp stat=\"" intoString:nil];
+	[scanner scanString:@"<rsp stat=\"" intoString:nil];
 	[scanner scanUpToString:@"\">" intoString:&value];
 	
 	if ([value isEqual:@"ok"]) {
 		// Success
 		[scanner scanUpToString:@"<mediaurl>" intoString:nil];
-		[scanner scanUpToString:@"</meduaurl>" intoString:&value];
+		[scanner scanString:@"<mediaurl>" intoString:nil];
+		[scanner scanUpToString:@"</mediaurl>" intoString:&value];
 		
 		// Notify delegate.
 		[delegate action:self didUploadPictureWithURL:value];
@@ -105,8 +157,10 @@
 		NSString *errorDescription = nil;
 		
 		[scanner scanUpToString:@"code=\"" intoString:nil];
+		[scanner scanString:@"code=\"" intoString:nil];
 		[scanner scanInt:&errorCode];
 		[scanner scanUpToString:@"msg=\"" intoString:nil];
+		[scanner scanString:@"msg=\"" intoString:nil];
 		[scanner scanUpToString:@"\"" intoString:&errorDescription];
 
 		// Notify delegate.

@@ -40,6 +40,8 @@
 - (void) start {
 	NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];
+	[request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+	[request setHTTPShouldHandleCookies:NO];
 	[request setHTTPMethod:@"POST"];
 	
 	NSString *encodedUsername = [TwitterAction URLEncodeString: self.username];

@@ -18,15 +18,19 @@
 #import <CoreLocation/CoreLocation.h>
 #import "LKShrinkURLAction.h"
 #import "LKUploadPictureAction.h"
+#import "TwitterAction.h"
 #import "TwitterAccount.h"
+#import "Twitter.h"
 
 
 @protocol ComposeDelegate;
 
-@interface Compose : NSWindowController <LKShrinkURLActionDelegate, LKUploadPictureActionDelegate> {
+@interface Compose : NSWindowController <TwitterActionDelegate, LKShrinkURLActionDelegate, LKUploadPictureActionDelegate> {
 	IBOutlet NSTextField *textField;
 	IBOutlet NSTextField *charactersRemaining;
-	IBOutlet NSTextField *tooLongLabel;
+	IBOutlet NSTextField *statusLabel;
+	
+	IBOutlet NSPopUpButton *accountsPopUp;
 	IBOutlet NSSegmentedControl *retweetStyleControl;
 	IBOutlet NSButton *shrinkURLButton;
 	IBOutlet NSButton *locationButton;
@@ -34,7 +38,8 @@
 	IBOutlet NSButton *pictureButton;
 	IBOutlet NSProgressIndicator *activityIndicator;
 	
-	NSString *senderScreenName;
+	Twitter *twitter;
+	TwitterAccount *account;
 	NSString *messageContent;
 	NSNumber *inReplyTo;
 	NSString *originalRetweetContent;
@@ -48,7 +53,8 @@
 
 @property (assign) NSTextField *textField;
 @property (assign) NSTextField *charactersRemaining;
-@property (assign) NSTextField *tooLongLabel;
+@property (assign) NSTextField *statusLabel;
+@property (assign) NSPopUpButton *accountsPopUp;
 @property (assign) NSSegmentedControl *retweetStyleControl;
 @property (assign) NSButton *shrinkURLButton;
 @property (assign) NSButton *locationButton;
@@ -56,7 +62,8 @@
 @property (assign) NSButton *pictureButton;
 @property (assign) NSProgressIndicator *activityIndicator;
 
-@property (nonatomic, retain) NSString *senderScreenName;
+@property (nonatomic, retain) Twitter *twitter;
+@property (nonatomic, retain) TwitterAccount *account;
 @property (nonatomic, retain) NSString *messageContent;
 @property (nonatomic, retain) NSNumber *inReplyTo;
 @property (nonatomic, retain) NSString *originalRetweetContent;
@@ -71,16 +78,18 @@
 - (void) askInWindow:(NSWindow *)aWindow modalDelegate:(id)del didEndSelector:(SEL)sel;
 
 // Actions
+- (IBAction)selectAccount:(id)sender;
 - (IBAction)selectRetweetStyle:(id)sender;
 - (IBAction)location:(id)sender;
 - (IBAction)shrinkURLs:(id)sender;
 - (IBAction)addPicture:(id)sender;
 - (IBAction)tweet:(id)sender;
-- (IBAction)close:(id)sender;
+
+// Dragging
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
 
 @end
 
 @protocol ComposeDelegate
-- (void) compose:(Compose*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location;
-- (void) compose:(Compose*)aCompose didRetweetMessage:(NSNumber*)identifier;
+- (void)composeDidFinish:(Compose*)aCompose;
 @end

@@ -260,8 +260,15 @@
 		imagePreviewURL = [imageURL stringByAppendingString:@":thumb"];
 	}
 	
-	// Tweet Photo was down http://pic.gd/0f53e6
-		
+	// Tweet Photo  http://pic.gd/0f53e6
+	searchResults = [self stringForURLWithPrefix:@"http://pic.gd/"]; 
+	if (searchResults == nil)
+		searchResults = [self stringForURLWithPrefix:@"http://tweetphoto.com/"]; 
+	if (searchResults.length > 14) {
+		imageURL = searchResults;
+		imagePreviewURL = [@"http://TweetPhotoAPI.com/api/TPAPI.svc/imagefromurl?size=small&url=" stringByAppendingString:imageURL];
+	}
+	
 	// img.ly
 	searchResults = [self stringForURLWithPrefix:@"http://img.ly/"]; 
 	if (searchResults.length > 14) {

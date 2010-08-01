@@ -16,6 +16,7 @@
 
 #import "PreferencesController.h"
 #import "AddAccount.h"
+#import "HelTweeticaAppDelegate.h"
 
 
 // Constants
@@ -51,12 +52,8 @@ NSString *kTableRowDragType = @"tableRowIndexSet";
 }
 
 - (void)windowDidLoad { 
-	// Set up table view for dragging
 	[tableView registerForDraggedTypes:[NSArray arrayWithObject:kTableRowDragType]];
-}
-
-- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	self.currentSheet = nil;
+	[tableView setDoubleAction:@selector(openSelectedTableRow:)];
 }
 
 - (void)accountsDidChange:(NSNotification*)notification {
@@ -67,13 +64,24 @@ NSString *kTableRowDragType = @"tableRowIndexSet";
 	[self showAlertWithTitle:@"Login failed." message:@"The username or password was not correct."];
 }
 
-#pragma mark Actions
+#pragma mark Sheets
 
-- (IBAction)add:(id)sender {
+- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	self.currentSheet = nil;
+}
+
+- (void)showLoginWithScreenName:(NSString*)screenName {
 	AddAccount* sheet = [[[AddAccount alloc] initWithTwitter:twitter] autorelease];
+	sheet.screenName = screenName;
 	sheet.delegate = self;
 	[sheet askInWindow: [self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)];
 	self.currentSheet = sheet;
+}
+
+#pragma mark Actions
+
+- (IBAction)add:(id)sender {
+	[self showLoginWithScreenName:nil];
 }
 
 - (IBAction)remove:(id)sender {
@@ -125,6 +133,25 @@ NSString *kTableRowDragType = @"tableRowIndexSet";
 		
 	}
 	return result;
+}
+
+#pragma mark Double click
+
+- (void)openSelectedTableRow:(id)sender {
+//- (BOOL)tableView:(NSTableView *)aTableView shouldEditTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+	// Double clicks end up here.
+	
+	int rowIndex = [tableView selectedRow];
+	if (rowIndex >= 0 && rowIndex < twitter.accounts.count) {
+		TwitterAccount *account = [twitter.accounts objectAtIndex:rowIndex];
+		if (account.xAuthToken) {
+			// Make new window for selected account.
+			HelTweeticaAppDelegate *appDelegate = [NSApp delegate];
+			[appDelegate newMainWindowWithAccount:account];
+		} else {
+			[self showLoginWithScreenName:account.screenName];
+		}
+	}
 }
 
 #pragma mark Table view drag and drop

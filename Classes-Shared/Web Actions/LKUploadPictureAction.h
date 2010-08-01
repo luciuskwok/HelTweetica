@@ -11,15 +11,18 @@
 
 
 @interface LKUploadPictureAction : LKLoadURLAction {
-	NSData *media;
 	NSString *username;
 	NSString *password;
+	NSData *media;
+	NSString *fileType;
 }
-@property (nonatomic, retain) NSData *media;
 @property (nonatomic, retain) NSString *username;
 @property (nonatomic, retain) NSString *password;
+@property (nonatomic, retain) NSData *media;
+@property (nonatomic, retain) NSString *fileType;
 @property (nonatomic, assign) id<LKUploadPictureActionDelegate> delegate;
 
+- (id)initWithFile:(NSURL *)fileURL;
 - (void)startUpload;
 
 @end

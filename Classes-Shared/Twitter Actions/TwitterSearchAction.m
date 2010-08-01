@@ -46,6 +46,8 @@
 	NSString *base = @"http://search.twitter.com/search.json"; 
 	NSURL *url = [TwitterAction URLWithBase:base query:parameters];
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];
+	[request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+	[request setHTTPShouldHandleCookies:NO];
 	[request setHTTPMethod:@"GET"];
 	[request setValue:@"HelTweetica/1.0" forHTTPHeaderField:@"User-Agent"];
 	[self startURLRequest:request];
