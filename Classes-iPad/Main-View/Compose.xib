@@ -108,10 +108,10 @@
 								<reference key="IBUIToolbar" ref="966445589"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="870297655">
+								<string key="IBUITitle">Photos</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="966445589"/>
-								<int key="IBUISystemItemIdentifier">15</int>
 							</object>
 						</object>
 					</object>
@@ -221,6 +221,22 @@
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">34</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">addPictureButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="870297655"/>
+					</object>
+					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">addPicture:</string>
+						<reference key="source" ref="870297655"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">37</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -355,7 +371,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">35</int>
+			<int key="maxID">37</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -367,6 +383,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addPicture:</string>
 							<string>clear:</string>
 							<string>close:</string>
 							<string>geotag:</string>
@@ -375,6 +392,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -386,6 +404,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addPicture:</string>
 							<string>clear:</string>
 							<string>close:</string>
 							<string>geotag:</string>
@@ -394,6 +413,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">addPicture:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">clear:</string>
 								<string key="candidateClassName">id</string>
@@ -420,6 +443,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addPictureButton</string>
 							<string>bottomToolbar</string>
 							<string>charactersRemaining</string>
 							<string>delegate</string>
@@ -431,6 +455,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIBarButtonItem</string>
 							<string>UIToolbar</string>
 							<string>UIBarButtonItem</string>
 							<string>id</string>
@@ -445,6 +470,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addPictureButton</string>
 							<string>bottomToolbar</string>
 							<string>charactersRemaining</string>
 							<string>delegate</string>
@@ -456,6 +482,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">addPictureButton</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">bottomToolbar</string>
 								<string key="candidateClassName">UIToolbar</string>

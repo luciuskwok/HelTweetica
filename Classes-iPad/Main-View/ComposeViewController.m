@@ -23,7 +23,7 @@ const int kTwitterCharacterMax = 140;
 
 
 @implementation ComposeViewController
-@synthesize messageField, sendButton, retweetStyleButton, geotagButton, shrinkURLsButton, charactersRemaining, bottomToolbar;
+@synthesize messageField, sendButton, retweetStyleButton, geotagButton, shrinkURLsButton, addPictureButton, charactersRemaining, bottomToolbar;
 @synthesize account, messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
 @synthesize locationManager, delegate;
 
@@ -66,6 +66,7 @@ const int kTwitterCharacterMax = 140;
 	[retweetStyleButton release];
 	[geotagButton release];
 	[shrinkURLsButton release];
+	[addPictureButton release];
 	[charactersRemaining release];
 	[bottomToolbar release];
 	
@@ -272,7 +273,37 @@ const int kTwitterCharacterMax = 140;
 	[self updateCharacterCountWithText:messageField.text];
 }
 
-- (IBAction)camera:(id)sender {
+#pragma mark Pictures
+
+- (IBAction)addPicture:(id)sender {
+	UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
+	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	picker.delegate = self;
+	[self.navigationController pushViewController:picker animated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	[self.navigationController popViewControllerAnimated:YES];
+	
+	// Get the edited or original image
+	UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+	if (image == nil)
+		image = [info objectForKey:UIImagePickerControllerOriginalImage];
+	
+	if (image != nil) {
+		// Upload image to hosting service.
+	} else {
+		// Show error alert.
+		NSString *aTitle = NSLocalizedString (@"Image Error", @"title");
+		NSString *aText = NSLocalizedString (@"The selected image could not be imported.", @"text");
+		NSString *cancel = NSLocalizedString (@"Cancel", @"button");
+		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:aTitle message:aText delegate:nil cancelButtonTitle:cancel otherButtonTitles:nil] autorelease];
+		[alert show];
+	}
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark Shrink URLs

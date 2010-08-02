@@ -1,7 +1,7 @@
 // !$*UTF8*$!
 {
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = E0564B9B11FBD59C000A9753 /* Mac */;
 		activeTarget = 8D1107260486CEB800E47090 /* Mac */;
 		addToTargets = (
@@ -195,6 +195,8 @@
 			E0B92D6A12068AA2005DCE6E /* PBXTextBookmark */ = E0B92D6A12068AA2005DCE6E /* PBXTextBookmark */;
 			E0B92D6C12068AE2005DCE6E /* PBXTextBookmark */ = E0B92D6C12068AE2005DCE6E /* PBXTextBookmark */;
 			E0B92D7112068B29005DCE6E /* PBXTextBookmark */ = E0B92D7112068B29005DCE6E /* PBXTextBookmark */;
+			E0B92D9912069BC6005DCE6E /* PBXTextBookmark */ = E0B92D9912069BC6005DCE6E /* PBXTextBookmark */;
+			E0B92D9A12069BC6005DCE6E /* PBXTextBookmark */ = E0B92D9A12069BC6005DCE6E /* PBXTextBookmark */;
 			E0D14EA511FCDFFD00452E63 = E0D14EA511FCDFFD00452E63 /* PBXTextBookmark */;
 			E0D1504111FD1DEC00452E63 = E0D1504111FD1DEC00452E63 /* PBXTextBookmark */;
 			E0D3AA4B11FEBC2700E9EA7E = E0D3AA4B11FEBC2700E9EA7E /* PBXTextBookmark */;
@@ -629,7 +631,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {796, 3600}}";
 			sepNavSelRange = "{4249, 0}";
-			sepNavVisRange = "{3769, 1439}";
+			sepNavVisRange = "{3745, 1480}";
 		};
 	};
 	E0564BFB11FBD6A0000A9753 /* LKWebView.h */ = {
@@ -1247,7 +1249,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 16;
-		modificationTime = 302418661.42432;
+		modificationTime = 302421911.053434;
 		originalNumberOfMultipleMatches = 1;
 		state = 0;
 	};
@@ -1653,6 +1655,26 @@
 		rType = 0;
 		vrLen = 1439;
 		vrLoc = 3769;
+	};
+	E0B92D9912069BC6005DCE6E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564BFA11FBD6A0000A9753 /* ConversationHTMLController.m */;
+		name = "ConversationHTMLController.m: 99";
+		rLen = 0;
+		rLoc = 4249;
+		rType = 0;
+		vrLen = 1382;
+		vrLoc = 3745;
+	};
+	E0B92D9A12069BC6005DCE6E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564BFA11FBD6A0000A9753 /* ConversationHTMLController.m */;
+		name = "ConversationHTMLController.m: 99";
+		rLen = 0;
+		rLoc = 4249;
+		rType = 0;
+		vrLen = 1480;
+		vrLoc = 3745;
 	};
 	E0D14EA511FCDFFD00452E63 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;

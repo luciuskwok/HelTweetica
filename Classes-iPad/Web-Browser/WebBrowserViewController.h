@@ -28,6 +28,7 @@
 	IBOutlet UIBarButtonItem *forwardButton;
 	IBOutlet UIBarButtonItem *stopButton;
 	IBOutlet UIBarButtonItem *reloadButton;
+	IBOutlet UILabel *titleLabel;
 
 	UIActionSheet *currentActionSheet;
 	NSURLRequest *request;
@@ -41,6 +42,7 @@
 @property (nonatomic, retain) UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) UIBarButtonItem *stopButton;
 @property (nonatomic, retain) UIBarButtonItem *reloadButton;
+@property (nonatomic, retain) UILabel *titleLabel;
 
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (nonatomic, retain) NSURLRequest *request;

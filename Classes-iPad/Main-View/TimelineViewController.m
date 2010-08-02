@@ -323,6 +323,12 @@
 		
 		return NO;
 	} else if ([[url scheme] hasPrefix:@"http"]) {
+		// Send google.com links directly to Safari.
+		if ([[url host] hasSuffix:@"twitter.com"]) {
+			[[UIApplication sharedApplication] openURL: url];
+			return NO;
+		}
+		
 		// Catch twitter.com status links
 		NSNumber *messageIdentifier = nil;
 		if ([[url host] hasSuffix:@"twitter.com"]) {

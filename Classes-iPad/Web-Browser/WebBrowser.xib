@@ -84,7 +84,7 @@
 									<string key="NSResourceName">triangle-left.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<float key="IBUIWidth">40</float>
+								<float key="IBUIWidth">30</float>
 								<reference key="IBUIToolbar" ref="320574081"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="268670173">
@@ -93,7 +93,7 @@
 									<string key="NSResourceName">triangle-right.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<float key="IBUIWidth">40</float>
+								<float key="IBUIWidth">30</float>
 								<reference key="IBUIToolbar" ref="320574081"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="729276451">
@@ -110,7 +110,7 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="433742210">
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<float key="IBUIWidth">20</float>
+								<float key="IBUIWidth">10</float>
 								<reference key="IBUIToolbar" ref="320574081"/>
 								<int key="IBUISystemItemIdentifier">6</int>
 							</object>
@@ -138,6 +138,30 @@
 								<int key="IBUISystemItemIdentifier">9</int>
 							</object>
 						</object>
+					</object>
+					<object class="IBUILabel" id="153580529">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">290</int>
+						<string key="NSFrame">{{245, 11}, {377, 21}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<int key="IBUIContentMode">7</int>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<string key="IBUIText">Label</string>
+						<object class="NSFont" key="IBUIFont">
+							<string key="NSName">Helvetica-Bold</string>
+							<double key="NSSize">17</double>
+							<int key="NSfFlags">16</int>
+						</object>
+						<object class="NSColor" key="IBUITextColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
+						</object>
+						<nil key="IBUIHighlightedColor"/>
+						<int key="IBUIBaselineAdjustment">1</int>
+						<float key="IBUIMinimumFontSize">13</float>
 					</object>
 				</object>
 				<string key="NSFrameSize">{768, 1004}</string>
@@ -271,6 +295,14 @@
 					</object>
 					<int key="connectionID">28</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">titleLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="153580529"/>
+					</object>
+					<int key="connectionID">35</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -299,6 +331,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="177521410"/>
 							<reference ref="320574081"/>
+							<reference ref="153580529"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -381,6 +414,11 @@
 						<reference key="object" ref="1030642436"/>
 						<reference key="parent" ref="320574081"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">34</int>
+						<reference key="object" ref="153580529"/>
+						<reference key="parent" ref="766721923"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -398,6 +436,7 @@
 					<string>2.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
+					<string>34.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
@@ -415,6 +454,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{116, 0}, {783, 1006}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -442,7 +482,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">31</int>
+			<int key="maxID">35</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -497,6 +537,7 @@
 							<string>forwardButton</string>
 							<string>reloadButton</string>
 							<string>stopButton</string>
+							<string>titleLabel</string>
 							<string>webView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -505,6 +546,7 @@
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
+							<string>UILabel</string>
 							<string>UIWebView</string>
 						</object>
 					</object>
@@ -516,6 +558,7 @@
 							<string>forwardButton</string>
 							<string>reloadButton</string>
 							<string>stopButton</string>
+							<string>titleLabel</string>
 							<string>webView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -535,6 +578,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">stopButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">titleLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">webView</string>
@@ -686,6 +733,14 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">UILabel</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">UIKit.framework/Headers/UILabel.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">UIResponder</string>
 					<string key="superclassName">NSObject</string>
 					<reference key="sourceIdentifier" ref="786211723"/>
@@ -786,7 +841,7 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../HelTweetica.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../HelTweetica-iPad.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>

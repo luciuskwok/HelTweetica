@@ -35,7 +35,7 @@ enum {
 @end
 
 @implementation WebBrowserViewController
-@synthesize webView, backButton, forwardButton, stopButton, reloadButton, currentActionSheet, request;
+@synthesize webView, backButton, forwardButton, stopButton, reloadButton, titleLabel, currentActionSheet, request;
 
 - (id)initWithURLRequest:(NSURLRequest*)aRequest {
 	if (self = [super initWithNibName:@"WebBrowser" bundle:nil]) {
@@ -58,23 +58,26 @@ enum {
 	[forwardButton release];
 	[stopButton release];
 	[reloadButton release];
+	[titleLabel release];
 	
 	[currentActionSheet release];
 	[request release];
-    [super dealloc];
+	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+	[super didReceiveMemoryWarning];
 }
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
+	[super viewDidUnload];
 	webView.delegate = nil;
 	self.webView = nil;
 }
 
 - (void) viewDidLoad {
+	titleLabel.text = [request.URL absoluteString];
+	
 	[webView loadRequest: request];
 	[self.navigationController setNavigationBarHidden: YES animated: NO];
 	[super viewDidLoad];
@@ -88,18 +91,27 @@ enum {
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Overriden to allow any orientation.
-    return YES;
+	// Overriden to allow any orientation.
+	return YES;
 }
 
 #pragma mark -
 
+- (NSURL *)currentURL {
+	NSURL *currentURL = [webView.request URL];
+	if (currentURL.absoluteString.length == 0) 
+		currentURL = [request URL];
+	return currentURL;
+}
+
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
+	titleLabel.text = [[self currentURL] absoluteString];
 	[appDelegate incrementNetworkActionCount];
 	[self updateButtons];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
+	titleLabel.text = [[self currentURL] absoluteString];
 	[appDelegate decrementNetworkActionCount];
 	[self updateButtons];
 }
@@ -165,10 +177,10 @@ enum {
 - (IBAction)action: (id) sender {
 	if ([self closeAllPopovers] == NO) {
 		NSString *cancelButton = NSLocalizedString (@"Cancel", @"alert button");
-		NSString *safariButton = NSLocalizedString (@"Open in Safari", @"alert button");
-		NSString *emailButton = NSLocalizedString (@"Email Link", @"alert button");
-		//NSString *repostButton = NSLocalizedString (@"Repost Link", @"alert button");
-		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle: cancelButton destructiveButtonTitle: nil otherButtonTitles: safariButton, emailButton, nil];
+		NSString *b0 = NSLocalizedString (@"Open in Safari", @"alert button");
+		NSString *b1 = NSLocalizedString (@"Email URL", @"alert button");
+		NSString *b2 = NSLocalizedString (@"Tweet URL", @"alert button");
+		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle: cancelButton destructiveButtonTitle: nil otherButtonTitles: b0, b1, b2, nil];
 		sheet.tag = kActionActionSheetTag;
 		
 		if ([UIActionSheet instancesRespondToSelector:@selector(showFromBarButtonItem:animated:)]) {
@@ -198,6 +210,13 @@ enum {
 			[self showInstapaperSettings];
 		}
 	} else if (actionSheet.tag == kActionActionSheetTag) {
+		switch (buttonIndex) {
+			case 0: // Safari
+				[[UIApplication sharedApplication] openURL: currentURL];
+				break;
+			default:
+				break;
+		}
 		if (buttonIndex == 0) { // Safari
 			[[UIApplication sharedApplication] openURL: currentURL];
 		} else if (buttonIndex == 1) { // Email
@@ -239,11 +258,8 @@ enum {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *instapaperUsername = [defaults objectForKey:@"instapaperUsername"];
 	NSString *instapaperPassword = [defaults objectForKey:@"instapaperPassword"];
-	NSURL *currentURL = [webView.request URL];
-	if (currentURL.absoluteString.length == 0) 
-		currentURL = [request URL];
 
-	[[Instapaper sharedInstapaper] addURL:currentURL withUsername:instapaperUsername password:instapaperPassword];
+	[[Instapaper sharedInstapaper] addURL:[self currentURL] withUsername:instapaperUsername password:instapaperPassword];
 }
 
 - (void) saveToInstapaper {

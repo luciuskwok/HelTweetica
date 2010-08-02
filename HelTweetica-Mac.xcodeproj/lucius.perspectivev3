@@ -231,6 +231,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -299,7 +301,7 @@
 							<real>277</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>496 83 1144 945 0 0 1680 1028 </string>
+						<string>282 83 1144 945 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -310,8 +312,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -329,7 +329,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0B92D7112068B29005DCE6E</string>
+										<string>E0B92D9A12069BC6005DCE6E</string>
 										<key>history</key>
 										<array>
 											<string>E0DB094F11FCD437006EAEB9</string>
@@ -430,7 +430,7 @@
 											<string>E0B92D4E1206872C005DCE6E</string>
 											<string>E0B92D4F1206872C005DCE6E</string>
 											<string>E0B92D501206872C005DCE6E</string>
-											<string>E0B92D6A12068AA2005DCE6E</string>
+											<string>E0B92D9912069BC6005DCE6E</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -446,7 +446,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {845, 899}}</string>
 								<key>RubberWindowFrame</key>
-								<string>496 83 1144 945 0 0 1680 1028 </string>
+								<string>282 83 1144 945 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -487,7 +487,7 @@
 										<key>Frame</key>
 										<string>{{10, 27}, {845, -27}}</string>
 										<key>RubberWindowFrame</key>
-										<string>496 83 1144 945 0 0 1680 1028 </string>
+										<string>282 83 1144 945 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXProjectFindModule</string>
@@ -747,13 +747,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E0B92D7212068B29005DCE6E</string>
 		<string>E0B92D5D12068738005DCE6E</string>
 		<string>E0B92D5E12068738005DCE6E</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Mac.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>496 83 1144 945 0 0 1680 1028 </string>
+	<string>282 83 1144 945 0 0 1680 1028 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

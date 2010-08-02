@@ -24,12 +24,13 @@
 
 @protocol ComposeViewControllerDelegate;
 
-@interface ComposeViewController : UIViewController <LKShrinkURLActionDelegate> {
+@interface ComposeViewController : UIViewController <LKShrinkURLActionDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
 	IBOutlet UITextView *messageField;
 	IBOutlet UIBarButtonItem *sendButton;
 	IBOutlet UIBarButtonItem *retweetStyleButton;
 	IBOutlet UIBarButtonItem *geotagButton;
 	IBOutlet UIBarButtonItem *shrinkURLsButton;
+	IBOutlet UIBarButtonItem *addPictureButton;
 	IBOutlet UIBarButtonItem *charactersRemaining;
 	IBOutlet UIToolbar *bottomToolbar;
 	
@@ -50,6 +51,7 @@
 @property (nonatomic, retain) UIBarButtonItem *retweetStyleButton;
 @property (nonatomic, retain) UIBarButtonItem *geotagButton;
 @property (nonatomic, retain) UIBarButtonItem *shrinkURLsButton;
+@property (nonatomic, retain) UIBarButtonItem *addPictureButton;
 @property (nonatomic, retain) UIBarButtonItem *charactersRemaining;
 @property (nonatomic, retain) UIToolbar *bottomToolbar;
 
@@ -72,7 +74,7 @@
 - (IBAction)clear:(id)sender;
 - (IBAction)geotag:(id)sender;
 - (IBAction)shrinkURLs:(id)sender;
-- (IBAction)camera:(id)sender;
+- (IBAction)addPicture:(id)sender;
 
 @end
 
