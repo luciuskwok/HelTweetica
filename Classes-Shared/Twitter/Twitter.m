@@ -103,12 +103,15 @@
 
 #pragma mark Status Updates
 
-- (void)addStatusUpdates:(NSArray *)newUpdates {
+- (void)addStatusUpdates:(NSArray *)newUpdates replaceExisting:(BOOL)replace {
 	if (newUpdates.count == 0) return;
 
+	
 	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
 	NSArray *allKeys = [TwitterStatusUpdate databaseKeys];
-	NSString *query = [database queryWithCommand:@"Insert or replace into" table:@"StatusUpdates" keys:allKeys];
+	NSString *onConflict = replace? @"replace" : @"ignore";
+	NSString *command = [NSString stringWithFormat:@"Insert or %@ into", onConflict];
+	NSString *query = [database queryWithCommand:command table:@"StatusUpdates" keys:allKeys];
 	LKSqliteStatement *statement = [database statementWithQuery:query];
 
 	for (TwitterStatusUpdate *status in newUpdates) {

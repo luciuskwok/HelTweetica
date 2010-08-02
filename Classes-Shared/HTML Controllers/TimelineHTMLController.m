@@ -173,8 +173,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		TwitterLoadTimelineAction *statusUpdateAction = (TwitterLoadTimelineAction *)action;
 
 		// Twitter cache.
-		[twitter addStatusUpdates:statusUpdateAction.loadedMessages];
-		[twitter addStatusUpdates:statusUpdateAction.retweetedMessages];
+		[twitter addStatusUpdates:statusUpdateAction.loadedMessages replaceExisting:YES];
+		[twitter addStatusUpdates:statusUpdateAction.retweetedMessages replaceExisting:YES];
 		[twitter addOrReplaceUsers:statusUpdateAction.users];
 
 		// Timeline

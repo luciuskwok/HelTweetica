@@ -61,8 +61,8 @@
 #pragma mark TwitterTimelineDelegate
 
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
-	// Twitter cache.
-	[twitter addStatusUpdates:action.loadedMessages];
+	// Twitter cache. Don't replace existing entries because they lack the userIdentifier column.
+	[twitter addStatusUpdates:action.loadedMessages replaceExisting:NO];
 	
 	// Timeline
 	[aTimeline addMessages:action.loadedMessages updateGap:YES];

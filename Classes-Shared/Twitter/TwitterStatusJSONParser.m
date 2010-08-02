@@ -66,7 +66,7 @@
 	if ([key isEqualToString:@"/"]) {
 		self.currentMessage = [[[TwitterStatusUpdate alloc] init] autorelease];
 		currentMessage.receivedDate = receivedTimestamp;
-	} else if ([key isEqualToString:@"/user/"] || [key isEqualToString:@"/sender/"]) {
+	} else if ([key isEqualToString:@"/user/"]) {
 		self.currentUser = [[[TwitterUser alloc] init] autorelease];
 	}
 	
@@ -95,7 +95,7 @@
 		} else {
 			NSLog (@"Error while parsing JSON.");
 		}
-	} else if ([key isEqualToString:@"/user"] || [key isEqualToString:@"/sender"]) {
+	} else if ([key isEqualToString:@"/user"]) {
 		// Fill out message fields that are inside the user dictionary
 		if (currentUser) {
 			if (currentMessage) {
@@ -149,7 +149,7 @@
 #pragma mark Values
 
 - (void) foundValue:(id)value forKeyPath:(NSString*)keyPath {
-	if ([keyPath hasPrefix:@"/user/"] || [keyPath hasPrefix:@"/sender/"]) {
+	if ([keyPath hasPrefix:@"/user/"]) {
 		[self.currentUser setValue:value forTwitterKey:[keyPath lastPathComponent]];
 	} else if ([keyPath hasPrefix:@"/retweeted_status/user/"]) {
 		[self.currentRetweetedUser setValue:value forTwitterKey:[keyPath lastPathComponent]];

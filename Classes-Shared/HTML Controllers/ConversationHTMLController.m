@@ -59,7 +59,13 @@
 - (void)loadMessage:(NSNumber*)messageIdentifier {
 	// Check if message is already loaded
 	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier:messageIdentifier];
-	if (message) {
+	
+	// Check if message, which is when the "in reply to" screen name and status identifier are both nil or both non-nil.
+	BOOL hasReplyScreenName = (message.inReplyToScreenName != nil);
+	BOOL hasReplyStatusIdentifier = (message.inReplyToStatusIdentifier != nil);
+	BOOL valid = (hasReplyScreenName == hasReplyStatusIdentifier);
+	
+	if (valid && message) {
 		[relevantMessages addObject:message];
 		[self loadInReplyToMessage: message];
 	} else {
@@ -85,16 +91,16 @@
 	[relevantMessages addObjectsFromArray:action.loadedMessages];
 	
 	// Synchronized users and messages with Twitter cache.
-	[twitter addStatusUpdates:action.loadedMessages];
+	[twitter addStatusUpdates:action.loadedMessages replaceExisting:YES];
 	[twitter addUsers:action.users];
 	[account addFavorites:action.favoriteMessages];
 	
 	// Load next message in conversation.
-	if (!loadingComplete && messages.count > 0) {
-		TwitterStatusUpdate *lastMessage = [messages lastObject];
-		[self loadInReplyToMessage: lastMessage];
+	if (!loadingComplete && relevantMessages.count > 0) {
 		if (webViewHasValidHTML) 
 			[self rewriteTweetArea];	
+		TwitterStatusUpdate *lastMessage = [messages lastObject];
+		[self loadInReplyToMessage: lastMessage];
 	}
 }
 

@@ -40,7 +40,7 @@
 - (void) moveAccountAtIndex:(int)fromIndex toIndex:(int)toIndex;
 
 // Status Updates
-- (void)addStatusUpdates:(NSArray *)newUpdates;
+- (void)addStatusUpdates:(NSArray *)newUpdates replaceExisting:(BOOL)replace;
 - (TwitterStatusUpdate *)statusUpdateWithIdentifier:(NSNumber *)identifier;
 - (NSSet*) statusUpdatesInReplyToStatusIdentifier:(NSNumber*)identifier;
 

@@ -117,6 +117,8 @@ p { margin: 0px 0px 20px 0px; }
 .image_preview { 
 	float:right;
 	margin: 5px 0px 5px 5px; 
+	max-width: 400px;
+	max-height: 200px;
 	-webkit-border-radius: 8px; 
 	-webkit-box-shadow: 0px 1px 5px #888;
 }

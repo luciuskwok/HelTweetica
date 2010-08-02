@@ -129,7 +129,7 @@
 		[twitter addUsers:[NSSet setWithObject:action.userResult]];
 		self.user = action.userResult;
 	}
-	[twitter addStatusUpdates:[NSArray arrayWithObjects: action.latestStatus, action.retweetedStatus, nil]];
+	[twitter addStatusUpdates:[NSArray arrayWithObjects: action.latestStatus, action.retweetedStatus, nil] replaceExisting:YES];
 	[self rewriteUserInfoArea];
 }
 
