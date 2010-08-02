@@ -56,6 +56,7 @@
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
+	[webView setFrameLoadDelegate:nil];
 	[webView close];
 	
 	htmlController.delegate = nil;

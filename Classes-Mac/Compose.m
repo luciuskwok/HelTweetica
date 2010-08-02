@@ -520,6 +520,8 @@ enum { kTwitterCharacterMax = 140 };
 }
 
 - (BOOL)windowShouldClose:(id)sender {
+	[actions release];
+	actions = nil;
 	[locationManager stopUpdatingLocation];
 	return YES;
 }

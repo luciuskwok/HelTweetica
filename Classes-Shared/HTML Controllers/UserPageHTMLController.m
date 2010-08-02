@@ -24,17 +24,19 @@
 
 
 @implementation UserPageHTMLController
-@synthesize user;
+@synthesize user, followsBack;
 
 - (id)init {
 	self = [super init];
 	if (self) {
+		followsBack = @"";
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[user release];
+	[followsBack release];
 	[super dealloc];
 }
 
@@ -140,6 +142,14 @@
 
 - (void)didLoadFriendStatus:(TwitterShowFriendshipsAction *)action {
 	if (action.valid) {
+		// Update follows back status.
+		if (action.targetFollowsSource) {
+			self.followsBack = [NSString stringWithFormat:@"follows @%@", account.screenName];
+		} else {
+			self.followsBack = [NSString stringWithFormat:@"does not follow @%@", account.screenName];
+		}
+		[self rewriteUserInfoArea];
+		
 		id <UserPageHTMLControllerDelegate> userPageDelegate = (<UserPageHTMLControllerDelegate>) delegate;
 		if ([userPageDelegate respondsToSelector:@selector(didUpdateFriendshipStatusWithAccountFollowsUser:userFollowsAccount:)])
 			[userPageDelegate didUpdateFriendshipStatusWithAccountFollowsUser:action.sourceFollowsTarget userFollowsAccount:action.targetFollowsSource];
@@ -262,6 +272,7 @@
 	
 	[html replaceOccurrencesOfString:@"{protectedUser}" withString:protectedUser options:0 range:NSMakeRange(0, html.length)];
 	[html replaceOccurrencesOfString:@"{verifiedUser}" withString:verifiedUser options:0 range:NSMakeRange(0, html.length)];
+	[html replaceOccurrencesOfString:@"{followsBack}" withString:followsBack options:0 range:NSMakeRange(0, html.length)];
 	
 	// Blocks
 	[self replaceBlock:@"Name" display:(user.fullName.length != 0) inTemplate:html];

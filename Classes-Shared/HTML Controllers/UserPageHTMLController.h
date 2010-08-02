@@ -23,8 +23,10 @@
 	TwitterUser *user;
 	BOOL unauthorized;
 	BOOL notFound;
+	NSString *followsBack;
 }
 @property (nonatomic, retain) TwitterUser *user;
+@property (nonatomic, retain) NSString *followsBack;
 
 // Timeline selection
 - (void)selectUserTimeline:(NSString *)screenName;

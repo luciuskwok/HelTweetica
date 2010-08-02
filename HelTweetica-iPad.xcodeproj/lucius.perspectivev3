@@ -266,23 +266,20 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>E05649CC11FBCEE6000A9753</string>
-								<string>E05649E611FBD2D8000A9753</string>
 								<string>E05649CF11FBCF0C000A9753</string>
-								<string>E0F19F6D120534810095BA94</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
-								<string>E0564AB211FBD314000A9753</string>
 								<string>29B97323FDCFA39411CA2CEA</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>48</integer>
-									<integer>41</integer>
+									<integer>25</integer>
+									<integer>17</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 358}, {351, 680}}</string>
+							<string>{{0, 0}, {351, 680}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -299,7 +296,7 @@
 							<real>351</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>37 289 1232 739 0 0 1680 1028 </string>
+						<string>140 95 1232 739 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -329,15 +326,13 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E08FEB101206272100549FCA</string>
+										<string>E08F062212063F40005265AB</string>
 										<key>history</key>
 										<array>
 											<string>E0564B0011FBD458000A9753</string>
 											<string>E0564B0111FBD458000A9753</string>
 											<string>E0564F1D11FBDC72000A9753</string>
-											<string>E0564F1E11FBDC72000A9753</string>
 											<string>E0564F1F11FBDC72000A9753</string>
-											<string>E0564F2111FBDC72000A9753</string>
 											<string>E0564F2311FBDC72000A9753</string>
 											<string>E0CADD5E11FD83750075F657</string>
 											<string>E0CADD6211FD83750075F657</string>
@@ -370,8 +365,10 @@
 											<string>E0AB24511204399300C22FB8</string>
 											<string>E0AB24741204410400C22FB8</string>
 											<string>E0AB24751204410400C22FB8</string>
-											<string>E0F19F041204D7BD0095BA94</string>
-											<string>E0F1A24C1205E7280095BA94</string>
+											<string>E08FEB2212062AA200549FCA</string>
+											<string>E08FEB301206302400549FCA</string>
+											<string>E08FEB311206302400549FCA</string>
+											<string>E08FEB3F1206322700549FCA</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -387,7 +384,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {859, 693}}</string>
 								<key>RubberWindowFrame</key>
-								<string>37 289 1232 739 0 0 1680 1028 </string>
+								<string>140 95 1232 739 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -412,7 +409,7 @@
 										<key>Frame</key>
 										<string>{{10, 27}, {859, -27}}</string>
 										<key>RubberWindowFrame</key>
-										<string>37 289 1232 739 0 0 1680 1028 </string>
+										<string>140 95 1232 739 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -494,11 +491,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E08FEB111206272100549FCA</string>
+				<string>E08F060412063E1F005265AB</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>E08FEB121206272100549FCA</string>
+				<string>E08F060512063E1F005265AB</string>
 				<string>E05648CD11FBCB3D000A9753</string>
-				<string>E08FEB131206272100549FCA</string>
+				<string>E08F060612063E1F005265AB</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -647,14 +644,14 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E0F19E111204BEE30095BA94</string>
+				<string>E08F062312063F40005265AB</string>
 				<string>1CCC7628064C1048000F2A68</string>
 				<string>1CCC7629064C1048000F2A68</string>
-				<string>E0F19E121204BEE30095BA94</string>
-				<string>E0F19E131204BEE30095BA94</string>
-				<string>E0F19E141204BEE30095BA94</string>
-				<string>E0F19E151204BEE30095BA94</string>
-				<string>E0F19E161204BEE30095BA94</string>
+				<string>E08F062412063F40005265AB</string>
+				<string>E08F062512063F40005265AB</string>
+				<string>E08F062612063F40005265AB</string>
+				<string>E08F062712063F40005265AB</string>
+				<string>E08F062812063F40005265AB</string>
 			</array>
 			<key>ToolbarConfigUserDefaultsMinorVersion</key>
 			<string>2</string>
@@ -688,10 +685,13 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>E08F062912063F40005265AB</string>
+		<string>E08F062A12063F40005265AB</string>
+		<string>E08F062B12063F40005265AB</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-iPad.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>37 289 1232 739 0 0 1680 1028 </string>
+	<string>140 95 1232 739 0 0 1680 1028 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

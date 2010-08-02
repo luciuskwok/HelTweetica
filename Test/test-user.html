@@ -1,0 +1,129 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<!-- Test (Mac) HTML -->
+<head>
+<meta name='viewport' content='width=device-width' />
+<link href='../Resources-Mac/style.css' rel='styleSheet' type='text/css' />
+</head>
+<body>
+	<div class='artboard toolbar_padding'>
+		
+<div class='user_large_avatar'>
+	<img src='../Resources-Shared/profile-image-proxy.png'>
+</div>
+
+		<div id='tweet_area' class='tweet_area '>
+
+<div class='user_info_block'>
+	<div class='user_info_table'>
+		<div class='user_info_row'>
+			<div class='user_info_key_cell user_screen_name'>@</div>
+			<div class='user_info_value_cell '><span class='user_screen_name'><a href='action:user/{screenName}'>screenName</a> <img src='../Resources-Shared/lock.png'></span><br>
+				<span class='user_screen_name'>does not follow @luciuskwok</span>
+			</div>
+		</div>
+		<div class='user_info_row'>
+			<div class='user_info_key_cell'>Name</div>
+			<div class='user_info_value_cell'><span class='user_full_name'>{fullName}</span> {verifiedUser}</div>
+		</div>
+		<div class='user_info_row'>
+			<div class='user_info_key_cell'>Location</div>
+			<div class='user_info_value_cell user_location'>{location}</div>
+		</div>
+		<div class='user_info_row'>
+			<div class='user_info_key_cell'>Web</div>
+			<div class='user_info_value_cell user_web'>{web}</div>
+		</div>
+		<div class='user_info_row'>
+			<div class='user_info_key_cell'>Bio</div>
+			<div class='user_info_value_cell'>{bio}</div>
+		</div>
+		<div class='user_info_row'>
+			<div class='user_info_key_cell'>Joined</div>
+			<div class='user_info_value_cell '>{joinDate}</div>
+		</div>
+	</div><!-- user_info_table -->
+	
+	<div class='user_info_table'>
+		<div class='user_info_row'>
+			<div class='user_info_key_cell'></div>
+			<div class='user_info_value_cell user_number_value'>{friendsCount}</div>
+			<div class='user_info_value_cell user_number_value'>{followersCount}</div>
+			<div class='user_info_value_cell user_number_value'><a href='action:user/{screenName}'>{statusesCount}</a></div>
+			<div class='user_info_value_cell user_number_value'><a href='action:favorites'>{favoritesCount}</a></div>
+		</div>
+		<div class='user_info_row'>
+			<div class='user_info_key_cell'></div>
+			<div class='user_info_key_cell user_number_key'>following</div>
+			<div class='user_info_key_cell user_number_key'>followers</div>
+			<div class='user_info_key_cell user_number_key'>tweets</div>
+			<div class='user_info_key_cell user_number_key'>favorites</div>
+		</div>
+	</div><!-- user_info_table -->
+</div><!-- user_info_block -->
+<br clear="all">
+
+			<div class='tweet_table'>
+			
+
+				<div class='tweet_row self_tweet_row'>
+					<div class='tweet_avatar'>
+						<a href='action:user/{screenName}'><img class='avatar_img' id='avatar-{messageIdentifier}' src='../Resources-Shared/profile-image-proxy.png'></a>
+					</div><!-- tweet_avatar -->
+					<div class='tweet_content'>
+						<img align="right" src="../Resources-Shared/dm-button.png">
+						<div class="direct_message_header">Direct with <span class='screen_name'><a href='action:user/{screenName}'>{screenName}</a></span></div>
+						
+						<span class='screen_name'><a href='action:user/{user1}'>{user1}</a></span>
+						{Text of the direct message.}
+						<span class='time'>36 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user2}'>{user2}</a></span>
+						{Text of the direct message.}
+						<span class='time'>36 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user1}'>{user1}</a></span>
+						{Text of the direct message.}
+						<span class='time'>37 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user2}'>{user2}</a></span>
+						{Text of the direct message.}
+						<span class='time'>38 hours ago</span><br>
+						
+					</div><!-- /tweet_content -->
+				</div><!-- /tweet_row -->
+				
+
+				<div class='tweet_row'>
+					<div class='tweet_avatar'>
+						<a href='action:user/{screenName}'><img class='avatar_img' id='avatar-{messageIdentifier}' src='../Resources-Shared/profile-image-proxy.png'></a>
+					</div><!-- tweet_avatar -->
+					<div class='tweet_content'>
+						<img align="right" src="../Resources-Shared/action-2.png">
+						<div class="direct_message_header">Direct with <span class='screen_name'><a href='action:user/{screenName}'>{screenName}</a></span></div>
+						
+						<span class='screen_name'><a href='action:user/{user1}'>{user1}</a></span>
+						{Text of the direct message.}
+						<span class='time'>36 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user2}'>{user2}</a></span>
+						{Text of the direct message.}
+						<span class='time'>36 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user1}'>{user1}</a></span>
+						{Text of the direct message.}
+						<span class='time'>37 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user2}'>{user2}</a></span>
+						{Text of the direct message.}
+						<span class='time'>38 hours ago</span><br>
+						
+					</div><!-- /tweet_content -->
+				</div><!-- /tweet_row -->
+
+				
+			</div><!-- /tweet_table -->
+		</div><!-- /tweet_area -->
+	</div><!-- artboard -->
+</body>
+</html>

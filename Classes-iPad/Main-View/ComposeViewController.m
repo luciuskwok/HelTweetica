@@ -289,7 +289,7 @@ const int kTwitterCharacterMax = 140;
 	}
 }
 
-- (void)shrinkURLAction:(LKShrinkURLAction *)anAction replacedLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
+- (void)action:(LKShrinkURLAction *)anAction didReplaceLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
 	if (longURL != nil) {
 		if ([shortURL hasPrefix:@"http"]) {
 			messageField.text = [messageField.text stringByReplacingOccurrencesOfString:longURL withString:shortURL];
@@ -301,7 +301,7 @@ const int kTwitterCharacterMax = 140;
 	[appDelegate decrementNetworkActionCount];
 }
 
-- (void)shrinkURLAction:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error {
+- (void)action:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error {
 	NSLog (@"URL shrinker error: %@", error);
 	[appDelegate decrementNetworkActionCount];
 }
