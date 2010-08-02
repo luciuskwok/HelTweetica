@@ -326,16 +326,16 @@
 	};
 	E05649EE11FBD2D8000A9753 /* ComposeViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {810, 1584}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1020, 1602}}";
 			sepNavSelRange = "{1911, 0}";
-			sepNavVisRange = "{992, 1176}";
+			sepNavVisRange = "{1255, 1974}";
 		};
 	};
 	E05649EF11FBD2D8000A9753 /* ComposeViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {974, 6444}}";
-			sepNavSelRange = "{10835, 0}";
-			sepNavVisRange = "{10458, 852}";
+			sepNavIntBoundsRect = "{{0, 0}, {1020, 6102}}";
+			sepNavSelRange = "{2812, 0}";
+			sepNavVisRange = "{1650, 1666}";
 		};
 	};
 	E05649F111FBD2D8000A9753 /* ListsViewController.h */ = {
@@ -368,23 +368,23 @@
 	};
 	E05649F711FBD2D8000A9753 /* RootViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {783, 3466}}";
-			sepNavSelRange = "{5681, 0}";
-			sepNavVisRange = "{5271, 1124}";
+			sepNavIntBoundsRect = "{{0, 0}, {1002, 3472}}";
+			sepNavSelRange = "{3196, 143}";
+			sepNavVisRange = "{2656, 1258}";
 		};
 	};
 	E05649F911FBD2D8000A9753 /* TimelineViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {726, 1782}}";
-			sepNavSelRange = "{2104, 30}";
-			sepNavVisRange = "{1619, 650}";
+			sepNavIntBoundsRect = "{{0, 0}, {1020, 1692}}";
+			sepNavSelRange = "{1868, 0}";
+			sepNavVisRange = "{831, 2071}";
 		};
 	};
 	E05649FA11FBD2D8000A9753 /* TimelineViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {726, 7776}}";
-			sepNavSelRange = "{2739, 0}";
-			sepNavVisRange = "{2382, 652}";
+			sepNavIntBoundsRect = "{{0, 0}, {1020, 7776}}";
+			sepNavSelRange = "{13648, 0}";
+			sepNavVisRange = "{12225, 2003}";
 		};
 	};
 	E05649FE11FBD2D8000A9753 /* SearchResultsViewController.h */ = {
@@ -415,18 +415,25 @@
 			sepNavVisRange = "{3720, 1146}";
 		};
 	};
+	E0564A0A11FBD2D8000A9753 /* Instapaper.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1002, 810}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1652}";
+		};
+	};
 	E0564A1011FBD2D8000A9753 /* WebBrowserViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1002, 1205}}";
-			sepNavSelRange = "{2841, 0}";
-			sepNavVisRange = "{1619, 1229}";
+			sepNavIntBoundsRect = "{{0, 0}, {1002, 1330}}";
+			sepNavSelRange = "{3028, 90}";
+			sepNavVisRange = "{2182, 941}";
 		};
 	};
 	E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1002, 5759}}";
-			sepNavSelRange = "{3416, 0}";
-			sepNavVisRange = "{3173, 571}";
+			sepNavIntBoundsRect = "{{0, 0}, {1002, 5760}}";
+			sepNavSelRange = "{7534, 0}";
+			sepNavVisRange = "{7047, 1235}";
 		};
 	};
 	E0564A3911FBD2E7000A9753 /* HelTweeticaAppDelegate.h */ = {
@@ -783,7 +790,7 @@
 		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
 		name = "ComposeViewController.m: 292";
 		rLen = 0;
-		rLoc = 11866;
+		rLoc = 11958;
 		rType = 0;
 		vrLen = 668;
 		vrLoc = 10196;
@@ -936,7 +943,7 @@
 		fRef = E05649FA11FBD2D8000A9753 /* TimelineViewController.m */;
 		name = "TimelineViewController.m: 56";
 		rLen = 0;
-		rLoc = 2739;
+		rLoc = 2702;
 		rType = 0;
 		vrLen = 652;
 		vrLoc = 2382;
@@ -946,7 +953,7 @@
 		fRef = E05649F911FBD2D8000A9753 /* TimelineViewController.h */;
 		name = "TimelineViewController.h: 32";
 		rLen = 30;
-		rLoc = 2104;
+		rLoc = 2142;
 		rType = 0;
 		vrLen = 650;
 		vrLoc = 1619;
@@ -1116,7 +1123,7 @@
 		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
 		name = "ComposeViewController.m: 296";
 		rLen = 0;
-		rLoc = 10929;
+		rLoc = 11021;
 		rType = 0;
 		vrLen = 1005;
 		vrLoc = 10087;
@@ -1126,7 +1133,7 @@
 		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
 		name = "ComposeViewController.m: 291";
 		rLen = 0;
-		rLoc = 10835;
+		rLoc = 10927;
 		rType = 0;
 		vrLen = 1223;
 		vrLoc = 10087;
@@ -1136,7 +1143,7 @@
 		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
 		name = "ComposeViewController.m: 291";
 		rLen = 0;
-		rLoc = 10835;
+		rLoc = 10927;
 		rType = 0;
 		vrLen = 852;
 		vrLoc = 10458;
@@ -1146,7 +1153,7 @@
 		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
 		name = "ComposeViewController.m: 291";
 		rLen = 0;
-		rLoc = 10835;
+		rLoc = 10927;
 		rType = 0;
 		vrLen = 1309;
 		vrLoc = 8451;
@@ -1156,7 +1163,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 127";
 		rLen = 0;
-		rLoc = 5187;
+		rLoc = 5107;
 		rType = 0;
 		vrLen = 1289;
 		vrLoc = 4167;
@@ -1166,7 +1173,7 @@
 		fRef = E0564A1011FBD2D8000A9753 /* WebBrowserViewController.h */;
 		name = "WebBrowserViewController.h: 45";
 		rLen = 0;
-		rLoc = 2564;
+		rLoc = 2622;
 		rType = 0;
 		vrLen = 1607;
 		vrLoc = 1147;
@@ -1176,7 +1183,7 @@
 		fRef = E0564A1011FBD2D8000A9753 /* WebBrowserViewController.h */;
 		name = "WebBrowserViewController.h: 45";
 		rLen = 0;
-		rLoc = 2564;
+		rLoc = 2622;
 		rType = 0;
 		vrLen = 1607;
 		vrLoc = 1147;
@@ -1186,7 +1193,7 @@
 		fRef = E0564A1011FBD2D8000A9753 /* WebBrowserViewController.h */;
 		name = "WebBrowserViewController.h: 45";
 		rLen = 0;
-		rLoc = 2564;
+		rLoc = 2622;
 		rType = 0;
 		vrLen = 1663;
 		vrLoc = 1040;
@@ -1196,7 +1203,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 127";
 		rLen = 0;
-		rLoc = 5187;
+		rLoc = 5107;
 		rType = 0;
 		vrLen = 1112;
 		vrLoc = 3361;
@@ -1206,7 +1213,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 127";
 		rLen = 0;
-		rLoc = 5187;
+		rLoc = 5107;
 		rType = 0;
 		vrLen = 1112;
 		vrLoc = 3361;
@@ -1216,7 +1223,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 127";
 		rLen = 0;
-		rLoc = 5187;
+		rLoc = 5107;
 		rType = 0;
 		vrLen = 1112;
 		vrLoc = 3361;
@@ -1226,7 +1233,7 @@
 		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
 		name = "ComposeViewController.m: 291";
 		rLen = 0;
-		rLoc = 10835;
+		rLoc = 10927;
 		rType = 0;
 		vrLen = 852;
 		vrLoc = 10458;
@@ -1250,7 +1257,7 @@
 		isa = PBXTextBookmark;
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		rLen = 0;
-		rLoc = 109;
+		rLoc = 108;
 		rType = 1;
 	};
 	E0B92DBD1206A023005DCE6E /* PBXTextBookmark */ = {
@@ -1258,7 +1265,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 102";
 		rLen = 0;
-		rLoc = 4227;
+		rLoc = 4147;
 		rType = 0;
 		vrLen = 671;
 		vrLoc = 3922;
@@ -1268,7 +1275,7 @@
 		fRef = E0564A1011FBD2D8000A9753 /* WebBrowserViewController.h */;
 		name = "WebBrowserViewController.h: 55";
 		rLen = 0;
-		rLoc = 2841;
+		rLoc = 2978;
 		rType = 0;
 		vrLen = 1229;
 		vrLoc = 1619;
@@ -1278,7 +1285,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 98";
 		rLen = 0;
-		rLoc = 3908;
+		rLoc = 3828;
 		rType = 0;
 		vrLen = 900;
 		vrLoc = 3191;
@@ -1288,7 +1295,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 112";
 		rLen = 0;
-		rLoc = 4252;
+		rLoc = 4172;
 		rType = 0;
 		vrLen = 1283;
 		vrLoc = 3710;
@@ -1299,7 +1306,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 78;
+		rLoc = 77;
 		rType = 1;
 	};
 	E0B92DCE1206A158005DCE6E /* PBXTextBookmark */ = {
@@ -1307,7 +1314,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 79";
 		rLen = 0;
-		rLoc = 3416;
+		rLoc = 3336;
 		rType = 0;
 		vrLen = 571;
 		vrLoc = 3173;
@@ -1372,7 +1379,7 @@
 		fRef = E0564A1111FBD2D8000A9753 /* WebBrowserViewController.m */;
 		name = "WebBrowserViewController.m: 151";
 		rLen = 0;
-		rLoc = 6213;
+		rLoc = 10865;
 		rType = 0;
 		vrLen = 554;
 		vrLoc = 5962;

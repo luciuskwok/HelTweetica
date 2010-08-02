@@ -22,7 +22,6 @@
 
 #import "ConversationViewController.h"
 #import "UserPageViewController.h"
-#import "WebBrowserViewController.h"
 #import "SearchResultsViewController.h"
 
 #import "TwitterTimeline.h"
@@ -138,12 +137,17 @@
 
 #pragma mark Compose
 
+- (ComposeViewController *)composeViewController {
+	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
+	[compose loadFromUserDefaults];
+	compose.delegate = self;
+	return compose;
+}
+
 - (IBAction)compose:(id)sender {
 	if ([self closeAllPopovers] == NO) {
-		ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
-		[compose loadFromUserDefaults];
-		compose.delegate = self;
-		[self presentViewController: compose inNavControllerInPopoverFromItem: sender];
+		ComposeViewController *compose = [self composeViewController];
+		[self presentModalViewController:compose animated:YES];
 	}
 }	
 
@@ -151,62 +155,65 @@
 	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: identifier];
 	if (message == nil) return;
 	
-	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
-	[compose loadFromUserDefaults];
-	compose.delegate = self;
-	if (message != nil) {
-		// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
-		compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.userScreenName, message.text];
-		compose.originalRetweetContent = compose.messageContent;
-		compose.inReplyTo = identifier;
-	}
-	
+	ComposeViewController *compose = [self composeViewController];
+	// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
+	compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.userScreenName, message.text];
+	compose.originalRetweetContent = compose.messageContent;
+	compose.inReplyTo = identifier;
+
 	[self closeAllPopovers];
-	[self presentViewController: compose inNavControllerInPopoverFromItem: composeButton];
+	[self presentModalViewController:compose animated:YES];
 }
 
 - (void) replyToMessage: (NSNumber*)identifier {
-	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
-	[compose loadFromUserDefaults];
-	compose.delegate = self;
 	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: identifier];
+	if (message == nil) return;
 	
+	ComposeViewController *compose = [self composeViewController];
+
 	// Insert @username in beginning of message. This preserves any other people being replied to.
-	if (message != nil) {
-		NSString *replyUsername = message.userScreenName;
-		if (compose.messageContent != nil) {
-			compose.messageContent = [NSString stringWithFormat:@"@%@ %@", replyUsername, compose.messageContent];
-		} else {
-			compose.messageContent = [NSString stringWithFormat:@"@%@ ", replyUsername];
-		}
-		compose.inReplyTo = identifier;
-		compose.originalRetweetContent = nil;
-		compose.newStyleRetweet = NO;
+	NSString *replyUsername = message.userScreenName;
+	if (compose.messageContent != nil) {
+		compose.messageContent = [NSString stringWithFormat:@"@%@ %@", replyUsername, compose.messageContent];
+	} else {
+		compose.messageContent = [NSString stringWithFormat:@"@%@ ", replyUsername];
 	}
+	compose.inReplyTo = identifier;
+	compose.originalRetweetContent = nil;
+	compose.newStyleRetweet = NO;
 	
 	[self closeAllPopovers];
-	[self presentViewController: compose inNavControllerInPopoverFromItem: composeButton];
+	[self presentModalViewController:compose animated:YES];
 }
 
 - (void)directMessageWithScreenName:(NSString*)screenName {
-	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
-	[compose loadFromUserDefaults];
-	compose.delegate = self;
+	if (screenName.length == 0) return;
 	
-	// Insert d username in beginnig of message. This preserves any other people being replied to.
-	if (screenName != nil) {
-		if (compose.messageContent != nil) {
-			compose.messageContent = [NSString stringWithFormat:@"d %@ %@", screenName, compose.messageContent];
-		} else {
-			compose.messageContent = [NSString stringWithFormat:@"d %@ ", screenName];
-		}
-		compose.originalRetweetContent = nil;
+	ComposeViewController *compose = [self composeViewController];
+	
+	// Insert d username in beginning of message. This preserves any other people being replied to.
+	if (compose.messageContent != nil) {
+		compose.messageContent = [NSString stringWithFormat:@"d %@ %@", screenName, compose.messageContent];
+	} else {
+		compose.messageContent = [NSString stringWithFormat:@"d %@ ", screenName];
 	}
-	
+	compose.originalRetweetContent = nil;
+
 	[self closeAllPopovers];
-	[self presentViewController: compose inNavControllerInPopoverFromItem: composeButton];
+	[self presentModalViewController:compose animated:YES];
 }
 
+- (void)composeWithText:(NSString *)text {
+	if (composeButton == nil) return;
+	if (text == nil) return;
+	
+	ComposeViewController *compose = [self composeViewController];
+	compose.messageContent = [compose.messageContent stringByAppendingString:text];
+	compose.originalRetweetContent = nil;
+	
+	[self closeAllPopovers];
+	[self presentModalViewController:compose animated:YES];
+}
 
 #pragma mark Popovers
 
@@ -291,9 +298,14 @@
 - (void) showWebBrowserWithURLRequest:(NSURLRequest*)request {
 	// Push a separate web browser for links
 	WebBrowserViewController *vc = [[[WebBrowserViewController alloc] initWithURLRequest:request] autorelease];
+	vc.delegate = self;
 	[self.navigationController pushViewController: vc animated: YES];
 }	
 
+- (void)browser:(WebBrowserViewController *)browser didFinishWithURLToTweet:(NSURL *)url {
+	NSString *content = [NSString stringWithFormat:@"\n\n%@", [url absoluteString]];
+	[self composeWithText:content];
+}
 
 #pragma mark UIWebView delegate methods
 
@@ -324,7 +336,7 @@
 		return NO;
 	} else if ([[url scheme] hasPrefix:@"http"]) {
 		// Send google.com links directly to Safari.
-		if ([[url host] hasSuffix:@"twitter.com"]) {
+		if ([[url host] hasSuffix:@"maps.google.com"]) {
 			[[UIApplication sharedApplication] openURL: url];
 			return NO;
 		}

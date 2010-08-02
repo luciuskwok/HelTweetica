@@ -56,6 +56,8 @@ const int kTwitterCharacterMax = 140;
 			[self setContentSizeForViewInPopover: CGSizeMake(480, 275)];
 		}
 		
+		// Modal presentation style
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
 	return self;
 }

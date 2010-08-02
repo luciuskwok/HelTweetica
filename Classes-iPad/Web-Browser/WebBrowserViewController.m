@@ -29,13 +29,12 @@ enum {
 
 @interface WebBrowserViewController (PrivateMethods)
 - (void) updateButtons;
-- (void) emailLink:(NSURL*)url;
-- (void) saveToInstapaper;
-- (void) showInstapaperSettings;
 @end
 
 @implementation WebBrowserViewController
-@synthesize webView, backButton, forwardButton, stopButton, reloadButton, titleLabel, currentActionSheet, request;
+@synthesize webView, backButton, forwardButton, stopButton, reloadButton, titleLabel, currentActionSheet, request, delegate;
+
+
 
 - (id)initWithURLRequest:(NSURLRequest*)aRequest {
 	if (self = [super initWithNibName:@"WebBrowser" bundle:nil]) {
@@ -146,33 +145,7 @@ enum {
 	return NO;
 }
 
-#pragma mark -
-
-- (IBAction)done: (id) sender {
-	[self closeAllPopovers];
-	[self.navigationController popViewControllerAnimated: YES];
-}
-
-- (IBAction)instapaper: (id) sender {
-	if ([self closeAllPopovers] == NO) {
-		NSString *cancelButton = NSLocalizedString (@"Cancel", @"alert button");
-		NSString *saveButton = NSLocalizedString (@"Read Later", @"alert button");
-		NSString *settingsButton = NSLocalizedString (@"Instapaper Settings...", @"alert button");
-		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle: cancelButton destructiveButtonTitle: nil otherButtonTitles: saveButton, settingsButton, nil];
-		sheet.tag = kInstapaperActionSheetTag;
-		
-		if ([UIActionSheet instancesRespondToSelector:@selector(showFromBarButtonItem:animated:)]) {
-			// iPad version shows popover from the button pressed.	
-			[sheet showFromBarButtonItem:sender animated:YES];
-		} else {
-			// iPhone version:
-			[sheet showInView:self.view];
-		}
-		
-		self.currentActionSheet = sheet;
-		[sheet release];
-	}
-}
+#pragma mark Actions button
 
 - (IBAction)action: (id) sender {
 	if ([self closeAllPopovers] == NO) {
@@ -196,6 +169,91 @@ enum {
 	}
 }
 
+- (void) emailURL:(NSURL*)url {
+	if ([MFMailComposeViewController canSendMail] == NO) {
+		// Alert 
+		NSString *t = NSLocalizedString (@"Cannot Send Mail", @"alert title");
+		NSString *m = NSLocalizedString (@"Please set up Mail in Settings.", @"alert message");
+		NSString *c = NSLocalizedString (@"Cancel.", @"alert button");
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:t message:m delegate:nil cancelButtonTitle:c otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	} else {
+		MFMailComposeViewController *picker = [[[MFMailComposeViewController alloc] init] autorelease];
+		picker.mailComposeDelegate = self;
+		
+		// Add URL in email body.
+		NSString *body = [NSString stringWithFormat:@"%@\n", [url absoluteString]];
+		[picker setMessageBody:body isHTML:NO];
+		[self presentModalViewController:picker animated:YES];
+	}
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {    
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)tweetURL:(NSURL *)url {
+	[self done:nil];
+	[delegate browser:self didFinishWithURLToTweet:url];
+}
+
+#pragma mark Instapaper button
+
+- (IBAction)instapaper: (id) sender {
+	if ([self closeAllPopovers] == NO) {
+		NSString *cancelButton = NSLocalizedString (@"Cancel", @"alert button");
+		NSString *saveButton = NSLocalizedString (@"Read Later", @"alert button");
+		NSString *settingsButton = NSLocalizedString (@"Instapaper Settings...", @"alert button");
+		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle: cancelButton destructiveButtonTitle: nil otherButtonTitles: saveButton, settingsButton, nil];
+		sheet.tag = kInstapaperActionSheetTag;
+		
+		if ([UIActionSheet instancesRespondToSelector:@selector(showFromBarButtonItem:animated:)]) {
+			// iPad version shows popover from the button pressed.	
+			[sheet showFromBarButtonItem:sender animated:YES];
+		} else {
+			// iPhone version:
+			[sheet showInView:self.view];
+		}
+		
+		self.currentActionSheet = sheet;
+		[sheet release];
+	}
+}
+
+- (void) saveCurrentURLToInstapaper {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *instapaperUsername = [defaults objectForKey:@"instapaperUsername"];
+	NSString *instapaperPassword = [defaults objectForKey:@"instapaperPassword"];
+	
+	[[Instapaper sharedInstapaper] addURL:[self currentURL] withUsername:instapaperUsername password:instapaperPassword];
+}
+
+- (void) showInstapaperSettings {
+	InstapaperSettingsViewController *settings = [[[InstapaperSettingsViewController alloc] init] autorelease];
+	[self presentModalViewController:settings animated:YES];
+}
+
+- (void) saveToInstapaper {
+	// Get Instapaper credentials
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *instapaperUsername = [defaults objectForKey:@"instapaperUsername"];
+	
+	if (instapaperUsername == nil) {
+		addURLToInstapaperWhenUsernameChanges = YES; // If the login succeeds, automatically add the current URL.
+		[self showInstapaperSettings];
+	} else {
+		[self saveCurrentURLToInstapaper];
+	}
+}
+
+- (void) instapaperUsernameDidChange: (NSNotification*) notification {
+	if (addURLToInstapaperWhenUsernameChanges)
+		[self saveCurrentURLToInstapaper];
+}
+
+#pragma mark Action sheets
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSURL *currentURL = [webView.request URL];
 	if (currentURL.absoluteString.length == 0) 
@@ -214,13 +272,14 @@ enum {
 			case 0: // Safari
 				[[UIApplication sharedApplication] openURL: currentURL];
 				break;
+			case 1: // Email URL
+				[self emailURL:currentURL];
+				break;
+			case 2:// Tweet URL
+				[self tweetURL:currentURL];
+				break;
 			default:
 				break;
-		}
-		if (buttonIndex == 0) { // Safari
-			[[UIApplication sharedApplication] openURL: currentURL];
-		} else if (buttonIndex == 1) { // Email
-			[self emailLink:currentURL];
 		}
 	}
 }
@@ -230,60 +289,14 @@ enum {
 		self.currentActionSheet = nil;
 }
 
-- (void) emailLink:(NSURL*)url {
-	if ([MFMailComposeViewController canSendMail] == NO) {
-		// Alert 
-		NSString *t = NSLocalizedString (@"Cannot Send Mail", @"alert title");
-		NSString *m = NSLocalizedString (@"Please set up Mail in Settings.", @"alert message");
-		NSString *c = NSLocalizedString (@"Cancel.", @"alert button");
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:t message:m delegate:nil cancelButtonTitle:c otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-	} else {
-		MFMailComposeViewController *picker = [[[MFMailComposeViewController alloc] init] autorelease];
-		picker.mailComposeDelegate = self;
 
-		// Add URL in email body.
-		NSString *body = [NSString stringWithFormat:@"%@\n", [url absoluteString]];
-		[picker setMessageBody:body isHTML:NO];
-		[self presentModalViewController:picker animated:YES];
-	}
+#pragma mark -
+
+- (IBAction)done: (id) sender {
+	[self closeAllPopovers];
+	[self.navigationController popViewControllerAnimated: YES];
 }
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {    
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-- (void) saveCurrentURLToInstapaper {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *instapaperUsername = [defaults objectForKey:@"instapaperUsername"];
-	NSString *instapaperPassword = [defaults objectForKey:@"instapaperPassword"];
-
-	[[Instapaper sharedInstapaper] addURL:[self currentURL] withUsername:instapaperUsername password:instapaperPassword];
-}
-
-- (void) saveToInstapaper {
-	// Get Instapaper credentials
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *instapaperUsername = [defaults objectForKey:@"instapaperUsername"];
-	
-	if (instapaperUsername == nil) {
-		addURLToInstapaperWhenUsernameChanges = YES; // If the login succeeds, automatically add the current URL.
-		[self showInstapaperSettings];
-	} else {
-		[self saveCurrentURLToInstapaper];
-	}
-}
-
-- (void) showInstapaperSettings {
-	InstapaperSettingsViewController *settings = [[[InstapaperSettingsViewController alloc] init] autorelease];
-	[self presentModalViewController:settings animated:YES];
-}
-
-- (void) instapaperUsernameDidChange: (NSNotification*) notification {
-	if (addURLToInstapaperWhenUsernameChanges)
-		[self saveCurrentURLToInstapaper];
-}
 
 #pragma mark -
 

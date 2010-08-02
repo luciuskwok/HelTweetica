@@ -25,11 +25,13 @@
 #import "ComposeViewController.h"
 #import "GoToUserViewController.h"
 #import "TimelineHTMLController.h"
+#import "WebBrowserViewController.h"
+
 
 @class TwitterAction, TwitterLoadTimelineAction, TwitterTimeline;
 
 
-@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, GoToUserViewControllerDelegate, TimelineHTMLControllerDelegate> {
+@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, GoToUserViewControllerDelegate, TimelineHTMLControllerDelegate, WebBrowserViewControllerDelegate> {
 	IBOutlet LKWebView *webView;
 	IBOutlet UIBarButtonItem *composeButton;
 

@@ -20,6 +20,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 
 @class HelTweeticaAppDelegate;
+@protocol WebBrowserViewControllerDelegate;
 
 
 @interface WebBrowserViewController : UIViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
@@ -36,6 +37,7 @@
 	BOOL addURLToInstapaperWhenUsernameChanges;
 
 	HelTweeticaAppDelegate *appDelegate;
+	id delegate;
 }
 @property (nonatomic, retain) UIWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *backButton;
@@ -47,11 +49,16 @@
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (nonatomic, retain) NSURLRequest *request;
 
+@property (nonatomic, assign) id <WebBrowserViewControllerDelegate> delegate;
+
 - (id)initWithURLRequest:(NSURLRequest*)aRequest;
 
 - (IBAction) done: (id) sender;
 - (IBAction) instapaper: (id) sender;
 - (IBAction) action: (id) sender;
 
+@end
 
+@protocol WebBrowserViewControllerDelegate
+- (void)browser:(WebBrowserViewController *)browser didFinishWithURLToTweet:(NSURL *)url;
 @end
