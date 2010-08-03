@@ -333,6 +333,16 @@ const int kTwitterCharacterMax = 140;
 #pragma mark Pictures
 
 - (IBAction)addPicture:(id)sender {
+	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] == NO) {
+		// Show error alert.
+		UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
+		alert.title = NSLocalizedString (@"Photo library not available", @"title");
+		alert.message = NSLocalizedString (@"Pictures cannot be added at this time.", @"text");
+		[alert addButtonWithTitle:NSLocalizedString (@"Cancel", @"button")];
+		[alert show];
+		return;
+	}
+	
 	UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
 	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	picker.delegate = self;
@@ -384,10 +394,10 @@ const int kTwitterCharacterMax = 140;
 		//NSLog(@"Image size: %1.0fx%1.0f, raw %1.2f Kb, jpeg %1.2f Kb, quality %1.2f.", image.size.width, image.size.height, raw/1024.0f, jpgData.length/1024.0f, qualtiy );
 	} else {
 		// Show error alert.
-		NSString *aTitle = NSLocalizedString (@"Image Error", @"title");
-		NSString *aText = NSLocalizedString (@"The selected image could not be imported.", @"text");
-		NSString *cancel = NSLocalizedString (@"Cancel", @"button");
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:aTitle message:aText delegate:nil cancelButtonTitle:cancel otherButtonTitles:nil] autorelease];
+		UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
+		alert.title = NSLocalizedString (@"Image Error", @"title");
+		alert.message = NSLocalizedString (@"The selected image could not be imported.", @"text");
+		[alert addButtonWithTitle:NSLocalizedString (@"Cancel", @"button")];
 		[alert show];
 	}
 }

@@ -105,18 +105,17 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 302518246;
-			PBXWorkspaceStateSaveDate = 302518246;
+			PBXPerProjectTemplateStateSaveDate = 302537671;
+			PBXWorkspaceStateSaveDate = 302537671;
 		};
 		perUserProjectItems = {
-			E023D9631207ED4E0046B37F /* PBXTextBookmark */ = E023D9631207ED4E0046B37F /* PBXTextBookmark */;
 			E023D9641207ED4E0046B37F /* PBXTextBookmark */ = E023D9641207ED4E0046B37F /* PBXTextBookmark */;
 			E023D9651207ED4E0046B37F /* PBXTextBookmark */ = E023D9651207ED4E0046B37F /* PBXTextBookmark */;
 			E023D9661207ED4E0046B37F /* PBXTextBookmark */ = E023D9661207ED4E0046B37F /* PBXTextBookmark */;
 			E023D9861207F3650046B37F /* PBXTextBookmark */ = E023D9861207F3650046B37F /* PBXTextBookmark */;
 			E023D9871207F3650046B37F /* PBXTextBookmark */ = E023D9871207F3650046B37F /* PBXTextBookmark */;
-			E023DA1112080F9C0046B37F /* PBXTextBookmark */ = E023DA1112080F9C0046B37F /* PBXTextBookmark */;
-			E04607C912080FEE00D113B4 /* PBXTextBookmark */ = E04607C912080FEE00D113B4 /* PBXTextBookmark */;
+			E04B21E8120869C600F97EE0 /* PBXTextBookmark */ = E04B21E8120869C600F97EE0 /* PBXTextBookmark */;
+			E04B21E9120869C600F97EE0 /* PBXTextBookmark */ = E04B21E9120869C600F97EE0 /* PBXTextBookmark */;
 			E0524D101203F3E900EF28F8 /* PBXTextBookmark */ = E0524D101203F3E900EF28F8 /* PBXTextBookmark */;
 			E0564B0011FBD458000A9753 /* PBXBookmark */ = E0564B0011FBD458000A9753 /* PBXBookmark */;
 			E0564B0111FBD458000A9753 /* PBXBookmark */ = E0564B0111FBD458000A9753 /* PBXBookmark */;
@@ -176,16 +175,6 @@
 			sepNavVisRange = "{0, 280}";
 		};
 	};
-	E023D9631207ED4E0046B37F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = E079ECFD120772340083B77B /* TwitterComposer.m */;
-		name = "TwitterComposer.m: 163";
-		rLen = 73;
-		rLoc = 4365;
-		rType = 0;
-		vrLen = 1412;
-		vrLoc = 3709;
-	};
 	E023D9641207ED4E0046B37F /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = E0564A5011FBD2E7000A9753 /* TwitterAccount.m */;
@@ -236,25 +225,25 @@
 		vrLen = 1159;
 		vrLoc = 12956;
 	};
-	E023DA1112080F9C0046B37F /* PBXTextBookmark */ = {
+	E04B21E8120869C600F97EE0 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
 		name = "ComposeViewController.m: 384";
 		rLen = 0;
-		rLoc = 14174;
+		rLoc = 14640;
 		rType = 0;
-		vrLen = 1808;
-		vrLoc = 13469;
+		vrLen = 1840;
+		vrLoc = 13410;
 	};
-	E04607C912080FEE00D113B4 /* PBXTextBookmark */ = {
+	E04B21E9120869C600F97EE0 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
-		name = "ComposeViewController.m: 384";
+		name = "ComposeViewController.m: 341";
 		rLen = 0;
-		rLoc = 14174;
+		rLoc = 12795;
 		rType = 0;
-		vrLen = 1808;
-		vrLoc = 13469;
+		vrLen = 1586;
+		vrLoc = 12089;
 	};
 	E0524D101203F3E900EF28F8 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -399,9 +388,9 @@
 	};
 	E05649EF11FBD2D8000A9753 /* ComposeViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {704, 8550}}";
-			sepNavSelRange = "{14174, 0}";
-			sepNavVisRange = "{13469, 1808}";
+			sepNavIntBoundsRect = "{{0, 0}, {718, 8640}}";
+			sepNavSelRange = "{14640, 0}";
+			sepNavVisRange = "{14148, 504}";
 		};
 	};
 	E05649F111FBD2D8000A9753 /* ListsViewController.h */ = {
@@ -560,9 +549,9 @@
 	};
 	E0564A4311FBD2E7000A9753 /* TimelineHTMLController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {810, 14436}}";
+			sepNavIntBoundsRect = "{{0, 0}, {704, 14472}}";
 			sepNavSelRange = "{2063, 0}";
-			sepNavVisRange = "{1894, 730}";
+			sepNavVisRange = "{1391, 1421}";
 		};
 	};
 	E0564A4411FBD2E7000A9753 /* UserPageHTMLController.h */ = {
@@ -817,9 +806,9 @@
 	};
 	E079ECFD120772340083B77B /* TwitterComposer.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {970, 3347}}";
+			sepNavIntBoundsRect = "{{0, 0}, {704, 3329}}";
 			sepNavSelRange = "{4365, 73}";
-			sepNavVisRange = "{3709, 1412}";
+			sepNavVisRange = "{3714, 1407}";
 		};
 	};
 	E079ED26120783690083B77B /* LKUploadPictureAction.h */ = {
