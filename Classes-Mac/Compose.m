@@ -160,6 +160,21 @@ enum { kTwitterCharacterMax = 140 };
 	[self updateCharacterCount];
 }
 
+- (void)updateLocationButton {
+	BOOL useLocation = [[NSUserDefaults standardUserDefaults] boolForKey:@"useLocation"];
+	
+	// Button.
+	[locationButton setState:useLocation? NSOnState : NSOffState];
+	[locationButton setImage:[NSImage imageNamed:useLocation? @"mac-toolbar-geotag-alt.png" : @"mac-toolbar-geotag.png"]];
+	
+	// Location manager.
+	if (useLocation) {
+		[composer.locationManager startUpdatingLocation];
+	} else {
+		[composer.locationManager stopUpdatingLocation];
+	}
+}
+
 
 #pragma mark Sheet
 
@@ -184,18 +199,12 @@ enum { kTwitterCharacterMax = 140 };
 }
 
 - (IBAction)location:(id)sender {
-	// Update button and defaults.
+	// Defaults.
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	BOOL useLocation = ![defaults boolForKey:@"useLocation"];
-	[locationButton setState:useLocation? NSOnState : NSOffState];
 	[defaults setBool:useLocation forKey:@"useLocation"];
-	
-	// Get location.
-	if (useLocation) {
-		[composer.locationManager startUpdatingLocation];
-	} else {
-		[composer.locationManager stopUpdatingLocation];
-	}
+
+	[self updateLocationButton];
 }
 
 #pragma mark Send status update
@@ -405,13 +414,9 @@ enum { kTwitterCharacterMax = 140 };
 	
 	// Location
 	if (composer.locationManager) {
-		BOOL useLocation = [[NSUserDefaults standardUserDefaults] boolForKey:@"useLocation"];
-		[locationButton setState:useLocation? NSOnState : NSOffState];
-		if (useLocation) {
-			[composer.locationManager startUpdatingLocation];
-		}
+		[self updateLocationButton];
 	} else {
-		[locationButton setHidden:YES];
+		[locationButton setEnabled:NO];
 	}
 	
 	// Enable Continous Spelling

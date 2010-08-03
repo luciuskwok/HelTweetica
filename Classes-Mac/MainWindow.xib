@@ -157,6 +157,10 @@
 									<reference key="NSControlView" ref="548932020"/>
 									<int key="NSButtonFlags">-2034220801</int>
 									<int key="NSButtonFlags2">163</int>
+									<object class="NSCustomResource" key="NSNormalImage" id="231055000">
+										<string key="NSClassName">NSImage</string>
+										<string key="NSResourceName">mac-toolbar-user</string>
+									</object>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">400</int>
@@ -169,10 +173,7 @@
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
 										<int key="NSState">1</int>
-										<object class="NSCustomResource" key="NSImage" id="1058933522">
-											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">mac-toolbar-user</string>
-										</object>
+										<reference key="NSImage" ref="231055000"/>
 										<object class="NSCustomResource" key="NSOnImage" id="150681764">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">NSMenuCheckmark</string>
@@ -278,7 +279,7 @@
 									<int key="NSArrowPosition">2</int>
 								</object>
 							</object>
-							<reference key="NSToolbarItemImage" ref="1058933522"/>
+							<reference key="NSToolbarItemImage" ref="231055000"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{40, 25}</string>
@@ -464,10 +465,6 @@
 									<reference key="NSControlView" ref="67842180"/>
 									<int key="NSButtonFlags">-2034220801</int>
 									<int key="NSButtonFlags2">163</int>
-									<object class="NSCustomResource" key="NSNormalImage" id="276360519">
-										<string key="NSClassName">NSImage</string>
-										<string key="NSResourceName">mac-toolbar-lists</string>
-									</object>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">400</int>
@@ -480,7 +477,10 @@
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
 										<int key="NSState">1</int>
-										<reference key="NSImage" ref="276360519"/>
+										<object class="NSCustomResource" key="NSImage" id="326823432">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">mac-toolbar-lists</string>
+										</object>
 										<reference key="NSOnImage" ref="150681764"/>
 										<reference key="NSMixedImage" ref="986665450"/>
 										<string key="NSAction">_popUpItemAction:</string>
@@ -534,7 +534,7 @@
 									<int key="NSArrowPosition">2</int>
 								</object>
 							</object>
-							<reference key="NSToolbarItemImage" ref="276360519"/>
+							<reference key="NSToolbarItemImage" ref="326823432"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{40, 25}</string>
@@ -1312,7 +1312,7 @@
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="3.CustomClassName">LKWebView</string>
 				<string key="3.IBPluginDependency">com.apple.WebKitIBPlugin</string>
-				<string key="48.IBEditorWindowLastContentRect">{{-54, 713}, {616, 0}}</string>
+				<string key="48.IBEditorWindowLastContentRect">{{-10, 713}, {616, 0}}</string>
 				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="48.designableToolbarIdentifier">MainToolbar</string>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1340,7 +1340,7 @@
 				<string key="89.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="92.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="93.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<integer value="1" key="93.IBSegmentedControlInspectorSelectedSegmentMetadataKey"/>
+				<integer value="0" key="93.IBSegmentedControlInspectorSelectedSegmentMetadataKey"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>

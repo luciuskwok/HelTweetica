@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E013985412083462007F1B4C /* mac-toolbar-geotag-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = E013985312083462007F1B4C /* mac-toolbar-geotag-alt.png */; };
 		E023D6C811FD41ED00903ABB /* main-test.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D14F6411FCFE6800452E63 /* main-test.m */; };
 		E023D6C911FD41F500903ABB /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C0B11FBD6A0000A9753 /* Twitter.m */; };
 		E023D6CA11FD420000903ABB /* TwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564C1B11FBD6A0000A9753 /* TwitterTimeline.m */; };
@@ -153,6 +154,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E013985312083462007F1B4C /* mac-toolbar-geotag-alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-geotag-alt.png"; sourceTree = "<group>"; };
 		E023D6C111FD41D600903ABB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E023D6C311FD41D600903ABB /* Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Test-Info.plist"; sourceTree = "<group>"; };
 		E0524BC912038F4C00EF28F8 /* dm-row-section-close.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "dm-row-section-close.html"; sourceTree = "<group>"; };
@@ -542,6 +544,7 @@
 				E0564C6B11FBD6AC000A9753 /* mac-toolbar-compose.png */,
 				E0564C6C11FBD6AC000A9753 /* mac-toolbar-direct.png */,
 				E0F1A06E1205628D0095BA94 /* mac-toolbar-geotag.png */,
+				E013985312083462007F1B4C /* mac-toolbar-geotag-alt.png */,
 				E0564C6D11FBD6AC000A9753 /* mac-toolbar-home.png */,
 				E0564C6E11FBD6AC000A9753 /* mac-toolbar-lists.png */,
 				E0564C6F11FBD6AC000A9753 /* mac-toolbar-mentions.png */,
@@ -738,6 +741,7 @@
 				E0F19E8F1204CD910095BA94 /* geotag.png in Resources */,
 				E0F1A0701205628D0095BA94 /* mac-toolbar-geotag.png in Resources */,
 				E0F1A0711205628D0095BA94 /* mac-toolbar-shrink.png in Resources */,
+				E013985412083462007F1B4C /* mac-toolbar-geotag-alt.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
