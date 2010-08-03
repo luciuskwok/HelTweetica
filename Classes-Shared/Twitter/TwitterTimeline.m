@@ -347,8 +347,6 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		noOlderMessages = YES;
 	}
 	
-	// TODO: load account user's own RTs within the range from max_id in the action to since_id of last tweet in action.messages.
-	
 	// Limit the length of the timeline
 	[self limitDatabaseTableSize];
 	

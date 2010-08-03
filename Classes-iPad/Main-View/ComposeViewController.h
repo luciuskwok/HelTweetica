@@ -17,70 +17,63 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "Twitter.h"
-#import "LKShrinkURLAction.h"
-@class HelTweeticaAppDelegate;
+#import "TwitterComposer.h"
+@class HelTweeticaAppDelegate, TwitterAccount;
 
 
 @protocol ComposeViewControllerDelegate;
 
-@interface ComposeViewController : UIViewController <LKShrinkURLActionDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
+@interface ComposeViewController : UIViewController 
+	<TwitterComposerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, 
+	UIPopoverControllerDelegate, UIActionSheetDelegate> 
+{
 	IBOutlet UITextView *messageField;
-	IBOutlet UIBarButtonItem *sendButton;
+	
 	IBOutlet UIBarButtonItem *retweetStyleButton;
+	IBOutlet UIBarButtonItem *accountButton;
+	IBOutlet UIBarButtonItem *sendButton;
+	
+	IBOutlet UIToolbar *inputToolbar;
 	IBOutlet UIBarButtonItem *geotagButton;
-	IBOutlet UIBarButtonItem *shrinkURLsButton;
-	IBOutlet UIBarButtonItem *addPictureButton;
 	IBOutlet UIBarButtonItem *charactersRemaining;
-	IBOutlet UIToolbar *bottomToolbar;
 	
-	TwitterAccount *account;
-	NSString *messageContent;
-	NSNumber *inReplyTo;
-	NSString *originalRetweetContent;
-	BOOL newStyleRetweet;
-	
-	CLLocationManager *locationManager;
-	NSMutableSet *actions;
-
+	TwitterComposer *composer;
+	UIPopoverController *currentPopover;
+	UIActionSheet *currentActionSheet;
 	HelTweeticaAppDelegate *appDelegate;
 	id delegate;
 }
 @property (nonatomic, retain) UITextView *messageField;
-@property (nonatomic, retain) UIBarButtonItem *sendButton;
+
 @property (nonatomic, retain) UIBarButtonItem *retweetStyleButton;
+@property (nonatomic, retain) UIBarButtonItem *accountButton;
+@property (nonatomic, retain) UIBarButtonItem *sendButton;
+
+@property (nonatomic, retain) UIToolbar *inputToolbar;
 @property (nonatomic, retain) UIBarButtonItem *geotagButton;
-@property (nonatomic, retain) UIBarButtonItem *shrinkURLsButton;
-@property (nonatomic, retain) UIBarButtonItem *addPictureButton;
 @property (nonatomic, retain) UIBarButtonItem *charactersRemaining;
-@property (nonatomic, retain) UIToolbar *bottomToolbar;
 
-@property (nonatomic, retain) TwitterAccount *account;
-@property (nonatomic, retain) NSString *messageContent;
-@property (nonatomic, retain) NSNumber *inReplyTo;
-@property (nonatomic, retain) NSString *originalRetweetContent;
-@property (nonatomic, assign) BOOL newStyleRetweet;
-
-@property (nonatomic, retain) CLLocationManager *locationManager;
-
+@property (nonatomic, retain) UIPopoverController *currentPopover;
+@property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (assign) id <ComposeViewControllerDelegate> delegate;
 
 - (id)initWithAccount:(TwitterAccount*)anAccount;
-- (void) loadFromUserDefaults;
-- (void) updateCharacterCountWithText:(NSString *)text;
+- (void)updateCharacterCountWithText:(NSString *)text;
 
-- (IBAction)close:(id)sender;
 - (IBAction)send:(id)sender;
-- (IBAction)clear:(id)sender;
-- (IBAction)geotag:(id)sender;
+- (IBAction)close:(id)sender;
+- (IBAction)chooseAccount:(id)sender;
+- (IBAction)toggleRetweetStyle:(id)sender;
+
+- (IBAction)toggleGeotag:(id)sender;
 - (IBAction)shrinkURLs:(id)sender;
 - (IBAction)addPicture:(id)sender;
+- (IBAction)clear:(id)sender;
 
 @end
 
 
 @protocol ComposeViewControllerDelegate <NSObject>
-- (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location;
-- (void) compose:(ComposeViewController*)aCompose didRetweetMessage:(NSNumber*)identifier;
+- (void)composeDidFinish:(ComposeViewController*)aCompose;
 @end
 

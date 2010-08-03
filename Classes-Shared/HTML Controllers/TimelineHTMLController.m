@@ -71,6 +71,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 }
 
 - (void)dealloc {
+	[self invalidateRefreshTimer];
+	
 	[webView release];
 	
 	[twitter release];

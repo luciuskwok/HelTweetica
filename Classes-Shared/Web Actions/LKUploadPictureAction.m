@@ -12,14 +12,11 @@
 @implementation LKUploadPictureAction
 @synthesize username, password, media, fileType;
 
-- (id)initWithFile:(NSURL *)fileURL {
+- (id)initWithPicture:(NSData *)picture fileExtension:(NSString *)ext {
 	self = [super init];
 	if (self) {
-		NSError *error = nil;
-		self.media = [NSData dataWithContentsOfURL:fileURL options:NSDataReadingMapped error:&error];
-		if (media == nil)
-			NSLog (@"Error opening file %@: %@", fileURL, error);
-		self.fileType = [fileURL pathExtension];
+		self.media = picture;
+		self.fileType = ext;
 	}
 	return self;
 }
@@ -164,12 +161,13 @@
 		[scanner scanUpToString:@"\"" intoString:&errorDescription];
 
 		// Notify delegate.
-		[delegate action:self didFailWithErrorCode:errorCode description:errorDescription];
+		NSError *error = [NSError errorWithDomain:@"com.felttip" code:errorCode userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:NSLocalizedDescriptionKey]];
+		[delegate action:self didFailWithError:error];
 	}
 }
 
 - (void)failedWithError:(NSError *)error {
-	[delegate action:self didFailWithErrorCode:[error code] description:[error localizedDescription]];
+	[delegate action:self didFailWithError:error];
 }
 
 @end

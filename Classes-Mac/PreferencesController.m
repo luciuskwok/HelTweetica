@@ -144,7 +144,7 @@ NSString *kTableRowDragType = @"tableRowIndexSet";
 	int rowIndex = [tableView selectedRow];
 	if (rowIndex >= 0 && rowIndex < twitter.accounts.count) {
 		TwitterAccount *account = [twitter.accounts objectAtIndex:rowIndex];
-		if (account.xAuthToken) {
+		if (account.xAuthToken && account.password) {
 			// Make new window for selected account.
 			HelTweeticaAppDelegate *appDelegate = [NSApp delegate];
 			[appDelegate newMainWindowWithAccount:account];
@@ -200,7 +200,8 @@ NSString *kTableRowDragType = @"tableRowIndexSet";
 	[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
 }
 
--  (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {	self.currentSheet = nil;
+-  (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	self.currentSheet = nil;
 }
 
 #pragma mark AddAccount delegate

@@ -21,19 +21,28 @@
 
 + (NSSet *)actionsToShrinkURLsWithPrefix:(NSString *)prefix inString:(NSString *)string minLength:(int)minLength {
 	NSMutableSet *actions = [NSMutableSet set];
+	NSArray *prefixesToSkip = [NSArray arrayWithObjects:@"http://is.gd", @"http://bit.ly", @"http://twitpic.com", nil];
 	
 	// Scanner setup.
 	NSScanner *scanner = [NSScanner scannerWithString:string];
 	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"];
 	[scanner setCharactersToBeSkipped:nil];
-	NSString *longUrl;
+	NSString *longURL;
 	
 	while ([scanner isAtEnd] == NO) {
 		[scanner scanUpToString:prefix intoString:nil];
-		if ([scanner scanUpToCharactersFromSet:nonURLSet intoString:&longUrl]) {
-			if (longUrl.length >= minLength) {
+		if ([scanner scanUpToCharactersFromSet:nonURLSet intoString:&longURL]) {
+			BOOL skip = NO;
+			for (NSString *prefix in prefixesToSkip) {
+				if ([longURL hasPrefix:prefix]) {
+					skip = YES;
+					break;
+				}
+			}
+			
+			if (longURL.length >= minLength && skip == NO) {
 				LKShrinkURLAction *action = [[[LKShrinkURLAction alloc] init] autorelease];
-				action.identifier = longUrl;
+				action.identifier = longURL;
 				[actions addObject:action];
 			}
 		}
@@ -42,7 +51,7 @@
 }
 
 + (NSSet *)actionsToShrinkURLsInString:(NSString *)string {
-	const int kMinLengthToShorten = 23;
+	const int kMinLengthToShorten = 25;
 	
 	NSSet *plain = [self actionsToShrinkURLsWithPrefix:@"http://" inString:string minLength:kMinLengthToShorten];
 	NSSet *ssl = [self actionsToShrinkURLsWithPrefix:@"https://" inString:string minLength:kMinLengthToShorten];

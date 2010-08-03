@@ -78,7 +78,7 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 	return accountsController;
 }
 
-#pragma mark UIWebView delegate methods
+#pragma mark UIWebView delegate
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 	NSURL *url = [request URL];
@@ -97,7 +97,7 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 	return [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
 }
 
-#pragma mark Popover delegate methods
+#pragma mark AccountsViewController delegate
 
 - (void) didSelectAccount:(TwitterAccount*)anAccount {
 	timelineHTMLController.account = anAccount;

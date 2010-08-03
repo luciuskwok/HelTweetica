@@ -31,6 +31,12 @@
 	[delegate retain];
 }
 
+- (void) cancel {
+	[self.connection cancel];
+	isLoading = NO;
+	self.receivedData = nil; // Don't keep partial data.
+}
+
 - (void)dataFinishedLoading:(NSData *)data {
 	// Send message to delegate with data.
 	if ([delegate respondsToSelector:@selector(loadURLAction:didLoadData:)])

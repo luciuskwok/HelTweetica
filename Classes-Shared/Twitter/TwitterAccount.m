@@ -22,6 +22,10 @@
 #import "TwitterList.h"
 #import "TwitterDirectMessageTimeline.h"
 
+#ifndef TARGET_PROJECT_MAC
+#import "SFHFKeychainUtils.h"
+#endif
+
 
 @implementation TwitterAccount
 @synthesize identifier, screenName, xAuthToken, xAuthSecret;
@@ -122,11 +126,79 @@
 	return [favorites containsIdentifier:messageIdentifier];
 }
 			
+#pragma mark Password
+
+
+#ifdef TARGET_PROJECT_MAC
+// Mac OS Keychain
+static const char *kKeychainServiceName = "HelTweetica";
+
+- (void)removePassword {
+	const char *cUser = [screenName cStringUsingEncoding:NSUTF8StringEncoding];
+	SecKeychainItemRef keychainItemRef;
+	
+	// Remove any existing password for this username and replace it with new password.
+	OSStatus err = SecKeychainFindGenericPassword(nil, strlen(kKeychainServiceName), kKeychainServiceName, strlen(cUser), cUser, nil, nil, &keychainItemRef);
+	if (err == noErr) {
+		err = SecKeychainItemDelete (keychainItemRef);
+		if (err != noErr)
+			NSLog (@"SecKeychainItemDelete() error: %d", err);
+	}
+}
+
+- (NSString *)password {
+	const char *cUser = [screenName cStringUsingEncoding:NSUTF8StringEncoding];
+	void *cPass = nil;
+	UInt32 length = 0;
+	OSStatus err = SecKeychainFindGenericPassword(nil, strlen(kKeychainServiceName), kKeychainServiceName, strlen(cUser), cUser, &length, &cPass, nil);
+	if (err != noErr)
+		NSLog (@"SecKeychainFindGenericPassword () error: %d", err);
+	
+	NSString *string = [[[NSString alloc] initWithBytes:cPass length:length encoding:NSUTF8StringEncoding] autorelease];
+	
+	SecKeychainItemFreeContent (nil, cPass);
+	if (err != noErr)
+		NSLog (@"SecKeychainItemFreeContent() error %d.", err);
+	
+	return string;
+}
+
+- (void)setPassword:(NSString *)aPassword {
+	// Remove any existing password for this username and replace it with new password.
+	[self removePassword];
+	
+	const char *cUser = [screenName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char *cPass = [aPassword cStringUsingEncoding:NSUTF8StringEncoding];
+	OSStatus err = SecKeychainAddGenericPassword(nil, strlen(kKeychainServiceName), kKeychainServiceName, strlen(cUser), cUser, strlen(cPass), cPass, nil);
+	if (err != noErr)
+		NSLog (@"SecKeychainAddGenericPassword() error: %d", err);
+}
+
+#else
+// iPhone OS Keychain
+
+static NSString *kKeychainServiceName = @"com.felttip.HelTweetica";
+
+- (void)removePassword {
+	[SFHFKeychainUtils deleteItemForUsername:screenName andServiceName:kKeychainServiceName error:nil];
+}
+
+- (NSString *)password {
+	return [SFHFKeychainUtils getPasswordForUsername:screenName andServiceName:kKeychainServiceName error:nil];
+}
+
+- (void)setPassword:(NSString *)aPassword {
+	[SFHFKeychainUtils storeUsername:screenName andPassword:aPassword forServiceName:kKeychainServiceName updateExisting:YES error:nil];
+}
+
+#endif
+
 - (void)deleteCaches {
 	[homeTimeline deleteCaches];
 	[mentions deleteCaches];
 	[directMessages deleteCaches];
 	[favorites deleteCaches];
+	[self removePassword];
 }
 
 @end

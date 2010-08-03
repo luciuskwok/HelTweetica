@@ -38,6 +38,7 @@
 }
 @property (nonatomic, retain) NSNumber *identifier;
 @property (nonatomic, retain) NSString *screenName;
+@property (nonatomic, assign) NSString *password;
 @property (nonatomic, retain) NSString *xAuthToken;
 @property (nonatomic, retain) NSString *xAuthSecret;
 

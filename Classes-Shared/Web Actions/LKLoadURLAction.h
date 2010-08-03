@@ -24,6 +24,7 @@
 @property (nonatomic, assign) id<LKLoadURLActionDelegate> delegate;
 
 - (void)loadURL:(NSURL*)url;
+- (void)cancel;
 - (void)dataFinishedLoading:(NSData *)data;
 - (void)failedWithError:(NSError *)error;
 

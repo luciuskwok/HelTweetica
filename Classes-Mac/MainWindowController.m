@@ -445,10 +445,8 @@
 #pragma mark Compose
 
 - (Compose *)standardComposeController {
-	Compose* compose = [[[Compose alloc] init] autorelease];
+	Compose* compose = [[[Compose alloc] initWithTwitter:htmlController.twitter account:htmlController.account] autorelease];
 	compose.delegate = self;
-	compose.twitter = htmlController.twitter;
-	compose.account = htmlController.account;
 	return compose;
 }
 

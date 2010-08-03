@@ -200,7 +200,6 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 }
 
 - (void)loadURLAction:(LKLoadURLAction*)action didFailWithError:(NSError*)error {
-	// TODO: Replace avatar image with a placeholder to indicate network action got an error.
 	[loadURLActions removeObject:action];
 	[appDelegate decrementNetworkActionCount];
 }

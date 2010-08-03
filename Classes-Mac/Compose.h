@@ -16,16 +16,13 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreLocation/CoreLocation.h>
-#import "LKShrinkURLAction.h"
-#import "LKUploadPictureAction.h"
 #import "TwitterAction.h"
-#import "TwitterAccount.h"
-#import "Twitter.h"
+#import "TwitterComposer.h"
 
 
 @protocol ComposeDelegate;
 
-@interface Compose : NSWindowController <TwitterActionDelegate, LKShrinkURLActionDelegate, LKUploadPictureActionDelegate> {
+@interface Compose : NSWindowController <TwitterComposerDelegate> {
 	IBOutlet NSTextView *textView;
 	IBOutlet NSTextField *charactersRemaining;
 	IBOutlet NSTextField *statusLabel;
@@ -38,16 +35,12 @@
 	IBOutlet NSButton *pictureButton;
 	IBOutlet NSProgressIndicator *activityIndicator;
 	
-	Twitter *twitter;
-	TwitterAccount *account;
 	NSString *messageContent;
 	NSNumber *inReplyTo;
 	NSString *originalRetweetContent;
 	BOOL newStyleRetweet;
 	
-	CLLocationManager *locationManager;
-	NSMutableSet *actions;
-	
+	TwitterComposer *composer;
 	id delegate;
 }
 
@@ -62,14 +55,14 @@
 @property (assign) NSButton *pictureButton;
 @property (assign) NSProgressIndicator *activityIndicator;
 
-@property (nonatomic, retain) Twitter *twitter;
-@property (nonatomic, retain) TwitterAccount *account;
 @property (nonatomic, retain) NSString *messageContent;
 @property (nonatomic, retain) NSNumber *inReplyTo;
 @property (nonatomic, retain) NSString *originalRetweetContent;
 @property (assign) BOOL newStyleRetweet;
 
 @property (assign) id <ComposeDelegate> delegate;
+
+- (id)initWithTwitter:(Twitter *)aTwitter account:(TwitterAccount *)anAccount;
 
 // UI updating
 - (void)updateCharacterCount;

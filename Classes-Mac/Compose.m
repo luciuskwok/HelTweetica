@@ -15,25 +15,26 @@
  */
 
 #import "Compose.h"
-#import "TwitterUpdateStatusAction.h"
-#import "TwitterRetweetAction.h"
-
+#import "TwitterAccount.h"
+#import "Twitter.h"
 
 
 @implementation Compose
 @synthesize textView, charactersRemaining, statusLabel;
 @synthesize accountsPopUp, retweetStyleControl, shrinkURLButton, locationButton, tweetButton, pictureButton, activityIndicator;
-@synthesize twitter, account, messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
+@synthesize messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
 @synthesize delegate;
 
 
 enum { kTwitterCharacterMax = 140 };
 
 
-- (id)init {
+- (id)initWithTwitter:(Twitter *)aTwitter account:(TwitterAccount *)anAccount {
 	self = [self initWithWindowNibName:@"Compose"];
 	if (self) {
-		actions = [[NSMutableSet alloc] init];
+		composer = [[TwitterComposer alloc] initWithTwitter:aTwitter account:anAccount];
+		composer.delegate = self;
+		
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		newStyleRetweet = [defaults boolForKey:@"newStyleRetweet"];
 
@@ -47,14 +48,11 @@ enum { kTwitterCharacterMax = 140 };
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[twitter release];
-	[account release];
+	[composer release];
+
 	[messageContent release];
 	[inReplyTo release];
 	[originalRetweetContent release];
-	
-	[locationManager release];
-	[actions release];
 	
 	[super dealloc];
 }
@@ -82,31 +80,30 @@ enum { kTwitterCharacterMax = 140 };
 	[aCoder encodeObject:[self.window frameAutosaveName ] forKey:@"windowFrameAutosaveName"];
 }
 
-#pragma mark Network actions
+#pragma mark Composer delegate
 
-- (void)addAction:(id)anAction {
-	// Start network activity indicator.
+- (void)composerDidStartNetworkAction:(TwitterComposer *)aComposer {
 	[activityIndicator setHidden: NO];
 	[activityIndicator startAnimation:nil];
-	[actions addObject:anAction];
 }
 
-- (void)addActionsFromSet:(NSSet *)set {
-	// Start network activity indicator.
-	[activityIndicator setHidden: NO];
-	[activityIndicator startAnimation:nil];
-	[actions unionSet:set];
-}
-
-- (void)removeAction:(id)anAction {
-	[actions removeObject:anAction];
-	
-	if (actions.count == 0) {
+- (void)composerDidFinishNetworkAction:(TwitterComposer *)aComposer {
+	if ([aComposer numberOfNetworkActions] == 0) {
 		// Stop network activity indicator.
 		[activityIndicator stopAnimation:nil];
 		[activityIndicator setHidden: YES];
 	}
-}	
+}
+
+- (void)composerDidFinishSendingStatusUpdate:(TwitterComposer *)aComposer {
+	[delegate composeDidFinish:self];
+	[[self window] performClose:nil];
+}
+
+- (void)composer:(TwitterComposer *)aComposer didFailWithError:(NSError *)error {
+	[tweetButton setEnabled:YES];
+	[statusLabel setStringValue:[error localizedDescription]];
+}
 
 #pragma mark UI updating
 
@@ -195,52 +192,13 @@ enum { kTwitterCharacterMax = 140 };
 	
 	// Get location.
 	if (useLocation) {
-		[locationManager startUpdatingLocation];
+		[composer.locationManager startUpdatingLocation];
 	} else {
-		[locationManager stopUpdatingLocation];
+		[composer.locationManager stopUpdatingLocation];
 	}
 }
 
 #pragma mark Send status update
-
-- (void)startTwitterAction:(TwitterAction*)action {
-	if (action == nil) return;
-	
-	// Add the action to the array of actions, and updates the network activity spinner
-	[self addAction:action];
-	
-	// Set up Twitter action
-	action.delegate = self;
-	action.consumerToken = account.xAuthToken;
-	action.consumerSecret = account.xAuthSecret;
-	
-	// Start the URL connection
-	[action start];
-}
-
-- (void) twitterActionDidFinishLoading:(TwitterAction*)action {
-	[self removeAction:action];
-	[delegate composeDidFinish:self];
-	[[self window] performClose:nil];
-}
-
-- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
-	[self removeAction: action];
-	[tweetButton setEnabled:YES];
-	[statusLabel setStringValue:[error localizedDescription]];
-}
-
-
-- (void)retweetMessageWithIdentifier:(NSNumber *)messageIdentifier {
-	TwitterRetweetAction *action = [[[TwitterRetweetAction alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
-	[self startTwitterAction:action];
-}	
-
-- (void)updateStatus:(NSString *)text inReplyTo:(NSNumber *)reply location:(CLLocation *)location {
-	TwitterUpdateStatusAction *action = [[[TwitterUpdateStatusAction alloc] initWithText:text inReplyTo:reply] autorelease];
-	[action setLocation:location];
-	[self startTwitterAction:action];
-}
 
 - (IBAction)tweet:(id)sender {
 	// End editing of current text field and save to defaults
@@ -248,7 +206,7 @@ enum { kTwitterCharacterMax = 140 };
 	
 	if (originalRetweetContent && newStyleRetweet) {
 		// New-style retweet.
-		[self retweetMessageWithIdentifier:inReplyTo];
+		[composer retweetMessageWithIdentifier:inReplyTo];
 	} else { 
 		// Normal tweets, replies, direct messages, and old-style retweets.
 		
@@ -261,10 +219,10 @@ enum { kTwitterCharacterMax = 140 };
 		// Location
 		CLLocation *location = nil;
 		if ([locationButton state] == NSOnState) {
-			location = [locationManager location];
+			location = [composer.locationManager location];
 		}
 
-		[self updateStatus:normalizedText inReplyTo:inReplyTo location:location];
+		[composer updateStatus:normalizedText inReplyTo:inReplyTo location:location];
 	}
 	
 	// Disable button to prevent double-clicks.
@@ -275,7 +233,7 @@ enum { kTwitterCharacterMax = 140 };
 #pragma mark Accounts popup
 
 - (IBAction)selectAccount:(id)sender {
-	self.account = [sender representedObject];
+	composer.account = [sender representedObject];
 }
 
 - (NSMenuItem*)menuItemWithTitle:(NSString *)title action:(SEL)action representedObject:(id)representedObject indentationLevel:(int)indentationLevel {
@@ -297,10 +255,10 @@ enum { kTwitterCharacterMax = 140 };
 	}
 	
 	// Insert
-	for (TwitterAccount *anAccount  in twitter.accounts) {
+	for (TwitterAccount *anAccount  in composer.twitter.accounts) {
 		NSMenuItem *item = [self menuItemWithTitle:anAccount.screenName action:@selector(selectAccount:) representedObject:anAccount indentationLevel:1];
 		[accountsPopUp.menu addItem:item];
-		if ([anAccount isEqual:account]) {
+		if ([anAccount isEqual:composer.account]) {
 			[accountsPopUp selectItem:item];
 		}
 	}
@@ -310,85 +268,38 @@ enum { kTwitterCharacterMax = 140 };
 	[self reloadAccountsPopUp];
 }
 
-
-#pragma mark URL shortening
+#pragma mark URL shrinking
 
 - (IBAction)shrinkURLs:(id)sender {
-	NSSet *shrinkActions = [LKShrinkURLAction actionsToShrinkURLsInString:[textView string]];
-	
-	if (shrinkActions.count > 0) {
-		for (LKShrinkURLAction *action in shrinkActions) {
-			action.delegate = self;
-			[action load];
-		}
-		[self addActionsFromSet:shrinkActions];
-	}
+	[composer shrinkURLsInString:[textView string]];
 }
 
-- (void)action:(LKShrinkURLAction *)anAction didReplaceLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
-	if (longURL != nil) {
-		if ([shortURL hasPrefix:@"http"]) {
-			NSString *text = [textView string];
-			text = [text stringByReplacingOccurrencesOfString:longURL withString:shortURL];
-			[self setTextViewContent:text];
-		} else {
-			// Log the error message
-			NSLog (@"is.gd returned the error: %@", shortURL);
-		}
-	}
-	[self removeAction:anAction];
+- (void)composer:(TwitterComposer *)aComposer didShrinkLongURL:(NSString *)longURL toShortURL:(NSString *)shortURL {
+	NSString *text = [textView string];
+	text = [text stringByReplacingOccurrencesOfString:longURL withString:shortURL];
+	[self setTextViewContent:text];
 }
-
-- (void)action:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error {
-	NSLog (@"URL shrinker error: %@", error);
-	[self removeAction:anAction];
-	[statusLabel setStringValue:[error localizedDescription]];
-}
-
 
 #pragma mark Picture uploading
 
 - (void)uploadPictureFile:(NSURL *)fileURL {
-	// Get username and password from keychain.
-	const char *cServiceName = "api.twitter.com";
-	const char *cUser = [account.screenName cStringUsingEncoding:NSUTF8StringEncoding];
-	void *cPass = nil;
-	UInt32 cPassLength = 0;
-	OSStatus err = SecKeychainFindGenericPassword(nil, strlen(cServiceName), cServiceName, strlen(cUser), cUser, &cPassLength, &cPass, nil);
-	if (err != noErr) {
-		[statusLabel setStringValue:NSLocalizedString (@"No password found for uploading!", @"status label")];
-		return;
-	}
+	// Load picture data.
+	NSError *error = nil;
+	NSData *pictureData = [NSData dataWithContentsOfURL:fileURL options:NSDataReadingMapped error:&error];
+	if (pictureData == nil)
+		NSLog (@"Error opening file %@: %@", fileURL, error);
 	
 	// Create and start action.
-	LKUploadPictureAction *action = [[[LKUploadPictureAction alloc] initWithFile:fileURL] autorelease];
-	action.delegate = self;
-	action.username = account.screenName;
-	action.password = [[[NSString alloc] initWithBytes:cPass length:cPassLength encoding:NSUTF8StringEncoding] autorelease];
-	[action startUpload];
-	[self addAction:action];
+	[composer uploadPicture:pictureData withFileExtension:[fileURL pathExtension]];
 	
-	// Clean up
-	SecKeychainItemFreeContent (nil, cPass);
-	if (err != noErr) {
-		NSLog (@"SecKeychainItemFreeContent error %d.", err);
-	}
 }
 
-- (void)action:(LKUploadPictureAction *)action didUploadPictureWithURL:(NSString *)url {
+- (void)composer:(TwitterComposer *)aComposer didUploadPictureWithURL:(NSString *)url {
 	NSString *text = [textView string];
-	
 	if ([text hasSuffix:@" "] == NO && [text hasSuffix:@"\n"] == NO && [text hasSuffix:@"\t"] == NO) 
 		text = [text stringByAppendingString:@" "];
 	text = [text stringByAppendingString:url];
 	[self setTextViewContent:text];
-	[self removeAction:action];
-}
-
-- (void)action:(LKUploadPictureAction *)action didFailWithErrorCode:(int)code description:(NSString *)description {
-	[self removeAction:action];
-	NSLog (@"Picture uploading failed with error: %@ (%d)", description, code);
-	[statusLabel setStringValue:description];
 }
 
 - (NSArray *)supportedImageTypes {
@@ -466,6 +377,10 @@ enum { kTwitterCharacterMax = 140 };
 	return YES;
 }
 
+#pragma mark Composer delegate
+
+
+
 #pragma mark Text view delegate
 
 - (void)textDidChange:(NSNotification *)aNotification {
@@ -489,14 +404,11 @@ enum { kTwitterCharacterMax = 140 };
 	}
 	
 	// Location
-	if ([CLLocationManager locationServicesEnabled]) {
-		locationManager = [[CLLocationManager alloc] init];
-		locationManager.distanceFilter = 100.0; // meters
-		locationManager.desiredAccuracy = 30.0; // meters
+	if (composer.locationManager) {
 		BOOL useLocation = [[NSUserDefaults standardUserDefaults] boolForKey:@"useLocation"];
 		[locationButton setState:useLocation? NSOnState : NSOffState];
 		if (useLocation) {
-			[locationManager startUpdatingLocation];
+			[composer.locationManager startUpdatingLocation];
 		}
 	} else {
 		[locationButton setHidden:YES];
@@ -520,9 +432,8 @@ enum { kTwitterCharacterMax = 140 };
 }
 
 - (BOOL)windowShouldClose:(id)sender {
-	[actions release];
-	actions = nil;
-	[locationManager stopUpdatingLocation];
+	[composer cancelActions];
+	[composer.locationManager stopUpdatingLocation];
 	return YES;
 }
 

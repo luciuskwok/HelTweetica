@@ -16,13 +16,13 @@
 	NSData *media;
 	NSString *fileType;
 }
-@property (nonatomic, retain) NSString *username;
-@property (nonatomic, retain) NSString *password;
+@property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *password;
 @property (nonatomic, retain) NSData *media;
-@property (nonatomic, retain) NSString *fileType;
+@property (nonatomic, copy) NSString *fileType;
 @property (nonatomic, assign) id<LKUploadPictureActionDelegate> delegate;
 
-- (id)initWithFile:(NSURL *)fileURL;
+- (id)initWithPicture:(NSData *)picture fileExtension:(NSString *)ext;
 - (void)startUpload;
 
 @end
@@ -30,5 +30,5 @@
 
 @protocol LKUploadPictureActionDelegate
 - (void)action:(LKUploadPictureAction *)action didUploadPictureWithURL:(NSString *)url;
-- (void)action:(LKUploadPictureAction *)action didFailWithErrorCode:(int)code description:(NSString *)description;
+- (void)action:(LKUploadPictureAction *)action didFailWithError:(NSError *)error;
 @end

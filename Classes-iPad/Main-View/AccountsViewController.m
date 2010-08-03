@@ -194,6 +194,9 @@
 	action.completionTarget= self;
 	action.completionAction = @selector(didLogin:);
 
+	// Save password.
+	account.password = password;
+	
 	// Set up Twitter action
 	action.delegate = self;
 	

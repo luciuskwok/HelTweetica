@@ -17,28 +17,34 @@
 
 #import "ComposeViewController.h"
 #import "HelTweeticaAppDelegate.h"
+#import "TwitterUpdateStatusAction.h"
+#import "TwitterRetweetAction.h"
+#import "TwitterAccount.h"
+#import "Twitter.h"
+
 
 
 const int kTwitterCharacterMax = 140;
 
 
 @implementation ComposeViewController
-@synthesize messageField, sendButton, retweetStyleButton, geotagButton, shrinkURLsButton, addPictureButton, charactersRemaining, bottomToolbar;
-@synthesize account, messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
-@synthesize locationManager, delegate;
+@synthesize messageField;
+@synthesize retweetStyleButton, accountButton, sendButton;
+@synthesize inputToolbar, geotagButton, charactersRemaining;
+@synthesize currentPopover, currentActionSheet, delegate;
 
 
 - (id)initWithAccount:(TwitterAccount*)anAccount {
 	if (self = [super initWithNibName:@"Compose" bundle:nil]) {
-		// Twitter
-		self.account = anAccount;
 		appDelegate = [[UIApplication sharedApplication] delegate];
+		composer = [[TwitterComposer alloc] initWithTwitter:appDelegate.twitter account:anAccount];
+		composer.delegate = self;
 		
 		// Title
-		if (account.screenName == nil) {
+		if (anAccount.screenName == nil) {
 			self.navigationItem.title = @"—";
 		} else {
-			self.navigationItem.title = account.screenName;
+			self.navigationItem.title = anAccount.screenName;
 		}
 		
 		// Clear button
@@ -63,216 +69,265 @@ const int kTwitterCharacterMax = 140;
 }
 
 - (void)dealloc {
+	[composer release];
+	
 	[messageField release];
-	[sendButton release];
 	[retweetStyleButton release];
+	[accountButton release];
+	[sendButton release];
+
+	[inputToolbar release];
 	[geotagButton release];
-	[shrinkURLsButton release];
-	[addPictureButton release];
 	[charactersRemaining release];
-	[bottomToolbar release];
 	
-	[account release];
-	[messageContent release];
-	[inReplyTo release];
-	[originalRetweetContent release];
-	
-	[locationManager release];
+	currentPopover.delegate = nil;
+	[currentPopover release];
+	currentActionSheet.delegate = nil;
+	[currentActionSheet release];
 	
 	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+	[super didReceiveMemoryWarning];
 }
 
-- (void) loadFromUserDefaults {
+- (void)resetMessageContent {
+	// Remove user defaults for message content.
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	self.messageContent = [defaults objectForKey:@"messageContent"];
-	self.inReplyTo = [defaults objectForKey:@"inReplyTo"];
-	self.originalRetweetContent = [defaults objectForKey:@"originalRetweetContent"];
-	self.newStyleRetweet = [defaults boolForKey:@"newStyleRetweet"];
+	[defaults removeObjectForKey:@"messageContent"];
+	[defaults removeObjectForKey:@"inReplyTo"];
+	[defaults removeObjectForKey:@"originalRetweetContent"];
 }
 
-- (NSString*) retweetStyleButtonTitle {
-	return newStyleRetweet ? NSLocalizedString (@"New RT", "button") : NSLocalizedString (@"Old RT", "button");
-}
+#pragma mark Popovers
 
-- (void)updateGeotagButton {
-	BOOL locationEnabled = locationManager.locationServicesEnabled;
-	BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
-	NSString *on = NSLocalizedString (@"Geotag ON", @"button");
-	NSString *off = NSLocalizedString (@"Geotag off", @"button");
-	
-	if (locationEnabled) {
-		[geotagButton setTitle: geotag? on : off];
-		geotagButton.enabled = YES;
-	} else {
-		[geotagButton setTitle: off];
-		geotagButton.enabled = NO;
+- (BOOL)closeAllPopovers {
+	// Returns YES if it closes a popover.
+	if (currentActionSheet != nil) {
+		[currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
+		self.currentActionSheet = nil;
+		return YES;
 	}
+	if (currentPopover != nil) {
+		[currentPopover dismissPopoverAnimated:YES];
+		self.currentPopover = nil;
+		return YES;
+	}
+	return NO;
 }
 
-- (void) setNewStyleRetweet:(BOOL)x {
-	newStyleRetweet = x;
-	self.retweetStyleButton.title = [self retweetStyleButtonTitle];
+- (void)popoverControllerDidDismissPopover: (UIPopoverController *) popoverController {
+	self.currentPopover = nil;
+}
+
+- (UIPopoverController*) presentViewController:(UIViewController*)vc inPopoverFromItem:(UIBarButtonItem*)item {
+	// Present popover
+	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:vc] autorelease];
+	popover.delegate = self;
+	[popover presentPopoverFromBarButtonItem:item permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	self.currentPopover = popover;
+	return popover;
+}	
+
+- (void) presentViewController:(UIViewController*)viewController inNavControllerInPopoverFromItem: (UIBarButtonItem*) item {
+	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController: viewController] autorelease];
+	[self presentViewController:navController inPopoverFromItem:item];
+}
+
+#pragma mark UI updating
+
+- (void)updateAccountButton {
+	NSString *prefix = NSLocalizedString (@"From: ", @"prefix");
+	accountButton.title = [prefix stringByAppendingString:composer.account.screenName];
+}
+
+- (void)updateRetweetStyle {
+	NSString *originalRetweetContent = [[NSUserDefaults standardUserDefaults] objectForKey:@"originalRetweetContent"];
+	BOOL newStyleRetweet = [[NSUserDefaults standardUserDefaults] boolForKey:@"newStyleRetweet"];
+
+	// Retweet style button.
+	if (originalRetweetContent) {
+		if (newStyleRetweet) {
+			retweetStyleButton.title = NSLocalizedString (@"RT style: New", "button");
+		} else {
+			retweetStyleButton.title = NSLocalizedString (@"RT style: Old", "button");
+		}
+		retweetStyleButton.enabled = YES;
+	} else {
+		retweetStyleButton.title = NSLocalizedString (@"RT style: n/a", "button");
+		retweetStyleButton.enabled = NO;
+	}
+	
+	// Message field and controls.
 	if (newStyleRetweet && originalRetweetContent) {
 		// Reinstate original retweet message and disable editing
 		messageField.text = originalRetweetContent;
 		messageField.textColor = [UIColor grayColor];
 		messageField.editable = NO;
-		geotagButton.enabled = NO;
-		shrinkURLsButton.enabled = NO;
+		charactersRemaining.title = @"";
+		sendButton.enabled = YES;
 	} else {
 		// Allow editing
 		messageField.editable = YES;
 		messageField.textColor = [UIColor blackColor];
-		geotagButton.enabled = YES;
-		shrinkURLsButton.enabled = YES;
-		[self updateCharacterCountWithText: messageField.text];
+		messageField.inputAccessoryView = inputToolbar;
 		[messageField becomeFirstResponder];
+		[self updateCharacterCountWithText: messageField.text];
+	}
+	
+	// Input toolbar.
+	for (id item in inputToolbar.items) {
+		[item setEnabled:messageField.editable];
 	}
 }
 
-- (void) viewDidLoad {
-	[super viewDidLoad];
-	
-	// Message
-	if (messageContent != nil) {
-		messageField.text = messageContent;
-		[self updateCharacterCountWithText:messageContent];
-	}
-	
-	// Retweet style
-	if (originalRetweetContent != nil) {
-		NSString *title = [self retweetStyleButtonTitle];
-		self.retweetStyleButton = [[[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(toggleRetweetStyle:)] autorelease];
-		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray: bottomToolbar.items];
-		[toolbarItems insertObject:retweetStyleButton atIndex:1];
-		bottomToolbar.items = toolbarItems;
-		[self setNewStyleRetweet:newStyleRetweet];
-	}
-	
-	// Geotag
-	self.locationManager = [[[CLLocationManager alloc] init] autorelease];
-	locationManager.distanceFilter = 45.0; // meters
-	locationManager.desiredAccuracy = 15.0; // meters
+- (void)updateGeotagButton {
+	BOOL locationEnabled = (composer.locationManager != nil);
 	BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
-	if (geotag) {
-		[locationManager startUpdatingLocation];
+	NSString *on = NSLocalizedString (@"Geotag: ON", @"button");
+	NSString *off = NSLocalizedString (@"Geotag: off", @"button");
+	NSString *na = NSLocalizedString (@"Geotag: n/a", @"button");
+	
+	if (locationEnabled) {
+		[geotagButton setTitle: geotag? on : off];
+		geotagButton.enabled = YES;
+	} else {
+		[geotagButton setTitle: na];
+		geotagButton.enabled = NO;
 	}
-	[self updateGeotagButton];
-}
-
-- (void)viewDidUnload {
-	[super viewDidUnload];
-	self.messageField = nil;
-	self.charactersRemaining = nil;
-	self.retweetStyleButton = nil;
-	self.locationManager = nil;
 }
 
 - (void) updateCharacterCountWithText:(NSString *)text {
-	if (originalRetweetContent && newStyleRetweet) { // New-style RT doesn't require counting chars
-		charactersRemaining.title = @"";
-		sendButton.enabled = YES;
+	// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
+	NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
+	int remaining = kTwitterCharacterMax - [normalizationFormC length];
+	if (remaining < 0) {
+		charactersRemaining.title = [NSString stringWithFormat:@"Too long! %d", remaining];
 	} else {
-		// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
-		NSString *normalizationFormC = [text precomposedStringWithCanonicalMapping];
-		int remaining = kTwitterCharacterMax - [normalizationFormC length];
-		if (remaining < 0) {
-			charactersRemaining.title = [NSString stringWithFormat:@"Too long! %d", remaining];
-		} else {
-			charactersRemaining.title = [NSString stringWithFormat:@"%d", remaining];
-		}
-		// Verify message length and account for Send button
-		sendButton.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (account != nil));
+		charactersRemaining.title = [NSString stringWithFormat:@"%d", remaining];
 	}
+	// Verify message length and account for Send button
+	sendButton.enabled = (([normalizationFormC length] != 0) && (remaining >= 0) && (composer.account != nil));
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[self.messageField becomeFirstResponder];
+#pragma mark Composer delegate
+
+- (void)composerDidStartNetworkAction:(TwitterComposer *)aComposer {
+	[appDelegate incrementNetworkActionCount];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	// Save message to user defaults for later
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: [messageField text] forKey:@"messageContent"];
-	[defaults setObject: inReplyTo forKey:@"inReplyTo"];
-	[defaults setObject: originalRetweetContent forKey:@"originalRetweetContent"];
-	[defaults setBool: newStyleRetweet forKey:@"newStyleRetweet"];
+- (void)composerDidFinishNetworkAction:(TwitterComposer *)aComposer {
+	[appDelegate decrementNetworkActionCount];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
+- (void)composerDidFinishSendingStatusUpdate:(TwitterComposer *)aComposer {
+	[delegate composeDidFinish:self];
+	[self resetMessageContent];
 }
+
+- (void)composer:(TwitterComposer *)aComposer didFailWithError:(NSError *)error {
+	UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
+	alert.title = NSLocalizedString (@"Network error", @"title");
+	alert.message = [error localizedDescription];
+	[alert addButtonWithTitle: NSLocalizedString (@"OK", @"button")];
+	[alert show];
+}	
 
 #pragma mark IBActions
 
-- (IBAction) close: (id) sender {
+- (IBAction) send: (id) sender {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *originalRetweetContent = [defaults objectForKey:@"originalRetweetContent"];
+	BOOL newStyleRetweet = [defaults boolForKey:@"newStyleRetweet"];
+	NSNumber *inReplyTo = [defaults objectForKey:@"inReplyTo"];
+	
+	// Save message content to defaults.
+	[defaults setObject:messageField.text forKey:@"messageContent"];
+	
+	// Cancel any URL shortening or picture uploading
+	[composer cancelActions];
+	[composer.locationManager stopUpdatingLocation];
+	
+	if (originalRetweetContent && newStyleRetweet) {
+		// New-style retweet.
+		[composer retweetMessageWithIdentifier:inReplyTo];
+	} else {
+		// Normal tweets, replies, direct messages, and old-style retweets.
+
+		// Check length
+		NSString *normalizedText = [messageField.text precomposedStringWithCanonicalMapping];
+		if ((normalizedText.length == 0) || (normalizedText.length > kTwitterCharacterMax))
+			return;
+		
+		// Location
+		BOOL geotag = [defaults boolForKey:@"geotag"];
+		CLLocation *location = geotag? [composer.locationManager location] : nil;
+		
+		[composer updateStatus:normalizedText inReplyTo:inReplyTo location:location];
+	}
+	
+	// Close but don't cancel actions
+	[self closeAllPopovers];
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-- (IBAction) send: (id) sender {
-	if (originalRetweetContent && newStyleRetweet) {
-		[delegate compose:self didRetweetMessage:inReplyTo];
-	} else { // Plain old status update
-		// Check length
-		NSString *text = messageField.text;
-		// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
-		NSString *normalizedText = [text precomposedStringWithCanonicalMapping];
-		if ((normalizedText.length == 0) || (normalizedText.length > kTwitterCharacterMax)) {
-			return;
-		}
-		
-		// Location
-		CLLocation *location = nil;
-		BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
-		if (geotag) {
-			location = [locationManager location];
-		}
-		
-		[delegate compose:self didSendMessage:normalizedText inReplyTo:inReplyTo location:location];
-	}
-	
-	self.messageContent = nil;
-	self.inReplyTo = nil;
-	[self close: nil];
-}
+- (IBAction) close: (id) sender {
+	// Save message content to defaults.
+	[[NSUserDefaults standardUserDefaults] setObject:messageField.text forKey:@"messageContent"];
 
-- (IBAction) clear: (id) sender {
-	messageField.text = @"";
-	originalRetweetContent = nil;
-	[self updateCharacterCountWithText:@""];
-	[self setNewStyleRetweet: newStyleRetweet];
-	
-	// Remove RT-Style button
-	if (retweetStyleButton) {
-		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray: bottomToolbar.items];
-		[toolbarItems removeObject:retweetStyleButton];
-		bottomToolbar.items = toolbarItems;
-		self.retweetStyleButton = nil;
-	}
-	
-}
-
-- (IBAction)geotag:(id)sender {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	BOOL geotag = [defaults boolForKey:@"geotag"];
-	[defaults setBool:!geotag forKey:@"geotag"];
-	[self updateGeotagButton];
-	if (geotag) {
-		[locationManager startUpdatingLocation];
-	} else {
-		[locationManager stopUpdatingLocation];
-	}
+	[self closeAllPopovers];
+	[composer cancelActions];
+	[composer.locationManager stopUpdatingLocation];
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction) toggleRetweetStyle: (id) sender {
-	self.newStyleRetweet = !newStyleRetweet;
-	[self updateCharacterCountWithText:messageField.text];
+	BOOL newStyleRetweet = [[NSUserDefaults standardUserDefaults] boolForKey:@"newStyleRetweet"];
+	[[NSUserDefaults standardUserDefaults] setBool:!newStyleRetweet forKey:@"newStyleRetweet"];
+	[self updateRetweetStyle];
+}
+
+- (IBAction)toggleGeotag:(id)sender {
+	BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
+	[[NSUserDefaults standardUserDefaults] setBool:!geotag forKey:@"geotag"];
+	[self updateGeotagButton];
+
+	if (geotag) {
+		[composer.locationManager startUpdatingLocation];
+	} else {
+		[composer.locationManager stopUpdatingLocation];
+	}
+}
+
+- (IBAction) clear: (id) sender {
+	[self resetMessageContent];
+	messageField.text = @"";
+	[self updateCharacterCountWithText:@""];
+	[self updateRetweetStyle];
+}
+
+#pragma mark Accounts
+
+- (IBAction)chooseAccount:(id)sender {
+	UIActionSheet *actionSheet = [[[UIActionSheet alloc] init] autorelease];
+	actionSheet.delegate = self;
+	for (TwitterAccount *anAccount in appDelegate.twitter.accounts) {
+		[actionSheet addButtonWithTitle:anAccount.screenName];
+	}
+	[actionSheet showFromBarButtonItem:sender animated:YES];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex < 0 || buttonIndex >= appDelegate.twitter.accounts.count) return;
+	
+	composer.account = [composer.twitter.accounts objectAtIndex:buttonIndex];
+	[self updateAccountButton];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (actionSheet == self.currentActionSheet)
+		self.currentActionSheet = nil;
 }
 
 #pragma mark Pictures
@@ -281,12 +336,22 @@ const int kTwitterCharacterMax = 140;
 	UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
 	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	picker.delegate = self;
-	[self.navigationController pushViewController:picker animated:YES];
+	
+	if ([self closeAllPopovers] == NO) {
+		[self presentViewController:picker inPopoverFromItem:sender];
+	}
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	[self.navigationController popViewControllerAnimated:YES];
+	[self closeAllPopovers];
 	
+	// Try to get the original file.
+	NSURL *originalFile = [info objectForKey:UIImagePickerControllerMediaURL];
+	if (originalFile) {
+		[composer uploadPicture:[NSData dataWithContentsOfURL:originalFile] withFileExtension:[[originalFile absoluteString] pathExtension]];
+		return;
+	}
+
 	// Get the edited or original image
 	UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
 	if (image == nil)
@@ -294,6 +359,29 @@ const int kTwitterCharacterMax = 140;
 	
 	if (image != nil) {
 		// Upload image to hosting service.
+		const CGFloat kMaxQuality = 1.0f;
+		const CGFloat kMinQuality = 0.1f;
+		const CGFloat kQualityRange = kMaxQuality - kMinQuality;
+		const CGFloat kMinByteSize = 2 * 1024 * 1024; // 2 MB
+		const CGFloat kMaxByteSize = 20 * 1024 * 1024; // 20 MB
+		const CGFloat kByteSizeDomain = kMaxByteSize - kMinByteSize;
+		CGFloat raw = image.size.width * image.size.height * 4.0f;
+		CGFloat x = 1.0f - (raw - kMinByteSize) / kByteSizeDomain;
+		if (x < 0.0f)
+			x = 0.0f;
+		
+		CGFloat qualtiy = x * x * kQualityRange + kMinQuality;
+		if (qualtiy > kMaxQuality)
+			qualtiy = kMaxQuality;
+		if (qualtiy < kMinQuality)
+			qualtiy = kMinQuality;
+		NSData *jpgData = UIImageJPEGRepresentation(image, qualtiy);
+		if (jpgData) {
+			[composer uploadPicture:jpgData withFileExtension:@"jpg"];
+		}
+		// Testing
+		// TODO: remove test code before release.
+		//NSLog(@"Image size: %1.0fx%1.0f, raw %1.2f Kb, jpeg %1.2f Kb, quality %1.2f.", image.size.width, image.size.height, raw/1024.0f, jpgData.length/1024.0f, qualtiy );
 	} else {
 		// Show error alert.
 		NSString *aTitle = NSLocalizedString (@"Image Error", @"title");
@@ -305,38 +393,74 @@ const int kTwitterCharacterMax = 140;
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[self.navigationController popViewControllerAnimated:YES];
+	[self closeAllPopovers];
 }
 
-#pragma mark Shrink URLs
+- (void)composer:(TwitterComposer *)aComposer didUploadPictureWithURL:(NSString *)url {
+	NSString *text = messageField.text;
+	if ([text hasSuffix:@" "] == NO && [text hasSuffix:@"\n"] == NO && [text hasSuffix:@"\t"] == NO) 
+		text = [text stringByAppendingString:@" "];
+	messageField.text = [text stringByAppendingString:url];
+	[self updateCharacterCountWithText:text];
+}
+
+#pragma mark URL shrinking
 
 - (IBAction)shrinkURLs:(id)sender {
-	NSSet *shrinkActions = [LKShrinkURLAction actionsToShrinkURLsInString:messageField.text];
+	[composer shrinkURLsInString:messageField.text];
+}
+
+- (void)composer:(TwitterComposer *)aComposer didShrinkLongURL:(NSString *)longURL toShortURL:(NSString *)shortURL {
+	messageField.text = [messageField.text stringByReplacingOccurrencesOfString:longURL withString:shortURL];
+	[self updateCharacterCountWithText:messageField.text];
+}
+
+#pragma mark View lifecycle
+
+- (void) viewDidLoad {
+	[super viewDidLoad];
+
+	// From: Account.
+	[self updateAccountButton];
 	
-	if (shrinkActions.count > 0) {
-		for (LKShrinkURLAction *action in shrinkActions) {
-			action.delegate = self;
-			[action load];
-			[appDelegate incrementNetworkActionCount];
-		}
+	// Message field.
+	NSString *text = [[NSUserDefaults standardUserDefaults] objectForKey:@"messageContent"];
+	if (text != nil) {
+		messageField.text = text;
+		[self updateCharacterCountWithText:text];
 	}
+	
+	// Retweet style
+	[self updateRetweetStyle];
+	
+	// Geotag
+	BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
+	if (geotag)
+		[composer.locationManager startUpdatingLocation];
+	[self updateGeotagButton];
 }
 
-- (void)action:(LKShrinkURLAction *)anAction didReplaceLongURL:(NSString *)longURL withShortURL:(NSString *)shortURL {
-	if (longURL != nil) {
-		if ([shortURL hasPrefix:@"http"]) {
-			messageField.text = [messageField.text stringByReplacingOccurrencesOfString:longURL withString:shortURL];
-		} else {
-			// Log the error message
-			NSLog (@"is.gd returned the error: %@", shortURL);
-		}
-	}
-	[appDelegate decrementNetworkActionCount];
+- (void)viewDidUnload {
+	[super viewDidUnload];
+	self.messageField = nil;
+	
+	self.retweetStyleButton = nil;
+	self.accountButton = nil;
+	self.sendButton = nil;
+	
+	self.inputToolbar = nil;
+	self.geotagButton = nil;
+	self.charactersRemaining = nil;
 }
 
-- (void)action:(LKShrinkURLAction*)anAction didFailWithError:(NSError*)error {
-	NSLog (@"URL shrinker error: %@", error);
-	[appDelegate decrementNetworkActionCount];
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self.messageField becomeFirstResponder];
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	return YES;
 }
 
 #pragma mark Text view delegate methods

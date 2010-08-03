@@ -137,83 +137,64 @@
 
 #pragma mark Compose
 
-- (ComposeViewController *)composeViewController {
+- (void)composeWithText:(NSString *)text {
 	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
-	[compose loadFromUserDefaults];
 	compose.delegate = self;
-	return compose;
+	
+	if (text != nil)
+		[[NSUserDefaults standardUserDefaults] setObject:text forKey:@"messageContent"];
+	
+	[self closeAllPopovers];
+	[self presentModalViewController:compose animated:YES];
 }
 
 - (IBAction)compose:(id)sender {
 	if ([self closeAllPopovers] == NO) {
-		ComposeViewController *compose = [self composeViewController];
-		[self presentModalViewController:compose animated:YES];
+		[self composeWithText:nil];
 	}
 }	
 
 - (void)retweet:(NSNumber*)identifier {
 	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: identifier];
 	if (message == nil) return;
-	
-	ComposeViewController *compose = [self composeViewController];
-	// Replace current message content with retweet. In a future version, save the existing tweet as a draft and make a new tweet with this text.
-	compose.messageContent = [NSString stringWithFormat:@"RT @%@: %@", message.userScreenName, message.text];
-	compose.originalRetweetContent = compose.messageContent;
-	compose.inReplyTo = identifier;
 
-	[self closeAllPopovers];
-	[self presentModalViewController:compose animated:YES];
+	// "RT @username: text"
+	NSString *text = [NSString stringWithFormat:@"RT @%@: %@", message.userScreenName, message.text];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:text forKey:@"originalRetweetContent"];
+	[defaults setObject:identifier forKey:@"inReplyTo"];
+	
+	[self composeWithText:text];
 }
 
 - (void) replyToMessage: (NSNumber*)identifier {
 	TwitterStatusUpdate *message = [twitter statusUpdateWithIdentifier: identifier];
 	if (message == nil) return;
 	
-	ComposeViewController *compose = [self composeViewController];
-
-	// Insert @username in beginning of message. This preserves any other people being replied to.
-	NSString *replyUsername = message.userScreenName;
-	if (compose.messageContent != nil) {
-		compose.messageContent = [NSString stringWithFormat:@"@%@ %@", replyUsername, compose.messageContent];
-	} else {
-		compose.messageContent = [NSString stringWithFormat:@"@%@ ", replyUsername];
-	}
-	compose.inReplyTo = identifier;
-	compose.originalRetweetContent = nil;
-	compose.newStyleRetweet = NO;
+	// "@username oldText"
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *oldText = [defaults objectForKey:@"messageContent"];
+	NSString *text = [NSString stringWithFormat:@"@%@ ", message.userScreenName];
+	if (oldText.length > 0)
+		text = [text stringByAppendingString:oldText];
+	[defaults removeObjectForKey:@"originalRetweetContent"];
+	[defaults setObject:identifier forKey:@"inReplyTo"];
 	
-	[self closeAllPopovers];
-	[self presentModalViewController:compose animated:YES];
+	[self composeWithText:text];
 }
 
 - (void)directMessageWithScreenName:(NSString*)screenName {
 	if (screenName.length == 0) return;
 	
-	ComposeViewController *compose = [self composeViewController];
+	// "d username "
+	NSString *text = [NSString stringWithFormat:@"d %@ ", screenName];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults removeObjectForKey:@"originalRetweetContent"];
+	[defaults removeObjectForKey:@"inReplyTo"];
 	
-	// Insert d username in beginning of message. This preserves any other people being replied to.
-	if (compose.messageContent != nil) {
-		compose.messageContent = [NSString stringWithFormat:@"d %@ %@", screenName, compose.messageContent];
-	} else {
-		compose.messageContent = [NSString stringWithFormat:@"d %@ ", screenName];
-	}
-	compose.originalRetweetContent = nil;
-
-	[self closeAllPopovers];
-	[self presentModalViewController:compose animated:YES];
+	[self composeWithText:text];
 }
 
-- (void)composeWithText:(NSString *)text {
-	if (composeButton == nil) return;
-	if (text == nil) return;
-	
-	ComposeViewController *compose = [self composeViewController];
-	compose.messageContent = [compose.messageContent stringByAppendingString:text];
-	compose.originalRetweetContent = nil;
-	
-	[self closeAllPopovers];
-	[self presentModalViewController:compose animated:YES];
-}
 
 #pragma mark Popovers
 
@@ -259,6 +240,10 @@
 		navController.navigationBar.barStyle = UIBarStyleBlack;
 		[self presentModalViewController:navController animated:YES];
 	}
+}
+
+- (void) composeDidFinish:(ComposeViewController*)aCompose {
+	[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
 }
 
 #pragma mark View Controllers to push
@@ -396,17 +381,6 @@
 }
 
 #pragma mark Popover delegate methods
-
-- (void) compose:(ComposeViewController*)aCompose didSendMessage:(NSString*)text inReplyTo:(NSNumber*)inReplyTo location:(CLLocation *)location {
-	[self closeAllPopovers];
-	[timelineHTMLController updateStatus:text inReplyTo:inReplyTo location:location];
-}
-
-- (void) compose:(ComposeViewController*)aCompose didRetweetMessage:(NSNumber*)identifier {
-	[self closeAllPopovers];
-	[timelineHTMLController retweet:identifier];
-	
-}
 
 - (void) lists:(ListsViewController*)lists didSelectList:(TwitterList*)list {
 	[self closeAllPopovers];
