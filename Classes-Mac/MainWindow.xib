@@ -157,10 +157,6 @@
 									<reference key="NSControlView" ref="548932020"/>
 									<int key="NSButtonFlags">-2034220801</int>
 									<int key="NSButtonFlags2">163</int>
-									<object class="NSCustomResource" key="NSNormalImage" id="231055000">
-										<string key="NSClassName">NSImage</string>
-										<string key="NSResourceName">mac-toolbar-user</string>
-									</object>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">400</int>
@@ -173,7 +169,10 @@
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
 										<int key="NSState">1</int>
-										<reference key="NSImage" ref="231055000"/>
+										<object class="NSCustomResource" key="NSImage" id="255928665">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">mac-toolbar-user</string>
+										</object>
 										<object class="NSCustomResource" key="NSOnImage" id="150681764">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">NSMenuCheckmark</string>
@@ -279,7 +278,7 @@
 									<int key="NSArrowPosition">2</int>
 								</object>
 							</object>
-							<reference key="NSToolbarItemImage" ref="231055000"/>
+							<reference key="NSToolbarItemImage" ref="255928665"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{40, 25}</string>
@@ -720,7 +719,7 @@
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{380, 324}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
-				<string key="NSFrameAutosaveName">HelTweetica</string>
+				<string key="NSFrameAutosaveName"/>
 			</object>
 			<object class="NSMenu" id="386261675">
 				<string key="NSTitle"/>

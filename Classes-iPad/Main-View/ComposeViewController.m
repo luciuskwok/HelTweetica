@@ -322,7 +322,7 @@ const int kTwitterCharacterMax = 140;
 #pragma mark Accounts
 
 - (IBAction)chooseAccount:(id)sender {
-	[self closeAllPopovers];
+	if ([self closeAllPopovers]) return;
 	
 	UIActionSheet *actionSheet = [[[UIActionSheet alloc] init] autorelease];
 	actionSheet.delegate = self;
@@ -330,6 +330,7 @@ const int kTwitterCharacterMax = 140;
 		[actionSheet addButtonWithTitle:anAccount.screenName];
 	}
 	[actionSheet showFromBarButtonItem:sender animated:YES];
+	self.currentActionSheet = actionSheet;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -347,23 +348,23 @@ const int kTwitterCharacterMax = 140;
 #pragma mark Pictures
 
 - (IBAction)addPicture:(id)sender {
-	if ([self closeAllPopovers] == NO) {
-		if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] == NO) {
-			// Show error alert.
-			UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
-			alert.title = NSLocalizedString (@"Photo library not available", @"title");
-			alert.message = NSLocalizedString (@"Pictures cannot be added at this time.", @"text");
-			[alert addButtonWithTitle:NSLocalizedString (@"Cancel", @"button")];
-			[alert show];
-			return;
-		}
-		
-		UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
-		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-		picker.delegate = self;
-	
-		[self presentViewController:picker inPopoverFromItem:sender];
+	if ([self closeAllPopovers]) return;
+
+	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] == NO) {
+		// Show error alert.
+		UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
+		alert.title = NSLocalizedString (@"Photo library not available", @"title");
+		alert.message = NSLocalizedString (@"Pictures cannot be added at this time.", @"text");
+		[alert addButtonWithTitle:NSLocalizedString (@"Cancel", @"button")];
+		[alert show];
+		return;
 	}
+	
+	UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
+	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	picker.delegate = self;
+
+	[self presentViewController:picker inPopoverFromItem:sender];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {

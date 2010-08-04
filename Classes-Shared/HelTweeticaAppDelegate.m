@@ -60,10 +60,9 @@
 		}
 		NS_ENDHANDLER
 	}
-	if (orderedControllers != nil) {
-		[orderedControllers makeObjectsPerformSelector:@selector(showWindow:) withObject:nil];
-		if (orderedControllers.count > 0) {
-			[[[orderedControllers objectAtIndex:0] window] makeKeyAndOrderFront:nil];
+	if (orderedControllers.count > 0) {
+		for (id controller in [orderedControllers reverseObjectEnumerator]) {
+			[controller showWindow:nil];
 		}
 	} else {
 		[self newMainWindowWithAccount:nil];
@@ -79,7 +78,7 @@
 	int index = 1;
 	NSArray *windows = [NSApp orderedWindows];
 	NSMutableArray *orderedControllers = [NSMutableArray array];
-	for (NSWindow *window in windows) {
+	for (NSWindow *window in [windows reverseObjectEnumerator]) {
 		MainWindowController *controller = [window windowController];
 		if ([controller isKindOfClass:[MainWindowController class]]) {
 			// Window frame

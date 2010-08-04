@@ -151,7 +151,6 @@ enum { kTwitterCharacterMax = 140 };
 	} else {
 		// Allow editing
 		[textView setEditable: YES];
- 		[textView becomeFirstResponder];
 		[shrinkURLButton setEnabled:YES];
 		[locationButton setEnabled:YES];
 		[pictureButton setEnabled:YES];

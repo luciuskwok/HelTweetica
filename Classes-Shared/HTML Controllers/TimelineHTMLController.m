@@ -29,7 +29,7 @@
 
 // Constants
 #ifdef TARGET_PROJECT_MAC
-const int kDefaultMaxTweetsShown = 500;
+const int kDefaultMaxTweetsShown = 400;
 #else
 const int kDefaultMaxTweetsShown = 200;
 #endif
