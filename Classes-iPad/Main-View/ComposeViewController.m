@@ -29,7 +29,7 @@ const int kTwitterCharacterMax = 140;
 
 @implementation ComposeViewController
 @synthesize messageField;
-@synthesize retweetStyleButton, accountButton, sendButton;
+@synthesize topToolbar, retweetStyleButton, accountButton, sendButton;
 @synthesize inputToolbar, geotagButton, charactersRemaining;
 @synthesize currentPopover, currentActionSheet, delegate;
 
@@ -69,9 +69,9 @@ const int kTwitterCharacterMax = 140;
 }
 
 - (void)dealloc {
-	[composer release];
-	
 	[messageField release];
+	
+	[topToolbar release];
 	[retweetStyleButton release];
 	[accountButton release];
 	[sendButton release];
@@ -80,6 +80,7 @@ const int kTwitterCharacterMax = 140;
 	[geotagButton release];
 	[charactersRemaining release];
 	
+	[composer release];
 	currentPopover.delegate = nil;
 	[currentPopover release];
 	currentActionSheet.delegate = nil;
@@ -155,8 +156,12 @@ const int kTwitterCharacterMax = 140;
 		}
 		retweetStyleButton.enabled = YES;
 	} else {
-		retweetStyleButton.title = NSLocalizedString (@"RT style: n/a", "button");
-		retweetStyleButton.enabled = NO;
+		// Remove RT button from toolbar.
+		NSMutableArray *items = [NSMutableArray arrayWithArray:topToolbar.items];
+		if ([items containsObject:retweetStyleButton]) {
+			[items removeObject:retweetStyleButton];
+			topToolbar.items = items;
+		}
 	}
 	
 	// Message field and controls.
@@ -237,6 +242,8 @@ const int kTwitterCharacterMax = 140;
 #pragma mark IBActions
 
 - (IBAction) send: (id) sender {
+	[self closeAllPopovers];
+
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *originalRetweetContent = [defaults objectForKey:@"originalRetweetContent"];
 	BOOL newStyleRetweet = [defaults boolForKey:@"newStyleRetweet"];
@@ -268,7 +275,6 @@ const int kTwitterCharacterMax = 140;
 	}
 	
 	// Close but don't cancel actions
-	[self closeAllPopovers];
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -283,12 +289,16 @@ const int kTwitterCharacterMax = 140;
 }
 
 - (IBAction) toggleRetweetStyle: (id) sender {
+	[self closeAllPopovers];
+	
 	BOOL newStyleRetweet = [[NSUserDefaults standardUserDefaults] boolForKey:@"newStyleRetweet"];
 	[[NSUserDefaults standardUserDefaults] setBool:!newStyleRetweet forKey:@"newStyleRetweet"];
 	[self updateRetweetStyle];
 }
 
 - (IBAction)toggleGeotag:(id)sender {
+	[self closeAllPopovers];
+	
 	BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
 	[[NSUserDefaults standardUserDefaults] setBool:!geotag forKey:@"geotag"];
 	[self updateGeotagButton];
@@ -301,6 +311,8 @@ const int kTwitterCharacterMax = 140;
 }
 
 - (IBAction) clear: (id) sender {
+	[self closeAllPopovers];
+	
 	[self resetMessageContent];
 	messageField.text = @"";
 	[self updateCharacterCountWithText:@""];
@@ -310,6 +322,8 @@ const int kTwitterCharacterMax = 140;
 #pragma mark Accounts
 
 - (IBAction)chooseAccount:(id)sender {
+	[self closeAllPopovers];
+	
 	UIActionSheet *actionSheet = [[[UIActionSheet alloc] init] autorelease];
 	actionSheet.delegate = self;
 	for (TwitterAccount *anAccount in appDelegate.twitter.accounts) {
@@ -333,21 +347,21 @@ const int kTwitterCharacterMax = 140;
 #pragma mark Pictures
 
 - (IBAction)addPicture:(id)sender {
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] == NO) {
-		// Show error alert.
-		UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
-		alert.title = NSLocalizedString (@"Photo library not available", @"title");
-		alert.message = NSLocalizedString (@"Pictures cannot be added at this time.", @"text");
-		[alert addButtonWithTitle:NSLocalizedString (@"Cancel", @"button")];
-		[alert show];
-		return;
-	}
-	
-	UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
-	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-	picker.delegate = self;
-	
 	if ([self closeAllPopovers] == NO) {
+		if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] == NO) {
+			// Show error alert.
+			UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
+			alert.title = NSLocalizedString (@"Photo library not available", @"title");
+			alert.message = NSLocalizedString (@"Pictures cannot be added at this time.", @"text");
+			[alert addButtonWithTitle:NSLocalizedString (@"Cancel", @"button")];
+			[alert show];
+			return;
+		}
+		
+		UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
+		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+		picker.delegate = self;
+	
 		[self presentViewController:picker inPopoverFromItem:sender];
 	}
 }
@@ -434,17 +448,19 @@ const int kTwitterCharacterMax = 140;
 	[self updateAccountButton];
 	
 	// Message field.
-	NSString *text = [[NSUserDefaults standardUserDefaults] objectForKey:@"messageContent"];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *text = [defaults objectForKey:@"messageContent"];
 	if (text != nil) {
 		messageField.text = text;
 		[self updateCharacterCountWithText:text];
 	}
 	
-	// Retweet style
+	// Retweet style. Remove  button if it's not applicable.
 	[self updateRetweetStyle];
 	
+	
 	// Geotag
-	BOOL geotag = [[NSUserDefaults standardUserDefaults] boolForKey:@"geotag"];
+	BOOL geotag = [defaults boolForKey:@"geotag"];
 	if (geotag)
 		[composer.locationManager startUpdatingLocation];
 	[self updateGeotagButton];
@@ -454,6 +470,7 @@ const int kTwitterCharacterMax = 140;
 	[super viewDidUnload];
 	self.messageField = nil;
 	
+	self.topToolbar = nil;
 	self.retweetStyleButton = nil;
 	self.accountButton = nil;
 	self.sendButton = nil;

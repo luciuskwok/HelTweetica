@@ -29,6 +29,7 @@
 {
 	IBOutlet UITextView *messageField;
 	
+	IBOutlet UIToolbar *topToolbar;
 	IBOutlet UIBarButtonItem *retweetStyleButton;
 	IBOutlet UIBarButtonItem *accountButton;
 	IBOutlet UIBarButtonItem *sendButton;
@@ -45,6 +46,7 @@
 }
 @property (nonatomic, retain) UITextView *messageField;
 
+@property (nonatomic, retain) UIToolbar *topToolbar;
 @property (nonatomic, retain) UIBarButtonItem *retweetStyleButton;
 @property (nonatomic, retain) UIBarButtonItem *accountButton;
 @property (nonatomic, retain) UIBarButtonItem *sendButton;

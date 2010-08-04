@@ -238,6 +238,8 @@
 		E08BC75C12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
 		E08BC75D12017BD500CEEC44 /* dm-row-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E08BC75B12017BD500CEEC44 /* dm-row-template.html */; };
 		E0AB23DC1204353500C22FB8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AB23DB1204353500C22FB8 /* CoreLocation.framework */; };
+		E0AD305D120967E600E0B153 /* toolbar-photos.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AD305C120967E600E0B153 /* toolbar-photos.png */; };
+		E0AD305E120967E600E0B153 /* toolbar-photos.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AD305C120967E600E0B153 /* toolbar-photos.png */; };
 		E0B106911202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */; };
 		E0B106921202A1AD00780E62 /* TwitterDirectMessageTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */; };
 		E0CADD4611FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
@@ -444,6 +446,7 @@
 		E08BC74012017A6400CEEC44 /* NSString+HTMLFormatted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTMLFormatted.m"; sourceTree = "<group>"; };
 		E08BC75B12017BD500CEEC44 /* dm-row-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "dm-row-template.html"; path = "Resources-Shared/dm-row-template.html"; sourceTree = "<group>"; };
 		E0AB23DB1204353500C22FB8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		E0AD305C120967E600E0B153 /* toolbar-photos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-photos.png"; path = "Resources-iPad/toolbar-photos.png"; sourceTree = "<group>"; };
 		E0B1068F1202A1AD00780E62 /* TwitterDirectMessageTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessageTimeline.h; sourceTree = "<group>"; };
 		E0B106901202A1AD00780E62 /* TwitterDirectMessageTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDirectMessageTimeline.m; sourceTree = "<group>"; };
 		E0CADD4211FD82000075F657 /* LKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteDatabase.h; sourceTree = "<group>"; };
@@ -549,6 +552,7 @@
 				E0564ED311FBD93E000A9753 /* MainWindow.xib */,
 				E0564AA311FBD306000A9753 /* style.css */,
 				E0564AA411FBD306000A9753 /* toolbar-lists.png */,
+				E0AD305C120967E600E0B153 /* toolbar-photos.png */,
 				E0564AA511FBD306000A9753 /* toolbar-user.png */,
 				E0564AA611FBD306000A9753 /* triangle-left.png */,
 				E0564AA711FBD306000A9753 /* triangle-right.png */,
@@ -986,6 +990,7 @@
 				E0524CCC1203E9BA00EF28F8 /* dm-button.png in Resources */,
 				E0524CD51203F0B800EF28F8 /* fave-spinner.gif in Resources */,
 				E0F19E911204CD9A0095BA94 /* geotag.png in Resources */,
+				E0AD305D120967E600E0B153 /* toolbar-photos.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1049,6 +1054,7 @@
 				E0524CCD1203E9BA00EF28F8 /* dm-button.png in Resources */,
 				E0524CD61203F0B800EF28F8 /* fave-spinner.gif in Resources */,
 				E0F19E921204CD9A0095BA94 /* geotag.png in Resources */,
+				E0AD305E120967E600E0B153 /* toolbar-photos.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
