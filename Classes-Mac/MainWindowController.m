@@ -168,6 +168,8 @@
 - (IBAction)homeTimeline:(id)sender {
 	htmlController.customPageTitle = nil;
 	[htmlController selectHomeTimeline];
+	if (htmlController.webViewHasValidHTML)
+		[self.webView scrollToTop];
 }
 
 - (IBAction)mentions:(id)sender {
@@ -178,20 +180,28 @@
 	}
 
 	[htmlController selectMentionsTimeline];
+	if (htmlController.webViewHasValidHTML)
+		[self.webView scrollToTop];
 }
 
 - (IBAction)directMessages:(id)sender {
 	htmlController.customPageTitle = @"<b>Direct</b> Messages";
 	[htmlController selectDirectMessageTimeline];
+	if (htmlController.webViewHasValidHTML)
+		[self.webView scrollToTop];
 }
 
 - (IBAction)favorites:(id)sender {
 	htmlController.customPageTitle = @"Your <b>Favorites</b>";
 	[htmlController selectFavoritesTimeline];
+	if (htmlController.webViewHasValidHTML)
+		[self.webView scrollToTop];
 }
 
 - (IBAction)refresh:(id)sender {
 	[htmlController loadTimeline:htmlController.timeline];
+	if (htmlController.webViewHasValidHTML)
+		[self.webView scrollToTop];
 }
 
 
@@ -243,12 +253,11 @@
 	// Set window title to account name
 	[[self window] setTitle:anAccount.screenName];
 	
-	if (htmlController.webViewHasValidHTML) {
-		//[self.webView setDocumentElement:@"current_account" innerHTML:[HTMLController currentAccountHTML]];
+	if (htmlController.webViewHasValidHTML)
 		[self.webView scrollToTop];
-	}
-	[htmlController selectHomeTimeline];
+	
 	htmlController.customPageTitle = nil;
+	[htmlController selectHomeTimeline];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: anAccount.screenName forKey: @"currentAccount"];
