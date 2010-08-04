@@ -16,6 +16,7 @@
 
 #import "SearchResultsHTMLController.h"
 #import "TwitterSearchAction.h"
+#import "NSString+HTMLFormatted.h"
 
 
 
@@ -26,7 +27,7 @@
 - (id)initWithQuery:(NSString*)aQuery database:(LKSqliteDatabase *)db {
 	self = [super init];
 	if (self) {
-		self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [self htmlSafeString:aQuery]];
+		self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [aQuery HTMLFormatted]];
 		self.customTabName = NSLocalizedString (@"Results", @"tab");
 		maxTweetsShown = 1000; // Allow for a larger limit for searches.
 		
@@ -44,15 +45,6 @@
 }
 
 #pragma mark HTML formatting
-
-- (NSString *)htmlSafeString:(NSString *)string {
-	NSMutableString *result = [NSMutableString stringWithString:string];
-	[result replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:NSMakeRange(0, result.length)];
-	//[result replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:NSMakeRange(0, result.length)];
-	[result replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:0 range:NSMakeRange(0, result.length)];
-	return result;
-}
 
 - (NSString*) webPageTemplate {
 	return [self loadHTMLTemplate:@"basic-template"];

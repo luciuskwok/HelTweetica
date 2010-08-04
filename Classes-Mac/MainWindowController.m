@@ -102,50 +102,24 @@
 	[aCoder encodeObject:[self.window frameAutosaveName ] forKey:@"windowFrameAutosaveName"];
 }
 
-#pragma mark Window 
-
-- (void)windowDidLoad {
-	// Set up additional web view preferences that aren't set up in IB.
-	[self.webView setPreferencesIdentifier:@"HelTweeticaWebPrefs"];
-	WebPreferences *prefs = self.webView.preferences;
-	[prefs setJavaEnabled:NO];
-	[prefs setJavaScriptEnabled:YES];
-	[prefs setPlugInsEnabled:NO];
-	[prefs setUsesPageCache:NO];
-	[prefs setCacheModel:WebCacheModelDocumentViewer];
-	[prefs setPrivateBrowsingEnabled:YES];
-	[webView setMaintainsBackForwardList:NO]; 
-	
-	htmlController.webView = self.webView;
-	[htmlController selectHomeTimeline];
-	[htmlController loadWebView];
-
-	// Set window title to account name
-	NSString *screenName = htmlController.account.screenName;
-	if (screenName) 
-		[[self window] setTitle:screenName];
-
-	[self reloadUsersMenu];
-	[self reloadListsMenu];
-	[self reloadSearchMenu];
-	
-	// Start loading lists and saved searches
-	[self loadListsOfUser:nil];
-	[self loadSavedSearches];
-	
-	// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
-	htmlController.suppressNetworkErrorAlerts = YES;
-	[htmlController loadTimeline:htmlController.timeline];
-	
-}	
-
-- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	self.currentSheet = nil;
-}
-
 #pragma mark Timelines
 
+- (void)updateTimelineSegmentedControl {
+	NSArray *images = [NSArray arrayWithObjects:@"mac-toolbar-home", @"mac-toolbar-mentions", @"mac-toolbar-direct", @"mac-toolbar-star", nil];
+	if ([timelineSegmentedControl segmentCount] != images.count) return;
+	NSString *imageName;
+	
+	for (int index = 0; index < images.count; index++) {
+		imageName = [images objectAtIndex:index];
+		if (index == [timelineSegmentedControl selectedSegment])
+			imageName = [imageName stringByAppendingString:@"-alt"];
+		imageName = [imageName stringByAppendingString:@".png"];
+		[timelineSegmentedControl setImage:[NSImage imageNamed:imageName] forSegment:index];					 
+	}
+}
+
 - (IBAction)selectTimelineWithSegmentedControl:(id)sender {
+	[self updateTimelineSegmentedControl];
 	int index = [sender selectedSegment];
 	switch (index) {
 		case 0:
@@ -638,6 +612,49 @@
 	}
 }
 
+#pragma mark Window 
+
+- (void)windowDidLoad {
+	// Set up additional web view preferences that aren't set up in IB.
+	[self.webView setPreferencesIdentifier:@"HelTweeticaWebPrefs"];
+	WebPreferences *prefs = self.webView.preferences;
+	[prefs setJavaEnabled:NO];
+	[prefs setJavaScriptEnabled:YES];
+	[prefs setPlugInsEnabled:NO];
+	[prefs setUsesPageCache:NO];
+	[prefs setCacheModel:WebCacheModelDocumentViewer];
+	[prefs setPrivateBrowsingEnabled:YES];
+	[webView setMaintainsBackForwardList:NO]; 
+	
+	htmlController.webView = self.webView;
+	[htmlController selectHomeTimeline];
+	[htmlController loadWebView];
+	
+	[self updateTimelineSegmentedControl];
+	
+	// Set window title to account name
+	NSString *screenName = htmlController.account.screenName;
+	if (screenName) 
+		[[self window] setTitle:screenName];
+	
+	[self reloadUsersMenu];
+	[self reloadListsMenu];
+	[self reloadSearchMenu];
+	
+	// Start loading lists and saved searches
+	[self loadListsOfUser:nil];
+	[self loadSavedSearches];
+	
+	// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
+	htmlController.suppressNetworkErrorAlerts = YES;
+	[htmlController loadTimeline:htmlController.timeline];
+	
+}	
+
+- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	self.currentSheet = nil;
+}
+
 #pragma mark Alert
 
 - (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage {
@@ -647,13 +664,9 @@
 		[alert setMessageText:aTitle];
 		[alert setInformativeText:aMessage];
 		[alert setAlertStyle:NSWarningAlertStyle];
-		[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+		[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:) contextInfo:nil];
 		self.currentSheet = alert;
 	}
-}
-
--  (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	self.currentSheet = nil;
 }
 
 @end

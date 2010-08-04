@@ -112,7 +112,11 @@
 			if (c == '#' && previousChar != '&') {
 				foundWord = [self wordInString:result startingAtIndex:index+1];
 				if (foundWord.length > 0) {
-					insertHTML = [NSString stringWithFormat: @"<a href='action:search/#%@'>#%@</a>", foundWord, foundWord];
+					const int kMaxHashTagLength = 25;
+					NSString *displayedHashTag = foundWord;
+					if (displayedHashTag.length > kMaxHashTagLength)
+						displayedHashTag = [[foundWord substringToIndex:kMaxHashTagLength] stringByAppendingString:@"..."];
+					insertHTML = [NSString stringWithFormat: @"<a href='action:search/#%@'>#%@</a>", foundWord, displayedHashTag];
 					[result replaceCharactersInRange: NSMakeRange(index, foundWord.length+1) withString: insertHTML];
 					index += insertHTML.length;
 					wordLength = 0;
