@@ -42,7 +42,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					10,
+					584,
 					20,
 					48,
 					43,
@@ -88,7 +88,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					166,
+					544,
 					60,
 					20,
 					48,
@@ -120,6 +120,20 @@
 			E01AF2DE1209E56300B4250F /* PBXTextBookmark */ = E01AF2DE1209E56300B4250F /* PBXTextBookmark */;
 			E01AF3041209EC0000B4250F /* PBXTextBookmark */ = E01AF3041209EC0000B4250F /* PBXTextBookmark */;
 			E01AF3051209EC0000B4250F /* PBXTextBookmark */ = E01AF3051209EC0000B4250F /* PBXTextBookmark */;
+			E01AF385120A021200B4250F /* PBXTextBookmark */ = E01AF385120A021200B4250F /* PBXTextBookmark */;
+			E01AF386120A021200B4250F /* PBXTextBookmark */ = E01AF386120A021200B4250F /* PBXTextBookmark */;
+			E01AF387120A021200B4250F /* PBXTextBookmark */ = E01AF387120A021200B4250F /* PBXTextBookmark */;
+			E01AF397120A027B00B4250F /* PBXTextBookmark */ = E01AF397120A027B00B4250F /* PBXTextBookmark */;
+			E01AF398120A027B00B4250F /* PBXTextBookmark */ = E01AF398120A027B00B4250F /* PBXTextBookmark */;
+			E01AF399120A027B00B4250F /* PBXTextBookmark */ = E01AF399120A027B00B4250F /* PBXTextBookmark */;
+			E01AF39A120A027B00B4250F /* PBXTextBookmark */ = E01AF39A120A027B00B4250F /* PBXTextBookmark */;
+			E01AF39D120A06D700B4250F /* PBXTextBookmark */ = E01AF39D120A06D700B4250F /* PBXTextBookmark */;
+			E01AF39E120A06D700B4250F /* PBXTextBookmark */ = E01AF39E120A06D700B4250F /* PBXTextBookmark */;
+			E01AF39F120A06D700B4250F /* PBXTextBookmark */ = E01AF39F120A06D700B4250F /* PBXTextBookmark */;
+			E01AF3A0120A06D700B4250F /* PBXTextBookmark */ = E01AF3A0120A06D700B4250F /* PBXTextBookmark */;
+			E01AF3AB120A194300B4250F /* PBXTextBookmark */ = E01AF3AB120A194300B4250F /* PBXTextBookmark */;
+			E01AF3AC120A194300B4250F /* PBXTextBookmark */ = E01AF3AC120A194300B4250F /* PBXTextBookmark */;
+			E01AF3AD120A194300B4250F /* PBXTextBookmark */ = E01AF3AD120A194300B4250F /* PBXTextBookmark */;
 			E023D9641207ED4E0046B37F = E023D9641207ED4E0046B37F /* PBXTextBookmark */;
 			E023D9651207ED4E0046B37F = E023D9651207ED4E0046B37F /* PBXTextBookmark */;
 			E023D9661207ED4E0046B37F = E023D9661207ED4E0046B37F /* PBXTextBookmark */;
@@ -289,6 +303,146 @@
 		rType = 0;
 		vrLen = 1166;
 		vrLoc = 3675;
+	};
+	E01AF385120A021200B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
+		name = "ComposeViewController.m: 109";
+		rLen = 137;
+		rLoc = 4318;
+		rType = 0;
+		vrLen = 1186;
+		vrLoc = 3675;
+	};
+	E01AF386120A021200B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AF211FBD361000A9753 /* iPad-Info.plist */;
+		name = "iPad-Info.plist: 10";
+		rLen = 0;
+		rLoc = 349;
+		rType = 0;
+		vrLen = 1005;
+		vrLoc = 0;
+	};
+	E01AF387120A021200B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AF211FBD361000A9753 /* iPad-Info.plist */;
+		name = "iPad-Info.plist: 10";
+		rLen = 0;
+		rLoc = 349;
+		rType = 0;
+		vrLen = 1005;
+		vrLoc = 0;
+	};
+	E01AF397120A027B00B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AF211FBD361000A9753 /* iPad-Info.plist */;
+		name = "iPad-Info.plist: 10";
+		rLen = 0;
+		rLoc = 349;
+		rType = 0;
+		vrLen = 1005;
+		vrLoc = 0;
+	};
+	E01AF398120A027B00B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A5111FBD2E7000A9753 /* TwitterAtomParser.h */;
+		name = "TwitterAtomParser.h: 22";
+		rLen = 0;
+		rLoc = 1661;
+		rType = 0;
+		vrLen = 1332;
+		vrLoc = 916;
+	};
+	E01AF399120A027B00B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A5211FBD2E7000A9753 /* TwitterAtomParser.m */;
+		name = "TwitterAtomParser.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1376;
+		vrLoc = 635;
+	};
+	E01AF39A120A027B00B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A5211FBD2E7000A9753 /* TwitterAtomParser.m */;
+		name = "TwitterAtomParser.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1376;
+		vrLoc = 635;
+	};
+	E01AF39D120A06D700B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A5211FBD2E7000A9753 /* TwitterAtomParser.m */;
+		name = "TwitterAtomParser.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1376;
+		vrLoc = 635;
+	};
+	E01AF39E120A06D700B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0D1509811FD2DE900452E63 /* CreationStatement.sql */;
+		name = "CreationStatement.sql: 46";
+		rLen = 0;
+		rLoc = 975;
+		rType = 0;
+		vrLen = 655;
+		vrLoc = 338;
+	};
+	E01AF39F120A06D700B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AF211FBD361000A9753 /* iPad-Info.plist */;
+		name = "iPad-Info.plist: 10";
+		rLen = 0;
+		rLoc = 349;
+		rType = 0;
+		vrLen = 1005;
+		vrLoc = 0;
+	};
+	E01AF3A0120A06D700B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AF211FBD361000A9753 /* iPad-Info.plist */;
+		name = "iPad-Info.plist: 9";
+		rLen = 0;
+		rLoc = 306;
+		rType = 0;
+		vrLen = 1005;
+		vrLoc = 0;
+	};
+	E01AF3AB120A194300B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AF211FBD361000A9753 /* iPad-Info.plist */;
+		name = "iPad-Info.plist: 9";
+		rLen = 0;
+		rLoc = 306;
+		rType = 0;
+		vrLen = 1005;
+		vrLoc = 0;
+	};
+	E01AF3AC120A194300B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
+		name = "ComposeViewController.m: 109";
+		rLen = 137;
+		rLoc = 4318;
+		rType = 0;
+		vrLen = 837;
+		vrLoc = 3770;
+	};
+	E01AF3AD120A194300B4250F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649EF11FBD2D8000A9753 /* ComposeViewController.m */;
+		name = "ComposeViewController.m: 374";
+		rLen = 31;
+		rLoc = 13664;
+		rType = 0;
+		vrLen = 1037;
+		vrLoc = 13163;
 	};
 	E023D9641207ED4E0046B37F /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -483,9 +637,9 @@
 	};
 	E05649EF11FBD2D8000A9753 /* ComposeViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {774, 9414}}";
-			sepNavSelRange = "{4318, 137}";
-			sepNavVisRange = "{3675, 1166}";
+			sepNavIntBoundsRect = "{{0, 0}, {774, 9252}}";
+			sepNavSelRange = "{13664, 31}";
+			sepNavVisRange = "{13163, 1037}";
 		};
 	};
 	E05649F111FBD2D8000A9753 /* ListsViewController.h */ = {
@@ -707,16 +861,16 @@
 	};
 	E0564A5111FBD2E7000A9753 /* TwitterAtomParser.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {580, 960}}";
-			sepNavSelRange = "{1697, 19}";
-			sepNavVisRange = "{1105, 801}";
+			sepNavIntBoundsRect = "{{0, 0}, {774, 1025}}";
+			sepNavSelRange = "{1661, 0}";
+			sepNavVisRange = "{916, 1332}";
 		};
 	};
 	E0564A5211FBD2E7000A9753 /* TwitterAtomParser.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {580, 2256}}";
+			sepNavIntBoundsRect = "{{0, 0}, {774, 2537}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{1240, 631}";
+			sepNavVisRange = "{635, 1376}";
 		};
 	};
 	E0564A5411FBD2E7000A9753 /* TwitterList.m */ = {
@@ -810,11 +964,19 @@
 			sepNavVisRange = "{0, 955}";
 		};
 	};
+	E0564AF011FBD361000A9753 /* AdHoc-Info.plist */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = text.plist.xml;
+		name = "AdHoc-Info.plist";
+		path = "/Users/lucius/_Work/iPhone/HelTweetica/AdHoc-Info.plist";
+		sourceTree = "<absolute>";
+	};
 	E0564AF211FBD361000A9753 /* iPad-Info.plist */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {774, 843}}";
-			sepNavSelRange = "{1134, 290}";
-			sepNavVisRange = "{39, 1402}";
+			sepNavIntBoundsRect = "{{0, 0}, {774, 863}}";
+			sepNavSelRange = "{306, 0}";
+			sepNavVisRange = "{0, 1005}";
 		};
 	};
 	E0564B0011FBD458000A9753 /* PBXBookmark */ = {
@@ -847,6 +1009,7 @@
 		dataTipSortType = 0;
 		debuggerPlugin = GDBDebugging;
 		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
 		enableDebugStr = 1;
 		environmentEntries = (
 		);
@@ -854,6 +1017,8 @@
 		executableUserSymbolLevel = 0;
 		libgmallocEnabled = 0;
 		name = AdHoc;
+		savedGlobals = {
+		};
 		showTypeColumn = 0;
 		sourceDirectories = (
 		);
@@ -1420,9 +1585,9 @@
 	};
 	E0D1509811FD2DE900452E63 /* CreationStatement.sql */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {783, 810}}";
-			sepNavSelRange = "{554, 0}";
-			sepNavVisRange = "{342, 586}";
+			sepNavIntBoundsRect = "{{0, 0}, {774, 882}}";
+			sepNavSelRange = "{975, 0}";
+			sepNavVisRange = "{338, 655}";
 		};
 	};
 	E0F1831611FDB53900DEDE0D /* TwitterDirectMessage.h */ = {

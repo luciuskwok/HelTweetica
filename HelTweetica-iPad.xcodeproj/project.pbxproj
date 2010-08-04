@@ -11,6 +11,9 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		E01AF38A120A024500B4250F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0F1834F11FDB84600DEDE0D /* libsqlite3.dylib */; };
+		E01AF38F120A024E00B4250F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AB23DB1204353500C22FB8 /* CoreLocation.framework */; };
+		E01AF390120A025000B4250F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E079EE491207C3570083B77B /* Security.framework */; };
 		E0524CA31203DE1B00EF28F8 /* dm-row-section-close.html in Resources */ = {isa = PBXBuildFile; fileRef = E0524CA11203DE1B00EF28F8 /* dm-row-section-close.html */; };
 		E0524CA41203DE1B00EF28F8 /* dm-row-section-open.html in Resources */ = {isa = PBXBuildFile; fileRef = E0524CA21203DE1B00EF28F8 /* dm-row-section-open.html */; };
 		E0524CA51203DE1B00EF28F8 /* dm-row-section-close.html in Resources */ = {isa = PBXBuildFile; fileRef = E0524CA11203DE1B00EF28F8 /* dm-row-section-close.html */; };
@@ -195,7 +198,6 @@
 		E0564B6611FBD4AB000A9753 /* LKJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A4C11FBD2E7000A9753 /* LKJSONParser.m */; };
 		E0564B6711FBD4AB000A9753 /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */; };
 		E0564B6811FBD4AB000A9753 /* TwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5011FBD2E7000A9753 /* TwitterAccount.m */; };
-		E0564B6911FBD4AB000A9753 /* TwitterAtomParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5211FBD2E7000A9753 /* TwitterAtomParser.m */; };
 		E0564B6A11FBD4AB000A9753 /* TwitterList.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5411FBD2E7000A9753 /* TwitterList.m */; };
 		E0564B6D11FBD4AB000A9753 /* TwitterSavedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5A11FBD2E7000A9753 /* TwitterSavedSearch.m */; };
 		E0564B6E11FBD4AB000A9753 /* TwitterSearchJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0564A5C11FBD2E7000A9753 /* TwitterSearchJSONParser.m */; };
@@ -425,7 +427,6 @@
 		E0564AE411FBD337000A9753 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		E0564AE811FBD33E000A9753 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E0564AEC11FBD344000A9753 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		E0564AF011FBD361000A9753 /* AdHoc-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AdHoc-Info.plist"; sourceTree = "<group>"; };
 		E0564AF111FBD361000A9753 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		E0564AF211FBD361000A9753 /* iPad-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iPad-Info.plist"; sourceTree = "<group>"; };
 		E0564B8811FBD4AB000A9753 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -499,6 +500,9 @@
 				E0564B8211FBD4AB000A9753 /* MessageUI.framework in Frameworks */,
 				E0564B8311FBD4AB000A9753 /* AudioToolbox.framework in Frameworks */,
 				E0564B8411FBD4AB000A9753 /* AVFoundation.framework in Frameworks */,
+				E01AF38A120A024500B4250F /* libsqlite3.dylib in Frameworks */,
+				E01AF38F120A024E00B4250F /* CoreLocation.framework in Frameworks */,
+				E01AF390120A025000B4250F /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,7 +536,6 @@
 			isa = PBXGroup;
 			children = (
 				E0564AF211FBD361000A9753 /* iPad-Info.plist */,
-				E0564AF011FBD361000A9753 /* AdHoc-Info.plist */,
 				E0564AF111FBD361000A9753 /* Entitlements.plist */,
 				E05649D111FBD2C7000A9753 /* HelTweetica_iPad_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
@@ -1163,7 +1166,6 @@
 				E0564B6611FBD4AB000A9753 /* LKJSONParser.m in Sources */,
 				E0564B6711FBD4AB000A9753 /* Twitter.m in Sources */,
 				E0564B6811FBD4AB000A9753 /* TwitterAccount.m in Sources */,
-				E0564B6911FBD4AB000A9753 /* TwitterAtomParser.m in Sources */,
 				E0564B6A11FBD4AB000A9753 /* TwitterList.m in Sources */,
 				E0564B6D11FBD4AB000A9753 /* TwitterSavedSearch.m in Sources */,
 				E0564B6E11FBD4AB000A9753 /* TwitterSearchJSONParser.m in Sources */,
@@ -1291,7 +1293,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = HelTweetica_iPad_Prefix.pch;
-				INFOPLIST_FILE = "AdHoc-Info.plist";
+				INFOPLIST_FILE = "iPad-Info.plist";
 				PRODUCT_NAME = HelTweetica;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FC1E4EF4-5367-4CC4-B940-ACA012A0E60A";
 				VALIDATE_PRODUCT = YES;

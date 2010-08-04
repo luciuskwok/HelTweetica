@@ -31,7 +31,8 @@ CREATE TABLE StatusUpdates (
 	text text,
 	source text,
 	retweetedStatusIdentifier integer,
-	locked boolean
+	locked boolean,
+	read boolean
 );
 
 CREATE TABLE DirectMessages (
@@ -42,5 +43,6 @@ CREATE TABLE DirectMessages (
 	senderScreenName text,
 	recipientIdentifier integer,
 	recipientScreenName text,
-	text text
+	text text,
+	read boolean
 );
