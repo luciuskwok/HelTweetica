@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ActivePerspectiveName</key>
-	<string>Project</string>
+	<string>Debug</string>
 	<key>AllowedModules</key>
 	<array>
 		<dict>
@@ -293,8 +293,6 @@
 							<string>MainColumn</string>
 							<real>294</real>
 						</array>
-						<key>RubberWindowFrame</key>
-						<string>67 54 1139 872 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -305,14 +303,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>E05648CD11FBCB3D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>ComposeViewController.m</string>
+								<string>TimelineHTMLController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -320,11 +316,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E05648CE11FBCB3D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>ComposeViewController.m</string>
+										<string>TimelineHTMLController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E01AF3AD120A194300B4250F</string>
+										<string>E01AF423120A316400B4250F</string>
 										<key>history</key>
 										<array>
 											<string>E0564B0011FBD458000A9753</string>
@@ -380,7 +376,8 @@
 											<string>E01AF39D120A06D700B4250F</string>
 											<string>E01AF39E120A06D700B4250F</string>
 											<string>E01AF3AB120A194300B4250F</string>
-											<string>E01AF3AC120A194300B4250F</string>
+											<string>E01AF41E120A310C00B4250F</string>
+											<string>E01AF41F120A310C00B4250F</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -395,8 +392,6 @@
 							<dict>
 								<key>Frame</key>
 								<string>{{0, 0}, {823, 578}}</string>
-								<key>RubberWindowFrame</key>
-								<string>67 54 1139 872 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -420,8 +415,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {823, 221}}</string>
-										<key>RubberWindowFrame</key>
-										<string>67 54 1139 872 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -548,6 +541,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
@@ -559,6 +554,8 @@
 					<dict>
 						<key>Frame</key>
 						<string>{{0, 0}, {1139, 578}}</string>
+						<key>RubberWindowFrame</key>
+						<string>145 116 1139 872 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugCLIModule</string>
@@ -633,7 +630,11 @@
 							</array>
 							<key>Frame</key>
 							<string>{{0, 155}, {322, 93}}</string>
+							<key>RubberWindowFrame</key>
+							<string>145 116 1139 872 0 0 1680 1028 </string>
 						</dict>
+						<key>RubberWindowFrame</key>
+						<string>145 116 1139 872 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugSessionModule</string>
@@ -699,10 +700,9 @@
 	<array>
 		<string>E01AF2B71209E0F900B4250F</string>
 		<string>E01AF2881209D31500B4250F</string>
-		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-iPad.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>67 54 1139 872 0 0 1680 1028 </string>
+	<string>145 116 1139 872 0 0 1680 1028 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

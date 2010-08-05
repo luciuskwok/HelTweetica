@@ -180,7 +180,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[twitter addOrReplaceUsers:statusUpdateAction.users];
 
 		// Timeline
-		[aTimeline addMessages:statusUpdateAction.loadedMessages updateGap:YES];
+		// Ignore gaps for own RTs.
+		BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO);
+		[aTimeline addMessages:statusUpdateAction.loadedMessages updateGap:updateGap];
 
 		if (timeline == aTimeline) {
 			// To be safe, only update Favorites if the same timeline is still selected.
