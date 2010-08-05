@@ -242,6 +242,10 @@
 			E0FEB274120B53D10053DB00 /* PBXTextBookmark */ = E0FEB274120B53D10053DB00 /* PBXTextBookmark */;
 			E0FEB29A120B60BF0053DB00 /* PBXTextBookmark */ = E0FEB29A120B60BF0053DB00 /* PBXTextBookmark */;
 			E0FEB29D120B60DD0053DB00 /* PBXTextBookmark */ = E0FEB29D120B60DD0053DB00 /* PBXTextBookmark */;
+			E0FEB2A2120B69760053DB00 /* PBXTextBookmark */ = E0FEB2A2120B69760053DB00 /* PBXTextBookmark */;
+			E0FEB2A3120B69860053DB00 /* PBXTextBookmark */ = E0FEB2A3120B69860053DB00 /* PBXTextBookmark */;
+			E0FEB2A4120B69860053DB00 /* PlistBookmark */ = E0FEB2A4120B69860053DB00 /* PlistBookmark */;
+			E0FEB2A5120B69860053DB00 /* PlistBookmark */ = E0FEB2A5120B69860053DB00 /* PlistBookmark */;
 		};
 		sourceControlManager = E0564BAE11FBD59D000A9753 /* Source Control */;
 		userBuildSettings = {
@@ -274,7 +278,7 @@
 		ignoreCount = 0;
 		lineNumber = 136;
 		location = HelTweetica;
-		modificationTime = 302735315.490758;
+		modificationTime = 302736401.30517;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -1552,7 +1556,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 16;
-		modificationTime = 302735315.490065;
+		modificationTime = 302736401.30444;
 		originalNumberOfMultipleMatches = 1;
 		state = 0;
 	};
@@ -2222,5 +2226,48 @@
 		rType = 0;
 		vrLen = 1232;
 		vrLoc = 23159;
+	};
+	E0FEB2A2120B69760053DB00 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564BEB11FBD6A0000A9753 /* MainWindowController.m */;
+		name = "MainWindowController.m: 698";
+		rLen = 0;
+		rLoc = 24357;
+		rType = 0;
+		vrLen = 822;
+		vrLoc = 23569;
+	};
+	E0FEB2A3120B69860053DB00 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564BEB11FBD6A0000A9753 /* MainWindowController.m */;
+		name = "MainWindowController.m: 698";
+		rLen = 0;
+		rLoc = 24357;
+		rType = 0;
+		vrLen = 1232;
+		vrLoc = 23159;
+	};
+	E0FEB2A4120B69860053DB00 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E0564CB211FBD6D2000A9753 /* Mac-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/Mac-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E0FEB2A5120B69860053DB00 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E0564CB211FBD6D2000A9753 /* Mac-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/Mac-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
 	};
 }
