@@ -30,11 +30,6 @@
 
 const float kDelayBeforeEnteringShuffleMode = 60.0;
 
-
-@interface RootViewController (PrivateMethods)
-- (void) startLoadingCurrentTimeline;
-@end
-
 @implementation RootViewController
 @synthesize accountsButton;
 

@@ -147,6 +147,7 @@
 	
 	[self closeAllPopovers];
 	[self presentModalViewController:compose animated:YES];
+	[timelineHTMLController invalidateRefreshTimer];
 }
 
 - (IBAction)compose:(id)sender {

@@ -84,7 +84,6 @@
 - (void)selectMentionsTimeline;
 - (void)selectDirectMessageTimeline;
 - (void)selectFavoritesTimeline;
-- (void)startLoadingCurrentTimeline;
 
 // Loading
 - (void)loadTimeline:(TwitterTimeline *)aTimeline;

@@ -98,25 +98,40 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 #pragma mark Timeline selection
 
+- (void)updateForNewTimeline {
+	// Call this after selecting a different timeline.
+	suppressNetworkErrorAlerts = NO;
+	timeline.delegate = self;
+	self.messages = [timeline messagesWithLimit:maxTweetsShown];
+	[self rewriteTweetArea];
+	
+	// Notify delegate that a different timeline was selected.
+	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
+		[delegate didSelectTimeline:timeline];
+	
+	// Schedule a refresh instead of loading right away.
+	[self scheduleRefreshTimer];
+}
+
 - (void)selectHomeTimeline {
 	self.customTabName = kTimelineIdentifier;
 	self.timeline = account.homeTimeline;
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
-	[self startLoadingCurrentTimeline];
+	[self updateForNewTimeline];
 }
 
 - (void)selectMentionsTimeline {
 	self.customTabName = kMentionsIdentifier;
 	self.timeline = account.mentions;
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
-	[self startLoadingCurrentTimeline];
+	[self updateForNewTimeline];
 }
 
 - (void)selectDirectMessageTimeline {
 	self.customTabName = kDirectMessagesIdentifier;
 	self.timeline = account.directMessages;
 	self.timeline.loadAction = nil; // TwitterDirectMessageTimeline sets its own load action.
-	[self startLoadingCurrentTimeline];
+	[self updateForNewTimeline];
 }
 
 - (void)selectFavoritesTimeline {
@@ -124,18 +139,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	self.timeline = account.favorites;
 	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
 	// Favorites always loads 20 per page. Cannot change the count.
-	[self startLoadingCurrentTimeline];
+	[self updateForNewTimeline];
 }
 
-- (void)startLoadingCurrentTimeline {
-	suppressNetworkErrorAlerts = NO;
-	[self loadTimeline:timeline];
-	[self rewriteTweetArea];
-	
-	// Notify delegate that a different timeline was selected.
-	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
-		[delegate didSelectTimeline:timeline];
-}
 
 #pragma mark Loading
 
@@ -169,37 +175,48 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[timeline loadOlderWithMaxIdentifier:maxIdentifier];
 }
 
+- (BOOL)array:(NSArray *)arrayA containsObjectsNotInArray:(NSArray *)arrayB {
+	for (id item in arrayA) {
+		if ([arrayB containsObject:item] == NO) 
+			return YES;
+	}
+	return NO;
+}
+
 - (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterAction *)action {
 	isLoading = NO;
 	
 	if ([action isKindOfClass:[TwitterLoadTimelineAction class]]) {
 		TwitterLoadTimelineAction *statusUpdateAction = (TwitterLoadTimelineAction *)action;
+		
+		// Only update if there are messages not already in the displayed messages.
+		if ([self array:statusUpdateAction.loadedMessages containsObjectsNotInArray:messages]) {
+			// Twitter cache.
+			[twitter addStatusUpdates:statusUpdateAction.loadedMessages replaceExisting:YES];
+			[twitter addStatusUpdates:statusUpdateAction.retweetedMessages replaceExisting:YES];
+			[twitter addOrReplaceUsers:statusUpdateAction.users];
 
-		// Twitter cache.
-		[twitter addStatusUpdates:statusUpdateAction.loadedMessages replaceExisting:YES];
-		[twitter addStatusUpdates:statusUpdateAction.retweetedMessages replaceExisting:YES];
-		[twitter addOrReplaceUsers:statusUpdateAction.users];
+			// Ignore gaps for own RTs.
+			BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO);
+			[aTimeline addMessages:statusUpdateAction.loadedMessages updateGap:updateGap];
 
-		// Timeline
-		// Ignore gaps for own RTs.
-		BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO);
-		[aTimeline addMessages:statusUpdateAction.loadedMessages updateGap:updateGap];
-
-		if (timeline == aTimeline) {
-			// To be safe, only update Favorites if the same timeline is still selected.
-			[account addFavorites:statusUpdateAction.favoriteMessages];
+			if (timeline == aTimeline) {
+				// To be safe, only update Favorites if the same timeline is still selected.
+				[account addFavorites:statusUpdateAction.favoriteMessages];
+			}
 		}
-
 	} else if ([action isKindOfClass:[TwitterLoadDirectMessagesAction class]]) {
 		TwitterLoadDirectMessagesAction *directMessagesAction = (TwitterLoadDirectMessagesAction *)action;
 		
-		// Twitter cache.
-		[twitter addDirectMessages:directMessagesAction.loadedMessages];
-		[twitter addOrReplaceUsers:directMessagesAction.users];
+		if ([self array:directMessagesAction.loadedMessages containsObjectsNotInArray:messages]) {
+			// Twitter cache.
+			[twitter addDirectMessages:directMessagesAction.loadedMessages];
+			[twitter addOrReplaceUsers:directMessagesAction.users];
 
-		// Timeline
-		TwitterDirectMessageTimeline *dmTimeline = (TwitterDirectMessageTimeline *)aTimeline;
-		[dmTimeline addMessages:directMessagesAction.loadedMessages sent:([action.twitterMethod hasSuffix:@"sent"])];
+			// Timeline
+			TwitterDirectMessageTimeline *dmTimeline = (TwitterDirectMessageTimeline *)aTimeline;
+			[dmTimeline addMessages:directMessagesAction.loadedMessages sent:([action.twitterMethod hasSuffix:@"sent"])];
+		}
 	}
 
 	// Load latest messages.
@@ -520,7 +537,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 			[self loadTimeline:timeline];
 		} else {
 			// Don't load new statuses if scroll position is below top.
-			[self rewriteTweetArea];
+			//[self rewriteTweetArea];
 		}
 	} else {
 		// If there are actions already pending, reschedule refresh 
