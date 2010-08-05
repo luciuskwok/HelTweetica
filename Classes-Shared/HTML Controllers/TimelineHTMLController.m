@@ -405,7 +405,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	
 	// Change the display of the star next to tweet in root view
 	NSString *element = [NSString stringWithFormat:@"star-%@", [message.identifier stringValue]];
-	NSString *html = isFave ? @"<img src='action-4-on.png'>" : @"<img src='action-4.png'>";
+	NSString *html = isFave ? @"<img src='action-star-on.png'>" : @"<img src='action-star.png'>";
 	[self.webView setDocumentElement:element innerHTML:html];
 	
 	// Remove from favorites timeline

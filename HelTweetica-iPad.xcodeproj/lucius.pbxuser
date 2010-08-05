@@ -43,7 +43,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					10,
+					526,
 					20,
 					48,
 					43,
@@ -139,6 +139,12 @@
 			E0651C74120A6BB400F9D256 /* PBXTextBookmark */ = E0651C74120A6BB400F9D256 /* PBXTextBookmark */;
 			E0651C8E120A6BED00F9D256 /* PBXTextBookmark */ = E0651C8E120A6BED00F9D256 /* PBXTextBookmark */;
 			E0651C8F120A6BED00F9D256 /* PBXTextBookmark */ = E0651C8F120A6BED00F9D256 /* PBXTextBookmark */;
+			E0651C9D120A702E00F9D256 /* PBXTextBookmark */ = E0651C9D120A702E00F9D256 /* PBXTextBookmark */;
+			E0651CA6120A711300F9D256 /* PBXTextBookmark */ = E0651CA6120A711300F9D256 /* PBXTextBookmark */;
+			E0651CA7120A711300F9D256 /* PBXTextBookmark */ = E0651CA7120A711300F9D256 /* PBXTextBookmark */;
+			E0651CA8120A711300F9D256 /* PBXTextBookmark */ = E0651CA8120A711300F9D256 /* PBXTextBookmark */;
+			E0651CB4120A7E1B00F9D256 /* PBXTextBookmark */ = E0651CB4120A7E1B00F9D256 /* PBXTextBookmark */;
+			E0651CD8120A7E8F00F9D256 /* PBXTextBookmark */ = E0651CD8120A7E8F00F9D256 /* PBXTextBookmark */;
 			E079EC971207636F0083B77B = E079EC971207636F0083B77B /* PBXTextBookmark */;
 			E079ED6612078E410083B77B = E079ED6612078E410083B77B /* PBXTextBookmark */;
 			E079ED6712078E410083B77B = E079ED6712078E410083B77B /* PBXTextBookmark */;
@@ -264,7 +270,7 @@
 		ignoreCount = 0;
 		lineNumber = 185;
 		location = HelTweetica;
-		modificationTime = 302672873.809928;
+		modificationTime = 302676615.99714;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -779,10 +785,31 @@
 	};
 	E0564AA311FBD306000A9753 /* style.css */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {716, 5040}}";
-			sepNavSelRange = "{2783, 0}";
-			sepNavVisRange = "{2741, 305}";
+			sepNavIntBoundsRect = "{{0, 0}, {716, 4878}}";
+			sepNavSelRange = "{3155, 0}";
+			sepNavVisRange = "{3020, 314}";
 		};
+	};
+	E0564AB811FBD325000A9753 /* action-3.png */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = image.png;
+		name = "action-3.png";
+		path = "/Users/lucius/_Work/iPhone/HelTweetica/Resources-Shared/action-3.png";
+		sourceTree = "<absolute>";
+	};
+	E0564AB911FBD325000A9753 /* action-4-on.png */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = image.png;
+		name = "action-4-on.png";
+		path = "/Users/lucius/_Work/iPhone/HelTweetica/Resources-Shared/action-4-on.png";
+		sourceTree = "<absolute>";
+	};
+	E0564ABA11FBD325000A9753 /* action-4.png */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = image.png;
+		name = "action-4.png";
+		path = "/Users/lucius/_Work/iPhone/HelTweetica/Resources-Shared/action-4.png";
+		sourceTree = "<absolute>";
 	};
 	E0564ABB11FBD325000A9753 /* basic-template.html */ = {
 		uiCtxt = {
@@ -793,9 +820,9 @@
 	};
 	E0564AC911FBD325000A9753 /* tweet-row-template.html */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {810, 845}}";
-			sepNavSelRange = "{23, 13}";
-			sepNavVisRange = "{0, 955}";
+			sepNavIntBoundsRect = "{{0, 0}, {716, 882}}";
+			sepNavSelRange = "{110, 0}";
+			sepNavVisRange = "{0, 492}";
 		};
 	};
 	E0564AF211FBD361000A9753 /* iPad-Info.plist */ = {
@@ -911,7 +938,7 @@
 		fRef = E0564AA311FBD306000A9753 /* style.css */;
 		name = "style.css: 156";
 		rLen = 0;
-		rLoc = 2966;
+		rLoc = 2976;
 		rType = 0;
 		vrLen = 504;
 		vrLoc = 2476;
@@ -921,7 +948,7 @@
 		fRef = E0564AA311FBD306000A9753 /* style.css */;
 		name = "style.css: 158";
 		rLen = 0;
-		rLoc = 2964;
+		rLoc = 2974;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 2476;
@@ -931,7 +958,7 @@
 		fRef = E0564AA311FBD306000A9753 /* style.css */;
 		name = "style.css: 150";
 		rLen = 0;
-		rLoc = 2814;
+		rLoc = 2824;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 2476;
@@ -941,7 +968,7 @@
 		fRef = E0564AA311FBD306000A9753 /* style.css */;
 		name = "style.css: 150";
 		rLen = 0;
-		rLoc = 2814;
+		rLoc = 2824;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 2476;
@@ -951,7 +978,7 @@
 		fRef = E0564AA311FBD306000A9753 /* style.css */;
 		name = "style.css: 150";
 		rLen = 0;
-		rLoc = 2814;
+		rLoc = 2824;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 2476;
@@ -961,10 +988,70 @@
 		fRef = E0564AA311FBD306000A9753 /* style.css */;
 		name = "style.css: 148";
 		rLen = 0;
-		rLoc = 2783;
+		rLoc = 2793;
 		rType = 0;
 		vrLen = 305;
 		vrLoc = 2741;
+	};
+	E0651C9D120A702E00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 115";
+		rLen = 0;
+		rLoc = 2168;
+		rType = 0;
+		vrLen = 421;
+		vrLoc = 1931;
+	};
+	E0651CA6120A711300F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AC911FBD325000A9753 /* tweet-row-template.html */;
+		name = "tweet-row-template.html: 4";
+		rLen = 0;
+		rLoc = 110;
+		rType = 0;
+		vrLen = 492;
+		vrLoc = 0;
+	};
+	E0651CA7120A711300F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 115";
+		rLen = 0;
+		rLoc = 2168;
+		rType = 0;
+		vrLen = 406;
+		vrLoc = 1946;
+	};
+	E0651CA8120A711300F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 114";
+		rLen = 0;
+		rLoc = 2121;
+		rType = 0;
+		vrLen = 393;
+		vrLoc = 1876;
+	};
+	E0651CB4120A7E1B00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 114";
+		rLen = 0;
+		rLoc = 2121;
+		rType = 0;
+		vrLen = 314;
+		vrLoc = 3020;
+	};
+	E0651CD8120A7E8F00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 172";
+		rLen = 0;
+		rLoc = 3155;
+		rType = 0;
+		vrLen = 314;
+		vrLoc = 3020;
 	};
 	E079EC971207636F0083B77B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;

@@ -172,6 +172,16 @@
 			E0651C90120A6CC600F9D256 /* PBXTextBookmark */ = E0651C90120A6CC600F9D256 /* PBXTextBookmark */;
 			E0651C93120A6D5800F9D256 /* PBXTextBookmark */ = E0651C93120A6D5800F9D256 /* PBXTextBookmark */;
 			E0651C97120A6E0D00F9D256 /* PBXTextBookmark */ = E0651C97120A6E0D00F9D256 /* PBXTextBookmark */;
+			E0651C9B120A702E00F9D256 /* PBXTextBookmark */ = E0651C9B120A702E00F9D256 /* PBXTextBookmark */;
+			E0651CA1120A704700F9D256 /* PBXTextBookmark */ = E0651CA1120A704700F9D256 /* PBXTextBookmark */;
+			E0651CA5120A711300F9D256 /* PBXTextBookmark */ = E0651CA5120A711300F9D256 /* PBXTextBookmark */;
+			E0651CD0120A7E8F00F9D256 /* PBXTextBookmark */ = E0651CD0120A7E8F00F9D256 /* PBXTextBookmark */;
+			E0651CD1120A7E8F00F9D256 /* PBXTextBookmark */ = E0651CD1120A7E8F00F9D256 /* PBXTextBookmark */;
+			E0651CD2120A7E8F00F9D256 /* PBXTextBookmark */ = E0651CD2120A7E8F00F9D256 /* PBXTextBookmark */;
+			E0651CD3120A7E8F00F9D256 /* PBXTextBookmark */ = E0651CD3120A7E8F00F9D256 /* PBXTextBookmark */;
+			E0651CD4120A7E8F00F9D256 /* PBXTextBookmark */ = E0651CD4120A7E8F00F9D256 /* PBXTextBookmark */;
+			E0651CD5120A7E8F00F9D256 /* PBXTextBookmark */ = E0651CD5120A7E8F00F9D256 /* PBXTextBookmark */;
+			E0651CD6120A7E8F00F9D256 /* PBXTextBookmark */ = E0651CD6120A7E8F00F9D256 /* PBXTextBookmark */;
 			E079EDA71207955B0083B77B = E079EDA71207955B0083B77B /* PBXTextBookmark */;
 			E079EDAC1207955B0083B77B = E079EDAC1207955B0083B77B /* PBXTextBookmark */;
 			E079EDAD1207955B0083B77B = E079EDAD1207955B0083B77B /* PBXTextBookmark */;
@@ -271,7 +281,7 @@
 		ignoreCount = 0;
 		lineNumber = 136;
 		location = HelTweetica;
-		modificationTime = 302673242.583274;
+		modificationTime = 302676615.998336;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -290,7 +300,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 127";
 		rLen = 0;
-		rLoc = 2198;
+		rLoc = 2208;
 		rType = 0;
 		vrLen = 652;
 		vrLoc = 1995;
@@ -300,7 +310,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 123";
 		rLen = 0;
-		rLoc = 2330;
+		rLoc = 2340;
 		rType = 0;
 		vrLen = 649;
 		vrLoc = 2085;
@@ -515,7 +525,7 @@
 		fRef = E0564C7B11FBD6AC000A9753 /* basic-template.html */;
 		name = "basic-template.html: 17";
 		rLen = 28;
-		rLoc = 546;
+		rLoc = 552;
 		rType = 0;
 		vrLen = 622;
 		vrLoc = 0;
@@ -729,9 +739,9 @@
 	};
 	E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {929, 14364}}";
-			sepNavSelRange = "{6953, 0}";
-			sepNavVisRange = "{6340, 1454}";
+			sepNavIntBoundsRect = "{{0, 0}, {787, 14760}}";
+			sepNavSelRange = "{15232, 0}";
+			sepNavVisRange = "{14861, 1110}";
 		};
 	};
 	E0564C0111FBD6A0000A9753 /* UserPageHTMLController.h */ = {
@@ -1053,16 +1063,16 @@
 	};
 	E0564C7211FBD6AC000A9753 /* main-template.html */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {922, 790}}";
-			sepNavSelRange = "{497, 0}";
-			sepNavVisRange = "{0, 545}";
+			sepNavIntBoundsRect = "{{0, 0}, {787, 533}}";
+			sepNavSelRange = "{377, 0}";
+			sepNavVisRange = "{0, 551}";
 		};
 	};
 	E0564C7411FBD6AC000A9753 /* style.css */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {523, 4968}}";
-			sepNavSelRange = "{2640, 0}";
-			sepNavVisRange = "{2220, 753}";
+			sepNavIntBoundsRect = "{{0, 0}, {523, 4914}}";
+			sepNavSelRange = "{2098, 2}";
+			sepNavVisRange = "{0, 748}";
 		};
 	};
 	E0564C7611FBD6AC000A9753 /* action-1.png */ = {
@@ -1074,9 +1084,9 @@
 	};
 	E0564C7B11FBD6AC000A9753 /* basic-template.html */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1068, 585}}";
-			sepNavSelRange = "{546, 28}";
-			sepNavVisRange = "{0, 622}";
+			sepNavIntBoundsRect = "{{0, 0}, {787, 533}}";
+			sepNavSelRange = "{437, 0}";
+			sepNavVisRange = "{0, 628}";
 		};
 	};
 	E0564C7C11FBD6AC000A9753 /* load-gap-template.html */ = {
@@ -1088,9 +1098,9 @@
 	};
 	E0564C8911FBD6AC000A9753 /* tweet-row-template.html */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {929, 823}}";
-			sepNavSelRange = "{37, 0}";
-			sepNavVisRange = "{0, 1439}";
+			sepNavIntBoundsRect = "{{0, 0}, {787, 971}}";
+			sepNavSelRange = "{1336, 11}";
+			sepNavVisRange = "{648, 1085}";
 		};
 	};
 	E0564C8A11FBD6AC000A9753 /* user-info-template.html */ = {
@@ -1102,9 +1112,9 @@
 	};
 	E0564C8B11FBD6AC000A9753 /* user-page-template.html */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {963, 802}}";
-			sepNavSelRange = "{502, 0}";
-			sepNavVisRange = "{0, 706}";
+			sepNavIntBoundsRect = "{{0, 0}, {787, 533}}";
+			sepNavSelRange = "{616, 7}";
+			sepNavVisRange = "{0, 712}";
 		};
 	};
 	E0564CB311FBD6DA000A9753 /* HelTweetica_Mac_Prefix.pch */ = {
@@ -1119,7 +1129,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 123";
 		rLen = 0;
-		rLoc = 2330;
+		rLoc = 2340;
 		rType = 0;
 		vrLen = 649;
 		vrLoc = 2085;
@@ -1129,7 +1139,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 123";
 		rLen = 0;
-		rLoc = 2330;
+		rLoc = 2340;
 		rType = 0;
 		vrLen = 649;
 		vrLoc = 2085;
@@ -1139,7 +1149,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 136";
 		rLen = 0;
-		rLoc = 2597;
+		rLoc = 2607;
 		rType = 0;
 		vrLen = 628;
 		vrLoc = 2085;
@@ -1159,7 +1169,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 136";
 		rLen = 0;
-		rLoc = 2597;
+		rLoc = 2607;
 		rType = 0;
 		vrLen = 679;
 		vrLoc = 2055;
@@ -1179,7 +1189,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 120";
 		rLen = 0;
-		rLoc = 2231;
+		rLoc = 2241;
 		rType = 0;
 		vrLen = 661;
 		vrLoc = 1895;
@@ -1189,7 +1199,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 155";
 		rLen = 0;
-		rLoc = 2891;
+		rLoc = 2901;
 		rType = 0;
 		vrLen = 772;
 		vrLoc = 2319;
@@ -1199,7 +1209,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 120";
 		rLen = 0;
-		rLoc = 2231;
+		rLoc = 2241;
 		rType = 0;
 		vrLen = 827;
 		vrLoc = 1542;
@@ -1209,7 +1219,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 120";
 		rLen = 0;
-		rLoc = 2231;
+		rLoc = 2241;
 		rType = 0;
 		vrLen = 856;
 		vrLoc = 1673;
@@ -1239,7 +1249,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 154";
 		rLen = 18;
-		rLoc = 2850;
+		rLoc = 2860;
 		rType = 0;
 		vrLen = 760;
 		vrLoc = 2410;
@@ -1249,7 +1259,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 155";
 		rLen = 0;
-		rLoc = 2891;
+		rLoc = 2901;
 		rType = 0;
 		vrLen = 757;
 		vrLoc = 2410;
@@ -1259,7 +1269,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 155";
 		rLen = 0;
-		rLoc = 2879;
+		rLoc = 2889;
 		rType = 0;
 		vrLen = 760;
 		vrLoc = 2410;
@@ -1269,7 +1279,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 159";
 		rLen = 0;
-		rLoc = 3018;
+		rLoc = 3028;
 		rType = 0;
 		vrLen = 738;
 		vrLoc = 2429;
@@ -1279,7 +1289,7 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 162";
 		rLen = 0;
-		rLoc = 3011;
+		rLoc = 3021;
 		rType = 0;
 		vrLen = 663;
 		vrLoc = 2429;
@@ -1309,10 +1319,107 @@
 		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
 		name = "style.css: 140";
 		rLen = 0;
-		rLoc = 2640;
+		rLoc = 2650;
 		rType = 0;
 		vrLen = 753;
 		vrLoc = 2220;
+	};
+	E0651C9B120A702E00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
+		name = "style.css: 112";
+		rLen = 0;
+		rLoc = 2072;
+		rType = 0;
+		vrLen = 801;
+		vrLoc = 1750;
+	};
+	E0651CA1120A704700F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
+		name = "style.css: 112";
+		rLen = 0;
+		rLoc = 2072;
+		rType = 0;
+		vrLen = 801;
+		vrLoc = 1750;
+	};
+	E0651CA5120A711300F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
+		name = "style.css: 113";
+		rLen = 2;
+		rLoc = 2098;
+		rType = 0;
+		vrLen = 811;
+		vrLoc = 1690;
+	};
+	E0651CD0120A7E8F00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
+		name = "style.css: 113";
+		rLen = 2;
+		rLoc = 2098;
+		rType = 0;
+		vrLen = 748;
+		vrLoc = 0;
+	};
+	E0651CD1120A7E8F00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C8911FBD6AC000A9753 /* tweet-row-template.html */;
+		name = "tweet-row-template.html: 42";
+		rLen = 11;
+		rLoc = 1336;
+		rType = 0;
+		vrLen = 1085;
+		vrLoc = 648;
+	};
+	E0651CD2120A7E8F00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C8B11FBD6AC000A9753 /* user-page-template.html */;
+		name = "user-page-template.html: 19";
+		rLen = 7;
+		rLoc = 616;
+		rType = 0;
+		vrLen = 712;
+		vrLoc = 0;
+	};
+	E0651CD3120A7E8F00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C7B11FBD6AC000A9753 /* basic-template.html */;
+		name = "basic-template.html: 14";
+		rLen = 0;
+		rLoc = 437;
+		rType = 0;
+		vrLen = 628;
+		vrLoc = 0;
+	};
+	E0651CD4120A7E8F00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C7211FBD6AC000A9753 /* main-template.html */;
+		name = "main-template.html: 12";
+		rLen = 0;
+		rLoc = 377;
+		rType = 0;
+		vrLen = 551;
+		vrLoc = 0;
+	};
+	E0651CD5120A7E8F00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
+		rLen = 7;
+		rLoc = 15498;
+		rType = 0;
+	};
+	E0651CD6120A7E8F00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 402";
+		rLen = 0;
+		rLoc = 15232;
+		rType = 0;
+		vrLen = 1110;
+		vrLoc = 14861;
 	};
 	E079ECF71207721A0083B77B /* TwitterComposer.h */ = {
 		uiCtxt = {
@@ -1491,7 +1598,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 16;
-		modificationTime = 302673242.583073;
+		modificationTime = 302676615.998063;
 		originalNumberOfMultipleMatches = 1;
 		state = 0;
 	};
@@ -1830,7 +1937,7 @@
 		fRef = E0564C7211FBD6AC000A9753 /* main-template.html */;
 		name = "main-template.html: 15";
 		rLen = 0;
-		rLoc = 497;
+		rLoc = 503;
 		rType = 0;
 		vrLen = 545;
 		vrLoc = 0;

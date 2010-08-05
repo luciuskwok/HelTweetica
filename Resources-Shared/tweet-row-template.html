@@ -1,7 +1,7 @@
 ﻿<div class='tweet_row {tweetRowStyle}'>
 
 	<div class='tweet_avatar'>
-		<a href='action:user/{screenName}'><img class='avatar_img' id='avatar-{messageIdentifier}' src='{profileImageURL}'></a>
+		<a href='action:user/{screenName}'><img id='avatar-{messageIdentifier}' src='{profileImageURL}'></a>
 	</div><!-- tweet_avatar -->
 	
 	<div class='tweet_content'>
@@ -36,10 +36,17 @@
 	
 	{Block:actions}
 	<div class='tweet_actions'>
-		<a href='action:reply/{messageIdentifier}'><img src='action-1.png'></a
-		><a href='action:dm/{screenName}'><img src='action-2.png'></a
-		><a href='action:retweet/{messageIdentifier}'><img src='action-3.png'></a
-		><a href='action:fave/{messageIdentifier}' id='star-{messageIdentifier}'><img src='action-4{faveImageSuffix}.png'></a>
+		<a href='action:reply/{messageIdentifier}'><img src='action-reply.png'></a
+		><a href='action:dm/{screenName}'><img src='action-dm.png'></a
+		><a href='action:retweet/{messageIdentifier}'><img src='action-rt.png'></a
+		><a href='action:fave/{messageIdentifier}' id='star-{messageIdentifier}'><img src='action-star{faveImageSuffix}.png'></a>
 	</div><!-- tweet_actions -->
 	{/Block:actions}
+	
+	{Block:ownActions}
+	<div class='tweet_actions'>
+		<a href='action:reply/{messageIdentifier}'><img src='action-delete.png'></a
+		><a href='action:fave/{messageIdentifier}' id='star-{messageIdentifier}'><img src='action-star{faveImageSuffix}.png'></a>
+	</div><!-- tweet_actions -->
+	{/Block:ownActions}
 </div>

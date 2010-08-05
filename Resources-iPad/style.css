@@ -108,11 +108,11 @@ p { margin: 0px 0px 20px 0px; }
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
 }
-.avatar_img { 
+.tweet_avatar img { 
 	width: 48px; height: 48px; 
 	margin: 1px; 
-	-webkit-border-radius: 8px; 
-	-webkit-box-shadow: 0px 1px 4px #888;
+	-webkit-border-radius: 7px; 
+	/*-webkit-box-shadow: 0px 1px 4px #888;*/
 }
 .image_preview { 
 	float:right;
