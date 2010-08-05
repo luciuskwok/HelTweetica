@@ -103,7 +103,7 @@ p { margin: 0px 0px 20px 0px; }
 	display: table-cell; 
 	width: 48px;
 	height: 48px;
-	padding: 5px;
+	padding: 5px 5px 2px 5px;
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
 }
@@ -137,7 +137,6 @@ p { margin: 0px 0px 20px 0px; }
 .time { 
 	color: #888; 
 	font-size: 10px;
-	line-height: 12px; 
 	font-style: italic; 
 }
 .time a { color: #88A; }
@@ -156,6 +155,12 @@ p { margin: 0px 0px 20px 0px; }
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
 }
+
+.tweet_actions img {
+	width: 20px; height: 20px;
+	margin: 0px;
+}
+
 
 .direct_message_header {
 	font-size: 20px; 

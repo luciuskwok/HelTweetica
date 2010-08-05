@@ -875,9 +875,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* iPhone */ = {
+		1D6058900D05DD3D006BFB54 /* iPad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iPhone" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iPad" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -887,7 +887,7 @@
 			);
 			dependencies = (
 			);
-			name = iPhone;
+			name = iPad;
 			productName = "HelTweetica-Spare";
 			productReference = 1D6058910D05DD3D006BFB54 /* HelTweetica.app */;
 			productType = "com.apple.product-type.application";
@@ -924,7 +924,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* iPhone */,
+				1D6058900D05DD3D006BFB54 /* iPad */,
 				E0564B1311FBD4AB000A9753 /* AdHoc */,
 			);
 		};
@@ -1303,7 +1303,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iPhone" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,

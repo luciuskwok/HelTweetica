@@ -146,11 +146,16 @@ p { margin: 0px 0px 20px 0px; }
 
 .tweet_actions {
 	display: table-cell; 
-	width: 60px;
-	min-width: 60px;
-	padding: 0px 5px 0px 5px;
+	width: 48px;
+	min-width: 48px;
+	padding: 4px 4px 0px 4px;
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
+}
+
+.tweet_actions img {
+	width: 20px; height: 20px;
+	margin: 2px;
 }
 
 .direct_message_header {
