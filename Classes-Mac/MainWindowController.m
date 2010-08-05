@@ -503,22 +503,26 @@
 	// Alert that delete is permanent and cannot be undone.
 	if (self.currentSheet == nil) { // Don't show another alert if one is already up.
 		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+		[alert addButtonWithTitle:NSLocalizedString(@"Delete", @"button")];
 		[alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"button")];
-		[alert addButtonWithTitle:NSLocalizedString(@"OK", @"button")];
-		[alert setMessageText:NSLocalizedString(@"Delete Tweet?", @"message")];
-		[alert setInformativeText:NSLocalizedString(@"This tweet will be deleted permanently and cannot be undone.", @"info")];
+		[alert setMessageText:NSLocalizedString(@"Delete Tweet?", @"title")];
+		[alert setInformativeText:NSLocalizedString(@"This tweet will be deleted permanently and cannot be undone.", @"message")];
 		[alert setAlertStyle:NSCriticalAlertStyle];
-		[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(didEndDeleteSheet:returnCode:contextInfo:) contextInfo:nil];
+		[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(didEndDeleteSheet:returnCode:contextInfo:) contextInfo:[identifier retain]];
 		self.currentSheet = alert;
 	}
 }
 
 - (void)didEndDeleteSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	self.currentSheet = nil;
-	if (returnCode == 0) return;
-	
-	
+	if (returnCode == NSAlertFirstButtonReturn) { // Delete
+		NSNumber *identifier = contextInfo;
+		[htmlController deleteStatusUpdate:identifier];
+		[identifier release];
+	}
 }
+
+
 
 #pragma mark Misc menu items
 
@@ -676,10 +680,6 @@
 	
 }	
 
-- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	self.currentSheet = nil;
-}
-
 #pragma mark Alert
 
 - (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage {
@@ -692,6 +692,10 @@
 		[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:) contextInfo:nil];
 		self.currentSheet = alert;
 	}
+}
+
+- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	self.currentSheet = nil;
 }
 
 @end

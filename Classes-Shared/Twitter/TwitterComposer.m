@@ -104,7 +104,14 @@
 }
 
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
-	[delegate composerDidFinishSendingStatusUpdate:self];
+	if (action.statusCode < 400 || action.statusCode == 403) {
+		// Twitter returns 403 if a duplicate status was posted.
+		[delegate composerDidFinishSendingStatusUpdate:self];
+	} else { 
+		// An error occurred.
+		NSError *error = [self errorWithCode:action.statusCode description:NSLocalizedString(@"A network error occurred.", @"description")];
+		[delegate composer:self didFailWithError:error];
+	}
 	[self removeAction:action];
 }
 

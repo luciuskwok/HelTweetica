@@ -42,7 +42,8 @@
 // Status Updates
 - (void)addStatusUpdates:(NSArray *)newUpdates replaceExisting:(BOOL)replace;
 - (TwitterStatusUpdate *)statusUpdateWithIdentifier:(NSNumber *)identifier;
-- (NSSet*) statusUpdatesInReplyToStatusIdentifier:(NSNumber*)identifier;
+- (NSSet*)statusUpdatesInReplyToStatusIdentifier:(NSNumber*)identifier;
+- (void)deleteStatusUpdate:(NSNumber*)anIdentifier;
 
 // Direct Messages
 - (void)addDirectMessages:(NSArray *)newMessages;

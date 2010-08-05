@@ -157,6 +157,24 @@
 	return resultSet;
 }
 
+- (void)deleteStatusUpdate:(NSNumber*)anIdentifier {
+	if ([anIdentifier longLongValue] == 0) return;
+
+	// Remove all references to this status update.
+	for (TwitterAccount *account in accounts) {
+		[account deleteStatusUpdate:anIdentifier];
+	}
+	
+	// SQLite statement to delete status update from tables.
+	NSString *query = @"Delete from StatusUpdates where Identifier == ?";
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	[statement bindNumber:anIdentifier atIndex:1];
+	int result = [statement step];
+	if (result != SQLITE_OK) {
+		NSLog (@"SQLite error deleting row: %d", result);
+	}
+}
+
 #pragma mark Direct Messages
 
 - (void)addDirectMessages:(NSArray *)newMessages {

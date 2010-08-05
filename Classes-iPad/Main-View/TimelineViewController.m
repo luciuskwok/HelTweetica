@@ -25,6 +25,7 @@
 #import "SearchResultsViewController.h"
 
 #import "TwitterTimeline.h"
+#import "DeleteAlertDelegate.h"
 
 
 
@@ -82,7 +83,7 @@
 	[currentPopover release];
 	currentActionSheet.delegate = nil;
 	[currentActionSheet release];
-	currentAlert.delegate = nil;
+	[currentAlert setDelegate: nil];
 	[currentAlert release];
 
 	[super dealloc];
@@ -195,8 +196,18 @@
 	[self composeWithText:text];
 }
 
+#pragma mark Delete
+
 - (void)deleteStatusUpdate:(NSNumber *)identifier {
-	
+	// Alert that delete is permanent and cannot be undone.
+	if (self.currentAlert == nil) { // Don't show another alert if one is already up.
+		DeleteAlertDelegate *alert = [[[DeleteAlertDelegate alloc] init] autorelease];
+		alert.identifier = identifier;
+		alert.htmlController = timelineHTMLController;
+		alert.delegate = self;
+		[alert showAlert];
+		self.currentAlert = alert;
+	}
 }
 
 #pragma mark Popovers
