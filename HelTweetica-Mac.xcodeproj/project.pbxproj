@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E00978DA120A4E670057ED35 /* emoji in Resources */ = {isa = PBXBuildFile; fileRef = E0097701120A4E670057ED35 /* emoji */; };
 		E013985412083462007F1B4C /* mac-toolbar-geotag-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = E013985312083462007F1B4C /* mac-toolbar-geotag-alt.png */; };
 		E01AF3C0120A1F8800B4250F /* mac-toolbar-home-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = E01AF3BF120A1F8800B4250F /* mac-toolbar-home-alt.png */; };
 		E01AF3C2120A205100B4250F /* mac-toolbar-direct-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = E01AF3C1120A205100B4250F /* mac-toolbar-direct-alt.png */; };
@@ -92,11 +93,6 @@
 		E0564C9811FBD6AC000A9753 /* main-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7211FBD6AC000A9753 /* main-template.html */; };
 		E0564C9911FBD6AC000A9753 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7311FBD6AC000A9753 /* MainMenu.xib */; };
 		E0564C9A11FBD6AC000A9753 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7411FBD6AC000A9753 /* style.css */; };
-		E0564C9B11FBD6AC000A9753 /* action-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7611FBD6AC000A9753 /* action-1.png */; };
-		E0564C9C11FBD6AC000A9753 /* action-2.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7711FBD6AC000A9753 /* action-2.png */; };
-		E0564C9D11FBD6AC000A9753 /* action-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7811FBD6AC000A9753 /* action-3.png */; };
-		E0564C9E11FBD6AC000A9753 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7911FBD6AC000A9753 /* action-4-on.png */; };
-		E0564C9F11FBD6AC000A9753 /* action-4.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7A11FBD6AC000A9753 /* action-4.png */; };
 		E0564CA011FBD6AC000A9753 /* basic-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7B11FBD6AC000A9753 /* basic-template.html */; };
 		E0564CA111FBD6AC000A9753 /* load-gap-template.html in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7C11FBD6AC000A9753 /* load-gap-template.html */; };
 		E0564CA211FBD6AC000A9753 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E0564C7D11FBD6AC000A9753 /* lock.png */; };
@@ -116,6 +112,11 @@
 		E0564E1A11FBD871000A9753 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564E1911FBD871000A9753 /* WebKit.framework */; };
 		E0564EC411FBD881000A9753 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		E0564EC511FBD888000A9753 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
+		E0651C4C120A672900F9D256 /* action-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651C47120A672900F9D256 /* action-1.png */; };
+		E0651C4D120A672900F9D256 /* action-2.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651C48120A672900F9D256 /* action-2.png */; };
+		E0651C4E120A672900F9D256 /* action-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651C49120A672900F9D256 /* action-3.png */; };
+		E0651C4F120A672900F9D256 /* action-4-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651C4A120A672900F9D256 /* action-4-on.png */; };
+		E0651C50120A672900F9D256 /* action-4.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651C4B120A672900F9D256 /* action-4.png */; };
 		E079ECF91207721B0083B77B /* TwitterComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = E079ECF81207721B0083B77B /* TwitterComposer.m */; };
 		E079EE141207BC090083B77B /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E079EE111207BC090083B77B /* OAuthClient.m */; };
 		E08BC723120177DB00CEEC44 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC722120177DB00CEEC44 /* NSDate+RelativeDate.m */; };
@@ -158,6 +159,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0097701120A4E670057ED35 /* emoji */ = {isa = PBXFileReference; lastKnownFileType = folder; path = emoji; sourceTree = "<group>"; };
 		E013985312083462007F1B4C /* mac-toolbar-geotag-alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-geotag-alt.png"; sourceTree = "<group>"; };
 		E01AF3BF120A1F8800B4250F /* mac-toolbar-home-alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-home-alt.png"; sourceTree = "<group>"; };
 		E01AF3C1120A205100B4250F /* mac-toolbar-direct-alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-direct-alt.png"; sourceTree = "<group>"; };
@@ -265,11 +267,6 @@
 		E0564C7211FBD6AC000A9753 /* main-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "main-template.html"; sourceTree = "<group>"; };
 		E0564C7311FBD6AC000A9753 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		E0564C7411FBD6AC000A9753 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
-		E0564C7611FBD6AC000A9753 /* action-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-1.png"; sourceTree = "<group>"; };
-		E0564C7711FBD6AC000A9753 /* action-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-2.png"; sourceTree = "<group>"; };
-		E0564C7811FBD6AC000A9753 /* action-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-3.png"; sourceTree = "<group>"; };
-		E0564C7911FBD6AC000A9753 /* action-4-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-4-on.png"; sourceTree = "<group>"; };
-		E0564C7A11FBD6AC000A9753 /* action-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-4.png"; sourceTree = "<group>"; };
 		E0564C7B11FBD6AC000A9753 /* basic-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "basic-template.html"; sourceTree = "<group>"; };
 		E0564C7C11FBD6AC000A9753 /* load-gap-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "load-gap-template.html"; sourceTree = "<group>"; };
 		E0564C7D11FBD6AC000A9753 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
@@ -288,6 +285,11 @@
 		E0564CB311FBD6DA000A9753 /* HelTweetica_Mac_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweetica_Mac_Prefix.pch; sourceTree = "<group>"; };
 		E0564E0B11FBD833000A9753 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		E0564E1911FBD871000A9753 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		E0651C47120A672900F9D256 /* action-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-1.png"; sourceTree = "<group>"; };
+		E0651C48120A672900F9D256 /* action-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-2.png"; sourceTree = "<group>"; };
+		E0651C49120A672900F9D256 /* action-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-3.png"; sourceTree = "<group>"; };
+		E0651C4A120A672900F9D256 /* action-4-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-4-on.png"; sourceTree = "<group>"; };
+		E0651C4B120A672900F9D256 /* action-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-4.png"; sourceTree = "<group>"; };
 		E079ECF71207721A0083B77B /* TwitterComposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterComposer.h; sourceTree = "<group>"; };
 		E079ECF81207721B0083B77B /* TwitterComposer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterComposer.m; sourceTree = "<group>"; };
 		E079EE101207BC090083B77B /* OAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthClient.h; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 				E0564C7211FBD6AC000A9753 /* main-template.html */,
 				E0564C7311FBD6AC000A9753 /* MainMenu.xib */,
 				E0564C7411FBD6AC000A9753 /* style.css */,
+				E0097701120A4E670057ED35 /* emoji */,
 			);
 			path = "Resources-Mac";
 			sourceTree = "<group>";
@@ -573,11 +576,11 @@
 		E0564C7511FBD6AC000A9753 /* Resources-Shared */ = {
 			isa = PBXGroup;
 			children = (
-				E0564C7611FBD6AC000A9753 /* action-1.png */,
-				E0564C7711FBD6AC000A9753 /* action-2.png */,
-				E0564C7811FBD6AC000A9753 /* action-3.png */,
-				E0564C7911FBD6AC000A9753 /* action-4-on.png */,
-				E0564C7A11FBD6AC000A9753 /* action-4.png */,
+				E0651C47120A672900F9D256 /* action-1.png */,
+				E0651C48120A672900F9D256 /* action-2.png */,
+				E0651C49120A672900F9D256 /* action-3.png */,
+				E0651C4A120A672900F9D256 /* action-4-on.png */,
+				E0651C4B120A672900F9D256 /* action-4.png */,
 				E0564C7B11FBD6AC000A9753 /* basic-template.html */,
 				E0524CC91203E9B000EF28F8 /* dm-button.png */,
 				E0524BC912038F4C00EF28F8 /* dm-row-section-close.html */,
@@ -725,11 +728,6 @@
 				E0564C9811FBD6AC000A9753 /* main-template.html in Resources */,
 				E0564C9911FBD6AC000A9753 /* MainMenu.xib in Resources */,
 				E0564C9A11FBD6AC000A9753 /* style.css in Resources */,
-				E0564C9B11FBD6AC000A9753 /* action-1.png in Resources */,
-				E0564C9C11FBD6AC000A9753 /* action-2.png in Resources */,
-				E0564C9D11FBD6AC000A9753 /* action-3.png in Resources */,
-				E0564C9E11FBD6AC000A9753 /* action-4-on.png in Resources */,
-				E0564C9F11FBD6AC000A9753 /* action-4.png in Resources */,
 				E0564CA011FBD6AC000A9753 /* basic-template.html in Resources */,
 				E0564CA111FBD6AC000A9753 /* load-gap-template.html in Resources */,
 				E0564CA211FBD6AC000A9753 /* lock.png in Resources */,
@@ -758,6 +756,12 @@
 				E01AF3C2120A205100B4250F /* mac-toolbar-direct-alt.png in Resources */,
 				E01AF3C5120A205900B4250F /* mac-toolbar-mentions-alt.png in Resources */,
 				E01AF3C6120A205900B4250F /* mac-toolbar-star-alt.png in Resources */,
+				E00978DA120A4E670057ED35 /* emoji in Resources */,
+				E0651C4C120A672900F9D256 /* action-1.png in Resources */,
+				E0651C4D120A672900F9D256 /* action-2.png in Resources */,
+				E0651C4E120A672900F9D256 /* action-3.png in Resources */,
+				E0651C4F120A672900F9D256 /* action-4-on.png in Resources */,
+				E0651C50120A672900F9D256 /* action-4.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

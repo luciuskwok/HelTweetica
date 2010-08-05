@@ -8,6 +8,12 @@
 
 #import "NSString+HTMLFormatted.h"
 
+// Constants
+#ifdef TARGET_PROJECT_MAC
+const BOOL kConvertEmojiToImg = YES;
+#else
+const BOOL kConvertEmojiToImg = NO;
+#endif
 
 @implementation NSString (HTMLFormatted)
 
@@ -103,7 +109,7 @@
 				if (foundWord.length > 0) {
 					insertHTML = [NSString stringWithFormat: @"@<a href='action:user/%@'>%@</a>", foundWord, foundWord];
 					[result replaceCharactersInRange: NSMakeRange(index, foundWord.length+1) withString: insertHTML];
-					index += insertHTML.length;
+					index += insertHTML.length - 1;
 					wordLength = 0;
 				}
 			}
@@ -118,11 +124,17 @@
 						displayedHashTag = [[foundWord substringToIndex:kMaxHashTagLength] stringByAppendingString:@"..."];
 					insertHTML = [NSString stringWithFormat: @"<a href='action:search/#%@'>#%@</a>", foundWord, displayedHashTag];
 					[result replaceCharactersInRange: NSMakeRange(index, foundWord.length+1) withString: insertHTML];
-					index += insertHTML.length;
+					index += insertHTML.length - 1;
 					wordLength = 0;
 				}
 			}
 			
+			// Emoji
+			if (c >= 0xE00A && c <=  0xE537 && kConvertEmojiToImg) {
+				NSString *insertHTML = [NSString stringWithFormat:@"<img class='emoji' src='emoji/kb-emoji-U+%X.png'>", c];
+				[result replaceCharactersInRange:NSMakeRange(index, 1) withString:insertHTML];
+				index += insertHTML.length - 1;
+			}
 		}
 		
 		previousChar = c;
