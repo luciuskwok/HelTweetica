@@ -29,7 +29,7 @@ const int kTwitterCharacterMax = 140;
 
 @implementation ComposeViewController
 @synthesize messageField;
-@synthesize topToolbar, retweetStyleButton, accountButton, sendButton;
+@synthesize topToolbar, accountButton, retweetStyleButton, photosButton, sendButton;
 @synthesize inputToolbar, geotagButton, charactersRemaining;
 @synthesize currentPopover, currentActionSheet, delegate;
 
@@ -72,8 +72,9 @@ const int kTwitterCharacterMax = 140;
 	[messageField release];
 	
 	[topToolbar release];
-	[retweetStyleButton release];
 	[accountButton release];
+	[retweetStyleButton release];
+	[photosButton release];
 	[sendButton release];
 
 	[inputToolbar release];
@@ -171,6 +172,7 @@ const int kTwitterCharacterMax = 140;
 		messageField.textColor = [UIColor grayColor];
 		messageField.editable = NO;
 		charactersRemaining.title = @"";
+		photosButton.enabled = NO;
 		sendButton.enabled = YES;
 	} else {
 		// Allow editing
@@ -179,6 +181,7 @@ const int kTwitterCharacterMax = 140;
 		messageField.inputAccessoryView = inputToolbar;
 		[messageField becomeFirstResponder];
 		[self updateCharacterCountWithText: messageField.text];
+		photosButton.enabled = YES;
 	}
 	
 	// Input toolbar.
@@ -472,8 +475,9 @@ const int kTwitterCharacterMax = 140;
 	self.messageField = nil;
 	
 	self.topToolbar = nil;
-	self.retweetStyleButton = nil;
 	self.accountButton = nil;
+	self.retweetStyleButton = nil;
+	self.photosButton = nil;
 	self.sendButton = nil;
 	
 	self.inputToolbar = nil;
