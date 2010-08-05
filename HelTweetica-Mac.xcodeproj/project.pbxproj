@@ -117,6 +117,7 @@
 		E0651CBC120A7E3F00F9D256 /* action-rt.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CB7120A7E3F00F9D256 /* action-rt.png */; };
 		E0651CBD120A7E3F00F9D256 /* action-star-on.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CB8120A7E3F00F9D256 /* action-star-on.png */; };
 		E0651CBE120A7E3F00F9D256 /* action-star.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CB9120A7E3F00F9D256 /* action-star.png */; };
+		E0651CE0120A800F00F9D256 /* action-delete.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CDF120A800F00F9D256 /* action-delete.png */; };
 		E079ECF91207721B0083B77B /* TwitterComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = E079ECF81207721B0083B77B /* TwitterComposer.m */; };
 		E079EE141207BC090083B77B /* OAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E079EE111207BC090083B77B /* OAuthClient.m */; };
 		E08BC723120177DB00CEEC44 /* NSDate+RelativeDate.m in Sources */ = {isa = PBXBuildFile; fileRef = E08BC722120177DB00CEEC44 /* NSDate+RelativeDate.m */; };
@@ -290,6 +291,7 @@
 		E0651CB7120A7E3F00F9D256 /* action-rt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-rt.png"; sourceTree = "<group>"; };
 		E0651CB8120A7E3F00F9D256 /* action-star-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-star-on.png"; sourceTree = "<group>"; };
 		E0651CB9120A7E3F00F9D256 /* action-star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-star.png"; sourceTree = "<group>"; };
+		E0651CDF120A800F00F9D256 /* action-delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-delete.png"; sourceTree = "<group>"; };
 		E079ECF71207721A0083B77B /* TwitterComposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterComposer.h; sourceTree = "<group>"; };
 		E079ECF81207721B0083B77B /* TwitterComposer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterComposer.m; sourceTree = "<group>"; };
 		E079EE101207BC090083B77B /* OAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthClient.h; sourceTree = "<group>"; };
@@ -576,6 +578,7 @@
 		E0564C7511FBD6AC000A9753 /* Resources-Shared */ = {
 			isa = PBXGroup;
 			children = (
+				E0651CDF120A800F00F9D256 /* action-delete.png */,
 				E0651CB5120A7E3F00F9D256 /* action-dm.png */,
 				E0651CB6120A7E3F00F9D256 /* action-reply.png */,
 				E0651CB7120A7E3F00F9D256 /* action-rt.png */,
@@ -762,6 +765,7 @@
 				E0651CBC120A7E3F00F9D256 /* action-rt.png in Resources */,
 				E0651CBD120A7E3F00F9D256 /* action-star-on.png in Resources */,
 				E0651CBE120A7E3F00F9D256 /* action-star.png in Resources */,
+				E0651CE0120A800F00F9D256 /* action-delete.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

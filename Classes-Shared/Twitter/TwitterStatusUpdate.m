@@ -226,8 +226,6 @@
 		[substitutions setObject:geoHTML forKey:@"geotagIcon"];
 	}
 
-	// Always show action buttons on right side of page.
-	[substitutions setObject:@"YES" forKey:@"actions"];
 	
 	// Find image previews.
 	NSString *searchResults;

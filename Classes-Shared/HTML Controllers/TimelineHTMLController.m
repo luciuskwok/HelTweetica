@@ -632,6 +632,15 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if ([account messageIsFavorite:statusUpdate.identifier]) 
 		[substitutions setObject:@"-on" forKey:@"faveImageSuffix"];
 	
+	// Own tweets.
+	if ([statusUpdate.userIdentifier isEqualToNumber:account.identifier]) {
+		// Show delete action but hide reply, dm, and retweet buttons.
+		[substitutions setObject:@"YES" forKey:@"ownActions"];
+	} else {
+		// Always show action buttons on right side of page.
+		[substitutions setObject:@"YES" forKey:@"actions"];
+	}
+	
 	// Add values from status update.
 	[substitutions addEntriesFromDictionary:[statusUpdate htmlSubstitutions]];
 	

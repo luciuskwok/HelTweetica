@@ -497,6 +497,29 @@
 	[self refresh:nil];
 }
 
+#pragma mark Delete
+
+- (void)deleteStatusUpdate:(NSNumber *)identifier {
+	// Alert that delete is permanent and cannot be undone.
+	if (self.currentSheet == nil) { // Don't show another alert if one is already up.
+		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+		[alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"button")];
+		[alert addButtonWithTitle:NSLocalizedString(@"OK", @"button")];
+		[alert setMessageText:NSLocalizedString(@"Delete Tweet?", @"message")];
+		[alert setInformativeText:NSLocalizedString(@"This tweet will be deleted permanently and cannot be undone.", @"info")];
+		[alert setAlertStyle:NSCriticalAlertStyle];
+		[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(didEndDeleteSheet:returnCode:contextInfo:) contextInfo:nil];
+		self.currentSheet = alert;
+	}
+}
+
+- (void)didEndDeleteSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	self.currentSheet = nil;
+	if (returnCode == 0) return;
+	
+	
+}
+
 #pragma mark Misc menu items
 
 - (IBAction)disabledMenuItem:(id)sender {
@@ -549,12 +572,14 @@
 		
 		if ([actionName hasPrefix:@"login"]) { // Log in
 			[self addAccount:nil];
-		} else if ([actionName hasPrefix:@"retweet"]) { // Retweet message
+		} else if ([actionName hasPrefix:@"delete"]) { // Delete status update
+			[self deleteStatusUpdate:messageIdentifier];
+		} else if ([actionName hasPrefix:@"dm"]) { // Direct message the sender
+			[self directMessageWithScreenName:[actionName lastPathComponent]];
+		} else if ([actionName hasPrefix:@"retweet"]) { // Retweet status update
 			[self retweet: messageIdentifier];
 		} else if ([actionName hasPrefix:@"reply"]) { // Public reply to the sender
 			[self replyToMessage:messageIdentifier];
-		} else if ([actionName hasPrefix:@"dm"]) { // Direct message the sender
-			[self directMessageWithScreenName:[actionName lastPathComponent]];
 		} else if ([actionName hasPrefix:@"user"]) { // Show user page
 			[self showUserPage:[actionName lastPathComponent]];
 		} else if ([actionName hasPrefix:@"search"]) { // Show search page

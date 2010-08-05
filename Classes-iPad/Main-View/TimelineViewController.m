@@ -195,6 +195,9 @@
 	[self composeWithText:text];
 }
 
+- (void)deleteStatusUpdate:(NSNumber *)identifier {
+	
+}
 
 #pragma mark Popovers
 
@@ -306,6 +309,8 @@
 			[self retweet: messageIdentifier];
 		} else if ([actionName hasPrefix:@"reply"]) { // Public reply to the sender
 			[self replyToMessage:messageIdentifier];
+		} else if ([actionName hasPrefix:@"delete"]) { // Delete status update
+			[self deleteStatusUpdate:messageIdentifier];
 		} else if ([actionName hasPrefix:@"dm"]) { // Direct message the sender
 			[self directMessageWithScreenName:[actionName lastPathComponent]];
 		} else if ([actionName hasPrefix:@"user"]) { // Show user page
