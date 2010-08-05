@@ -170,7 +170,7 @@
 	LKSqliteStatement *statement = [database statementWithQuery:query];
 	[statement bindNumber:anIdentifier atIndex:1];
 	int result = [statement step];
-	if (result != SQLITE_OK) {
+	if (result != SQLITE_OK && result != SQLITE_DONE) {
 		NSLog (@"SQLite error deleting row: %d", result);
 	}
 }

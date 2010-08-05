@@ -31,7 +31,7 @@
 @class TwitterAction, TwitterLoadTimelineAction, TwitterTimeline;
 
 
-@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, GoToUserViewControllerDelegate, TimelineHTMLControllerDelegate, WebBrowserViewControllerDelegate> {
+@interface TimelineViewController : UIViewController <UIPopoverControllerDelegate, UIAlertViewDelegate, ListsViewControllerDelegate, SearchViewControllerDelegate, ComposeViewControllerDelegate, GoToUserViewControllerDelegate, TimelineHTMLControllerDelegate, WebBrowserViewControllerDelegate> {
 	IBOutlet LKWebView *webView;
 	IBOutlet UIBarButtonItem *composeButton;
 
@@ -44,7 +44,7 @@
 	
 	UIPopoverController *currentPopover;
 	UIActionSheet *currentActionSheet;
-	UIAlertView *currentAlert;
+	id currentAlert;
 }
 @property (nonatomic, retain) LKWebView *webView;
 @property (nonatomic, retain) UIBarButtonItem *composeButton;
@@ -54,7 +54,7 @@
 
 @property (nonatomic, retain) UIPopoverController *currentPopover;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
-@property (nonatomic, retain) UIAlertView *currentAlert;
+@property (nonatomic, retain) id currentAlert;
 
 // IBActions
 - (IBAction) close:(id)sender;

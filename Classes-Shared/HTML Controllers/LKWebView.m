@@ -49,8 +49,7 @@
 			[result appendString:@"\\\\"];
 		} else if ([scanner scanString:@"\"" intoString:nil]) {
 			[result appendString:@"\\\""];
-		} else {
-			[scanner scanCharactersFromSet:skipSet intoString:nil];
+		} else if ([scanner scanCharactersFromSet:skipSet intoString:nil]) {
 			[result appendString:@" "];
 		}
 	}

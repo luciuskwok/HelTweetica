@@ -55,6 +55,7 @@
 - (void)addFavorites:(NSArray*)set;
 - (void)removeFavorite:(NSNumber *)message;
 - (BOOL)messageIsFavorite:(NSNumber *)message;
+- (void)deleteStatusUpdate:(NSNumber*)anIdentifier;
 
 - (void)deleteCaches;
 

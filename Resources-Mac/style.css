@@ -124,7 +124,7 @@ p { margin: 0px 0px 20px 0px; }
 .screen_name a { color: #226; }
 .image_preview { 
 	float:right;
-	margin: 5px 0px 5px 5px; 
+	margin: 4px 0px 4px 5px; 
 	max-width: 400px;
 	max-height: 200px;
 	-webkit-border-radius: 8px; 
@@ -150,9 +150,9 @@ p { margin: 0px 0px 20px 0px; }
 .tweet_actions {
 	display: table-cell; 
 	width: 40px;
-	min-width: 40px;
 	padding: 4px 4px 0px 4px;
 	vertical-align: top;
+	text-align: right;
 	border-bottom: 1px solid #ccc;
 }
 

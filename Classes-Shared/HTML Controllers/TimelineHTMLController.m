@@ -332,7 +332,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	noInternetConnection = YES;
 }
 
-#pragma mark Favorite
+#pragma mark Favorite status update
 
 - (void) fave: (NSNumber*) messageIdentifier {
 	noInternetConnection = NO;
@@ -351,7 +351,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[self startTwitterAction:action];
 	
 	// Change the star to a spinner.
-	// Change the display of the star next to tweet in root view
 	NSString *element = [NSString stringWithFormat:@"star-%@", [message.identifier stringValue]];
 	NSString *html = @"<img src='fave-spinner.gif'>";
 	[self.webView setDocumentElement:element innerHTML:html];
@@ -379,13 +378,22 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 #pragma mark Delete status update
 
 - (void)deleteStatusUpdate:(NSNumber *)identifier {
+	// Change the trash can to a spinner.
+	NSString *element = [NSString stringWithFormat:@"trash-%@", [identifier stringValue]];
+	NSString *html = @"<img src='fave-spinner.gif'>";
+	[self.webView setDocumentElement:element innerHTML:html];
+
 	TwitterDeleteAction *action = [[[TwitterDeleteAction alloc] initWithMessageIdentifier:identifier] autorelease];
 	action.completionTarget= self;
 	action.completionAction = @selector(didDeleteStatusUpdate:);
 	[self startTwitterAction:action];
 }
 
-
+- (void)didDeleteStatusUpdate:(TwitterDeleteAction *)action {
+	[twitter deleteStatusUpdate:action.identifier];
+	self.messages = [timeline messagesWithLimit:maxTweetsShown];
+	[self rewriteTweetArea];
+}
 
 #pragma mark Web view updating
 

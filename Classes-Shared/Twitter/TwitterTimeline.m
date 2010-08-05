@@ -112,7 +112,12 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	if ([identifier longLongValue] == 0) return;
 	
 	NSString *query = [NSString stringWithFormat:@"Delete from %@ where Identifier == ?", databaseTableName];
-	[database execute:query];
+	LKSqliteStatement *statement = [database statementWithQuery:query];
+	[statement bindNumber:identifier atIndex:1];
+	int result = [statement step];
+	if (result != SQLITE_OK && result != SQLITE_DONE) {
+		NSLog (@"SQLite error deleting row: %d", result);
+	}
 }
 
 - (BOOL)containsIdentifier:(NSNumber *)identifier {

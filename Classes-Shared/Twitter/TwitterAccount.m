@@ -125,6 +125,21 @@
 - (BOOL)messageIsFavorite:(NSNumber *)messageIdentifier {
 	return [favorites containsIdentifier:messageIdentifier];
 }
+
+- (void)deleteStatusUpdate:(NSNumber*)anIdentifier {
+	[homeTimeline removeIdentifier:anIdentifier];
+	[mentions removeIdentifier:anIdentifier];
+	[favorites removeIdentifier:anIdentifier];
+	
+	TwitterList *list;
+	for (list in lists) {
+		[list.statuses removeIdentifier:anIdentifier];
+	}
+	for (list in listSubscriptions) {
+		[list.statuses removeIdentifier:anIdentifier];
+	}
+}
+
 			
 #pragma mark Password
 

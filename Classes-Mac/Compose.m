@@ -304,7 +304,7 @@ enum { kTwitterCharacterMax = 140 };
 
 - (void)composer:(TwitterComposer *)aComposer didUploadPictureWithURL:(NSString *)url {
 	NSString *text = [textView string];
-	if ([text hasSuffix:@" "] == NO && [text hasSuffix:@"\n"] == NO && [text hasSuffix:@"\t"] == NO) 
+	if ([text hasSuffix:@" "] == NO && [text hasSuffix:@"\n"] == NO && [text hasSuffix:@"\t"] == NO && text.length > 0) 
 		text = [text stringByAppendingString:@" "];
 	text = [text stringByAppendingString:url];
 	[self setTextViewContent:text];
@@ -384,10 +384,6 @@ enum { kTwitterCharacterMax = 140 };
 	}
 	return YES;
 }
-
-#pragma mark Composer delegate
-
-
 
 #pragma mark Text view delegate
 

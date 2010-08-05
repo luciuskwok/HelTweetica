@@ -17,8 +17,6 @@
 		);
 		breakpoints = (
 			E01AF40F120A30C700B4250F /* TimelineHTMLController.m:186 */,
-			E0651DF2120A9BE800F9D256 /* DeleteAlertDelegate.m:33 */,
-			E0651E13120A9D4000F9D256 /* DeleteAlertDelegate.m:16 */,
 		);
 		codeSenseManager = E05648D411FBCB3D000A9753 /* Code sense */;
 		executables = (
@@ -183,6 +181,18 @@
 			E0651E2C120A9EDD00F9D256 /* PBXTextBookmark */ = E0651E2C120A9EDD00F9D256 /* PBXTextBookmark */;
 			E0651E2E120A9F3500F9D256 /* PBXTextBookmark */ = E0651E2E120A9F3500F9D256 /* PBXTextBookmark */;
 			E0651E2F120A9F3F00F9D256 /* PBXTextBookmark */ = E0651E2F120A9F3F00F9D256 /* PBXTextBookmark */;
+			E0651E32120A9FD400F9D256 /* PBXTextBookmark */ = E0651E32120A9FD400F9D256 /* PBXTextBookmark */;
+			E0651E33120A9FD400F9D256 /* PBXTextBookmark */ = E0651E33120A9FD400F9D256 /* PBXTextBookmark */;
+			E0651E34120A9FD400F9D256 /* PBXTextBookmark */ = E0651E34120A9FD400F9D256 /* PBXTextBookmark */;
+			E0651E35120A9FDE00F9D256 /* PBXTextBookmark */ = E0651E35120A9FDE00F9D256 /* PBXTextBookmark */;
+			E0651E36120A9FDE00F9D256 /* PBXTextBookmark */ = E0651E36120A9FDE00F9D256 /* PBXTextBookmark */;
+			E0651E43120AA1DC00F9D256 /* PBXTextBookmark */ = E0651E43120AA1DC00F9D256 /* PBXTextBookmark */;
+			E0651E44120AA1DC00F9D256 /* PBXTextBookmark */ = E0651E44120AA1DC00F9D256 /* PBXTextBookmark */;
+			E0651E45120AA1DC00F9D256 /* PBXTextBookmark */ = E0651E45120AA1DC00F9D256 /* PBXTextBookmark */;
+			E0651E47120AA1DC00F9D256 /* PBXTextBookmark */ = E0651E47120AA1DC00F9D256 /* PBXTextBookmark */;
+			E0651E48120AA1DC00F9D256 /* PBXTextBookmark */ = E0651E48120AA1DC00F9D256 /* PBXTextBookmark */;
+			E0651E49120AA1DC00F9D256 /* PBXTextBookmark */ = E0651E49120AA1DC00F9D256 /* PBXTextBookmark */;
+			E0651E4A120AA1DC00F9D256 /* PBXTextBookmark */ = E0651E4A120AA1DC00F9D256 /* PBXTextBookmark */;
 			E079EC971207636F0083B77B = E079EC971207636F0083B77B /* PBXTextBookmark */;
 			E079ED6612078E410083B77B = E079ED6612078E410083B77B /* PBXTextBookmark */;
 			E079ED6712078E410083B77B = E079ED6712078E410083B77B /* PBXTextBookmark */;
@@ -308,7 +318,7 @@
 		ignoreCount = 0;
 		lineNumber = 186;
 		location = HelTweetica;
-		modificationTime = 302685916.967847;
+		modificationTime = 302686680.464106;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -367,7 +377,7 @@
 		fRef = E0564A5E11FBD2E7000A9753 /* TwitterTimeline.m */;
 		name = "TwitterTimeline.m: 350";
 		rLen = 0;
-		rLoc = 14055;
+		rLoc = 14080;
 		rType = 0;
 		vrLen = 1159;
 		vrLoc = 12956;
@@ -725,9 +735,9 @@
 	};
 	E0564A4E11FBD2E7000A9753 /* Twitter.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {542, 5526}}";
-			sepNavSelRange = "{2036, 0}";
-			sepNavVisRange = "{1601, 723}";
+			sepNavIntBoundsRect = "{{0, 0}, {683, 6084}}";
+			sepNavSelRange = "{7052, 0}";
+			sepNavVisRange = "{6417, 1439}";
 		};
 	};
 	E0564A4F11FBD2E7000A9753 /* TwitterAccount.h */ = {
@@ -781,9 +791,16 @@
 	};
 	E0564A5E11FBD2E7000A9753 /* TwitterTimeline.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {970, 6624}}";
-			sepNavSelRange = "{13852, 0}";
-			sepNavVisRange = "{12956, 1159}";
+			sepNavIntBoundsRect = "{{0, 0}, {683, 7110}}";
+			sepNavSelRange = "{4914, 53}";
+			sepNavVisRange = "{4368, 1271}";
+		};
+	};
+	E0564A5F11FBD2E7000A9753 /* TwitterUser.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {683, 1692}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1745}";
 		};
 	};
 	E0564A6011FBD2E7000A9753 /* TwitterUser.m */ = {
@@ -830,9 +847,9 @@
 	};
 	E0564AA311FBD306000A9753 /* style.css */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {683, 5004}}";
-			sepNavSelRange = "{3155, 0}";
-			sepNavVisRange = "{2400, 688}";
+			sepNavIntBoundsRect = "{{0, 0}, {683, 4914}}";
+			sepNavSelRange = "{2203, 27}";
+			sepNavVisRange = "{1894, 811}";
 		};
 	};
 	E0564AB811FBD325000A9753 /* action-3.png */ = {
@@ -1278,27 +1295,10 @@
 	};
 	E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {651, 792}}";
-			sepNavSelRange = "{267, 0}";
-			sepNavVisRange = "{181, 732}";
+			sepNavIntBoundsRect = "{{0, 0}, {683, 791}}";
+			sepNavSelRange = "{1010, 0}";
+			sepNavVisRange = "{91, 1113}";
 		};
-	};
-	E0651DF2120A9BE800F9D256 /* DeleteAlertDelegate.m:33 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */;
-		functionName = "-alertView:didDismissWithButtonIndex:";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 33;
-		modificationTime = 302685916.968515;
-		originalNumberOfMultipleMatches = 1;
-		state = 0;
 	};
 	E0651DFE120A9C3500F9D256 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -1407,23 +1407,6 @@
 		path = "asm objc_msgSend  0x333715e8";
 		sourceTree = "<group>";
 	};
-	E0651E13120A9D4000F9D256 /* DeleteAlertDelegate.m:16 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */;
-		functionName = "-dealloc";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 16;
-		modificationTime = 302685916.968958;
-		originalNumberOfMultipleMatches = 1;
-		state = 0;
-	};
 	E0651E27120A9EDD00F9D256 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = E05649F911FBD2D8000A9753 /* TimelineViewController.h */;
@@ -1503,6 +1486,129 @@
 		rType = 0;
 		vrLen = 688;
 		vrLoc = 2400;
+	};
+	E0651E32120A9FD400F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 172";
+		rLen = 0;
+		rLoc = 3155;
+		rType = 0;
+		vrLen = 316;
+		vrLoc = 2751;
+	};
+	E0651E33120A9FD400F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */;
+		rLen = 0;
+		rLoc = 32;
+		rType = 1;
+	};
+	E0651E34120A9FD400F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */;
+		name = "DeleteAlertDelegate.m: 33";
+		rLen = 0;
+		rLoc = 1010;
+		rType = 0;
+		vrLen = 654;
+		vrLoc = 53;
+	};
+	E0651E35120A9FDE00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 172";
+		rLen = 0;
+		rLoc = 3155;
+		rType = 0;
+		vrLen = 667;
+		vrLoc = 2400;
+	};
+	E0651E36120A9FDE00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */;
+		name = "DeleteAlertDelegate.m: 33";
+		rLen = 0;
+		rLoc = 1010;
+		rType = 0;
+		vrLen = 1195;
+		vrLoc = 0;
+	};
+	E0651E43120AA1DC00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */;
+		name = "DeleteAlertDelegate.m: 33";
+		rLen = 0;
+		rLoc = 1010;
+		rType = 0;
+		vrLen = 1113;
+		vrLoc = 91;
+	};
+	E0651E44120AA1DC00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A5F11FBD2E7000A9753 /* TwitterUser.h */;
+		name = "TwitterUser.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1745;
+		vrLoc = 0;
+	};
+	E0651E45120AA1DC00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0651E46120AA1DC00F9D256 /* sqlite3.h */;
+		name = "sqlite3.h: 353";
+		rLen = 56;
+		rLoc = 14919;
+		rType = 0;
+		vrLen = 1942;
+		vrLoc = 14063;
+	};
+	E0651E46120AA1DC00F9D256 /* sqlite3.h */ = {
+		isa = PBXFileReference;
+		name = sqlite3.h;
+		path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/sqlite3.h;
+		sourceTree = "<absolute>";
+	};
+	E0651E47120AA1DC00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A5E11FBD2E7000A9753 /* TwitterTimeline.m */;
+		name = "TwitterTimeline.m: 118";
+		rLen = 53;
+		rLoc = 4914;
+		rType = 0;
+		vrLen = 1271;
+		vrLoc = 4368;
+	};
+	E0651E48120AA1DC00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */;
+		name = "Twitter.m: 174";
+		rLen = 0;
+		rLoc = 7052;
+		rType = 0;
+		vrLen = 1439;
+		vrLoc = 6417;
+	};
+	E0651E49120AA1DC00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 172";
+		rLen = 0;
+		rLoc = 3155;
+		rType = 0;
+		vrLen = 667;
+		vrLoc = 2400;
+	};
+	E0651E4A120AA1DC00F9D256 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564AA311FBD306000A9753 /* style.css */;
+		name = "style.css: 119";
+		rLen = 27;
+		rLoc = 2203;
+		rType = 0;
+		vrLen = 811;
+		vrLoc = 1894;
 	};
 	E079EC971207636F0083B77B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
