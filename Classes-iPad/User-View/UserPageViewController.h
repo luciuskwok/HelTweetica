@@ -23,9 +23,11 @@
 
 @interface UserPageViewController : TimelineViewController <UserPageHTMLControllerDelegate> {
 	IBOutlet UIToolbar *topToolbar;
+	IBOutlet UIBarButtonItem *followButton;
 	TwitterUser *user;
 }
 @property (nonatomic, retain) UIToolbar *topToolbar;
+@property (nonatomic, retain) UIBarButtonItem *followButton;
 @property (nonatomic, retain) TwitterUser *user;
 
 - (id)initWithTwitterUser:(TwitterUser*)aUser;

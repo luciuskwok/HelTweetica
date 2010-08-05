@@ -25,15 +25,9 @@
 #import "UserPageHTMLController.h"
 
 
-// Tag used to identify Follow/Unfollow button in Toolbar
-enum {
-	kFollowButtonTag = 69,
-	kFollowButtonPositionFromEnd = 2
-};
-
 
 @implementation UserPageViewController
-@synthesize topToolbar, user;
+@synthesize topToolbar, followButton, user;
 
 
 - (id)initWithTwitterUser:(TwitterUser*)aUser {
@@ -53,6 +47,7 @@ enum {
 
 - (void)dealloc {
 	[topToolbar release];
+	[followButton release];
 	[user release];
 	[super dealloc];
 }
@@ -64,37 +59,39 @@ enum {
 }
 
 
-#pragma mark UserPageHTMLController delegate
+#pragma mark Follow button
 
 - (void)didUpdateFriendshipStatusWithAccountFollowsUser:(BOOL)accountFollowsUser userFollowsAccount:(BOOL)userFollowsAccount {
-	// Insert follow/unfollow button in toolbar
 	
-	SEL buttonAction = accountFollowsUser ? @selector(unfollow:) : @selector(follow:);
-	NSString *buttonTitle = accountFollowsUser ? NSLocalizedString (@"Unfollow", @"button") : NSLocalizedString (@"Follow", @"button");
-	NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.topToolbar.items];
+	// Don't change the button from the default disabled state if this is the account's own user.
+	if ([timelineHTMLController.account.screenName isEqualToString:user.screenName])
+		return;
 	
-	// Remove any existing Follow/Unfollow buttons
-	int index;
-	for (index = 0; index < toolbarItems.count; index++) {
-		UIBarItem *item = [toolbarItems objectAtIndex:index];
-		if (item.tag == kFollowButtonTag) {
-			[toolbarItems removeObjectAtIndex:index];
-			break;
-		}
-	}
-	
-	// Only add button if the friend status is valid
-	if (![timelineHTMLController.account.screenName isEqualToString:user.screenName]) {
-		index = toolbarItems.count - kFollowButtonPositionFromEnd; // Position two from end
-		UIBarButtonItem *followButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered target:self action:buttonAction] autorelease];
-		followButton.tag = kFollowButtonTag;
-		[toolbarItems insertObject:followButton atIndex:index];
-	}
-	
-	[topToolbar setItems:toolbarItems animated:YES];
+	// Update follow/unfollow button in toolbar
+	followButton.action = accountFollowsUser ? @selector(unfollow:) : @selector(follow:);
+	followButton.title = accountFollowsUser ? NSLocalizedString (@"Unfollow", @"button") : NSLocalizedString (@"Follow", @"button");
+	followButton.enabled = YES;
 }
 
-#pragma mark IBActions
+- (void)setFollowButtonToPending {
+	followButton.action = nil;
+	followButton.title = NSLocalizedString (@"updating...", @"button");
+	followButton.enabled = NO;
+}
+
+- (IBAction)follow:(id)sender {
+	[self setFollowButtonToPending];
+	UserPageHTMLController *htmlController = (UserPageHTMLController *)timelineHTMLController;
+	[htmlController follow];
+}
+
+- (IBAction)unfollow:(id)sender {
+	[self setFollowButtonToPending];
+	UserPageHTMLController *htmlController = (UserPageHTMLController *)timelineHTMLController;
+	[htmlController unfollow];
+}
+
+#pragma mark Lists button
 
 - (IBAction) lists: (id) sender {
 	if ([self closeAllPopovers] == NO) {
@@ -106,18 +103,6 @@ enum {
 		[self presentViewController:lists inNavControllerInPopoverFromItem:sender];
 	}
 }
-
-- (IBAction)follow:(id)sender {
-	UserPageHTMLController *htmlController = (UserPageHTMLController *)timelineHTMLController;
-	[htmlController follow];
-}
-
-- (IBAction)unfollow:(id)sender {
-	UserPageHTMLController *htmlController = (UserPageHTMLController *)timelineHTMLController;
-	[htmlController unfollow];
-}
-
-
 
 #pragma mark Web view delegate methods
 
@@ -171,9 +156,9 @@ enum {
 }
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
+	[super viewDidUnload];
 	self.topToolbar = nil;
-	//self.directMessageButton = nil;
+	self.followButton = nil;
 }
 
 @end

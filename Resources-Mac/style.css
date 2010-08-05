@@ -202,7 +202,7 @@ p { margin: 0px 0px 20px 0px; }
 .user_large_avatar img {
 	max-width: 250px; max-height: 250px;
 	min-width: 96px; min-height: 96px;
-	-webkit-border-radius: 20px; 
+	-webkit-border-radius: 14px; 
 }
 .user_info_block {
 	display: block;
