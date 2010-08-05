@@ -96,9 +96,8 @@
 - (void)startTwitterAction:(TwitterAction*)action;
 - (void)handleTwitterStatusCode:(int)code;
 - (void)twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error;
-- (void)updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier location:(CLLocation *)location;
 - (void)fave: (NSNumber*) messageIdentifier;
-- (void)retweet:(NSNumber*)messageIdentifier;
+- (void)deleteStatusUpdate:(NSNumber*)messageIdentifier;
 
 // Web view updating
 - (void)loadWebView;

@@ -17,12 +17,13 @@
 #import "TimelineHTMLController.h"
 
 #import "TwitterFavoriteAction.h"
-#import "TwitterRetweetAction.h"
-#import "TwitterUpdateStatusAction.h"
+#import "TwitterDeleteAction.h"
+
 #import "TwitterLoadDirectMessagesAction.h"
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterLoadListsAction.h"
 #import "TwitterLoadSavedSearchesAction.h"
+
 #import "TwitterDirectMessageConversation.h"
 
 
@@ -331,48 +332,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	noInternetConnection = YES;
 }
 
-#pragma mark TwitterAction - Misc
-
-- (void) updateStatus:(NSString*)text inReplyTo:(NSNumber*)messageIdentifier location:(CLLocation *)location {
-	TwitterUpdateStatusAction *action = [[[TwitterUpdateStatusAction alloc] initWithText:text inReplyTo:messageIdentifier] autorelease];
-	[action setLocation:location];
-	action.completionTarget= self;
-	action.completionAction = @selector(didUpdateStatus:);
-	[self startTwitterAction:action];
-}
-
-- (void)didUpdateStatusSuccessfully {
-	noInternetConnection = NO;
-	
-	// Remove message text from compose screen.
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject:@"" forKey:@"messageContent"];
-	[defaults removeObjectForKey:@"inReplyTo"];
-	[defaults removeObjectForKey:@"originalRetweetContent"];
-	
-	// Reload timeline
-	[self loadTimeline:timeline];
-}
-
-- (void)didUpdateStatus:(TwitterUpdateStatusAction *)action {
-	if ((action.statusCode < 400) || (action.statusCode == 403)) { // Twitter returns 403 if user tries to post duplicate status updates.
-		[self didUpdateStatusSuccessfully];
-	} else {
-		// Status update was not successful, so report the error.
-		[self showNetworkErrorAlertForStatusCode:action.statusCode];
-	}
-}
-
-- (void)retweet:(NSNumber *)messageIdentifier {
-	TwitterRetweetAction *action = [[[TwitterRetweetAction alloc] initWithMessageIdentifier:messageIdentifier] autorelease];
-	action.completionTarget= self;
-	action.completionAction = @selector(didRetweet:);
-	[self startTwitterAction:action];
-}	
-
-- (void)didRetweet:(id)action {
-	[self didUpdateStatusSuccessfully];
-}
+#pragma mark Favorite
 
 - (void) fave: (NSNumber*) messageIdentifier {
 	noInternetConnection = NO;
@@ -415,6 +375,17 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[account removeFavorite:message.identifier];
 	}
 }
+
+#pragma mark Delete status update
+
+- (void)deleteStatusUpdate:(NSNumber *)identifier {
+	TwitterDeleteAction *action = [[[TwitterDeleteAction alloc] initWithMessageIdentifier:identifier] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didDeleteStatusUpdate:);
+	[self startTwitterAction:action];
+}
+
+
 
 #pragma mark Web view updating
 
