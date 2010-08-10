@@ -93,6 +93,10 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	
+	// Interface Builder is very confused by the hybrid Mac/iOS header file for LKWebView, so set its delegate here.
+	webView.delegate = self;
+	
 	timelineHTMLController.webView = self.webView;
 	[timelineHTMLController loadWebView];
 }
@@ -269,8 +273,7 @@
 	}
 	
 	// Show user page
-	UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitterUser:user] autorelease];
-	vc.timelineHTMLController.account = self.timelineHTMLController.account;
+	UserPageViewController *vc = [[[UserPageViewController alloc] initWithTwitterUser:user account:timelineHTMLController.account] autorelease];
 	[self.navigationController pushViewController: vc animated: YES];
 }
 

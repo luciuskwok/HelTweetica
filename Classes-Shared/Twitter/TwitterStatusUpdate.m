@@ -146,7 +146,7 @@
 		} else if ([key isEqualToString:@"in_reply_to_user_id"]) {
 			self.inReplyToUserIdentifier = [self scanInt64FromString:value];
 		} else if ([key isEqualToString:@"created_at"]) {
-			self.createdDate = [value twitterDate];
+			self.createdDate = [NSDate dateWithTwitterString:value];
 		} else if ([key isEqualToString:@"coordinates"]) {
 			if (latitude == nil) {
 				self.latitude = [self scanDoubleFromString:value];

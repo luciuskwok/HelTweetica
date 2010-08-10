@@ -48,7 +48,7 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+	[super viewDidLoad];
 	
 	// Set table header view
 	CGRect frame = self.view.bounds;
@@ -63,7 +63,7 @@
 	self.navigationItem.title = NSLocalizedString (@"Go to User", @"Nav bar");
 	
 	// Display an Edit button in the navigation bar for this view controller.
-    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	//self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
 	// Search display controller
 	self.searchController = [[[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self] autorelease];

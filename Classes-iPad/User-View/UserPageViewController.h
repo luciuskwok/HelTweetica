@@ -30,7 +30,7 @@
 @property (nonatomic, retain) UIBarButtonItem *followButton;
 @property (nonatomic, retain) TwitterUser *user;
 
-- (id)initWithTwitterUser:(TwitterUser*)aUser;
+- (id)initWithTwitterUser:(TwitterUser*)aUser account:(TwitterAccount *)anAccount;
 - (IBAction)lists: (id) sender;
 - (IBAction)follow:(id)sender;
 

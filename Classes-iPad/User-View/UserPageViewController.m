@@ -30,7 +30,7 @@
 @synthesize topToolbar, followButton, user;
 
 
-- (id)initWithTwitterUser:(TwitterUser*)aUser {
+- (id)initWithTwitterUser:(TwitterUser*)aUser account:(TwitterAccount *)anAccount {
 	self = [super initWithNibName:@"UserPage" bundle:nil];
 	if (self) {
 		self.user = aUser;
@@ -38,6 +38,7 @@
 		// Replace HTML controller with specific one for User Pages
 		UserPageHTMLController *controller = [[[UserPageHTMLController alloc] init] autorelease];
 		controller.twitter = twitter;
+		controller.account = anAccount;
 		controller.user = aUser;
 		controller.delegate = self;
 		self.timelineHTMLController = controller;
@@ -53,8 +54,8 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
+	// Releases the view if it doesn't have a superview.
+	[super didReceiveMemoryWarning];
 	self.topToolbar = nil;
 }
 

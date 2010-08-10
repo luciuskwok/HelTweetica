@@ -28,7 +28,7 @@
 @synthesize followButton, screenName;
 
 
-- (id)initWithScreenName:(NSString*)aScreenName {
+- (id)initWithScreenName:(NSString*)aScreenName account:(TwitterAccount *)anAccount {
 	self = [super initWithWindowNibName:@"UserWindow"];
 	if (self) {
 		appDelegate = [NSApp delegate];
@@ -38,6 +38,7 @@
 		// Timeline HTML Controller generates the HTML from a timeline
 		UserPageHTMLController *controller = [[[UserPageHTMLController alloc] init] autorelease];
 		controller.twitter = appDelegate.twitter;
+		controller.account = anAccount;
 		controller.delegate = self;
 		self.htmlController = controller;
 	}
@@ -47,11 +48,6 @@
 - (void)dealloc {
 	[screenName release];
 	[super dealloc];
-}
-
-- (void)setAccount:(TwitterAccount *)anAccount {
-	// Override MainWindowController's method because lists and list subscriptions should be loaded for the screen name being shown.
-	htmlController.account = anAccount;
 }
 
 #pragma mark NSCoder

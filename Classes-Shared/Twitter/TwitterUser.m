@@ -15,6 +15,7 @@
 
 #import "TwitterUser.h"
 #import "TwitterTimeline.h"
+#import "NSDate+RelativeDate.h"
 #import "NSString+HTMLFormatted.h"
 
 
@@ -167,7 +168,7 @@
 		} else if ([key isEqualToString:@"url"]) {
 			self.webURL = value;
 		} else if ([key isEqualToString:@"created_at"]) {
-			self.createdDate = [value twitterDate];
+			self.createdDate = [NSDate dateWithTwitterString:value];
 		}
 	}
 	

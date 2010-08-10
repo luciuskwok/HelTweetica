@@ -11,5 +11,4 @@
 
 @interface NSString (HTMLFormatted)
 - (NSString *)HTMLFormatted;
-- (NSDate *)twitterDate;
 @end

@@ -30,6 +30,8 @@
 	BOOL noOlderMessages;
 	TwitterLoadTimelineAction *loadAction;
 	BOOL replaceExistingStatusUpdates;
+	
+	NSNumber *secondNewestIdentifier;
 }
 @property (nonatomic, assign) Twitter *twitter;
 @property (nonatomic, assign) TwitterAccount *account;
@@ -37,6 +39,8 @@
 @property (assign) BOOL noOlderMessages;
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
 @property (assign) BOOL replaceExistingStatusUpdates;
+
+@property (nonatomic, retain) NSNumber *secondNewestIdentifier;
 
 // Database
 - (void)setTwitter:(Twitter *)aTwitter tableName:(NSString*)tableName temp:(BOOL)temp;

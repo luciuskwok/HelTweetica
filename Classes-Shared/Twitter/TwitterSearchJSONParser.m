@@ -15,6 +15,7 @@
 
 #import "TwitterSearchJSONParser.h"
 #import "TwitterStatusUpdate.h"
+#import "NSDate+RelativeDate.h"
 #import "NSString+HTMLFormatted.h"
 
 
@@ -95,7 +96,7 @@
 	} else if ([parser.keyPath isEqualToString:@"/results/source"]) {
 		currentMessage.source = [self stringReplacingAmpersandEscapes:value];
 	} else if ([parser.keyPath isEqualToString:@"/results/created_at"]) {
-		currentMessage.createdDate = [value twitterDate];
+		currentMessage.createdDate = [NSDate dateWithTwitterString:value];
 	} else if ([parser.keyPath isEqualToString:@"/results/text"]) {
 		currentMessage.text = value;
 	} else if ([parser.keyPath isEqualToString:@"/results/from_user"]) { 

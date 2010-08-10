@@ -45,4 +45,33 @@
 	return result;
 }
 
++(NSDate *)dateWithTwitterString:(NSString *)string {
+	// Date format for search.twitter.com and api.twitter.com
+	static NSDateFormatter *sSearchDateFormatter = nil;
+	static NSDateFormatter *sAPIDateFormatter = nil;
+	if (sSearchDateFormatter == nil || sAPIDateFormatter == nil) {
+		NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:[NSLocale canonicalLocaleIdentifierFromString:@"en_US"]] autorelease];
+		
+		// Mon, 25 Jan 2010 00:46:47 +0000 
+		sSearchDateFormatter = [[NSDateFormatter alloc] init];
+		[sSearchDateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; 
+		[sSearchDateFormatter setLocale: usLocale];
+		
+		// Mon Jan 25 00:46:47 +0000 2010
+		sAPIDateFormatter = [[NSDateFormatter alloc] init];
+		[sAPIDateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; 
+		[sAPIDateFormatter setLocale: usLocale];
+	}
+	
+	// Twitter and Search use two different date formats, which differ by a comma at character 4.
+	NSDateFormatter *formatter;
+	if ([string characterAtIndex:3] == ',') {
+		formatter = sSearchDateFormatter;
+	} else {
+		formatter = sAPIDateFormatter;
+	}
+	
+	return [formatter dateFromString:string];
+}
+
 @end

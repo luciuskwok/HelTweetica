@@ -106,7 +106,6 @@
 	isLoading = NO;
 	[self setLoadingSpinnerVisibility:NO];
 	self.messages = [timeline messagesWithLimit: maxTweetsShown];
-	[self rewriteTweetArea];
 	
 	// Update user object with latest version.
 	TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];
@@ -115,6 +114,8 @@
 		self.user = aUser;
 		[self rewriteUserInfoArea];
 	}
+
+	[self rewriteTweetArea];
 }
 
 - (void)rewriteUserInfoArea {

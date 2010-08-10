@@ -35,6 +35,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 @implementation TwitterTimeline
 @synthesize twitter, account, databaseTableName, noOlderMessages, loadAction, replaceExistingStatusUpdates;
+@synthesize secondNewestIdentifier;
 
 
 - (id)init {
@@ -48,6 +49,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 - (void)dealloc {
 	[databaseTableName release];
 	[loadAction release];
+	[secondNewestIdentifier release];
 	[super dealloc];
 }
 
@@ -288,6 +290,27 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	[twitter startTwitterAction:loadAction withAccount:account];
 }
 
+- (NSNumber *)secondNewestStatusUpdateIdentifier {
+	if (twitter == nil)
+		NSLog(@"TwitterTimeline is missing its Twitter cache connection.");
+	
+	// Get first two status updates that are not retweets.
+	NSString *query = [NSString stringWithFormat:@"Select StatusUpdates.identifier from StatusUpdates inner join %@ on %@.identifier=StatusUpdates.identifier where StatusUpdates.retweetedStatusIdentifier NotNull order by StatusUpdates.CreatedDate desc limit 2", databaseTableName, databaseTableName];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
+	
+	// Skip first row.
+	if ([statement step] != SQLITE_ROW) 
+		return nil;
+	
+	// Second row.
+	NSNumber *result = nil;
+	if ([statement step] == SQLITE_ROW) {
+		result = [statement objectForColumnIndex:0];
+	}
+	
+	return result;
+}
+
 - (void)reloadNewer {
 	// Load messages newer than what we have locally.
 	
@@ -296,24 +319,13 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	[loadAction.parameters removeObjectForKey:@"since_id"];
 	
 	// Limit the query to messages newer than what we already have. 
-	NSArray *messages = [self messagesWithLimit:10];
-	if (messages.count >= 2) { // Minimum of two messages for this to work.
-		NSNumber *newerThan = nil;
-		int overlap = 0;
-		// Skip past retweets because account user's own RTs don't show up in the home timeline.
-		for (TwitterStatusUpdate *update in messages) {
-			if (update.retweetedStatusIdentifier == nil)
-				overlap++;
-			if (overlap == 2) { // Load messages newer than second non-RT in the local cache, so that at least 1 message overlaps.
-				newerThan = update.identifier;
-				break;
-			}
-		}
-		
-		// Set the parameter for limiting the request to messages newer than our latest message.
-		if (newerThan)
-			[loadAction.parameters setObject:newerThan forKey:@"since_id"];
+	if (secondNewestIdentifier == nil) {
+		self.secondNewestIdentifier = [self secondNewestStatusUpdateIdentifier];
 	}
+
+	// Set the parameter for limiting the request to messages newer than our latest message.
+	if (secondNewestIdentifier)
+		[loadAction.parameters setObject:secondNewestIdentifier forKey:@"since_id"];
 		
 	// Set the default load count. (Note that searches use rpp instead of count, so this will have no effect on search actions.) 
 	[loadAction setCount:[self defaultLoadCount]];
@@ -325,6 +337,12 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (void)didReloadNewer:(TwitterLoadTimelineAction *)action {
+	
+	// Cache the second newest message identifier for next reloadNewer
+	if ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO && action.loadedMessages.count >= 2) {
+		TwitterStatusUpdate *secondMessage = [action.loadedMessages objectAtIndex:1];
+		self.secondNewestIdentifier = secondMessage.identifier;
+	}
 	
 	// Also start an action to load RTs that the account's user has posted within the loaded timeline
 	NSNumber *sinceIdentifier = nil;

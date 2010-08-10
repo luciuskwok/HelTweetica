@@ -45,7 +45,6 @@
 - (void) foundNumberValue:(NSString*)value;
 - (void) foundStringValue:(NSString*)value;
 - (void) foundKey:(NSString*)key;
-- (NSString*) unescapeJSONString:(NSString*)jsonString;
 @end
 
 @implementation LKJSONParser
@@ -103,21 +102,70 @@
 	jsonOffset++;
 	if (jsonOffset >= [jsonText length]) return nil;
 	
-	// Determine the length of the string
-	unsigned int textLength = [jsonText length];
-	NSRange found;
-	found.location = jsonOffset;
-	unichar c = [jsonText characterAtIndex:jsonOffset];
-	while ((jsonOffset < textLength) && (c != 0x22)) {
-		jsonOffset++;
-		if (c == '\\') jsonOffset++; // Ignore escaped chars
-		c = [jsonText characterAtIndex:jsonOffset];
-	}
-	found.length = jsonOffset - found.location;
-	jsonOffset++;
+	// Extract the value from the quoted string, substituting backslash escapes.
+	NSMutableString *result = [[[NSMutableString alloc] initWithCapacity:256] autorelease];
+	unsigned int jsonLength = [jsonText length];
 	
-	// Extract and unescape the string
-	return [self unescapeJSONString: [jsonText substringWithRange:found]];
+	// Loop
+	while (jsonOffset < jsonLength) {
+		unichar c = [jsonText characterAtIndex:jsonOffset];
+		jsonOffset++;
+		if (c == '\"') {
+			// Double-quote signifies the end of the string.
+			break;
+		} else if (c == '\\') { 
+			// Backslash signifies an escaped char.
+			c = [jsonText characterAtIndex:jsonOffset];
+			jsonOffset++;
+			
+			switch (c) {
+				case '\"': // Double-quote
+					c = '\"';
+					break;
+				case '\\': // Backslash
+					c = '\\';
+					break;
+				case 'b':
+					c = '\b';
+					break;
+				case 'f':
+					c = '\f';
+					break;
+				case 'n':
+					c = '\n';
+					break;
+				case 'r':
+					c = '\r';
+					break;
+				case 't':
+					c = '\t';
+					break;
+				case '/':
+					c = '/';
+					break;
+				case 'u':
+					if (jsonOffset + 4 < jsonLength) {
+						NSString *hexString = [jsonText substringWithRange: NSMakeRange(jsonOffset, 4)];
+						NSScanner *hexScanner = [NSScanner scannerWithString:hexString];
+						unsigned x = 0x20;
+						if ([hexScanner scanHexInt:&x]) {
+							c = x;
+						}
+						jsonOffset += 4;
+					}
+					break;
+				default:
+					break;
+			}
+			// Add the converted char.
+			[result appendFormat:@"%C", c];
+		} else { 
+			// All other chars are passed through.
+			[result appendFormat:@"%C", c];
+		}
+	}
+	
+	return result;
 }
 
 - (void) parseNumericValue {
@@ -293,58 +341,5 @@
 	if ([delegate respondsToSelector:@selector (parser:foundKey:)]) 
 		[delegate parser:self foundKey:key];
 }
-
-#pragma mark -
-
-- (NSString*) unescapeJSONString:(NSString*)jsonString {
-	NSScanner *scanner = [NSScanner scannerWithString:jsonString];
-	NSMutableString *result = [[[NSMutableString alloc] init] autorelease];
-	NSString *value;
-	NSCharacterSet *matchSet = [NSCharacterSet characterSetWithCharactersInString:@"\\"]; // Match a single backslash char
-	
-	[scanner setCharactersToBeSkipped:nil];
-	
-	while ([scanner isAtEnd] == NO) {
-		if ([scanner scanUpToCharactersFromSet:matchSet intoString:&value]) {
-			[result appendString: value];
-		}
-		if ([scanner scanString:@"\\u" intoString:nil]) { 
-			// Unicode char
-			if (scanner.scanLocation + 4 <= jsonString.length) {
-				NSString *hexString = [jsonString substringWithRange: NSMakeRange(scanner.scanLocation, 4)];
-				NSScanner *hexScanner = [NSScanner scannerWithString:hexString];
-				unsigned x = 0x20;
-				if ([hexScanner scanHexInt:&x]) {
-					unichar c = x;
-					[result appendString:[NSString stringWithCharacters: &c length:1]];
-				}
-				scanner.scanLocation = scanner.scanLocation + 4;
-			}
-			
-		} else if ([scanner scanString:@"\\\"" intoString:nil]) {
-			[result appendString:@"\""];
-		} else if ([scanner scanString:@"\\b" intoString:nil]) {
-			[result appendString:@"\b"];
-		} else if ([scanner scanString:@"\\f" intoString:nil]) {
-			[result appendString:@"\f"];
-		} else if ([scanner scanString:@"\\n" intoString:nil]) {
-			[result appendString:@"\n"];
-		} else if ([scanner scanString:@"\\r" intoString:nil]) {
-			[result appendString:@"\r"];
-		} else if ([scanner scanString:@"\\t" intoString:nil]) {
-			[result appendString:@"\t"];
-		} else if ([scanner scanString:@"\\/" intoString:nil]) {
-			[result appendString:@"/"];
-		} else if ([scanner scanString:@"\\\\" intoString:nil]) {
-			[result appendString:@"\\"];
-		} else if ([scanner scanCharactersFromSet:matchSet intoString:&value]) {
-			// Didn't match any of the above patterns, so treat as normal text.
-			[result appendString:value];
-		}
-	}
-	
-	return [NSString stringWithString:result];
-}
-
 
 @end

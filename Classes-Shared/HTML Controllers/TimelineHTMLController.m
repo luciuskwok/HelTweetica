@@ -349,6 +349,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 			NSLog (@"JavaScript error in refreshing tweet area. Reloading entire web view.");
 			[self loadWebView];
 		}
+	} else {
+		NSLog (@"rewriteTweetArea called when webViewHasValidHTML == NO.");
 	}
 }
 

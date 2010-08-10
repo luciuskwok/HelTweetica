@@ -64,6 +64,10 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 			// Maintenance: keep the size of the database within limits.
 		}
 
+		// Set up pragmas
+		[database execute:@"Pragma cache_size = 2000"];
+		[database execute:@"Pragma synchronous = normal"];
+		
 		// == User defaults ==
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		

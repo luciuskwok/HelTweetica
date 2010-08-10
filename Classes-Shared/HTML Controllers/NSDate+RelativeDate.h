@@ -11,4 +11,5 @@
 
 @interface NSDate (RelativeDate)
 - (NSString *)relativeDateSinceNow;
++(NSDate *)dateWithTwitterString:(NSString *)string;
 @end

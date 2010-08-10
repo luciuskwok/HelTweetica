@@ -9,6 +9,7 @@
 #import "TwitterDirectMessage.h"
 #import "NSDate+RelativeDate.h"
 #import "NSString+HTMLFormatted.h"
+#import "NSDate+RelativeDate.h"
 
 
 @implementation TwitterDirectMessage
@@ -94,7 +95,7 @@
 		if ([key isEqualToString:@"id"]) {
 			self.identifier = [self scanInt64FromString:value];
 		} else if ([key isEqualToString:@"created_at"]) {
-			self.createdDate = [value twitterDate];
+			self.createdDate = [NSDate dateWithTwitterString:value];
 		} else if ([key isEqualToString:@"sender_id"]) {
 			self.senderIdentifier = value;
 		} else if ([key isEqualToString:@"sender_screen_name"]) {

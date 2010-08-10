@@ -547,8 +547,7 @@
 
 - (void) showUserPage:(NSString*)screenName {
 	// Create and show the user window
-	UserWindowController *controller = [[[UserWindowController alloc] initWithScreenName:screenName] autorelease];
-	[controller setAccount:htmlController.account];
+	UserWindowController *controller = [[[UserWindowController alloc] initWithScreenName:screenName account:htmlController.account] autorelease];
 	[controller showWindow:nil];
 	[appDelegate addWindowController:controller];
 }
