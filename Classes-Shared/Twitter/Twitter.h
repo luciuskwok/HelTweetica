@@ -24,13 +24,18 @@
 #import "TwitterUser.h"
 #import "TwitterStatusUpdate.h"
 #import "TwitterDirectMessage.h"
+#import "TwitterAction.h"
 
 
-@protocol TwitterDelegate;
+// Notification constants
+#define TwitterErrorNotification @"TwitterErrorNotification"
 
-@interface Twitter : NSObject {
+
+@interface Twitter : NSObject <TwitterActionDelegate> {
 	NSMutableArray *accounts;
 	LKSqliteDatabase *database;
+	NSMutableSet *actions;
+	NSTimer *refreshTimer;
 }
 
 @property (nonatomic, retain) NSMutableArray *accounts;
@@ -57,6 +62,15 @@
 - (NSArray *)allUsers;
 - (NSArray *)usersWithName:(NSString *)name;
 
+// Refresh
+- (void)refreshNow;
+- (void)scheduleRefreshTimer:(NSTimeInterval)interval;
+
+// Actions
+- (void)startTwitterAction:(TwitterAction*)action withAccount:(TwitterAccount *)account;
+- (void)removeTwitterAction:(TwitterAction*)action;
+
+// Defaults
 - (void)saveUserDefaults;
 
 @end

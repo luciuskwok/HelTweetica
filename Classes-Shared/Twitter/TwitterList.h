@@ -16,7 +16,7 @@
 
 
 #import <Foundation/Foundation.h>
-@class TwitterTimeline, LKSqliteDatabase;
+@class TwitterTimeline, TwitterAccount, Twitter;
 
 
 @interface TwitterList : NSObject {
@@ -46,6 +46,6 @@
 @property (assign) BOOL privateList;
 @property (nonatomic, retain) NSDate *receivedDate;
 
-- (void)setDatabase:(LKSqliteDatabase *)db;
+- (void)setTwitter:(Twitter *)aTwitter account:(TwitterAccount *)account;
 
 @end

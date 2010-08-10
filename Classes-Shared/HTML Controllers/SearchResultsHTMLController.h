@@ -22,6 +22,6 @@
 
 }
 
-- (id)initWithQuery:(NSString*)aQuery database:(LKSqliteDatabase *)db;
+- (id)initWithQuery:(NSString*)aQuery twitter:(Twitter *)twttr;
 
 @end

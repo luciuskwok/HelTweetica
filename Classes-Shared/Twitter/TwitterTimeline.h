@@ -15,27 +15,29 @@
  */
 
 #import <Foundation/Foundation.h>
-//#import "Twitter.h"
+@class Twitter, TwitterAccount, TwitterLoadTimelineAction, TwitterAction, TwitterStatusUpdate;
 
-@class TwitterLoadTimelineAction, TwitterAction, TwitterStatusUpdate, LKSqliteDatabase;
-@protocol TwitterTimelineDelegate;
+
+// Notification constants
+#define TwitterTimelineDidFinishLoadingNotification @"TwitterTimelineDidFinishLoadingNotification"
+
 
 
 @interface TwitterTimeline : NSObject {
-	LKSqliteDatabase *database;
+	Twitter *twitter;
+	TwitterAccount *account;
 	NSString *databaseTableName;
 	BOOL noOlderMessages;
 	TwitterLoadTimelineAction *loadAction;
-
-	id delegate;
 }
+@property (nonatomic, assign) Twitter *twitter;
+@property (nonatomic, assign) TwitterAccount *account;
+@property (nonatomic, copy) NSString *databaseTableName;
 @property (assign) BOOL noOlderMessages;
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
 
-@property (assign) id <TwitterTimelineDelegate> delegate;
-
 // Database
-- (void)setDatabase:(LKSqliteDatabase *)db tableName:(NSString*)tableName temp:(BOOL)temp;
+- (void)setTwitter:(Twitter *)aTwitter tableName:(NSString*)tableName temp:(BOOL)temp;
 - (void)deleteCaches;
 - (void)limitDatabaseTableSize;
 
@@ -62,7 +64,4 @@
 
 @end
 
-@protocol TwitterTimelineDelegate <NSObject>
-- (void)startTwitterAction:(TwitterAction *)action; // Callback to start a twitter action.
-- (void)timeline:(TwitterTimeline *)timeline didLoadWithAction:(TwitterLoadTimelineAction *)action; // Callback when twitter action finishes loading.
-@end
+

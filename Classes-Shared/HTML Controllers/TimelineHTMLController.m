@@ -42,7 +42,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 
 @implementation TimelineHTMLController
-@synthesize webView, twitter, account, timeline, messages, actions;
+@synthesize webView, twitter, account, timeline, messages;
 @synthesize maxTweetsShown, webViewHasValidHTML, isLoading, noInternetConnection, suppressNetworkErrorAlerts;
 @synthesize customPageTitle, customTabName;
 @synthesize delegate;
@@ -65,14 +65,17 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		// Misc
 		isLoading = YES;
 		maxTweetsShown = kDefaultMaxTweetsShown; 
-		self.actions = [NSMutableArray array]; // List of currently active network connections
 		
+		// Timeline update notifications
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		//[nc addObserver:self selector:@selector(timelineDidStartLoading:) name:@"" object:nil];
+		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[self invalidateRefreshTimer];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[webView release];
 	
@@ -80,7 +83,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[account release];
 	[timeline release];
 	[messages release];
-	[actions release];
 	
 	[directMessageRowTemplate release];
 	[directMessageRowSectionOpenTemplate release];
@@ -101,44 +103,35 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)updateForNewTimeline {
 	// Call this after selecting a different timeline.
 	suppressNetworkErrorAlerts = NO;
-	timeline.delegate = self;
 	self.messages = [timeline messagesWithLimit:maxTweetsShown];
 	[self rewriteTweetArea];
 	
 	// Notify delegate that a different timeline was selected.
 	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
 		[delegate didSelectTimeline:timeline];
-	
-	// Schedule a refresh instead of loading right away.
-	[self scheduleRefreshTimer];
 }
 
 - (void)selectHomeTimeline {
 	self.customTabName = kTimelineIdentifier;
 	self.timeline = account.homeTimeline;
-	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
 	[self updateForNewTimeline];
 }
 
 - (void)selectMentionsTimeline {
 	self.customTabName = kMentionsIdentifier;
 	self.timeline = account.mentions;
-	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
 	[self updateForNewTimeline];
 }
 
 - (void)selectDirectMessageTimeline {
 	self.customTabName = kDirectMessagesIdentifier;
 	self.timeline = account.directMessages;
-	self.timeline.loadAction = nil; // TwitterDirectMessageTimeline sets its own load action.
 	[self updateForNewTimeline];
 }
 
 - (void)selectFavoritesTimeline {
 	self.customTabName = kFavoritesIdentifier;
 	self.timeline = account.favorites;
-	self.timeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
-	// Favorites always loads 20 per page. Cannot change the count.
 	[self updateForNewTimeline];
 }
 
@@ -147,7 +140,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (void)loadTimeline:(TwitterTimeline*)aTimeline {
 	self.timeline = aTimeline;
-	timeline.delegate = self;
 	self.messages = [timeline messagesWithLimit:maxTweetsShown];
 
 	if (noInternetConnection == NO) {
@@ -171,7 +163,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[self.webView setDocumentElement:@"footer" innerHTML:loadingHTML];
 	}
 	isLoading = YES;
-	timeline.delegate = self;
 	[timeline loadOlderWithMaxIdentifier:maxIdentifier];
 }
 
@@ -183,44 +174,10 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	return NO;
 }
 
-- (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterAction *)action {
-	isLoading = NO;
-	
-	if ([action isKindOfClass:[TwitterLoadTimelineAction class]]) {
-		TwitterLoadTimelineAction *statusUpdateAction = (TwitterLoadTimelineAction *)action;
-		
-		// Only update if there are messages not already in the displayed messages.
-		if ([self array:statusUpdateAction.loadedMessages containsObjectsNotInArray:messages]) {
-			// Twitter cache.
-			[twitter addStatusUpdates:statusUpdateAction.loadedMessages replaceExisting:YES];
-			[twitter addStatusUpdates:statusUpdateAction.retweetedMessages replaceExisting:YES];
-			[twitter addOrReplaceUsers:statusUpdateAction.users];
-
-			// Ignore gaps for own RTs.
-			BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO);
-			[aTimeline addMessages:statusUpdateAction.loadedMessages updateGap:updateGap];
-
-			if (timeline == aTimeline) {
-				// To be safe, only update Favorites if the same timeline is still selected.
-				[account addFavorites:statusUpdateAction.favoriteMessages];
-			}
-		}
-	} else if ([action isKindOfClass:[TwitterLoadDirectMessagesAction class]]) {
-		TwitterLoadDirectMessagesAction *directMessagesAction = (TwitterLoadDirectMessagesAction *)action;
-		
-		if ([self array:directMessagesAction.loadedMessages containsObjectsNotInArray:messages]) {
-			// Twitter cache.
-			[twitter addDirectMessages:directMessagesAction.loadedMessages];
-			[twitter addOrReplaceUsers:directMessagesAction.users];
-
-			// Timeline
-			TwitterDirectMessageTimeline *dmTimeline = (TwitterDirectMessageTimeline *)aTimeline;
-			[dmTimeline addMessages:directMessagesAction.loadedMessages sent:([action.twitterMethod hasSuffix:@"sent"])];
-		}
-	}
-
-	// Load latest messages.
-	if (timeline == aTimeline) {
+- (void)timelineDidFinishLoading:(NSNotification *)notification {
+	TwitterTimeline *aTimeline = [notification object];
+	if (aTimeline == self.timeline) {
+		isLoading = NO;
 		self.messages = [timeline messagesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];
 	}
@@ -244,8 +201,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	listTimeline.loadAction.countKey = @"per_page";
 	suppressNetworkErrorAlerts = NO;
 	
-	// Prepare database.
-	[list setDatabase:twitter.database];
+	// Set the Twitter cache connection.
+	[list setTwitter:twitter account:account];
 	
 	// Load timeline
 	[self loadTimeline: listTimeline];
@@ -257,96 +214,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	// Notify delegate that a different timeline was selected.
 	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
 		[delegate didSelectTimeline:timeline];
-}
-
-#pragma mark TwitterAction
-
-- (void)startTwitterAction:(TwitterAction*)action {
-	if (action == nil) return;
-	
-	// Add the action to the array of actions, and updates the network activity spinner
-	[actions addObject: action];
-	
-	// Set up Twitter action
-	action.delegate = self;
-	action.consumerToken = account.xAuthToken;
-	action.consumerSecret = account.xAuthSecret;
-	
-	// Start the URL connection
-	[action start];
-	
-	// Show the Loading spinner
-	[self setLoadingSpinnerVisibility:YES];
-	
-}
-
-- (void) removeTwitterAction:(TwitterAction*)action {
-	// Removes the action from the array of actions, and updates the network activity spinner
-	[actions removeObject: action];
-	
-	if (actions.count == 0) {
-		[self rewriteTweetArea]; // Remove any Loading messages.
-		[self setLoadingSpinnerVisibility:NO];
-	}
-}
-
-#pragma mark TwitterAction delegate methods
-
-- (void) showNetworkErrorAlertForStatusCode:(int)statusCode {
-	if (suppressNetworkErrorAlerts) return;
-	
-	// Show alert with error code and message.
-	NSString *title, *message;
-	
-	if (statusCode == 400) { // Bad request, or rate limit exceeded
-		title = NSLocalizedString (@"Rate limit exceeded", @"Alert");
-		message = NSLocalizedString (@"Please wait and try again later. (400)", @"Alert");
-	} else if (statusCode == 401) { // Unauthorized
-		title = NSLocalizedString (@"Unable to log in", @"Alert");
-		message = NSLocalizedString (@"The Twitter username or password is incorrect. (401 Unauthorized)", @"Alert");
-	} else if (statusCode == 403) { // The request is understood, but it has been refused.
-		title = NSLocalizedString (@"Request denied.", @"Alert");
-		message = NSLocalizedString (@"Duplicate tweet or rate limits reached. (403)", @"Alert");
-	} else if (statusCode == 404) { // Not found.
-		title = NSLocalizedString (@"Not found.", @"Alert");
-		message = NSLocalizedString (@"The requested resource could not be found. (404)", @"Alert");
-	} else if (statusCode == 502) { // Twitter is down or being upgraded.
-		title = NSLocalizedString (@"Twitter is down!", @"Alert");
-		message = NSLocalizedString (@"Twitter is down or being upgraded. (502)", @"Alert");
-	} else if (statusCode == 503) { // The Twitter servers are up, but overloaded with requests. Try again later.
-		title = NSLocalizedString (@"Too many tweets!", @"Alert");
-		message = NSLocalizedString (@"The Twitter servers are overloaded. (503 Service Unavailable)", @"Alert");
-	} else {
-		title = NSLocalizedString (@"Network error", @"Alert");
-		message = [NSString localizedStringWithFormat:@"Something went wrong with the network. (%d)", statusCode];
-	}
-	
-	if ([delegate respondsToSelector:@selector(showAlertWithTitle:message:)])
-		[delegate showAlertWithTitle:title message:message];
-}
-
-- (void)handleTwitterStatusCode:(int)code {
-	if ((code >= 400) && (code != 403)) {
-		[self showNetworkErrorAlertForStatusCode:code];
-	}
-}
-
-- (void) twitterActionDidFinishLoading:(TwitterAction*)action {
-	// Deal with status codes 400 to 402 and 404 and up.
-	[self handleTwitterStatusCode:action.statusCode];
-	[self removeTwitterAction:action];
-	noInternetConnection = NO;
-}
-
-- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
-	if (suppressNetworkErrorAlerts == NO) {
-		NSString *title = NSLocalizedString (@"Network error", @"Alert");
-		if ([delegate respondsToSelector:@selector(showAlertWithTitle:message:)])
-			[delegate showAlertWithTitle:title message:[error localizedDescription]];
-	}
-	
-	[self removeTwitterAction: action];
-	noInternetConnection = YES;
 }
 
 #pragma mark Favorite status update
@@ -365,7 +232,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	TwitterFavoriteAction *action = [[[TwitterFavoriteAction alloc] initWithMessage:message destroy:isFave] autorelease];
 	action.completionTarget= self;
 	action.completionAction = @selector(didFave:);
-	[self startTwitterAction:action];
+	[twitter startTwitterAction:action withAccount:account];
 	
 	// Change the star to a spinner.
 	NSString *element = [NSString stringWithFormat:@"star-%@", [message.identifier stringValue]];
@@ -403,7 +270,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	TwitterDeleteAction *action = [[[TwitterDeleteAction alloc] initWithMessageIdentifier:identifier] autorelease];
 	action.completionTarget= self;
 	action.completionAction = @selector(didDeleteStatusUpdate:);
-	[self startTwitterAction:action];
+	[twitter startTwitterAction:action withAccount:account];
 }
 
 - (void)didDeleteStatusUpdate:(TwitterDeleteAction *)action {
@@ -437,9 +304,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[html replaceOccurrencesOfString:@"<tabAreaHTML/>" withString:tabAreaHTML options:0 range:NSMakeRange(0, html.length)];
 	
 	[self.webView loadHTMLString:html];
-	
-	// Start refresh timer so that the timestamps are always accurate
-	[self scheduleRefreshTimer];
 }
 
 - (void)setLoadingSpinnerVisibility:(BOOL)isVisible {
@@ -448,7 +312,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 }
 
 - (void)rewriteTweetArea {
-	
 	if (webViewHasValidHTML) {
 		// Replace tab area HTML with current tab
 		if (customTabName != nil) {
@@ -462,9 +325,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 			[self loadWebView];
 		}
 	}
-	
-	// Start refresh timer so that the timestamps are always accurate
-	[self scheduleRefreshTimer];
 }
 
 #pragma mark Web actions
@@ -509,40 +369,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if ([scanner scanLongLong: &identifierInt64])
 		return [NSNumber numberWithLongLong: identifierInt64];
 	return nil;
-}
-
-
-#pragma mark Refresh timer
-
-- (void)scheduleRefreshTimer {
-	[refreshTimer invalidate];
-	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
-}
-
-- (void)invalidateRefreshTimer {
-	[refreshTimer invalidate];
-	refreshTimer = nil;
-}
-
-- (void)fireRefreshTimer:(NSTimer *)timer {
-	// Clear pointer to timer because this is a non-recurring timer.
-	[refreshTimer invalidate];
-	refreshTimer = nil;
-	
-	if (actions.count == 0 && webViewHasValidHTML) {
-		CGPoint scrollPosition = [self.webView scrollPosition];
-		if (scrollPosition.y == 0.0f && !noInternetConnection) {
-			// Only reload from the network if the scroll position is at the top, the web view has been loaded, the network is reachable, and no popovers are showing.
-			suppressNetworkErrorAlerts = YES; // Don't show an error alert for auto reloads.
-			[self loadTimeline:timeline];
-		} else {
-			// Don't load new statuses if scroll position is below top.
-			//[self rewriteTweetArea];
-		}
-	} else {
-		// If there are actions already pending, reschedule refresh 
-		refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
-	}
 }
 
 #pragma mark HTML

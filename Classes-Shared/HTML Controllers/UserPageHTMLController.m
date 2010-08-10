@@ -30,11 +30,16 @@
 	self = [super init];
 	if (self) {
 		followsBack = @"";
+
+		// Timeline update notifications
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[user release];
 	[followsBack release];
 	[super dealloc];
@@ -47,7 +52,7 @@
 	}
 	
 	// Set up database connection.
-	[aUser setTimelineDatabase:twitter.database];
+	[aUser setTwitter:twitter account:account];
 }
 
 #pragma mark Timeline selection
@@ -93,8 +98,8 @@
 	
 }
 
-- (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
-	[super timeline:aTimeline didLoadWithAction:action];
+- (void)timelineDidFinishLoading:(NSNotification *)notification {
+	[super timelineDidFinishLoading:notification];
 	
 	// Update user object with latest version.
 	TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];
@@ -115,7 +120,7 @@
 	TwitterUserInfoAction *action = [[[TwitterUserInfoAction alloc] initWithScreenName:user.screenName] autorelease];
 	action.completionAction = @selector(didLoadUserInfo:);
 	action.completionTarget = self;
-	[self startTwitterAction:action];
+	[twitter startTwitterAction:action withAccount:account];
 }
 
 - (void)didLoadUserInfo:(TwitterUserInfoAction*)action {
@@ -139,7 +144,7 @@
 	TwitterShowFriendshipsAction *action = [[[TwitterShowFriendshipsAction alloc] initWithTarget:screenName] autorelease];
 	action.completionAction = @selector(didLoadFriendStatus:);
 	action.completionTarget = self;
-	[self startTwitterAction:action];
+	[twitter startTwitterAction:action withAccount:account];
 }
 
 - (void)didLoadFriendStatus:(TwitterShowFriendshipsAction *)action {
@@ -163,7 +168,7 @@
 	action.completionAction = @selector(didFollow:);
 	action.completionTarget = self;
 	//suppressNetworkErrorAlerts = NO;
-	[self startTwitterAction:action];
+	[twitter startTwitterAction:action withAccount:account];
 }
 
 - (void)didFollow:(id)action {
@@ -174,32 +179,14 @@
 	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:NO] autorelease];
 	action.completionAction = @selector(didUnfollow:);
 	action.completionTarget = self;
-	[self startTwitterAction:action];
+	[twitter startTwitterAction:action withAccount:account];
 }
 
 - (void)didUnfollow:(id)action {
 	[self loadFriendStatus: user.screenName];
 }
 
-- (void)handleTwitterStatusCode:(int)code {
-	// For user pages, a status code of 401 indicates that the currentAccount isn't authorized to view this user's page
-	switch (code) {
-		case 401:
-			unauthorized = YES;
-			break;
-		case 404:
-			notFound = YES;
-			break;
-		default:
-			[super handleTwitterStatusCode:code];
-			break;
-	}
-	
-	if (code >= 400) {
-		[self invalidateRefreshTimer];
-		[self rewriteTweetArea];
-	}
-}
+// TODO: handle status codes of 401 (protected) and 404 (not found).
 
 #pragma mark HTML
 

@@ -19,8 +19,8 @@
 #import "TwitterTimeline.h"
 #import "TwitterDirectMessageTimeline.h"
 #import "TwitterStatusUpdate.h"
+#import "TwitterLoadTimelineAction.h"
 #import "TwitterList.h"
-#import "TwitterDirectMessageTimeline.h"
 
 #ifndef TARGET_PROJECT_MAC
 #import "SFHFKeychainUtils.h"
@@ -36,11 +36,25 @@
 	self = [super init];
 	if (self) {
 		self.homeTimeline = [[[TwitterTimeline alloc] init] autorelease];
+		homeTimeline.account = self;
+		homeTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/home_timeline"] autorelease];
+
 		self.mentions = [[[TwitterTimeline alloc] init] autorelease];
+		mentions.account = self;
+		mentions.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/mentions"] autorelease];
+		
 		self.directMessages = [[[TwitterDirectMessageTimeline alloc] init] autorelease];
+		directMessages.account = self;
+		// TwitterDirectMessageTimeline sets its own load action.
+		
 		self.favorites = [[[TwitterTimeline alloc] init] autorelease];
+		favorites.account = self;
+		favorites.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"favorites"] autorelease];
+		// Favorites always loads 20 per page. Cannot change the count.
+		
 		self.lists = [NSMutableArray array];
 		self.listSubscriptions = [NSMutableArray array];
+		
 	}
 	return self;
 }
@@ -81,7 +95,7 @@
 
 #pragma mark Public methods
 
-- (void)setDatabase:(LKSqliteDatabase *)db {
+- (void)setTwitter:(Twitter *)twttr {
 	// Timelines will not work unless they have been given a database and table name.
 	NSString *idString = [identifier stringValue];
 	if (idString.length == 0) {
@@ -90,11 +104,18 @@
 		return;
 	}
 
-	[homeTimeline setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_HomeTimeline", idString] temp:NO];
-	[mentions setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Mentions", idString] temp:NO];
-	[directMessages setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_DirectMessages", idString] temp:NO];
+	[homeTimeline setTwitter:twttr tableName:[NSString stringWithFormat:@"User_%@_HomeTimeline", idString] temp:NO];
+	[mentions setTwitter:twttr tableName:[NSString stringWithFormat:@"User_%@_Mentions", idString] temp:NO];
+	[directMessages setTwitter:twttr tableName:[NSString stringWithFormat:@"User_%@_DirectMessages", idString] temp:NO];
 	directMessages.accountIdentifier = identifier;
-	[favorites setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Favorites", idString] temp:NO];
+	[favorites setTwitter:twttr tableName:[NSString stringWithFormat:@"User_%@_Favorites", idString] temp:NO];
+}
+
+- (void)reloadNewer {
+	// Refresh the home, mentions, and direct message timelines only. The favorites, lists, and search timelines will need to be manually refreshed.
+	[self.homeTimeline reloadNewer];
+	[self.mentions reloadNewer];
+	[self.directMessages reloadNewer];
 }
 
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists {

@@ -33,7 +33,7 @@
 		appDelegate = [NSApp delegate];
 		self.query = aQuery;
 		
-		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery database:appDelegate.twitter.database] autorelease];
+		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery twitter:appDelegate.twitter] autorelease];
 		controller.twitter = appDelegate.twitter;
 		controller.delegate = self;
 		self.htmlController = controller;
@@ -110,13 +110,12 @@
 	}
 	
 	// Copy credentials from old query to new one.
-	SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery database:htmlController.twitter.database] autorelease];
+	SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery twitter:appDelegate.twitter] autorelease];
 	controller.twitter = htmlController.twitter;
 	controller.account = htmlController.account;
 	controller.delegate = self;
 	
 	// Disconnect old controller
-	[htmlController invalidateRefreshTimer];
 	htmlController.webView = nil;
 	htmlController.delegate = nil;
 
@@ -140,7 +139,7 @@
 	TwitterSavedSearchAction *action = [[[TwitterSavedSearchAction alloc] initWithCreateQuery:query] autorelease];
 	action.completionTarget = self;
 	action.completionAction = @selector(didSaveSearch:);
-	[htmlController startTwitterAction: action];
+	[htmlController.twitter startTwitterAction:action withAccount:nil];
 }
 
 - (void)didSaveSearch:(TwitterSavedSearchAction *)action {

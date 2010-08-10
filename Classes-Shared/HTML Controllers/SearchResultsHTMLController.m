@@ -24,7 +24,7 @@
 
 
 // Designated initializer.
-- (id)initWithQuery:(NSString*)aQuery database:(LKSqliteDatabase *)db {
+- (id)initWithQuery:(NSString*)aQuery twitter:(Twitter *)twttr {
 	self = [super init];
 	if (self) {
 		self.customPageTitle = [NSString stringWithFormat: @"Search for &ldquo;<b>%@</b>&rdquo;", [aQuery HTMLFormatted]];
@@ -37,12 +37,24 @@
 		timeline.loadAction.countKey = @"rpp";
 
 		// Database
-		[timeline setDatabase:db tableName:[NSString stringWithFormat:@"SearchResults_%u", [aQuery hash]] temp:YES];
+		[timeline setTwitter:twttr tableName:[NSString stringWithFormat:@"SearchResults_%u", [aQuery hash]] temp:YES];
+
+		// Listen for changes to Twitter state data
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
+		[nc addObserver:self selector:@selector(accountsDidChange:) name:@"accountsDidChange" object:nil];
 
 		[self loadTimeline:timeline];
+		
 	}
 	return self;
 }
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super dealloc];
+}	
+
 
 #pragma mark HTML formatting
 

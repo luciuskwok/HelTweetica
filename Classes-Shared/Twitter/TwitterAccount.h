@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class TwitterStatusUpdate, TwitterTimeline, TwitterDirectMessageTimeline, LKSqliteDatabase;
+@class TwitterStatusUpdate, TwitterTimeline, TwitterDirectMessageTimeline, Twitter;
 
 
 @interface TwitterAccount : NSObject {
@@ -50,7 +50,8 @@
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 @property (nonatomic, retain) NSMutableArray *savedSearches;
 
-- (void)setDatabase:(LKSqliteDatabase *)db;
+- (void)setTwitter:(Twitter *)twttr;
+- (void)reloadNewer;
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists;
 - (void)addFavorites:(NSArray*)set;
 - (void)removeFavorite:(NSNumber *)message;

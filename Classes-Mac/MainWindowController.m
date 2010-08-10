@@ -60,7 +60,6 @@
 	[webView close];
 	
 	htmlController.delegate = nil;
-	[htmlController invalidateRefreshTimer];
 	[htmlController release];
 	
 	[lists release];
@@ -111,15 +110,14 @@
 	
 	for (int index = 0; index < images.count; index++) {
 		imageName = [images objectAtIndex:index];
-		if (index == [timelineSegmentedControl selectedSegment])
+		if ([timelineSegmentedControl isSelectedForSegment:index])
 			imageName = [imageName stringByAppendingString:@"-alt"];
 		imageName = [imageName stringByAppendingString:@".png"];
-		[timelineSegmentedControl setImage:[NSImage imageNamed:imageName] forSegment:index];					 
+		[timelineSegmentedControl setImage:[NSImage imageNamed:imageName] forSegment:index];
 	}
 }
 
 - (IBAction)selectTimelineWithSegmentedControl:(id)sender {
-	[self updateTimelineSegmentedControl];
 	int index = [sender selectedSegment];
 	switch (index) {
 		case 0:
@@ -173,11 +171,10 @@
 }
 
 - (IBAction)refresh:(id)sender {
-	[htmlController loadTimeline:htmlController.timeline];
 	if (htmlController.webViewHasValidHTML)
 		[self.webView scrollToTop];
+	[htmlController.twitter refreshNow];
 }
-
 
 #pragma mark Users
 
@@ -329,13 +326,13 @@
 		TwitterLoadListsAction *listsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:NO] autorelease];
 		listsAction.completionTarget= self;
 		listsAction.completionAction = @selector(didLoadLists:);
-		[htmlController startTwitterAction:listsAction];
+		[htmlController.twitter startTwitterAction:listsAction withAccount:htmlController.account];
 		
 		// Load lists that user subscribes to.
 		TwitterLoadListsAction *subscriptionsAction = [[[TwitterLoadListsAction alloc] initWithUser:userOrNil subscriptions:YES] autorelease];
 		subscriptionsAction.completionTarget= self;
 		subscriptionsAction.completionAction = @selector(didLoadListSubscriptions:);
-		[htmlController startTwitterAction:subscriptionsAction];
+		[htmlController.twitter startTwitterAction:subscriptionsAction withAccount:htmlController.account];
 	}
 }
 
@@ -416,7 +413,7 @@
 		TwitterLoadSavedSearchesAction *action = [[[TwitterLoadSavedSearchesAction alloc] init] autorelease];
 		action.completionTarget= self;
 		action.completionAction = @selector(didLoadSavedSearches:);
-		[htmlController startTwitterAction:action];
+		[htmlController.twitter startTwitterAction:action withAccount:htmlController.account];
 	}
 }
 
@@ -639,6 +636,7 @@
 		if (index >= 0)
 			[timelineSegmentedControl setSelected:NO forSegment:index];
 	}
+	[self updateTimelineSegmentedControl];
 }
 
 #pragma mark Window 

@@ -108,13 +108,13 @@
 	return result;
 }
 
-#pragma mark Sqlite
+#pragma mark Database
 
-- (void)setTimelineDatabase:(LKSqliteDatabase *)db {
-	NSString *userIdentifier = screenName;
-
-	[statuses setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Statuses", userIdentifier] temp:NO];
-	[favorites setDatabase:db tableName:[NSString stringWithFormat:@"User_%@_Favorites", userIdentifier] temp:NO];
+- (void)setTwitter:(Twitter *)aTwitter account:(TwitterAccount *)account {
+	[statuses setTwitter:aTwitter tableName:[NSString stringWithFormat:@"User_%@_Statuses", screenName] temp:NO];
+	[favorites setTwitter:aTwitter tableName:[NSString stringWithFormat:@"User_%@_Favorites", screenName] temp:NO];
+	statuses.account = account;
+	favorites.account = account;
 }
 
 - (id)databaseValueForKey:(NSString *)key {

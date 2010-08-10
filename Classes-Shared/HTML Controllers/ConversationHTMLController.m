@@ -73,7 +73,7 @@
 		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:twitterMethod] autorelease];
 		action.completionAction = @selector(didLoadMessage:);
 		action.completionTarget = self;
-		[self startTwitterAction:action];
+		[twitter startTwitterAction:action withAccount:account];
 	}
 	
 	// Load all cached replies to this message
@@ -118,10 +118,7 @@
 	}
 }
 
-- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
-	[super twitterAction:action didFailWithError:error];
-	[self loadingComplete];
-}
+// TODO: handle twitter action failure.
 
 - (void) fireRefreshTimer:(NSTimer*)timer {
 	// Refresh timer only to update timestamps.

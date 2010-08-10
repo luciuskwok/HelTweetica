@@ -15,6 +15,7 @@
  */
 
 #import "TwitterTimeline.h"
+#import "Twitter.h"
 #import "TwitterStatusUpdate.h"
 #import "TwitterLoadTimelineAction.h"
 #import "LKSqliteDatabase.h"
@@ -33,8 +34,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 
 @implementation TwitterTimeline
-@synthesize noOlderMessages, loadAction, delegate;
-//@synthesize twitter;
+@synthesize twitter, account, databaseTableName, noOlderMessages, loadAction;
+
 
 - (id)init {
 	self = [super init];
@@ -44,7 +45,6 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (void)dealloc {
-	[database release];
 	[databaseTableName release];
 	[loadAction release];
 	[super dealloc];
@@ -52,24 +52,18 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 #pragma mark Database
 
-- (void)setDatabase:(LKSqliteDatabase *)db tableName:(NSString*)tableName temp:(BOOL)temp {
-	if (database != db) {
-		[database release];
-		database = [db retain];
-	}
-	if (databaseTableName != tableName) {
-		[databaseTableName release];
-		databaseTableName = [tableName copy];
-	}
+- (void)setTwitter:(Twitter *)aTwitter tableName:(NSString*)tableName temp:(BOOL)temp {
+	self.twitter = aTwitter;
+	self.databaseTableName = tableName;
 
 	NSString *tempString = temp? @"temp" : @"";
 	NSString *query = [NSString stringWithFormat:@"Create %@ table if not exists %@ (identifier integer primary key, createdDate integer, gapAfter boolean, Foreign Key (identifier) references StatusUpdates(identifier))", tempString, databaseTableName];
-	[database execute:query];
+	[twitter.database execute:query];
 }
 
 - (void)deleteCaches {
 	NSString *query = [NSString stringWithFormat:@"Drop table if exists %@", databaseTableName];
-	[database execute:query];
+	[twitter.database execute:query];
 }
 
 #pragma mark Status Updates
@@ -80,8 +74,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 - (void)addMessages:(NSArray*)messages updateGap:(BOOL)updateGap {
 	if (messages.count == 0) return;
-	if (database == nil)
-		NSLog(@"TwitterTimeline is missing its database connection.");
+	if (twitter == nil)
+		NSLog(@"TwitterTimeline is missing its Twitter connection.");
 	
 	// Check if oldest message exists in timeline.
 	id last = [messages lastObject];
@@ -89,8 +83,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	
 	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
 	NSArray *allKeys = [NSArray arrayWithObjects:@"identifier", @"createdDate", @"gapAfter", nil];
-	NSString *query = [database queryWithCommand:@"Insert or replace into" table:databaseTableName keys:allKeys];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	NSString *query = [twitter.database queryWithCommand:@"Insert or replace into" table:databaseTableName keys:allKeys];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	
 	for (id message in messages) {
 		// Bind variables.
@@ -112,7 +106,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	if ([identifier longLongValue] == 0) return;
 	
 	NSString *query = [NSString stringWithFormat:@"Delete from %@ where Identifier == ?", databaseTableName];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	[statement bindNumber:identifier atIndex:1];
 	int result = [statement step];
 	if (result != SQLITE_OK && result != SQLITE_DONE) {
@@ -123,11 +117,11 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 - (BOOL)containsIdentifier:(NSNumber *)identifier {
 	// SQL command to check for existence of row with matching message identifier for this timeline only.
 	if ([identifier longLongValue] == 0) return NO;
-	if (database == nil)
-		NSLog(@"TwitterTimeline is missing its database connection.");
+	if (twitter == nil)
+		NSLog(@"TwitterTimeline is missing its Twitter cache connection.");
 	
 	NSString *query = [NSString stringWithFormat:@"Select identifier from %@ where Identifier == ?", databaseTableName];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	[statement bindNumber:identifier atIndex:1];
 	if ([statement step] == SQLITE_ROW) { // Row has data.
 		return YES;
@@ -142,11 +136,11 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 - (NSArray *)messagesWithLimit:(int)limit {
 	// SQL command to select rows up to limit sorted by createdDate.
 	if (limit <= 0) return nil;
-	if (database == nil)
-		NSLog(@"TwitterTimeline is missing its database connection.");
+	if (twitter == nil)
+		NSLog(@"TwitterTimeline is missing its Twitter cache connection.");
 	
 	NSString *query = [NSString stringWithFormat:@"Select StatusUpdates.* from StatusUpdates inner join %@ on %@.identifier=StatusUpdates.identifier order by StatusUpdates.CreatedDate desc limit %d", databaseTableName, databaseTableName, limit];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	NSMutableArray *statuses = [NSMutableArray arrayWithCapacity:limit];
 	TwitterStatusUpdate *status;
 	
@@ -161,11 +155,11 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 - (NSArray *)messagesSinceDate:(NSDate*)date {
 	// SQL command to select rows not older than date sorted by createdDate.
 	if (date == nil) return nil;
-	if (database == nil)
-		NSLog(@"TwitterTimeline is missing its database connection.");
+	if (twitter == nil)
+		NSLog(@"TwitterTimeline is missing its Twitter cache connection.");
 	
 	NSString *query = [NSString stringWithFormat:@"Select StatusUpdates.* from StatusUpdates inner join %@ on %@.identifier=StatusUpdates.identifier where StatusUpdates.CreatedDate>=? order by StatusUpdates.CreatedDate desc", databaseTableName, databaseTableName];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	[statement bindInteger:[date timeIntervalSinceReferenceDate] atIndex:1];
 	
 	NSMutableArray *statuses = [NSMutableArray array];
@@ -186,7 +180,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	if ([identifier longLongValue] == 0) return NO;
 
 	NSString *query = [NSString stringWithFormat:@"Select gapAfter from %@ where Identifier == ?", databaseTableName];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	[statement bindNumber:identifier atIndex:1];
 	BOOL hasGap = NO;
 	
@@ -199,7 +193,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 - (int)numberOfStatusUpdates {
 	NSString *query = [NSString stringWithFormat:@"Select Count(*) from %@", databaseTableName];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	NSNumber *n = nil;
 	
 	if ([statement step] == SQLITE_ROW) { // Row has data.
@@ -210,7 +204,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 - (NSNumber *)oldestStatusIdentifier {
 	NSString *query = [NSString stringWithFormat:@"Select identifier from %@ order by CreatedDate asc limit 1", databaseTableName];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	NSNumber *n = nil;
 	
 	if ([statement step] == SQLITE_ROW) { // Row has data.
@@ -221,7 +215,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 - (NSNumber *)newestStatusIdentifier {
 	NSString *query = [NSString stringWithFormat:@"Select identifier from %@ order by CreatedDate desc limit 1", databaseTableName];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	NSNumber *n = nil;
 	
 	if ([statement step] == SQLITE_ROW) { // Row has data.
@@ -230,7 +224,24 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	return n;
 }
 
-#pragma mark Loading
+#pragma mark Loading from servers
+
+- (void)updateWithAction:(TwitterLoadTimelineAction *)action {
+	// Update Twitter cache.
+	[twitter addStatusUpdates:action.loadedMessages replaceExisting:YES];
+	[twitter addStatusUpdates:action.retweetedMessages replaceExisting:YES];
+	[twitter addOrReplaceUsers:action.users];
+	
+	// Ignore gaps for own RTs.
+	BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO);
+	[self addMessages:action.loadedMessages updateGap:updateGap];
+	
+	// To be safe, only update Favorites if the same timeline is still selected.
+	[account addFavorites:action.favoriteMessages];
+	
+	// Update display.
+	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingNotification object:self userInfo:nil];
+}	
 
 - (void)reloadAll {
 	// Load all the latest messages, without limiting by the newest or older than criteria. 
@@ -243,7 +254,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	// Prepare action and start it. 
 	loadAction.completionTarget= self;
 	loadAction.completionAction = @selector(didReloadNewer:);
-	[delegate startTwitterAction:loadAction];
+	[twitter startTwitterAction:loadAction withAccount:account];
 }
 
 - (void)reloadNewer {
@@ -279,7 +290,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	// Prepare action and start it. 
 	loadAction.completionTarget= self;
 	loadAction.completionAction = @selector(didReloadNewer:);
-	[delegate startTwitterAction:loadAction];
+	[twitter startTwitterAction:loadAction withAccount:account];
 }
 
 - (void)didReloadNewer:(TwitterLoadTimelineAction *)action {
@@ -299,9 +310,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		[self reloadRetweetsSince:sinceIdentifier toMax:nil];
 	}
 	
-	// Call delegate so it can update the UI and Twitter cache.
-	if ([delegate respondsToSelector:@selector(timeline:didLoadWithAction:)]) 
-		[delegate timeline:self didLoadWithAction:action];
+	[self updateWithAction:action];
 }
 
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
@@ -317,14 +326,12 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		// Prepare action and start it. 
 		action.completionTarget = self;
 		action.completionAction = @selector(didReloadRetweets:);
-		[delegate startTwitterAction:action];
+		[twitter startTwitterAction:action withAccount:account];
 	}
 }
 
 - (void)didReloadRetweets:(TwitterLoadTimelineAction *)action {
-	// Call delegate so it can update the UI and Twitter cache.
-	if ([delegate respondsToSelector:@selector(timeline:didLoadWithAction:)]) 
-		[delegate timeline:self didLoadWithAction:action];
+	[self updateWithAction:action];
 }
 
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier {
@@ -344,7 +351,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	// Prepare action and start it. 
 	action.completionTarget= self;
 	action.completionAction = @selector(didLoadOlderInCurrentTimeline:);
-	[delegate startTwitterAction:action];
+	[twitter startTwitterAction:action withAccount:account];
 }
 
 - (void) didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action {
@@ -355,9 +362,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	// Limit the length of the timeline
 	[self limitDatabaseTableSize];
 	
-	// Call delegate so it can update the UI and Twitter cache.
-	if ([delegate respondsToSelector:@selector(timeline:didLoadWithAction:)]) 
-		[delegate timeline:self didLoadWithAction:action];
+	[self updateWithAction:action];
 }
 
 - (int)defaultLoadCount {

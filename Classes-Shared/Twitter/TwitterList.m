@@ -81,12 +81,13 @@
 	[encoder encodeObject:receivedDate forKey:@"receivedDate"];
 }
 
-- (void)setDatabase:(LKSqliteDatabase *)db {
+- (void)setTwitter:(Twitter *)aTwitter account:(TwitterAccount *)account {
 	NSNumber *tableIdentifier = identifier;
 	if ([tableIdentifier longLongValue] == 0) {
 		tableIdentifier = [NSNumber numberWithUnsignedInteger:[fullName hash]];
 	}
-	[self.statuses setDatabase:db tableName:[NSString stringWithFormat:@"List_%@_Statuses", tableIdentifier] temp:NO];
+	[statuses setTwitter:aTwitter tableName:[NSString stringWithFormat:@"List_%@_Statuses", tableIdentifier] temp:NO];
+	statuses.account = account;
 }
 
 

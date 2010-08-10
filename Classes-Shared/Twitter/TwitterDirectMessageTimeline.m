@@ -11,7 +11,7 @@
 #import "TwitterDirectMessageConversation.h"
 #import "TwitterLoadDirectMessagesAction.h"
 #import "TwitterLoadTimelineAction.h"
-#import "LKSqliteDatabase.h"
+#import "Twitter.h"
 
 
 // Constants for filter in directMessagesWithLimit
@@ -33,25 +33,19 @@ enum {
 
 #pragma mark Database
 
-- (void)setDatabase:(LKSqliteDatabase *)db tableName:(NSString*)tableName temp:(BOOL)temp {
-	if (database != db) {
-		[database release];
-		database = [db retain];
-	}
-	if (databaseTableName != tableName) {
-		[databaseTableName release];
-		databaseTableName = [tableName copy];
-	}
+- (void)setTwitter:(Twitter *)aTwitter tableName:(NSString*)tableName temp:(BOOL)temp {
+	self.twitter = aTwitter;
+	self.databaseTableName = tableName;
 	
 	NSString *tempString = temp? @"temp" : @"";
 	NSString *query = [NSString stringWithFormat:@"Create %@ table if not exists %@ (identifier integer primary key, createdDate integer, gapAfter boolean, sent boolean, Foreign Key (identifier) references DirectMessages(identifier))", tempString, databaseTableName];
-	[database execute:query];
+	[twitter.database execute:query];
 }
 
 - (NSArray *)directMessagesWithLimit:(int)limit filter:(int)filter {
 	// SQL command to select rows up to limit sorted by createdDate.
 	if (limit <= 0) return nil;
-	if (database == nil)
+	if (twitter.database == nil)
 		NSLog(@"TwitterTimeline is missing its database connection.");
 	
 	NSString *whereClause = nil;
@@ -68,7 +62,7 @@ enum {
 	}
 	
 	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier %@ order by DirectMessages.createdDate desc limit %d", databaseTableName, databaseTableName, whereClause, limit];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	NSMutableArray *messages = [NSMutableArray arrayWithCapacity:limit];
 	TwitterDirectMessage *message;
 	
@@ -82,7 +76,7 @@ enum {
 
 - (void)addMessages:(NSArray *)messages sent:(BOOL)sent {
 	if (messages.count == 0) return;
-	if (database == nil)
+	if (twitter.database == nil)
 		NSLog(@"TwitterTimeline is missing its database connection.");
 	
 	// Check if oldest message exists in timeline.
@@ -91,8 +85,8 @@ enum {
 	
 	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
 	NSArray *allKeys = [NSArray arrayWithObjects:@"identifier", @"createdDate", @"gapAfter", @"sent", nil];
-	NSString *query = [database queryWithCommand:@"Insert or replace into" table:databaseTableName keys:allKeys];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	NSString *query = [twitter.database queryWithCommand:@"Insert or replace into" table:databaseTableName keys:allKeys];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	
 	for (id message in messages) {
 		// Bind variables.
@@ -119,7 +113,7 @@ enum {
 	const int kRowCountLimit = 1000;
 	NSString *columnsToSelect = @"DirectMessages.senderIdentifier, DirectMessages.recipientIdentifier";
 	NSString *query = [NSString stringWithFormat:@"Select %@ from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier order by DirectMessages.createdDate desc limit %d", columnsToSelect, databaseTableName, databaseTableName, kRowCountLimit];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	NSNumber *sender, *recipient;
 	
 	while ([statement step] == SQLITE_ROW) { // Row has data.
@@ -144,7 +138,7 @@ enum {
 	const int kRowCountLimit = 1000;
 	NSString *whereClause = [NSString stringWithFormat:@"where DirectMessages.senderIdentifier == %@ or DirectMessages.recipientIdentifier == %@", [userIdentifier stringValue], [userIdentifier stringValue]];
 	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier %@ order by DirectMessages.createdDate desc limit %d", databaseTableName, databaseTableName, whereClause, kRowCountLimit];
-	LKSqliteStatement *statement = [database statementWithQuery:query];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	TwitterDirectMessage *message;
 	
 	while ([statement step] == SQLITE_ROW) { // Row has data.
@@ -190,7 +184,7 @@ enum {
 	// Prepare action and start it. 
 	action.completionTarget= self;
 	action.completionAction = @selector(didLoadDirectMessages:);
-	[delegate startTwitterAction:action];
+	[twitter startTwitterAction:action withAccount:account];
 }
 
 - (void)reloadNewer {
@@ -203,10 +197,17 @@ enum {
 - (void)didLoadDirectMessages:(TwitterLoadTimelineAction *)action {
 	// Limit the length of the timeline
 	[self limitDatabaseTableSize];
+
+	// Update Twitter cache.
+	[twitter addDirectMessages:action.loadedMessages];
+	[twitter addOrReplaceUsers:action.users];
 	
-	// Call delegate so it can update the UI and Twitter cache.
-	if ([delegate respondsToSelector:@selector(timeline:didLoadWithAction:)]) 
-		[delegate timeline:self didLoadWithAction:action];
+	// Update timeline.
+	BOOL sent = [action.twitterMethod hasSuffix:@"sent"];
+	[self addMessages:action.loadedMessages sent:sent];
+
+	// Update display.
+	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingNotification object:self userInfo:nil];
 }
 
 

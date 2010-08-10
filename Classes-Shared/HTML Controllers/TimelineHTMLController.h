@@ -30,14 +30,13 @@
 
 
 
-@interface TimelineHTMLController : NSObject <TwitterTimelineDelegate, TwitterActionDelegate> {
+@interface TimelineHTMLController : NSObject {
 	LKWebView *webView;
 	
 	Twitter *twitter;
 	TwitterAccount *account;
 	TwitterTimeline *timeline;
 	NSArray *messages;
-	NSMutableArray *actions;
 
 	NSString *directMessageRowTemplate;
 	NSString *directMessageRowSectionOpenTemplate;
@@ -55,8 +54,6 @@
 	BOOL noInternetConnection;
 	BOOL suppressNetworkErrorAlerts;
 	
-	NSTimer *refreshTimer;
-
 	id delegate;
 }
 
@@ -66,7 +63,6 @@
 @property (nonatomic, retain) TwitterAccount *account;
 @property (nonatomic, retain) TwitterTimeline *timeline;
 @property (nonatomic, retain) NSArray *messages;
-@property (nonatomic, retain) NSMutableArray *actions;
 
 @property (nonatomic, retain) NSString *customPageTitle;
 @property (nonatomic, retain) NSString *customTabName;
@@ -88,13 +84,10 @@
 // Loading
 - (void)loadTimeline:(TwitterTimeline *)aTimeline;
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier;
-- (void)timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterAction *)action;
 - (void)loadList:(TwitterList*)list;
+- (void)timelineDidFinishLoading:(NSNotification *)notification;
 
 // Twitter actions
-- (void)startTwitterAction:(TwitterAction*)action;
-- (void)handleTwitterStatusCode:(int)code;
-- (void)twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error;
 - (void)fave: (NSNumber*) messageIdentifier;
 - (void)deleteStatusUpdate:(NSNumber*)messageIdentifier;
 
@@ -106,10 +99,6 @@
 // Web actions
 - (BOOL)handleWebAction:(NSString*)action;
 - (NSNumber*)number64WithString:(NSString*)string;
-
-// Refresh timer
-- (void)scheduleRefreshTimer;
-- (void)invalidateRefreshTimer;
 
 // HTML
 - (NSString *)loadHTMLTemplate:(NSString *)templateName;

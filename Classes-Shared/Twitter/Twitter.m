@@ -16,6 +16,8 @@
 
 
 #import "Twitter.h"
+#import "TwitterTimeline.h"
+
 
 
 // HelTweetica twitter consumer/client credentials.
@@ -27,6 +29,9 @@
 // #define kConsumerKey @"xxxxxxxxxxxxxxxx"
 // #define kConsumerSecret @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
+// Refresh
+const NSTimeInterval kRefreshTimerInterval = 60.0;
+
 
 @implementation Twitter
 @synthesize accounts, database;
@@ -35,6 +40,7 @@
 - (id) init {
 	if (self = [super init]) {
 		self.accounts = [NSMutableArray array];
+		actions = [[NSMutableSet alloc] init];
 
 		// == Sqlite 3 ==
 		// Create a new sqlite database if none exists.
@@ -72,8 +78,10 @@
 		
 		// Set up the database connections.
 		for (TwitterAccount *account in accounts) 
-			[account setDatabase:database];
+			[account setTwitter:self];
 		
+		// == Refresh timer ==
+		[self scheduleRefreshTimer:kRefreshTimerInterval];
 	}
 	return self;
 }
@@ -81,6 +89,8 @@
 - (void) dealloc {
 	[accounts release];
 	[database release];
+	[actions release];
+	[refreshTimer invalidate];
 	[super dealloc];
 }
 
@@ -306,6 +316,81 @@
 		[set addObject:user];
 	}
 	return set;
+}
+
+#pragma mark TwitterActions
+
+- (void)startTwitterAction:(TwitterAction*)action withAccount:(TwitterAccount *)account {
+	[actions addObject: action];
+	
+	// Set up Twitter action
+	action.delegate = self;
+	if (account) {
+		action.consumerToken = account.xAuthToken;
+		action.consumerSecret = account.xAuthSecret;
+	}
+	
+	// Start the URL connection
+	[action start];
+}
+
+- (void)removeTwitterAction:(TwitterAction*)action {
+	[actions removeObject: action];
+}
+
+- (void) twitterActionDidFinishLoading:(TwitterAction*)action {
+	if (action.statusCode >= 400) {
+		NSString *message = nil;		
+		switch (action.statusCode) {
+			case 400:  // Bad request, or rate limit exceeded
+				message = @"Rate limit exceeded.";
+				break;
+			case 401:   // Unauthorized
+				message = @"The Twitter username or password is incorrect.";
+				break;
+			case 403: // The request is understood, but it has been refused.
+				message = @"Request denied.";
+				break;
+			case 404: // Not found.
+				message = @"Not found.";
+				break;
+			case 502: // Twitter is down or being upgraded.
+				message = @"Twitter is down or being upgraded.";
+				break;
+			case 503: // The Twitter servers are overloaded.
+				message = @"The Twitter servers are overloaded.";
+				break;
+			default:
+				message = @"Something is technically wrong.";
+				break;
+		}
+		NSError *error = [NSError errorWithDomain:@"com.felttip.HelTweetica" code:action.statusCode userInfo:[NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey]];
+		[[NSNotificationCenter defaultCenter] postNotificationName:TwitterErrorNotification object:error];
+	}
+	[self removeTwitterAction:action];
+}
+
+- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
+	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterErrorNotification object:error];
+	[self removeTwitterAction: action];
+}
+
+#pragma mark Refresh timer
+
+- (void)fireRefreshTimer:(NSTimer *)timer {
+	for (TwitterAccount *account in accounts) {
+		[account reloadNewer];
+	}
+}
+
+- (void)refreshNow {
+	[self fireRefreshTimer:refreshTimer];
+	[self scheduleRefreshTimer:kRefreshTimerInterval];
+}
+
+- (void)scheduleRefreshTimer:(NSTimeInterval)interval {
+	[refreshTimer invalidate];
+	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:kRefreshTimerInterval target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:YES];
 }
 
 #pragma mark User defaults
