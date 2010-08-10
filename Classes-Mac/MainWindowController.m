@@ -173,7 +173,9 @@
 - (IBAction)refresh:(id)sender {
 	if (htmlController.webViewHasValidHTML)
 		[self.webView scrollToTop];
-	[htmlController.twitter refreshNow];
+	
+	// If showing a list or favorites or search or something that isn't automatically refreshed by the Twitter class, refresh just that timeline.
+	[htmlController refresh];
 }
 
 #pragma mark Users

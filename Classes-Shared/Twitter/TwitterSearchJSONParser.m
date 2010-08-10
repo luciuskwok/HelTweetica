@@ -15,6 +15,7 @@
 
 #import "TwitterSearchJSONParser.h"
 #import "TwitterStatusUpdate.h"
+#import "NSString+HTMLFormatted.h"
 
 
 @implementation TwitterSearchJSONParser
@@ -79,17 +80,6 @@
 	
 }
 
-- (NSDate*) dateWithSearchString: (NSString*) string {
-	static NSDateFormatter *sDateFormatter = nil;
-	if (sDateFormatter == nil) {
-		sDateFormatter = [[NSDateFormatter alloc] init];
-		[sDateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
-	}
-	
-	NSDate *result = [sDateFormatter dateFromString:string];
-	return result;
-}
-
 - (NSString *)stringReplacingAmpersandEscapes:(NSString *)string {
 	NSMutableString *result = [NSMutableString stringWithString:string];
 	[result replaceOccurrencesOfString:@"&lt;" withString:@"<" options:0 range:NSMakeRange(0, result.length)];
@@ -105,7 +95,7 @@
 	} else if ([parser.keyPath isEqualToString:@"/results/source"]) {
 		currentMessage.source = [self stringReplacingAmpersandEscapes:value];
 	} else if ([parser.keyPath isEqualToString:@"/results/created_at"]) {
-		currentMessage.createdDate = [self dateWithSearchString:value];
+		currentMessage.createdDate = [value twitterDate];
 	} else if ([parser.keyPath isEqualToString:@"/results/text"]) {
 		currentMessage.text = value;
 	} else if ([parser.keyPath isEqualToString:@"/results/from_user"]) { 

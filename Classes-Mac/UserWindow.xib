@@ -29,7 +29,7 @@
 			<object class="NSWindowTemplate" id="1005">
 				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{65, 358}, {480, 600}}</string>
+				<string key="NSWindowRect">{{65, 358}, {510, 600}}</string>
 				<int key="NSWTFlags">539492352</int>
 				<string key="NSWindowTitle">User</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -331,6 +331,10 @@
 									<reference key="NSControlView" ref="67842180"/>
 									<int key="NSButtonFlags">-2034220801</int>
 									<int key="NSButtonFlags2">163</int>
+									<object class="NSCustomResource" key="NSNormalImage" id="805072889">
+										<string key="NSClassName">NSImage</string>
+										<string key="NSResourceName">mac-toolbar-lists</string>
+									</object>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">400</int>
@@ -343,10 +347,7 @@
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
 										<int key="NSState">1</int>
-										<object class="NSCustomResource" key="NSImage" id="200087166">
-											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">mac-toolbar-lists</string>
-										</object>
+										<reference key="NSImage" ref="805072889"/>
 										<object class="NSCustomResource" key="NSOnImage" id="644838237">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">NSMenuCheckmark</string>
@@ -406,7 +407,7 @@
 									<int key="NSArrowPosition">2</int>
 								</object>
 							</object>
-							<reference key="NSToolbarItemImage" ref="200087166"/>
+							<reference key="NSToolbarItemImage" ref="805072889"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{40, 25}</string>
@@ -568,7 +569,7 @@
 								<string>public.url</string>
 								<string>public.url-name</string>
 							</set>
-							<string key="NSFrameSize">{480, 600}</string>
+							<string key="NSFrameSize">{510, 600}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSNextKeyView"/>
 							<string key="FrameName"/>
@@ -585,7 +586,7 @@
 							<bool key="AllowsUndo">YES</bool>
 						</object>
 					</array>
-					<string key="NSFrameSize">{480, 600}</string>
+					<string key="NSFrameSize">{510, 600}</string>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
 				<string key="NSMinSize">{380, 324}</string>

@@ -115,38 +115,6 @@
 
 #pragma mark Twitter API
 
-- (NSDate*) dateWithTwitterStatusString: (NSString*) string {
-	
-	// Date format for search.twitter.com and api.twitter.com
-	static NSDateFormatter *sSearchDateFormatter = nil;
-	static NSDateFormatter *sAPIDateFormatter = nil;
-	if (sSearchDateFormatter == nil || sAPIDateFormatter == nil) {
-		NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:[NSLocale canonicalLocaleIdentifierFromString:@"en_US"]] autorelease];
-
-		sSearchDateFormatter = [[NSDateFormatter alloc] init];
-		[sSearchDateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
-		[sSearchDateFormatter setLocale: usLocale];
-
-		sAPIDateFormatter = [[NSDateFormatter alloc] init];
-		[sAPIDateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; // Mon Jan 25 00:46:47 +0000 2010
-		[sAPIDateFormatter setLocale: usLocale];
-	}
-	
-	
-	// Twitter and Search use two different date formats, which differ by a comma at character 4.
-	NSDateFormatter *formatter;
-	if ([string characterAtIndex:3] == ',') {
-		// Twitter Search API format
-		formatter = sSearchDateFormatter;
-	} else {
-		// Twitter API default format
-		formatter = sAPIDateFormatter;
-	}
-	
-	NSDate *result = [formatter dateFromString:string];
-	return result;
-}
-
 - (NSNumber *)scanInt64FromString:(NSString *)string {
 	SInt64 x = 0;
 	[[NSScanner scannerWithString:string] scanLongLong: &x];
@@ -178,7 +146,7 @@
 		} else if ([key isEqualToString:@"in_reply_to_user_id"]) {
 			self.inReplyToUserIdentifier = [self scanInt64FromString:value];
 		} else if ([key isEqualToString:@"created_at"]) {
-			self.createdDate = [self dateWithTwitterStatusString:value];
+			self.createdDate = [value twitterDate];
 		} else if ([key isEqualToString:@"coordinates"]) {
 			if (latitude == nil) {
 				self.latitude = [self scanDoubleFromString:value];

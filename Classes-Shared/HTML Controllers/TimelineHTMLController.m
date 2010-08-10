@@ -68,7 +68,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		
 		// Timeline update notifications
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		//[nc addObserver:self selector:@selector(timelineDidStartLoading:) name:@"" object:nil];
 		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
 	}
 	return self;
@@ -133,10 +132,29 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	self.customTabName = kFavoritesIdentifier;
 	self.timeline = account.favorites;
 	[self updateForNewTimeline];
+	[self refresh];
 }
 
 
 #pragma mark Loading
+
+- (void)refresh {
+	isLoading = YES;
+	[self setLoadingSpinnerVisibility:YES];
+	if (timeline == account.homeTimeline || timeline == account.mentions || timeline == account.directMessages) {
+		self.messages = [timeline messagesWithLimit: maxTweetsShown];
+		[self rewriteTweetArea];
+		[twitter refreshNow];
+	} else {
+		if (timeline == account.favorites) {
+			// Reload messages ignoring what's already local in case there are gaps in our version of the timeline.
+			[timeline reloadAll];
+		} else {
+			[timeline reloadNewer];
+		}
+	}
+	[webView scrollToTop];
+}
 
 - (void)loadTimeline:(TwitterTimeline*)aTimeline {
 	self.timeline = aTimeline;
@@ -144,6 +162,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 	if (noInternetConnection == NO) {
 		isLoading = YES;
+		[self setLoadingSpinnerVisibility:YES];
 		if (timeline == account.favorites) {
 			// Reload messages ignoring what's already local in case there are gaps in our version of the timeline.
 			[timeline reloadAll];
@@ -178,8 +197,14 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	TwitterTimeline *aTimeline = [notification object];
 	if (aTimeline == self.timeline) {
 		isLoading = NO;
-		self.messages = [timeline messagesWithLimit: maxTweetsShown];
-		[self rewriteTweetArea];
+		[self setLoadingSpinnerVisibility:NO];
+
+		// Only update if the web view is scrolled to the top.
+		CGPoint position = [webView scrollPosition];
+		if (position.y <= 1.0f) {
+			self.messages = [timeline messagesWithLimit: maxTweetsShown];
+			[self rewriteTweetArea];
+		}
 	}
 }
 

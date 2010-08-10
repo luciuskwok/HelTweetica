@@ -29,12 +29,14 @@
 	NSString *databaseTableName;
 	BOOL noOlderMessages;
 	TwitterLoadTimelineAction *loadAction;
+	BOOL replaceExistingStatusUpdates;
 }
 @property (nonatomic, assign) Twitter *twitter;
 @property (nonatomic, assign) TwitterAccount *account;
 @property (nonatomic, copy) NSString *databaseTableName;
 @property (assign) BOOL noOlderMessages;
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
+@property (assign) BOOL replaceExistingStatusUpdates;
 
 // Database
 - (void)setTwitter:(Twitter *)aTwitter tableName:(NSString*)tableName temp:(BOOL)temp;
@@ -55,9 +57,6 @@
 // Loading from Twitter
 - (void)reloadAll;
 - (void)reloadNewer;
-- (void)didReloadNewer:(TwitterLoadTimelineAction *)action;
-- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier;
-- (void)didReloadRetweets:(TwitterLoadTimelineAction *)action;
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier;
 - (void)didLoadOlderInCurrentTimeline:(TwitterLoadTimelineAction *)action;
 - (int)defaultLoadCount;

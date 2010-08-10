@@ -35,15 +35,15 @@
 		self.timeline = [[[TwitterTimeline alloc] init] autorelease]; // Always start with an empty array of messages for Search.
 		timeline.loadAction = [[[TwitterSearchAction alloc] initWithQuery:aQuery] autorelease];
 		timeline.loadAction.countKey = @"rpp";
+		timeline.replaceExistingStatusUpdates = NO;
 
 		// Database
 		[timeline setTwitter:twttr tableName:[NSString stringWithFormat:@"SearchResults_%u", [aQuery hash]] temp:YES];
 
-		// Listen for changes to Twitter state data
+		// Notifications
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
-		[nc addObserver:self selector:@selector(accountsDidChange:) name:@"accountsDidChange" object:nil];
-
+		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
+		
 		[self loadTimeline:timeline];
 		
 	}
@@ -62,23 +62,15 @@
 	return [self loadHTMLTemplate:@"basic-template"];
 }
 
-#pragma mark TwitterTimelineDelegate
+#pragma mark Notifications
 
-- (void) timeline:(TwitterTimeline *)aTimeline didLoadWithAction:(TwitterLoadTimelineAction *)action {
-	// Twitter cache. Don't replace existing entries because they lack the userIdentifier column.
-	[twitter addStatusUpdates:action.loadedMessages replaceExisting:NO];
-	
-	// Timeline
-	[aTimeline addMessages:action.loadedMessages updateGap:YES];
-	
-	isLoading = NO;
-	
-	if (timeline == aTimeline) {
+- (void)timelineDidFinishLoading:(NSNotification *)notification {
+	TwitterTimeline *aTimeline = [notification object];
+	if (aTimeline == self.timeline) {
+		isLoading = NO;
 		self.messages = [timeline messagesWithLimit: maxTweetsShown];
-		[self rewriteTweetArea];	
+		[self rewriteTweetArea];
 	}
 }
-
-
 
 @end

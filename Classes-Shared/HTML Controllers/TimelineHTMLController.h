@@ -82,6 +82,7 @@
 - (void)selectFavoritesTimeline;
 
 // Loading
+- (void)refresh;
 - (void)loadTimeline:(TwitterTimeline *)aTimeline;
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier;
 - (void)loadList:(TwitterList*)list;

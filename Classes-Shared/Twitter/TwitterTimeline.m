@@ -241,7 +241,6 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO);
 	[self addMessages:action.loadedMessages updateGap:updateGap];
 	
-	// To be safe, only update Favorites if the same timeline is still selected.
 	[account addFavorites:action.favoriteMessages];
 
 	// Limit the length of the timeline
@@ -255,6 +254,25 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingNotification object:self userInfo:nil];
 	}
 }	
+
+- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
+	TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/retweeted_by_me"] autorelease];
+	if (sinceIdentifier) 
+		[action.parameters setObject:sinceIdentifier forKey:@"since_id"];
+	if (maxIdentifier) 
+		[action.parameters setObject:maxIdentifier forKey:@"max_id"];
+	[action setCount:[self defaultLoadCount]];
+	
+	// Prepare action and start it. 
+	action.completionTarget = self;
+	action.completionAction = @selector(didReloadRetweets:);
+	[twitter startTwitterAction:action withAccount:account];
+}
+
+- (void)didReloadRetweets:(TwitterLoadTimelineAction *)action {
+	[self updateWithAction:action notify:YES];
+}
+
 
 - (void)reloadAll {
 	// Load all the latest messages, without limiting by the newest or older than criteria. 
@@ -318,31 +336,12 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		sinceIdentifier = [self newestStatusIdentifier];
 	}
 	
-	if (sinceIdentifier) {
+	// Only load retweets for home timeline.
+	BOOL reloadRetweets = (sinceIdentifier && [loadAction.twitterMethod isEqualToString:@"statuses/home_timeline"]);
+	if (reloadRetweets) {
 		[self reloadRetweetsSince:sinceIdentifier toMax:nil];
 	}
-	[self updateWithAction:action notify:(sinceIdentifier == nil)];
-}
-
-- (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
-	// This only works for the user's own home timeline.
-	if ([loadAction.twitterMethod isEqualToString:@"statuses/home_timeline"]) {
-		TwitterLoadTimelineAction *action = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:@"statuses/retweeted_by_me"] autorelease];
-		if (sinceIdentifier) 
-			[action.parameters setObject:sinceIdentifier forKey:@"since_id"];
-		if (maxIdentifier) 
-			[action.parameters setObject:maxIdentifier forKey:@"max_id"];
-		[action setCount:[self defaultLoadCount]];
-		
-		// Prepare action and start it. 
-		action.completionTarget = self;
-		action.completionAction = @selector(didReloadRetweets:);
-		[twitter startTwitterAction:action withAccount:account];
-	}
-}
-
-- (void)didReloadRetweets:(TwitterLoadTimelineAction *)action {
-	[self updateWithAction:action notify:YES];
+	[self updateWithAction:action notify:(reloadRetweets == NO)];
 }
 
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier {

@@ -80,19 +80,6 @@
 
 #pragma mark Twitter API
 
-- (NSDate*) dateWithTwitterStatusString: (NSString*) string {
-	static NSDateFormatter *sAPIDateFormatter = nil;
-	if (sAPIDateFormatter == nil) {
-		NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:[NSLocale canonicalLocaleIdentifierFromString:@"en_US"]] autorelease];
-		sAPIDateFormatter = [[NSDateFormatter alloc] init];
-		[sAPIDateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; // Mon Jan 25 00:46:47 +0000 2010
-		[sAPIDateFormatter setLocale: usLocale];
-	}
-	
-	NSDate *result = [sAPIDateFormatter dateFromString:string];
-	return result;
-}
-
 - (NSNumber *)scanInt64FromString:(NSString *)string {
 	SInt64 x = 0;
 	[[NSScanner scannerWithString:string] scanLongLong: &x];
@@ -107,7 +94,7 @@
 		if ([key isEqualToString:@"id"]) {
 			self.identifier = [self scanInt64FromString:value];
 		} else if ([key isEqualToString:@"created_at"]) {
-			self.createdDate = [self dateWithTwitterStatusString:value];
+			self.createdDate = [value twitterDate];
 		} else if ([key isEqualToString:@"sender_id"]) {
 			self.senderIdentifier = value;
 		} else if ([key isEqualToString:@"sender_screen_name"]) {

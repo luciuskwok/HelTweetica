@@ -127,8 +127,7 @@
 
 - (IBAction) reloadData: (id) sender {
 	timelineHTMLController.suppressNetworkErrorAlerts = NO;
-	[self.webView scrollToTop];
-	[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
+	[timelineHTMLController refresh];
 }
 
 #pragma mark Compose

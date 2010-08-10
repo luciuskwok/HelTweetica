@@ -52,7 +52,7 @@
 	}
 	
 	// Set up database connection.
-	[aUser setTwitter:twitter account:account];
+	[user setTwitter:twitter account:account];
 }
 
 #pragma mark Timeline selection
@@ -72,7 +72,7 @@
 
 	// Show loading spinner or old tweets
 	[self rewriteTweetArea];
-	
+
 	// Notify delegate that a different timeline was selected.
 	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
 		[delegate didSelectTimeline:timeline];
@@ -99,7 +99,14 @@
 }
 
 - (void)timelineDidFinishLoading:(NSNotification *)notification {
-	[super timelineDidFinishLoading:notification];
+	TwitterTimeline *aTimeline = [notification object];
+	if (aTimeline != self.timeline) 
+		return;
+
+	isLoading = NO;
+	[self setLoadingSpinnerVisibility:NO];
+	self.messages = [timeline messagesWithLimit: maxTweetsShown];
+	[self rewriteTweetArea];
 	
 	// Update user object with latest version.
 	TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];

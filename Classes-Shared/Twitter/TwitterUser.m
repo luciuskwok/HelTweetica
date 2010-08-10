@@ -15,6 +15,7 @@
 
 #import "TwitterUser.h"
 #import "TwitterTimeline.h"
+#import "NSString+HTMLFormatted.h"
 
 
 
@@ -128,21 +129,6 @@
 
 #pragma mark Twitter API
 
-- (NSDate*) dateWithTwitterStatusString: (NSString*) string {
-	// Twitter and Search use two different date formats, which differ by a comma at character 4.
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	if ([string characterAtIndex:3] == ',') {
-		// Twitter Search API format
-		[formatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
-	} else {
-		// Twitter API default format
-		[formatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; // Mon Jan 25 00:46:47 +0000 2010
-	}
-	NSDate *result = [formatter dateFromString:string];
-	[formatter release];
-	return result;
-}
-
 - (NSNumber *)scanInt64FromString:(NSString *)string {
 	SInt64 x = 0;
 	[[NSScanner scannerWithString:string] scanLongLong: &x];
@@ -181,7 +167,7 @@
 		} else if ([key isEqualToString:@"url"]) {
 			self.webURL = value;
 		} else if ([key isEqualToString:@"created_at"]) {
-			self.createdDate = [self dateWithTwitterStatusString:value];
+			self.createdDate = [value twitterDate];
 		}
 	}
 	
