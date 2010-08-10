@@ -12,6 +12,13 @@
 @implementation NSDate (RelativeDate)
 
 - (NSString *)relativeDateSinceNow {
+	static NSDateFormatter *sRelativeDateFormatter = nil;
+	if (sRelativeDateFormatter == nil) {
+		sRelativeDateFormatter = [[NSDateFormatter alloc] init];
+		[sRelativeDateFormatter setTimeStyle:NSDateFormatterNoStyle];
+		[sRelativeDateFormatter setDateStyle:NSDateFormatterShortStyle];
+	}
+	
 	NSString *result = nil;
 	NSTimeInterval timeSince = -[self timeIntervalSinceNow] / 60.0 ; // in minutes
 	if (timeSince < 48.0 * 60.0) { // If under 48 hours, report relative time
@@ -33,10 +40,7 @@
 			result = [NSString stringWithFormat:@"%d %@s ago", value, units];
 		}
 	} else { // 48 hours or more, display the date
-		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-		[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-		[dateFormatter setDateStyle:NSDateFormatterShortStyle];
-		result = [dateFormatter stringFromDate:self];
+		result = [sRelativeDateFormatter stringFromDate:self];
 	}
 	return result;
 }

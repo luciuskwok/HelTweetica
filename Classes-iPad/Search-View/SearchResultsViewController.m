@@ -31,8 +31,7 @@
 		self.query = aQuery;
 		
 		// Replace HTML controller with specific one for User Pages
-		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery database:twitter.database] autorelease];
-		controller.twitter = twitter;
+		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery twitter:twitter] autorelease];
 		controller.delegate = self;
 		self.timelineHTMLController = controller;
 	}
@@ -79,7 +78,7 @@
 	TwitterSavedSearchAction *action = [[[TwitterSavedSearchAction alloc] initWithCreateQuery:query] autorelease];
 	action.completionTarget = self;
 	action.completionAction = @selector(didSaveSearch:);
-	[timelineHTMLController startTwitterAction: action];
+	[timelineHTMLController.twitter startTwitterAction:action withAccount:timelineHTMLController.account];
 }
 
 - (void)didSaveSearch:(TwitterSavedSearchAction *)action {

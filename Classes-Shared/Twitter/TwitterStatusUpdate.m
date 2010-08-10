@@ -116,21 +116,32 @@
 #pragma mark Twitter API
 
 - (NSDate*) dateWithTwitterStatusString: (NSString*) string {
-	// Twitter and Search use two different date formats, which differ by a comma at character 4.
-	NSString *template;
-	if ([string characterAtIndex:3] == ',') {
-		// Twitter Search API format
-		template = @"EEE, dd MMM yyyy HH:mm:ss ZZ"; // Mon, 25 Jan 2010 00:46:47 +0000 
-	} else {
-		// Twitter API default format
-		template = @"EEE MMM dd HH:mm:ss ZZ yyyy"; // Mon Jan 25 00:46:47 +0000 2010
+	
+	// Date format for search.twitter.com and api.twitter.com
+	static NSDateFormatter *sSearchDateFormatter = nil;
+	static NSDateFormatter *sAPIDateFormatter = nil;
+	if (sSearchDateFormatter == nil || sAPIDateFormatter == nil) {
+		NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:[NSLocale canonicalLocaleIdentifierFromString:@"en_US"]] autorelease];
+
+		sSearchDateFormatter = [[NSDateFormatter alloc] init];
+		[sSearchDateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
+		[sSearchDateFormatter setLocale: usLocale];
+
+		sAPIDateFormatter = [[NSDateFormatter alloc] init];
+		[sAPIDateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; // Mon Jan 25 00:46:47 +0000 2010
+		[sAPIDateFormatter setLocale: usLocale];
 	}
 	
-	NSString *localeIdentifier = [NSLocale canonicalLocaleIdentifierFromString:@"en_US"];
-	NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:localeIdentifier] autorelease];
-	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-	[formatter setLocale: usLocale];
-	[formatter setDateFormat:template];
+	
+	// Twitter and Search use two different date formats, which differ by a comma at character 4.
+	NSDateFormatter *formatter;
+	if ([string characterAtIndex:3] == ',') {
+		// Twitter Search API format
+		formatter = sSearchDateFormatter;
+	} else {
+		// Twitter API default format
+		formatter = sAPIDateFormatter;
+	}
 	
 	NSDate *result = [formatter dateFromString:string];
 	return result;
@@ -183,10 +194,13 @@
 #pragma mark HTML 
 
 - (NSString *)stringForURLWithPrefix:(NSString *)prefix {
+	static NSCharacterSet *urlSet = nil;
+	if (urlSet == nil) {
+		urlSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+_-:/."] retain];
+	}
+	
 	NSString *urlString = nil;
 	NSScanner *scanner = [NSScanner scannerWithString:text];
-	NSCharacterSet *urlSet = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+_-:/."];
-	//NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@"-+?& \t\r\n\"'"];
 	[scanner setCharactersToBeSkipped:nil];
 	
 	while ([scanner isAtEnd] == NO) {

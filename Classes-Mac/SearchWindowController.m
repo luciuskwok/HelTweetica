@@ -139,7 +139,7 @@
 	TwitterSavedSearchAction *action = [[[TwitterSavedSearchAction alloc] initWithCreateQuery:query] autorelease];
 	action.completionTarget = self;
 	action.completionAction = @selector(didSaveSearch:);
-	[htmlController.twitter startTwitterAction:action withAccount:nil];
+	[htmlController.twitter startTwitterAction:action withAccount:htmlController.account];
 }
 
 - (void)didSaveSearch:(TwitterSavedSearchAction *)action {

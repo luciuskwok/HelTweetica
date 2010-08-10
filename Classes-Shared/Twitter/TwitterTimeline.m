@@ -34,12 +34,13 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 
 @implementation TwitterTimeline
-@synthesize twitter, account, databaseTableName, noOlderMessages, loadAction;
+@synthesize twitter, account, databaseTableName, noOlderMessages, loadAction, replaceExistingStatusUpdates;
 
 
 - (id)init {
 	self = [super init];
 	if (self) {
+		replaceExistingStatusUpdates = YES;
 	}
 	return self;
 }
@@ -145,8 +146,9 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	TwitterStatusUpdate *status;
 	
 	while ([statement step] == SQLITE_ROW) { // Row has data.
-		status = [[[TwitterStatusUpdate alloc] initWithDictionary:[statement rowData]] autorelease];
+		status = [[TwitterStatusUpdate alloc] initWithDictionary:[statement rowData]];
 		[statuses addObject:status];
+		[status release];
 	}
 	
 	return statuses;
@@ -226,10 +228,13 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 #pragma mark Loading from servers
 
-- (void)updateWithAction:(TwitterLoadTimelineAction *)action {
+- (void)updateWithAction:(TwitterLoadTimelineAction *)action notify:(BOOL)notify {
+	// Begin transaction.
+	[twitter.database beginTransaction];
+	
 	// Update Twitter cache.
-	[twitter addStatusUpdates:action.loadedMessages replaceExisting:YES];
-	[twitter addStatusUpdates:action.retweetedMessages replaceExisting:YES];
+	[twitter addStatusUpdates:action.loadedMessages replaceExisting:replaceExistingStatusUpdates];
+	[twitter addStatusUpdates:action.retweetedMessages replaceExisting:replaceExistingStatusUpdates];
 	[twitter addOrReplaceUsers:action.users];
 	
 	// Ignore gaps for own RTs.
@@ -238,9 +243,17 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	
 	// To be safe, only update Favorites if the same timeline is still selected.
 	[account addFavorites:action.favoriteMessages];
+
+	// Limit the length of the timeline
+	[self limitDatabaseTableSize];
+
+	// End transaction.
+	[twitter.database endTransaction];
 	
 	// Update display.
-	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingNotification object:self userInfo:nil];
+	if (notify) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingNotification object:self userInfo:nil];
+	}
 }	
 
 - (void)reloadAll {
@@ -265,7 +278,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	[loadAction.parameters removeObjectForKey:@"since_id"];
 	
 	// Limit the query to messages newer than what we already have. 
-	NSArray *messages = [self messagesWithLimit:50];
+	NSArray *messages = [self messagesWithLimit:10];
 	if (messages.count >= 2) { // Minimum of two messages for this to work.
 		NSNumber *newerThan = nil;
 		int overlap = 0;
@@ -294,8 +307,6 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (void)didReloadNewer:(TwitterLoadTimelineAction *)action {
-	// Limit the length of the timeline
-	[self limitDatabaseTableSize];
 	
 	// Also start an action to load RTs that the account's user has posted within the loaded timeline
 	NSNumber *sinceIdentifier = nil;
@@ -306,11 +317,11 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		// If no messages were loaded, still load RTs since newest tweet.
 		sinceIdentifier = [self newestStatusIdentifier];
 	}
+	
 	if (sinceIdentifier) {
 		[self reloadRetweetsSince:sinceIdentifier toMax:nil];
 	}
-	
-	[self updateWithAction:action];
+	[self updateWithAction:action notify:(sinceIdentifier == nil)];
 }
 
 - (void)reloadRetweetsSince:(NSNumber*)sinceIdentifier toMax:(NSNumber*)maxIdentifier {
@@ -331,7 +342,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (void)didReloadRetweets:(TwitterLoadTimelineAction *)action {
-	[self updateWithAction:action];
+	[self updateWithAction:action notify:YES];
 }
 
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier {
@@ -359,10 +370,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		noOlderMessages = YES;
 	}
 	
-	// Limit the length of the timeline
-	[self limitDatabaseTableSize];
-	
-	[self updateWithAction:action];
+	[self updateWithAction:action notify:YES];
 }
 
 - (int)defaultLoadCount {

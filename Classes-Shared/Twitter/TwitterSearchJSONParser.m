@@ -80,10 +80,13 @@
 }
 
 - (NSDate*) dateWithSearchString: (NSString*) string {
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
-	NSDate *result = [formatter dateFromString:string];
-	[formatter release];
+	static NSDateFormatter *sDateFormatter = nil;
+	if (sDateFormatter == nil) {
+		sDateFormatter = [[NSDateFormatter alloc] init];
+		[sDateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss ZZ"]; // Mon, 25 Jan 2010 00:46:47 +0000 
+	}
+	
+	NSDate *result = [sDateFormatter dateFromString:string];
 	return result;
 }
 

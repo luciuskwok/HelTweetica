@@ -97,11 +97,6 @@
 	[timelineHTMLController loadWebView];
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	[timelineHTMLController invalidateRefreshTimer];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
 }
@@ -147,7 +142,6 @@
 	
 	[self closeAllPopovers];
 	[self presentModalViewController:compose animated:YES];
-	[timelineHTMLController invalidateRefreshTimer];
 }
 
 - (IBAction)compose:(id)sender {
@@ -380,10 +374,7 @@
 		[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
 	}
 	
-	// Hide Loading spinner if there are no actions
-	if (timelineHTMLController.actions.count == 0) {
-		[timelineHTMLController setLoadingSpinnerVisibility:NO];
-	}
+	[timelineHTMLController setLoadingSpinnerVisibility:NO];
 }
 
 - (void)webView:(UIWebView *)aWebView didFailLoadWithError:(NSError *)error {

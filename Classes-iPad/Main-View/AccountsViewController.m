@@ -214,7 +214,7 @@
 		account.identifier = action.identifier;
 		
 		// Set database connection.
-		[account setDatabase:twitter.database];
+		[account setTwitter:twitter];
 
 		// Tell delegate we're done
 		if ([delegate respondsToSelector:@selector(didSelectAccount:)])

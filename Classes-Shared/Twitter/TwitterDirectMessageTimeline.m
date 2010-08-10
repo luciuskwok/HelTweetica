@@ -195,6 +195,9 @@ enum {
 }
 
 - (void)didLoadDirectMessages:(TwitterLoadTimelineAction *)action {
+	// Begin transaction.
+	[twitter.database beginTransaction];
+	
 	// Limit the length of the timeline
 	[self limitDatabaseTableSize];
 
@@ -206,6 +209,9 @@ enum {
 	BOOL sent = [action.twitterMethod hasSuffix:@"sent"];
 	[self addMessages:action.loadedMessages sent:sent];
 
+	// End transaction.
+	[twitter.database endTransaction];
+	
 	// Update display.
 	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingNotification object:self userInfo:nil];
 }

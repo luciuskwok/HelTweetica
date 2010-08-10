@@ -18,7 +18,10 @@
 
 - (NSString *)queryWithCommand:(NSString*)command table:(NSString*)table keys:(NSArray *)keys;
 - (LKSqliteStatement*)statementWithQuery:(NSString*)aQuery;
+
 - (int)execute:(NSString*)aQuery;
+- (void)beginTransaction;
+- (void)endTransaction;
 
 + (void)runTests;
 

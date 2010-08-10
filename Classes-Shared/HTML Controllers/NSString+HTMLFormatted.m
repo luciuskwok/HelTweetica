@@ -18,9 +18,13 @@ const BOOL kConvertEmojiToImg = NO;
 @implementation NSString (HTMLFormatted)
 
 - (NSString *)stringWithLinksToURLsWithPrefix:(NSString *)prefix inString:(NSString *)string {
+	static NSCharacterSet *nonURLSet = nil;
+	if (nonURLSet == nil) {
+		nonURLSet = [[NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"] retain];
+	}
+	
 	NSMutableString *result = [NSMutableString string];
 	NSScanner *scanner = [NSScanner scannerWithString:string];
-	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"];
 	[scanner setCharactersToBeSkipped:nil];
 	NSString *scanned;
 	

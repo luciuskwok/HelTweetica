@@ -19,13 +19,19 @@
 	delegate = x;
 }
 
+
 + (NSSet *)actionsToShrinkURLsWithPrefix:(NSString *)prefix inString:(NSString *)string minLength:(int)minLength {
 	NSMutableSet *actions = [NSMutableSet set];
 	NSArray *prefixesToSkip = [NSArray arrayWithObjects:@"http://is.gd", @"http://bit.ly", @"http://twitpic.com", nil];
-	
+
+	// Character set
+	static NSCharacterSet *nonURLSet = nil;
+	if (nonURLSet == nil) {
+		nonURLSet = [[NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"] retain];
+	}
+
 	// Scanner setup.
 	NSScanner *scanner = [NSScanner scannerWithString:string];
-	NSCharacterSet *nonURLSet = [NSCharacterSet characterSetWithCharactersInString:@" \t\r\n\"'"];
 	[scanner setCharactersToBeSkipped:nil];
 	NSString *longURL;
 	

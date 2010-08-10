@@ -75,6 +75,15 @@
 	return error;
 }
 
+- (void)beginTransaction {
+	[self execute:@"Begin transaction"];
+}
+
+- (void)endTransaction {
+	[self execute:@"End transaction"];
+}
+
+
 #pragma mark Testing
 
 NSString *kTestName = @"screenName";

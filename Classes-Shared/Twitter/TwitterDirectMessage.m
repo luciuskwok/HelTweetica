@@ -81,15 +81,15 @@
 #pragma mark Twitter API
 
 - (NSDate*) dateWithTwitterStatusString: (NSString*) string {
-	// Twitter and Search use two different date formats, which differ by a comma at character 4.
-	NSString *template = @"EEE MMM dd HH:mm:ss ZZ yyyy"; // Mon Jan 25 00:46:47 +0000 2010
-	NSString *localeIdentifier = [NSLocale canonicalLocaleIdentifierFromString:@"en_US"];
-	NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:localeIdentifier] autorelease];
-	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-	[formatter setLocale: usLocale];
-	[formatter setDateFormat:template];
+	static NSDateFormatter *sAPIDateFormatter = nil;
+	if (sAPIDateFormatter == nil) {
+		NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:[NSLocale canonicalLocaleIdentifierFromString:@"en_US"]] autorelease];
+		sAPIDateFormatter = [[NSDateFormatter alloc] init];
+		[sAPIDateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZ yyyy"]; // Mon Jan 25 00:46:47 +0000 2010
+		[sAPIDateFormatter setLocale: usLocale];
+	}
 	
-	NSDate *result = [formatter dateFromString:string];
+	NSDate *result = [sAPIDateFormatter dateFromString:string];
 	return result;
 }
 

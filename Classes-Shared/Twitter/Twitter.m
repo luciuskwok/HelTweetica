@@ -81,7 +81,7 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 			[account setTwitter:self];
 		
 		// == Refresh timer ==
-		[self scheduleRefreshTimer:kRefreshTimerInterval];
+		[self performSelector:@selector(refreshNow) withObject:nil afterDelay:5.0];
 	}
 	return self;
 }
@@ -116,7 +116,6 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 - (void)addStatusUpdates:(NSArray *)newUpdates replaceExisting:(BOOL)replace {
 	if (newUpdates.count == 0) return;
 
-	
 	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
 	NSArray *allKeys = [TwitterStatusUpdate databaseKeys];
 	NSString *onConflict = replace? @"replace" : @"ignore";
