@@ -30,7 +30,7 @@
 // #define kConsumerSecret @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 // Refresh
-const NSTimeInterval kRefreshTimerInterval = 60.0;
+const NSTimeInterval kRefreshTimerInterval = 90.0;
 
 
 @implementation Twitter

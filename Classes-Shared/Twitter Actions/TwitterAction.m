@@ -213,7 +213,7 @@
 		if ([delegate respondsToSelector:@selector(twitterAction:didFailWithError:)])
 			[delegate twitterAction:self didFailWithError:error];
 		
-		NSLog (@"Twitter error: \"%@\" (%d).", errorDescription, statusCode);
+		NSLog (@"Twitter error %d: %@", statusCode, errorJSON);
 	}
 	
 	// Call the completion action on the target
