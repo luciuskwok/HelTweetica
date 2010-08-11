@@ -32,7 +32,7 @@
 #ifdef TARGET_PROJECT_MAC
 const int kDefaultMaxTweetsShown = 400;
 #else
-const int kDefaultMaxTweetsShown = 200;
+const int kDefaultMaxTweetsShown = 160;
 #endif
 static NSString *kTimelineIdentifier = @"Timeline";
 static NSString *kMentionsIdentifier = @"Mentions";
@@ -350,7 +350,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 			[self loadWebView];
 		}
 	} else {
-		NSLog (@"rewriteTweetArea called when webViewHasValidHTML == NO.");
+		// This isn't really a bug or exception to call this method when the web view isn't ready, so it isn't logged. 
+		//NSLog (@"rewriteTweetArea called when webViewHasValidHTML == NO.");
 	}
 }
 

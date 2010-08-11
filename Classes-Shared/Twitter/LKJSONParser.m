@@ -53,6 +53,7 @@
 - (id) initWithData:(NSData*)jsonData {
 	if (self = [super init]) {
 		jsonText = [[NSString alloc] initWithData: jsonData encoding: NSUTF8StringEncoding];
+		scratchData = [[NSMutableData alloc] initWithCapacity:512];
 	}
 	return self;
 }
@@ -60,6 +61,7 @@
 - (void) dealloc {
 	[jsonText release];
 	[keyPath release];
+	[scratchData release];
 	[super dealloc];
 }
 
@@ -74,6 +76,7 @@
 	[self skipWhitespaceAndNewlines];
 	if (jsonOffset >= [jsonText length]) return;
 	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSString *value;
 	unichar c = [jsonText characterAtIndex:jsonOffset];
 	switch (c) {
@@ -95,6 +98,7 @@
 			[self parseNumericValue];
 			break;
 	}
+	[pool release];
 }
 
 - (NSString*) parseStringValue {
@@ -103,8 +107,8 @@
 	if (jsonOffset >= [jsonText length]) return nil;
 	
 	// Extract the value from the quoted string, substituting backslash escapes.
-	NSMutableString *result = [[[NSMutableString alloc] initWithCapacity:256] autorelease];
 	unsigned int jsonLength = [jsonText length];
+	[scratchData setLength:0];
 	
 	// Loop
 	while (jsonOffset < jsonLength) {
@@ -158,13 +162,16 @@
 					break;
 			}
 			// Add the converted char.
-			[result appendFormat:@"%C", c];
+			[scratchData appendBytes:&c length:sizeof(unichar)];
 		} else { 
 			// All other chars are passed through.
-			[result appendFormat:@"%C", c];
+			[scratchData appendBytes:&c length:sizeof(unichar)];
 		}
 	}
 	
+	const unichar *resultChars = [scratchData mutableBytes];
+	NSUInteger length = scratchData.length / sizeof(unichar);
+	NSString *result = [NSString stringWithCharacters:resultChars length:length];
 	return result;
 }
 

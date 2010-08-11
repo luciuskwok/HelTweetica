@@ -26,6 +26,9 @@
 	unsigned int jsonOffset;
 	NSString *keyPath;
 	
+	// Scratch area
+	NSMutableData *scratchData;
+	
 	id delegate;
 }
 @property (nonatomic, retain) NSString *keyPath;

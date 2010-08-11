@@ -391,7 +391,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (int)defaultLoadCount {
-	return 100;
+	return 60;
 }
 
 

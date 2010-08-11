@@ -113,6 +113,11 @@
 #pragma mark Database
 
 - (void)setTwitter:(Twitter *)aTwitter account:(TwitterAccount *)account {
+	if (screenName == nil) {
+		NSLog (@"TwitterUser cannot set up database tables because screenName is nil.");
+		return;
+	}
+	
 	[statuses setTwitter:aTwitter tableName:[NSString stringWithFormat:@"User_%@_Statuses", screenName] temp:NO];
 	[favorites setTwitter:aTwitter tableName:[NSString stringWithFormat:@"User_%@_Favorites", screenName] temp:NO];
 	statuses.account = account;

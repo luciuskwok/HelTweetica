@@ -105,14 +105,21 @@
 
 	isLoading = NO;
 	[self setLoadingSpinnerVisibility:NO];
-	self.messages = [timeline messagesWithLimit: maxTweetsShown];
 	
-	// Update user object with latest version.
-	TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];
-	if (aUser != nil) {
-		// Switch to instance of TwitterUser from the shared twitter instance.
-		self.user = aUser;
-		[self rewriteUserInfoArea];
+	// Protected tweets return a 401 status.
+	if (aTimeline.loadAction.statusCode == 401) {
+		unauthorized = YES;
+	} else {
+		unauthorized = NO;
+		self.messages = [timeline messagesWithLimit: maxTweetsShown];
+
+		// Update user object with latest version.
+		TwitterUser *aUser = [twitter userWithScreenName:self.user.screenName];
+		if (aUser != nil) {
+			// Switch to instance of TwitterUser from the shared twitter instance.
+			self.user = aUser;
+			[self rewriteUserInfoArea];
+		}
 	}
 
 	[self rewriteTweetArea];
@@ -133,17 +140,22 @@
 
 - (void)didLoadUserInfo:(TwitterUserInfoAction*)action {
 	// Update existing record if it exists
-	TwitterUser *existingUser = [twitter userWithIdentifier:action.userResult.identifier];
-	if (existingUser) {
-		[existingUser updateValuesWithUser:action.userResult];
-		[twitter addUsers:[NSSet setWithObject:existingUser]];
-		self.user = existingUser;
-	} else if (action.userResult) {
-		[twitter addUsers:[NSSet setWithObject:action.userResult]];
-		self.user = action.userResult;
-	} else {
-		notFound = YES;
+	NSNumber *userIdentifier = action.userResult.identifier;
+	notFound = YES;
+	if (userIdentifier != nil) {
+		TwitterUser *existingUser = [twitter userWithIdentifier:action.userResult.identifier];
+		if (existingUser) {
+			[existingUser updateValuesWithUser:action.userResult];
+			[twitter addUsers:[NSSet setWithObject:existingUser]];
+			self.user = existingUser;
+			notFound = NO; 
+		} else if (action.userResult) {
+			[twitter addUsers:[NSSet setWithObject:action.userResult]];
+			self.user = action.userResult;
+			notFound = NO; 
+		}
 	}
+	
 	[twitter addStatusUpdates:[NSArray arrayWithObjects: action.latestStatus, action.retweetedStatus, nil] replaceExisting:NO];
 	[self rewriteUserInfoArea];
 }

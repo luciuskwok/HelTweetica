@@ -121,9 +121,9 @@ enum {
 		sender = [statement objectForColumnIndex:0];
 		recipient = [statement objectForColumnIndex:1];
 		
-		if ([sender isEqualToNumber:accountIdentifier] == NO && [users containsObject:sender] == NO) {
+		if ([sender isEqualToNumber:accountIdentifier] == NO && [users containsObject:sender] == NO && sender != nil) {
 			[users addObject:sender];
-		} else if ([recipient isEqualToNumber:accountIdentifier] == NO && [users containsObject:recipient] == NO) {
+		} else if ([recipient isEqualToNumber:accountIdentifier] == NO && [users containsObject:recipient] == NO && recipient != nil) {
 			[users addObject:recipient];
 		}
 	}

@@ -32,31 +32,6 @@
 #endif
 }
 
-- (NSString*) javascriptSafeString:(NSString*)string {
-	NSScanner *scanner = [NSScanner scannerWithString:string];
-	NSMutableString *result = [[[NSMutableString alloc] init] autorelease];
-	NSString *value;
-	NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@"\0\t\r\n\"\\"];
-	NSCharacterSet *skipSet = [NSCharacterSet characterSetWithCharactersInString:@"\0\t\r\n"];
-	
-	[scanner setCharactersToBeSkipped:nil];
-	
-	while ([scanner isAtEnd] == NO) {
-		if ([scanner scanUpToCharactersFromSet:set intoString:&value]) {
-			[result appendString: value];
-		}
-		if ([scanner scanString:@"\\" intoString:nil]) {
-			[result appendString:@"\\\\"];
-		} else if ([scanner scanString:@"\"" intoString:nil]) {
-			[result appendString:@"\\\""];
-		} else if ([scanner scanCharactersFromSet:skipSet intoString:nil]) {
-			[result appendString:@" "];
-		}
-	}
-	
-	return result;
-}
-
 - (NSString*) setDocumentElement:(NSString*)element visibility:(BOOL)visibility {
 	NSString *value = visibility ? @"visible" : @"hidden";
 	NSString *js = [NSString stringWithFormat: @"document.getElementById(\"%@\").style.visibility = \"%@\";", element, value];
@@ -64,8 +39,45 @@
 }
 
 - (NSString*) setDocumentElement:(NSString*)element innerHTML:(NSString*)html {
-	NSString *escapedHtml = [self javascriptSafeString: html];
-	NSString *js = [NSString stringWithFormat: @"document.getElementById(\"%@\").innerHTML = \"%@\";", element, escapedHtml];
+	// Create a javascript-safe string.
+	NSMutableData *safeData = [NSMutableData dataWithCapacity:html.length * 2];
+	int length = html.length;
+	unichar c;
+	BOOL inWhitespace = NO;
+	const unichar kDoubleQuote = 0x0022;
+	const unichar kBackslash = 0x005C;
+	const unichar kSpace = 0x0020;
+	
+	for (int index = 0; index < length; index++) {
+		c = [html characterAtIndex:index];
+		switch (c) {
+			case '\\': // Backslash
+				[safeData appendBytes:&kBackslash length:2];
+				[safeData appendBytes:&kBackslash length:2];
+				inWhitespace = NO;
+				break;
+			case '\"': // Double-quotes
+				[safeData appendBytes:&kBackslash length:2];
+				[safeData appendBytes:&kDoubleQuote length:2];
+				inWhitespace = NO;
+				break;
+			case 0: case '\t': case '\r': case '\n': // Whitespace to coalesce.
+				if (inWhitespace == NO) {
+					[safeData appendBytes:&kSpace length:2];
+					inWhitespace = YES;
+				}
+				break;
+			default:
+				[safeData appendBytes:&c length:2];
+				inWhitespace = NO;
+				break;
+		}
+	}
+	
+	NSString *jsSafe = [NSString stringWithCharacters:safeData.bytes length:safeData.length / 2];
+	
+	// Set the inner HTML to the string.
+	NSString *js = [NSString stringWithFormat: @"document.getElementById(\"%@\").innerHTML = \"%@\";", element, jsSafe];
 	return [self stringByEvaluatingJavaScriptFromString:js];
 }
 

@@ -103,6 +103,9 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 	}
 	[timelineHTMLController selectHomeTimeline];
 	
+	// Refresh
+	[timelineHTMLController.twitter refreshNow];
+	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: timelineHTMLController.account.screenName forKey: @"currentAccount"];
 }

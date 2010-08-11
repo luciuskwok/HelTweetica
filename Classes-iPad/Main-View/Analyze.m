@@ -134,10 +134,11 @@
 - (void)updateAnalysis {
 	double duration = 2.0; // hours
 	switch (self.durationControl.selectedSegmentIndex) {
-		case 0:	duration = 2.0;	break;
-		case 1:	duration = 6.0;	break;
-		case 2:	duration = 12.0;	break;
-		case 3:	duration = 24.0;	break;
+		case 0:	duration = 2.0;		break;
+		case 1:	duration = 6.0;		break;
+		case 2:	duration = 12.0;		break;
+		case 3:	duration = 24.0;		break;
+		case 4:	duration = 7.0 * 24.0;	break;
 		default:	break;
 	}
 	NSTimeInterval seconds = duration * 60.0 * 60.0;
