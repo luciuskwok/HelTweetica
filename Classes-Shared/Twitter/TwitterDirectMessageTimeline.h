@@ -11,9 +11,11 @@
 
 @interface TwitterDirectMessageTimeline : TwitterTimeline {
 	NSNumber *accountIdentifier; // Used to determine whether a direct message was sent or received.
+	NSNumber *newestSentIdentifier;
+	NSNumber *newestReceivedIdentifier;
 }
 @property (nonatomic, retain) NSNumber *accountIdentifier;
-
-- (void)addMessages:(NSArray *)messages sent:(BOOL)sent;
+@property (nonatomic, retain) NSNumber *newestSentIdentifier;
+@property (nonatomic, retain) NSNumber *newestReceivedIdentifier;
 
 @end

@@ -104,7 +104,6 @@
 		return;
 
 	isLoading = NO;
-	[self setLoadingSpinnerVisibility:NO];
 	
 	// Protected tweets return a 401 status.
 	if (aTimeline.loadAction.statusCode == 401) {
@@ -123,6 +122,7 @@
 	}
 
 	[self rewriteTweetArea];
+	[self hideTwitterStatus];
 }
 
 - (void)rewriteUserInfoArea {
@@ -205,8 +205,6 @@
 - (void)didUnfollow:(id)action {
 	[self loadFriendStatus: user.screenName];
 }
-
-// TODO: handle status codes of 401 (protected) and 404 (not found).
 
 #pragma mark HTML
 

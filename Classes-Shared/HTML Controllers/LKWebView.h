@@ -31,6 +31,7 @@
 - (void)loadHTMLString:(NSString *)string;
 
 - (NSString*)setDocumentElement:(NSString*)element visibility:(BOOL)visibility;
+- (NSString*)setDocumentElement:(NSString*)element height:(int)height;
 - (NSString*)setDocumentElement:(NSString*)element innerHTML:(NSString*)html;
 - (void)scrollToTop;
 - (CGPoint)scrollPosition;

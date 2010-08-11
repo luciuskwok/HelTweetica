@@ -14,8 +14,26 @@ body {
 a {color: #448; text-decoration: none; }
 p { margin: 0px 0px 20px 0px; }
 
+.twitter_status {
+	position: fixed;
+	left: -7px;
+	bottom: -7px;
+	font-size: 16px; 
+	line-height: 20px; 
+	color: #333;
+	padding: 4px 10px 9px 16px;
+	border: 1px solid #666;
+	opacity: 0.85;
+	background-color: #fff;
+	-webkit-border-radius: 7px; 
+	-webkit-box-shadow: 0px 2px 8px #666; 
+}
+.twitter_status img {
+	margin: 0px 0px -4px 0px;
+}
+
 .artboard { padding: 0px; width: 100%; overflow: hidden; }
-.toolbar_padding { padding: 44px 0px 0px 0px; }
+.with_toolbar { padding: 44px 0px 0px 0px; }
 
 .login { 
 	padding: 0px; 
@@ -50,24 +68,15 @@ p { margin: 0px 0px 20px 0px; }
 	-webkit-user-select: none;
 }
 
-.spinner { 
-	float: right; 
-	margin: 5px;
-	padding: 4px 10px 4px 10px;
-	-webkit-border-radius: 8px;
-	background-color: #fff;
-	-webkit-box-shadow: 0px 4px 8px #666; 
-	color: #666; font-size: 15px; font-style: italic;
-	outline: 0px dotted #0f0;
-}
-.spinner_image {
-	margin: 0px 0px -6px 5px;
-	width: 24px;
-	height: 24px;
+.selected { 
+	background-image:url('tab.png'); 
+	color: #444; 
 }
 
-.selected { background-image:url('tab.png'); color: #444; }
-.deselected { background-image:url('tab-off.png'); color: #666; }
+.deselected { 
+	background-image:url('tab-off.png'); 
+	color: #666; 
+}
 
 .page_title {
 	margin: 15px 0px 15px 0px;
@@ -81,7 +90,8 @@ p { margin: 0px 0px 20px 0px; }
 }
 
 .tweet_area { 
-	padding: 10px; margin: 0px;
+	padding: 10px 10px 20px 10px; 
+	margin: 0px;
 	background-color: #ffffff; 
 	-webkit-box-shadow: 0px 8px 8px #666; 
 	width: auto; 

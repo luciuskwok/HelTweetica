@@ -13,8 +13,25 @@ body {
 a {color: #66C; text-decoration: none; }
 p { margin: 0px 0px 20px 0px; }
 
-.artboard { padding: 0px; width: 100%; overflow: hidden; }
-.toolbar_padding { padding: 0px 0px 0px 0px; }
+.twitter_status {
+	position: fixed;
+	left: -7px;
+	bottom: -7px;
+	font-size: 13px; 
+	line-height: 16px; 
+	color: #333;
+	padding: 4px 10px 9px 16px;
+	border: 1px solid #666;
+	opacity: 0.85;
+	background-color: #fff;
+	-webkit-border-radius: 7px; 
+	-webkit-box-shadow: 0px 2px 8px #666; 
+}
+.twitter_status img {
+	margin: -2px 0px -6px 0px;
+}
+
+.artboard { padding: 0px 0px 0px 0px; width: 100%; overflow: hidden; }
 
 .login { 
 	padding: 0px; 
@@ -28,46 +45,6 @@ p { margin: 0px 0px 20px 0px; }
 .title { color: #DDD; padding: 10px 5px 10px 5px; }
 .title a { color: #DDD; }
 
-.current_account { 
-	font-size: 28px; font-weight: bold; line-height: 28px; 
-}
-
-.tabs { 
-	background-image:url('tab-bkgnd.png'); 
-	padding: 0px 1px 0px 1px; 
-}
-
-.tab { 
-	margin: 0px 0px 0px 1px;
-	padding: 9px 0px 0px 0px;
-	width: 88px;
-	height: 23px;
-	text-align: center;
-	font-size: 12px; 
-	font-weight: bold;
-	display: inline-block; 
-	-webkit-user-select: none;
-}
-
-.spinner { 
-	float: right; 
-	margin: 5px;
-	padding: 4px 10px 4px 10px;
-	-webkit-border-radius: 8px;
-	background-color: #fff;
-	-webkit-box-shadow: 0px 4px 8px #666; 
-	color: #666; font-size: 15px; font-style: italic;
-	outline: 0px dotted #0f0;
-}
-.spinner_image {
-	margin: 0px 0px -6px 5px;
-	width: 24px;
-	height: 24px;
-}
-
-.selected { background-image:url('tab.png'); color: #444; }
-.deselected { background-image:url('tab-off.png'); color: #666; }
-
 .page_title {
 	margin: 5px 0px 15px 0px;
 	font-size: 24px; 
@@ -80,7 +57,8 @@ p { margin: 0px 0px 20px 0px; }
 }
 
 .tweet_area { 
-	padding: 10px; margin: 0px;
+	padding: 10px 10px 20px 10px; 
+	margin: 0px;
 	background-color: #ffffff; 
 	-webkit-box-shadow: 0px 8px 8px #666; 
 	width: auto; 

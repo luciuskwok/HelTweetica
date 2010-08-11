@@ -42,13 +42,11 @@
 }
 
 - (void) parseReceivedData:(NSData*)data {
-	if (statusCode < 400) {
-		LKJSONParser *parser = [[LKJSONParser alloc] initWithData:data];
-		parser.delegate = self;
-		[parser parse];
-		[parser release];
-		valid = YES;
-	}
+	LKJSONParser *parser = [[LKJSONParser alloc] initWithData:data];
+	parser.delegate = self;
+	[parser parse];
+	[parser release];
+	valid = YES;
 }
 
 #pragma mark Keys

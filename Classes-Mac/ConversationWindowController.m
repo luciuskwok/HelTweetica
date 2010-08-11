@@ -43,11 +43,9 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	NSString *account = [aDecoder decodeObjectForKey:@"accountScreenName"];
-	
 	self = [self init];
 	if (self) {
-		[self setAccountWithScreenName: account];
+		[self setAccount: [self accountWithScreenName: [aDecoder decodeObjectForKey:@"accountScreenName"]]];
 		self.messageIdentifier = [aDecoder decodeObjectForKey:@"messageIdentifier"];
 		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
 	}

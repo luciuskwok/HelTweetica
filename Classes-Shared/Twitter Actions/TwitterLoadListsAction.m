@@ -46,15 +46,10 @@
 }
 
 - (void) parseReceivedData:(NSData*)data {
-	if (statusCode < 400) {
-		LKJSONParser *parser = [[LKJSONParser alloc] initWithData:data];
-		parser.delegate = self;
-		[parser parse];
-		[parser release];
-	} else {
-		NSString *errorDescription = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-		NSLog (@"HTTP Status Code %d.\n%@", statusCode, errorDescription);
-	}
+	LKJSONParser *parser = [[LKJSONParser alloc] initWithData:data];
+	parser.delegate = self;
+	[parser parse];
+	[parser release];
 }
 
 #pragma mark -

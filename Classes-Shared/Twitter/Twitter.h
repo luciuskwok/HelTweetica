@@ -68,7 +68,6 @@
 
 // Actions
 - (void)startTwitterAction:(TwitterAction*)action withAccount:(TwitterAccount *)account;
-- (void)removeTwitterAction:(TwitterAction*)action;
 
 // Defaults
 - (void)saveUserDefaults;

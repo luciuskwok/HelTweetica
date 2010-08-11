@@ -81,6 +81,10 @@
 - (void)selectDirectMessageTimeline;
 - (void)selectFavoritesTimeline;
 
+// Twitter status line
+- (void)showTwitterStatusWithString:(NSString *)string;
+- (void)hideTwitterStatus;
+
 // Loading
 - (void)refresh;
 - (void)loadTimeline:(TwitterTimeline *)aTimeline;
@@ -94,7 +98,6 @@
 
 // Web view updating
 - (void)loadWebView;
-- (void)setLoadingSpinnerVisibility:(BOOL)isVisible;
 - (void)rewriteTweetArea;
 
 // Web actions

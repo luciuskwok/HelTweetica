@@ -14,7 +14,7 @@
 #import "Twitter.h"
 
 
-// Constants for filter in directMessagesWithLimit
+// Constants for filter in selecting rows.
 enum {
 	kAllMessages = 0,
 	kSentMessagesOnly = 1,
@@ -23,11 +23,20 @@ enum {
 
 
 @implementation TwitterDirectMessageTimeline
-@synthesize accountIdentifier;
+@synthesize accountIdentifier, newestSentIdentifier, newestReceivedIdentifier;
 
+- (id)init {
+	self = [super init];
+	if (self) {
+		noOlderMessages = YES;
+	}
+	return self;
+}
 
 - (void)dealloc {
 	[accountIdentifier release];
+	[newestSentIdentifier release];
+	[newestReceivedIdentifier release];
 	[super dealloc];
 }
 
@@ -62,14 +71,16 @@ enum {
 	}
 	
 	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier %@ order by DirectMessages.createdDate desc limit %d", databaseTableName, databaseTableName, whereClause, limit];
-	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	NSMutableArray *messages = [NSMutableArray arrayWithCapacity:limit];
 	TwitterDirectMessage *message;
 	
+	[twitter.database beginTransaction];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	while ([statement step] == SQLITE_ROW) { // Row has data.
 		message = [[[TwitterDirectMessage alloc] initWithDictionary:[statement rowData]] autorelease];
 		[messages addObject:message];
 	}
+	[twitter.database endTransaction];
 	
 	return messages;
 }
@@ -86,22 +97,21 @@ enum {
 	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
 	NSArray *allKeys = [NSArray arrayWithObjects:@"identifier", @"createdDate", @"gapAfter", @"sent", nil];
 	NSString *query = [twitter.database queryWithCommand:@"Insert or replace into" table:databaseTableName keys:allKeys];
+
 	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
-	
 	for (id message in messages) {
+		int gapAfter = (hasGap && [message isEqual:last])? 1 : 0;
+
 		// Bind variables.
 		[statement bindNumber:[message identifier] atIndex:1];
 		[statement bindDate:[message createdDate] atIndex:2];
-		[statement bindInteger:sent? 1:0 atIndex:3];
-		
-		int gapAfter = (hasGap && [message isEqual:last])? 1 : 0;
 		[statement bindInteger:gapAfter atIndex:3];
+		[statement bindInteger:sent? 1:0 atIndex:4];
 		
 		// Execute and reset.
 		[statement step];
 		[statement reset];
 	}
-	
 }
 
 #pragma mark Conversations
@@ -113,9 +123,10 @@ enum {
 	const int kRowCountLimit = 1000;
 	NSString *columnsToSelect = @"DirectMessages.senderIdentifier, DirectMessages.recipientIdentifier";
 	NSString *query = [NSString stringWithFormat:@"Select %@ from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier order by DirectMessages.createdDate desc limit %d", columnsToSelect, databaseTableName, databaseTableName, kRowCountLimit];
-	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	NSNumber *sender, *recipient;
 	
+	[twitter.database beginTransaction];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	while ([statement step] == SQLITE_ROW) { // Row has data.
 		// Add all users excluding yourself.
 		sender = [statement objectForColumnIndex:0];
@@ -127,6 +138,7 @@ enum {
 			[users addObject:recipient];
 		}
 	}
+	[twitter.database endTransaction];
 	
 	return users;
 }
@@ -134,32 +146,65 @@ enum {
 - (NSArray *)directMessagesWithUserIdentifier:(NSNumber *)userIdentifier {
 	NSMutableArray *messages = [NSMutableArray array];
 	
+	// Timing:
+	//NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
+
 	// Get rows where either sender or recipient match the user identifier.
 	const int kRowCountLimit = 1000;
 	NSString *whereClause = [NSString stringWithFormat:@"where DirectMessages.senderIdentifier == %@ or DirectMessages.recipientIdentifier == %@", [userIdentifier stringValue], [userIdentifier stringValue]];
-	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier %@ order by DirectMessages.createdDate desc limit %d", databaseTableName, databaseTableName, whereClause, kRowCountLimit];
-	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
+	NSString *query = [NSString stringWithFormat:@"Select DirectMessages.* from DirectMessages inner join %@ on %@.identifier=DirectMessages.identifier %@ order by DirectMessages.CreatedDate desc limit %d", databaseTableName, databaseTableName, whereClause, kRowCountLimit];
 	TwitterDirectMessage *message;
 	
+	[twitter.database beginTransaction];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	while ([statement step] == SQLITE_ROW) { // Row has data.
 		message = [[[TwitterDirectMessage alloc] initWithDictionary:[statement rowData]] autorelease];
 		[messages addObject:message];
 	}
+	[twitter.database endTransaction];
 	
+	// Timing:
+	//NSTimeInterval endTime = [NSDate timeIntervalSinceReferenceDate];
+	//NSLog (@"directMessagesWithUserIdentifier read %d rows in %1.2f seconds", messages.count, endTime - startTime);
+
 	return messages;
 }
 
 - (NSArray *)messagesWithLimit:(int)limit {
 	// Returns an array of direct message groups, which contain user info and a subarray of messages.
 	
-	// Get array of users sorted by most recent direct message, and create a sorted list of conversations with it.
-	NSArray *sortedUsers = [self usersSortedByMostRecentDirectMessage];
+	// Get the latest direct messages.
+	const int kMaxDirectMessagesToShow = 1000;
+	NSArray *messages = [self directMessagesWithLimit:kMaxDirectMessagesToShow filter:kAllMessages];
+	
+	// Group by user.
+	NSMutableArray *users = [NSMutableArray array];
 	NSMutableArray *conversations = [NSMutableArray array];
-	for (NSNumber *user in sortedUsers) {
-		TwitterDirectMessageConversation *conversation = [[[TwitterDirectMessageConversation alloc] init] autorelease];
-		conversation.user = user;
-		conversation.messages = [self directMessagesWithUserIdentifier:user];
-		[conversations addObject:conversation];
+	TwitterDirectMessageConversation *conversation;
+	
+	for (TwitterDirectMessage *message in messages) {
+		NSNumber *sender = message.senderIdentifier;
+		NSNumber *recipient = message.recipientIdentifier;
+		
+		if ([sender isEqualToNumber:accountIdentifier] == NO && sender != nil) {
+			if ([users containsObject:sender] == NO) {
+				[users addObject:sender];
+				conversation = [[[TwitterDirectMessageConversation alloc] initWithUserIdentifier:sender] autorelease];
+				[conversations addObject:conversation];
+			} else {
+				conversation = [conversations objectAtIndex:[users indexOfObject:sender]];
+			}
+			[conversation.messages addObject:message];
+		} else if ([recipient isEqualToNumber:accountIdentifier] == NO && recipient != nil) {
+			if ([users containsObject:recipient] == NO) {
+				[users addObject:recipient];
+				conversation = [[[TwitterDirectMessageConversation alloc] initWithUserIdentifier:recipient] autorelease];
+				[conversations addObject:conversation];
+			} else {
+				conversation = [conversations objectAtIndex:[users indexOfObject:recipient]];
+			}
+			[conversation.messages addObject:message];
+		}
 	}
 	
 	return conversations;
@@ -168,17 +213,16 @@ enum {
 
 #pragma mark Loading from Twitter servers
 
-- (void)startLoadActionWithFilter:(int)filter {
+- (void)startLoadActionWithFilter:(int)filter since:(NSNumber *)since {
 	// Create our own load action and set up the load count.
-	NSString *method = (filter == kSentMessagesOnly)? @"direct_messages/sent" : @"direct_messages";
+	BOOL sent = (filter == kSentMessagesOnly);
+	NSString *method = sent? @"direct_messages/sent" : @"direct_messages";
 	TwitterLoadDirectMessagesAction *action = [[[TwitterLoadDirectMessagesAction alloc] initWithTwitterMethod:method] autorelease];
 	[action setCount:[self defaultLoadCount]];
 	
 	// Limit the query to messages newer than what we already have. 
-	NSArray *messages = [self directMessagesWithLimit:1 filter:filter];
-	if (messages.count > 0) {
-		NSNumber *newerThan = [[messages objectAtIndex:0] identifier];
-		[action.parameters setObject:newerThan forKey:@"since_id"];
+	if (since) {
+		[action.parameters setObject:since forKey:@"since_id"];
 	}
 	
 	// Prepare action and start it. 
@@ -187,30 +231,66 @@ enum {
 	[twitter startTwitterAction:action withAccount:account];
 }
 
+- (NSNumber *)newestIdentifierWithFilter:(int)filter {
+	if (twitter.database == nil)
+		NSLog(@"TwitterTimeline is missing its database connection.");
+	
+	NSNumber *identifier = nil;
+	int sent = (filter == kSentMessagesOnly)? 1: 0;
+	
+	NSString *query = [NSString stringWithFormat:@"Select identifier from %@ where sent == %d order by createdDate desc limit 1", databaseTableName, sent];
+	
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
+	if ([statement step] == SQLITE_ROW) { // Row has data.
+		identifier = [statement objectForColumnIndex:0];
+	}
+	
+	return identifier;
+}
+
 - (void)reloadNewer {
 	// Load messages newer than what we have locally. Since there are actually two separate timelines for direct messages, one for received and one for sent, we need to determine the newest for each timeline separately, and send separate actions for the two timelines.
+	
+	// Get the latest sent and received messages.
+	if (newestReceivedIdentifier == nil) {
+		self.newestReceivedIdentifier = [self newestIdentifierWithFilter:kReceivedMessagesOnly];
+	}
+	if (newestSentIdentifier == nil) {
+		self.newestSentIdentifier = [self newestIdentifierWithFilter:kSentMessagesOnly];
+	}
+	
 	// Start both actions at the same time.
-	[self startLoadActionWithFilter:kReceivedMessagesOnly];
-	[self startLoadActionWithFilter:kSentMessagesOnly];
+	[self startLoadActionWithFilter:kReceivedMessagesOnly since:newestReceivedIdentifier];
+	[self startLoadActionWithFilter:kSentMessagesOnly since:newestSentIdentifier];
 }
 
 - (void)didLoadDirectMessages:(TwitterLoadTimelineAction *)action {
-	// Begin transaction.
-	[twitter.database beginTransaction];
-	
-	// Limit the length of the timeline
-	[self limitDatabaseTableSize];
+	//Testing:
+	//NSLog (@"didLoadDirectMessages: %d messages for %@/%@", action.loadedMessages.count, account.screenName, action.twitterMethod);
 
-	// Update Twitter cache.
-	[twitter addDirectMessages:action.loadedMessages];
-	[twitter addOrReplaceUsers:action.users];
-	
-	// Update timeline.
-	BOOL sent = [action.twitterMethod hasSuffix:@"sent"];
-	[self addMessages:action.loadedMessages sent:sent];
+	if (action.loadedMessages.count > 0) {
+		// Latest message
+		BOOL sent = [action.twitterMethod hasSuffix:@"sent"];
+		TwitterDirectMessage *newestMessage = [action.loadedMessages objectAtIndex:0];
+		if (sent) {
+			self.newestSentIdentifier = newestMessage.identifier;
+		} else {
+			self.newestReceivedIdentifier = newestMessage.identifier;
+		}
+		
+		[twitter.database beginTransaction];
 
-	// End transaction.
-	[twitter.database endTransaction];
+		// Update Twitter cache.
+		[twitter addDirectMessages:action.loadedMessages];
+		[twitter addOrReplaceUsers:action.users];
+		
+		// Update timeline.
+		[self addMessages:action.loadedMessages sent:sent];
+
+		// Limit the length of the timeline
+		[self limitDatabaseTableSize];
+		[twitter.database endTransaction];
+	}
 	
 	// Update display.
 	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingNotification object:self userInfo:nil];

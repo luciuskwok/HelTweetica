@@ -375,8 +375,6 @@
 		timelineHTMLController.suppressNetworkErrorAlerts = YES;
 		[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
 	}
-	
-	[timelineHTMLController setLoadingSpinnerVisibility:NO];
 }
 
 - (void)webView:(UIWebView *)aWebView didFailLoadWithError:(NSError *)error {

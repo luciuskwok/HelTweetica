@@ -31,13 +31,11 @@
 }
 
 - (void) parseReceivedData:(NSData*)data {
-	if (statusCode < 400) {
-		TwitterDirectMessageJSONParser *parser = [[[TwitterDirectMessageJSONParser alloc] init] autorelease];
-		parser.receivedTimestamp = [NSDate date];
-		[parser parseJSONData:receivedData];
-		self.users = parser.users;
-		self.loadedMessages = parser.messages;
-	}
+	TwitterDirectMessageJSONParser *parser = [[[TwitterDirectMessageJSONParser alloc] init] autorelease];
+	parser.receivedTimestamp = [NSDate date];
+	[parser parseJSONData:receivedData];
+	self.users = parser.users;
+	self.loadedMessages = parser.messages;
 }
 
 @end

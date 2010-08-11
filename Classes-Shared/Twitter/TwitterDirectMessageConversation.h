@@ -10,11 +10,12 @@
 
 
 @interface TwitterDirectMessageConversation : NSObject {
-	NSNumber *user;
-	NSArray *messages;
+	NSNumber *userIdentifier;
+	NSMutableArray *messages;
 }
-@property (nonatomic, retain) NSNumber *user;
-@property (nonatomic, retain) NSArray *messages;
+@property (nonatomic, retain) NSNumber *userIdentifier;
+@property (nonatomic, retain) NSMutableArray *messages;
 
+- (id)initWithUserIdentifier:(NSNumber *)identifier;
 
 @end

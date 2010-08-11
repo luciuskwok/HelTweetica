@@ -135,8 +135,8 @@
 	}
 }
 
-- (void)addFavorites:(NSArray*)set {
-	[favorites addMessages:set];
+- (void)addFavorites:(NSArray*)array {
+	[favorites addMessages:array];
 }
 
 - (void)removeFavorite:(NSNumber *)messageIdentifier {

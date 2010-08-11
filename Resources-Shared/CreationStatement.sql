@@ -1,4 +1,4 @@
-﻿CREATE TABLE Users (
+﻿CREATE TABLE if not exists Users (
 	identifier integer primary key,
 	screenName text, 
 	fullName text, 
@@ -16,7 +16,7 @@
 	verified boolean
 );
 
-CREATE TABLE StatusUpdates (
+CREATE TABLE if not exists StatusUpdates (
 	identifier integer primary key,
 	createdDate integer,
 	receivedDate integer,
@@ -35,7 +35,9 @@ CREATE TABLE StatusUpdates (
 	read boolean
 );
 
-CREATE TABLE DirectMessages (
+CREATE INDEX if not exists StatusUpdatesCreatedDateIndex ON StatusUpdates (createdDate);
+
+CREATE TABLE if not exists DirectMessages (
 	identifier integer primary key,
 	createdDate integer,
 	receivedDate integer,
@@ -46,3 +48,7 @@ CREATE TABLE DirectMessages (
 	text text,
 	read boolean
 );
+
+CREATE INDEX if not exists DirectMessageCreatedDateIndex ON DirectMessages (createdDate);
+
+

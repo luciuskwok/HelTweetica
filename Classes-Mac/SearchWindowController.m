@@ -52,12 +52,11 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	NSString *account = [aDecoder decodeObjectForKey:@"accountScreenName"];
 	NSString *aQuery = [aDecoder decodeObjectForKey:@"query"];
 	
 	self = [self initWithQuery:aQuery];
 	if (self) {
-		[self setAccountWithScreenName: account];
+		[self setAccount: [self accountWithScreenName: [aDecoder decodeObjectForKey:@"accountScreenName"]]];
 		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
 	}
 	return self;

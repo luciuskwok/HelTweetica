@@ -169,45 +169,54 @@
 	if (aConnection != connection) return;
 	if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
 		statusCode = [(NSHTTPURLResponse*) response statusCode];
-		/* HTTP Status Codes
-			200 OK
-			400 Bad Request
-			401 Unauthorized (bad username or password)
-			403 Forbidden
-			404 Not Found
-			502 Bad Gateway
-			503 Service Unavailable
-		 */
 	}
-	if (receivedData == nil) {
-		receivedData = [[NSMutableData alloc] init];
-	} else {
-		NSMutableData *theData = self.receivedData;
-		[theData setLength:0];
-	}
+	self.receivedData = [NSMutableData data];
 }
 
 - (void)connection:(NSURLConnection *)aConnection didReceiveData:(NSData *)data {
 	if (aConnection != connection) return;
-	[self.receivedData appendData:data];
+	[receivedData appendData:data];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
 	if (aConnection != connection) return;
 	isLoading = NO;
 	
-	// Parse the received data
-	[self parseReceivedData:receivedData];
-	
-	// Call the did finish loading on delegate
-	if ([delegate respondsToSelector:@selector(twitterActionDidFinishLoading:)])
-		[delegate twitterActionDidFinishLoading:self];
+	if (statusCode < 400 || statusCode == 403) {
+		// Parse the received data
+		[self parseReceivedData:receivedData];
+		
+		// Call the did finish loading on delegate
+		if ([delegate respondsToSelector:@selector(twitterActionDidFinishLoading:)])
+			[delegate twitterActionDidFinishLoading:self];
+		
+	} else { 
+		// Extract error description from the JSON result.
+		NSString *errorJSON = [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease];
+		NSScanner *errorScanner = [NSScanner scannerWithString:errorJSON];
+		NSString *errorDescription;
+		NSString *errorKey = @"\"error\":\"";
+		[errorScanner scanUpToString:errorKey intoString:nil];
+		[errorScanner scanString:errorKey intoString:nil];
+		[errorScanner scanUpToString:@"\"" intoString:&errorDescription];
+		
+		if (errorDescription == nil) {
+			// Use a generic error message.
+			errorDescription = @"Something is technically wrong with Twitter.";
+		}
+		
+		NSError *error = [NSError errorWithDomain:@"com.felttip.HelTweetica" code:statusCode userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:NSLocalizedDescriptionKey]];
+		if ([delegate respondsToSelector:@selector(twitterAction:didFailWithError:)])
+			[delegate twitterAction:self didFailWithError:error];
+		
+		NSLog (@"Twitter error: \"%@\" (%d).", errorDescription, statusCode);
+	}
 	
 	// Call the completion action on the target
 	if ([completionTarget respondsToSelector:completionAction]) {
 		[completionTarget performSelector:completionAction withObject:self];
 	}
-	
+
 	[completionTarget release];
 	[delegate release];
 	self.connection = nil;
@@ -223,6 +232,11 @@
 	// Call the did fail on delegate
 	if ([delegate respondsToSelector:@selector(twitterAction:didFailWithError:)])
 		[delegate twitterAction:self didFailWithError:error];
+
+	// Call the completion action on the target
+	if ([completionTarget respondsToSelector:completionAction]) {
+		[completionTarget performSelector:completionAction withObject:self];
+	}
 
 	[completionTarget release];
 	[delegate release];

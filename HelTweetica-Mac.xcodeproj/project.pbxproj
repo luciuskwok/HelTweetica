@@ -554,6 +554,8 @@
 		E0564C6611FBD6AC000A9753 /* Resources-Mac */ = {
 			isa = PBXGroup;
 			children = (
+				E0564C7411FBD6AC000A9753 /* style.css */,
+				E0564C7211FBD6AC000A9753 /* main-template.html */,
 				E0564C6711FBD6AC000A9753 /* alert.png */,
 				E0564C6811FBD6AC000A9753 /* dsa_pub.pem */,
 				E0564C6911FBD6AC000A9753 /* Icon.icns */,
@@ -572,9 +574,7 @@
 				E01AF3C4120A205900B4250F /* mac-toolbar-star-alt.png */,
 				E0564C7011FBD6AC000A9753 /* mac-toolbar-star.png */,
 				E0564C7111FBD6AC000A9753 /* mac-toolbar-user.png */,
-				E0564C7211FBD6AC000A9753 /* main-template.html */,
 				E0564C7311FBD6AC000A9753 /* MainMenu.xib */,
-				E0564C7411FBD6AC000A9753 /* style.css */,
 				E0097701120A4E670057ED35 /* emoji */,
 			);
 			path = "Resources-Mac";

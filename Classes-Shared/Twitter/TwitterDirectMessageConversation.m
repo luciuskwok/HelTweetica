@@ -10,10 +10,19 @@
 
 
 @implementation TwitterDirectMessageConversation
-@synthesize user, messages;
+@synthesize userIdentifier, messages;
+
+- (id)initWithUserIdentifier:(NSNumber *)identifier {
+	self = [super init];
+	if (self) {
+		self.userIdentifier = identifier;
+		messages = [[NSMutableArray alloc] init];
+	}
+	return self;
+}
 
 - (void)dealloc {
-	[user release];
+	[userIdentifier release];
 	[messages release];
 	[super dealloc];
 }

@@ -47,26 +47,26 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 		NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
 		NSString *cachePath = [paths objectAtIndex:0];
 		NSString *cacheFile = [cachePath stringByAppendingPathComponent:@"HelTweetica Twitter Cache.db"];
-		BOOL justCreated = ![[NSFileManager defaultManager] fileExistsAtPath:cacheFile];
+		//BOOL justCreated = ![[NSFileManager defaultManager] fileExistsAtPath:cacheFile];
 		database = [[LKSqliteDatabase alloc] initWithFile:cacheFile];
 		
-		if (justCreated) {
-			// Set up tables.
-			NSError *error = nil;
-			NSString *creationPath = [[NSBundle mainBundle] pathForResource:@"CreationStatement" ofType:@"sql"];
-			NSString *creationStatement = [NSString stringWithContentsOfFile:creationPath encoding:NSUTF8StringEncoding error:&error];
-			if (creationStatement == nil) {
-				NSLog (@"Unable to load SQL statements to create tables. %@", [error localizedDescription]);
-			} else {
-				[database execute:creationStatement];
-			}
+		// Create tables and indexes if they don't exist.
+		NSError *error = nil;
+		NSString *creationPath = [[NSBundle mainBundle] pathForResource:@"CreationStatement" ofType:@"sql"];
+		NSString *creationStatement = [NSString stringWithContentsOfFile:creationPath encoding:NSUTF8StringEncoding error:&error];
+		if (creationStatement == nil) {
+			NSLog (@"Unable to load SQL statements to create tables. %@", [error localizedDescription]);
 		} else {
-			// Maintenance: keep the size of the database within limits.
+			[database execute:creationStatement];
 		}
 
 		// Set up pragmas
-		[database execute:@"Pragma cache_size = 2000"];
-		[database execute:@"Pragma synchronous = normal"];
+		[database execute:@"Pragma cache_size = 6000"];
+		[database execute:@"Pragma synchronous = off"];
+		[database execute:@"Pragma count_changes = false"];
+		[database execute:@"Pragma temp_store = memory"];
+		
+		//[database execute:@"CREATE INDEX DirectMessageCreatedDateIndex ON DirectMessages (createdDate);"];
 		
 		// == User defaults ==
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -337,45 +337,13 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 	[action start];
 }
 
-- (void)removeTwitterAction:(TwitterAction*)action {
-	[actions removeObject: action];
-}
-
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
-	if (action.statusCode >= 400) {
-		NSString *message = nil;		
-		switch (action.statusCode) {
-			case 400:  // Bad request, or rate limit exceeded
-				message = @"Rate limit exceeded.";
-				break;
-			case 401:   // Unauthorized
-				message = @"The Twitter username or password is incorrect.";
-				break;
-			case 403: // The request is understood, but it has been refused.
-				message = @"Request denied.";
-				break;
-			case 404: // Not found.
-				message = @"Not found.";
-				break;
-			case 502: // Twitter is down or being upgraded.
-				message = @"Twitter is down or being upgraded.";
-				break;
-			case 503: // The Twitter servers are overloaded.
-				message = @"The Twitter servers are overloaded.";
-				break;
-			default:
-				message = @"Something is technically wrong.";
-				break;
-		}
-		NSError *error = [NSError errorWithDomain:@"com.felttip.HelTweetica" code:action.statusCode userInfo:[NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey]];
-		[[NSNotificationCenter defaultCenter] postNotificationName:TwitterErrorNotification object:error];
-	}
-	[self removeTwitterAction:action];
+	[actions removeObject: action];
 }
 
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
 	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterErrorNotification object:error];
-	[self removeTwitterAction: action];
+	[actions removeObject: action];
 }
 
 #pragma mark Refresh timer

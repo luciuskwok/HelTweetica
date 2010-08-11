@@ -38,6 +38,11 @@
 	return [self stringByEvaluatingJavaScriptFromString:js];
 }
 
+- (NSString*)setDocumentElement:(NSString*)element height:(int)height {
+	NSString *js = [NSString stringWithFormat: @"document.getElementById(\"%@\").style.height = %d;", element, height];
+	return [self stringByEvaluatingJavaScriptFromString:js];
+}
+
 - (NSString*) setDocumentElement:(NSString*)element innerHTML:(NSString*)html {
 	// Create a javascript-safe string.
 	NSMutableData *safeData = [NSMutableData dataWithCapacity:html.length * 2];

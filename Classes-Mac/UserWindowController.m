@@ -53,12 +53,12 @@
 #pragma mark NSCoder
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	NSString *account = [aDecoder decodeObjectForKey:@"accountScreenName"];
+	NSString *accountScreenName = [aDecoder decodeObjectForKey:@"accountScreenName"];
+	TwitterAccount *account = [self accountWithScreenName:accountScreenName];
 	NSString *lookup = [aDecoder decodeObjectForKey:@"lookupScreenName"];
 	
-	self = [self initWithScreenName:lookup];
+	self = [self initWithScreenName:lookup account:account];
 	if (self) {
-		[self setAccountWithScreenName: account];
 		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
 	}
 	return self;
@@ -105,6 +105,7 @@
 	// Set up HTML controller.
 	UserPageHTMLController *controller = (UserPageHTMLController *)htmlController;
 	controller.user = user;
+	controller.followsBack = @"";
 	[controller selectUserTimeline:aScreenName];
 	[controller rewriteUserInfoArea];
 	self.lists = user.lists;

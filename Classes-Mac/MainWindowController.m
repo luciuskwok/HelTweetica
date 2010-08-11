@@ -76,13 +76,15 @@
 	self.subscriptions = anAccount.listSubscriptions;
 }
 
-- (void)setAccountWithScreenName:(NSString*)screenName {
-	TwitterAccount *account = [htmlController.twitter accountWithScreenName:screenName];
+- (TwitterAccount *)accountWithScreenName:(NSString*)screenName {
+	appDelegate = [NSApp delegate];
+	
+	TwitterAccount *account = [appDelegate.twitter accountWithScreenName:screenName];
 	if (account == nil) {
 		if (htmlController.twitter.accounts.count > 0) 
 			account = [htmlController.twitter.accounts objectAtIndex:0];
 	}
-	[self setAccount:account];
+	return account;
 }	
 
 #pragma mark NSCoding for saving app state
@@ -90,7 +92,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [self init];
 	if (self) {
-		[self setAccountWithScreenName: [aDecoder decodeObjectForKey:@"accountScreenName"]];
+		[self setAccount: [self accountWithScreenName: [aDecoder decodeObjectForKey:@"accountScreenName"]]];
 		[self.window setFrameAutosaveName: [aDecoder decodeObjectForKey:@"windowFrameAutosaveName"]];
 	}
 	return self;
@@ -696,5 +698,16 @@
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	self.currentSheet = nil;
 }
+
+#pragma mark Testing
+
+- (IBAction)showTwitterStatus:(id)sender {
+	[htmlController showTwitterStatusWithString:@"Testing the Twitter status line."];
+}
+
+- (IBAction)hideTwitterStatus:(id)sender {
+	[htmlController hideTwitterStatus];
+}
+
 
 @end

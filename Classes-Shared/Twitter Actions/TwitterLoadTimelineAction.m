@@ -40,15 +40,13 @@
 }
 
 - (void) parseReceivedData:(NSData*)data {
-	if (statusCode < 400) {
-		TwitterStatusJSONParser *parser = [[[TwitterStatusJSONParser alloc] init] autorelease];
-		parser.receivedTimestamp = [NSDate date];
-		[parser parseJSONData:receivedData];
-		self.users = parser.users;
-		self.loadedMessages = parser.messages;
-		self.retweetedMessages = parser.retweets;
-		self.favoriteMessages = parser.favorites;
-	}
+	TwitterStatusJSONParser *parser = [[[TwitterStatusJSONParser alloc] init] autorelease];
+	parser.receivedTimestamp = [NSDate date];
+	[parser parseJSONData:receivedData];
+	self.users = parser.users;
+	self.loadedMessages = parser.messages;
+	self.retweetedMessages = parser.retweets;
+	self.favoriteMessages = parser.favorites;
 }
 
 @end

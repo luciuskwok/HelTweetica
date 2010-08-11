@@ -69,6 +69,8 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		// Timeline update notifications
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
+		[nc addObserver:self selector:@selector(showTwitterError:) name:TwitterErrorNotification object:nil];
+		
 	}
 	return self;
 }
@@ -136,11 +138,31 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 }
 
 
+#pragma mark Twitter status line
+
+- (void)showTwitterStatusWithString:(NSString *)string {
+	[webView setDocumentElement:@"twitter_status" innerHTML:string];
+	[webView setDocumentElement:@"twitter_status" visibility:YES];
+	//[webView setDocumentElement:@"twitter_status" height:24];
+}
+
+- (void)showLoadingStatus {
+	[self showTwitterStatusWithString:@"<img src='fave-spinner.gif'> Loading..."];
+}
+
+- (void)hideTwitterStatus {
+	[webView setDocumentElement:@"twitter_status" visibility:NO];
+	//[webView setDocumentElement:@"twitter_status" innerHTML:@""];
+	//[webView setDocumentElement:@"twitter_status" height:0];
+}
+
+
 #pragma mark Loading
 
 - (void)refresh {
 	isLoading = YES;
-	[self setLoadingSpinnerVisibility:YES];
+	[self showLoadingStatus];
+	//[self setLoadingSpinnerVisibility:YES];
 	if (timeline == account.homeTimeline || timeline == account.mentions || timeline == account.directMessages) {
 		self.messages = [timeline messagesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];
@@ -162,7 +184,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 	if (noInternetConnection == NO) {
 		isLoading = YES;
-		[self setLoadingSpinnerVisibility:YES];
+		[self showLoadingStatus];
 		if (timeline == account.favorites) {
 			// Reload messages ignoring what's already local in case there are gaps in our version of the timeline.
 			[timeline reloadAll];
@@ -191,21 +213,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 			return YES;
 	}
 	return NO;
-}
-
-- (void)timelineDidFinishLoading:(NSNotification *)notification {
-	TwitterTimeline *aTimeline = [notification object];
-	if (aTimeline == self.timeline) {
-		isLoading = NO;
-		[self setLoadingSpinnerVisibility:NO];
-
-		// Only update if the web view is scrolled to the top.
-		CGPoint position = [webView scrollPosition];
-		if (position.y <= 1.0f) {
-			self.messages = [timeline messagesWithLimit: maxTweetsShown];
-			[self rewriteTweetArea];
-		}
-	}
 }
 
 - (void)loadList:(TwitterList*)list {
@@ -524,7 +531,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	
 	// Open the row and substitute the user screenName and profileImageURL in the template.
 	NSMutableDictionary *substitutions = [NSMutableDictionary dictionary];
-	TwitterUser *user = [twitter userWithIdentifier:conversation.user];
+	TwitterUser *user = [twitter userWithIdentifier:conversation.userIdentifier];
 	[substitutions setObject:user.screenName forKey:@"screenName"];
 	[substitutions setObject:user.profileImageURL forKey:@"profileImageURL"];
 	[html appendString:[self htmlWithTemplate:directMessageRowSectionOpenTemplate substitutions:substitutions]];
@@ -658,6 +665,26 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		NSRange replaceRange = NSMakeRange(openRange.location, closeRange.location + closeRange.length - openRange.location);
 		[template replaceCharactersInRange:replaceRange withString:@""];
 	}
+}
+
+#pragma mark Notifications
+
+- (void)timelineDidFinishLoading:(NSNotification *)notification {
+	TwitterTimeline *aTimeline = [notification object];
+	if (aTimeline == self.timeline) {
+		isLoading = NO;
+		[self hideTwitterStatus];
+		self.messages = [timeline messagesWithLimit: maxTweetsShown];
+		[self rewriteTweetArea];
+	}
+}
+
+- (void)showTwitterError:(NSNotification *)notification {
+	NSError *error = [notification object];
+	NSString *message = [error localizedDescription];
+	//int statusCode = [error code];
+	
+	[self showTwitterStatusWithString:message];
 }
 
 

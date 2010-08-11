@@ -56,7 +56,7 @@
 
 // Set up
 - (void)setAccount:(TwitterAccount *)anAccount;
-- (void)setAccountWithScreenName:(NSString*)screenName;
+- (TwitterAccount *)accountWithScreenName:(NSString*)screenName;
 
 // Timelines
 - (IBAction)selectTimelineWithSegmentedControl:(id)sender;
@@ -98,5 +98,9 @@
 
 // Alert
 - (void) showAlertWithTitle:(NSString*)aTitle message:(NSString*)aMessage;
+
+// Testing
+- (IBAction)showTwitterStatus:(id)sender;
+- (IBAction)hideTwitterStatus:(id)sender;
 
 @end

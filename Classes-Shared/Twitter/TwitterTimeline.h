@@ -49,7 +49,6 @@
 
 // Messages (Status Updates or Direct Messages)
 - (void)addMessages:(NSArray*)messages;
-- (void)addMessages:(NSArray*)messages updateGap:(BOOL)updateGap;
 - (void)removeIdentifier:(NSNumber *)identifier;
 - (BOOL)containsIdentifier:(NSNumber *)identifier;
 - (NSArray *)messagesWithLimit:(int)limit;
