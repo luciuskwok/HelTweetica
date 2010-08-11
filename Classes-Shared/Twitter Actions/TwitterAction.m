@@ -194,13 +194,17 @@
 		// Extract error description from the JSON result.
 		NSString *errorJSON = [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease];
 		NSScanner *errorScanner = [NSScanner scannerWithString:errorJSON];
-		NSString *errorDescription;
+		NSString *errorDescription = nil;
 		NSString *errorKey = @"\"error\":\"";
 		[errorScanner scanUpToString:errorKey intoString:nil];
-		[errorScanner scanString:errorKey intoString:nil];
-		[errorScanner scanUpToString:@"\"" intoString:&errorDescription];
-		
+		if ([errorScanner scanString:errorKey intoString:nil]) {
+			[errorScanner scanUpToString:@"\"" intoString:&errorDescription];
+		} 
 		if (errorDescription == nil) {
+			errorDescription = errorJSON;
+		}
+		
+		if ([errorDescription length] == 0) {
 			// Use a generic error message.
 			errorDescription = @"Something is technically wrong with Twitter.";
 		}

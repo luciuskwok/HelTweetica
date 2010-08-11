@@ -148,6 +148,13 @@
 			E0760B2A121313E100B025A1 /* PBXTextBookmark */ = E0760B2A121313E100B025A1 /* PBXTextBookmark */;
 			E0760B2B121313E100B025A1 /* PBXTextBookmark */ = E0760B2B121313E100B025A1 /* PBXTextBookmark */;
 			E0760B2C121313E100B025A1 /* PBXTextBookmark */ = E0760B2C121313E100B025A1 /* PBXTextBookmark */;
+			E0760B3C1213190900B025A1 /* PBXTextBookmark */ = E0760B3C1213190900B025A1 /* PBXTextBookmark */;
+			E0760B471213199400B025A1 /* PBXTextBookmark */ = E0760B471213199400B025A1 /* PBXTextBookmark */;
+			E0760B6512131A3E00B025A1 /* PBXTextBookmark */ = E0760B6512131A3E00B025A1 /* PBXTextBookmark */;
+			E0760B7412131A7500B025A1 /* PBXTextBookmark */ = E0760B7412131A7500B025A1 /* PBXTextBookmark */;
+			E0760B7912131AAE00B025A1 /* PBXTextBookmark */ = E0760B7912131AAE00B025A1 /* PBXTextBookmark */;
+			E0760B7E12131AE600B025A1 /* PBXTextBookmark */ = E0760B7E12131AE600B025A1 /* PBXTextBookmark */;
+			E0760B8512131B3300B025A1 /* PBXTextBookmark */ = E0760B8512131B3300B025A1 /* PBXTextBookmark */;
 			E079ED6612078E410083B77B = E079ED6612078E410083B77B /* PBXTextBookmark */;
 			E079ED6712078E410083B77B = E079ED6712078E410083B77B /* PBXTextBookmark */;
 			E079EDF61207B3240083B77B = E079EDF61207B3240083B77B /* PBXTextBookmark */;
@@ -650,9 +657,9 @@
 	};
 	E0564A4E11FBD2E7000A9753 /* Twitter.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {619, 6804}}";
+			sepNavIntBoundsRect = "{{0, 0}, {652, 6768}}";
 			sepNavSelRange = "{3209, 0}";
-			sepNavVisRange = "{2160, 1757}";
+			sepNavVisRange = "{2160, 1606}";
 		};
 	};
 	E0564A4F11FBD2E7000A9753 /* TwitterAccount.h */ = {
@@ -963,7 +970,7 @@
 		ignoreCount = 0;
 		lineNumber = 72;
 		location = HelTweetica;
-		modificationTime = 303240159.784509;
+		modificationTime = 303242034.18511;
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
@@ -1165,6 +1172,76 @@
 		rLoc = 3209;
 		rType = 0;
 		vrLen = 1757;
+		vrLoc = 2160;
+	};
+	E0760B3C1213190900B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */;
+		name = "Twitter.m: 60";
+		rLen = 0;
+		rLoc = 3209;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 2160;
+	};
+	E0760B471213199400B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */;
+		name = "Twitter.m: 60";
+		rLen = 0;
+		rLoc = 3209;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 2160;
+	};
+	E0760B6512131A3E00B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */;
+		name = "Twitter.m: 60";
+		rLen = 0;
+		rLoc = 3209;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 2160;
+	};
+	E0760B7412131A7500B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */;
+		name = "Twitter.m: 60";
+		rLen = 0;
+		rLoc = 3209;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 2160;
+	};
+	E0760B7912131AAE00B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */;
+		name = "Twitter.m: 60";
+		rLen = 0;
+		rLoc = 3209;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 2160;
+	};
+	E0760B7E12131AE600B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */;
+		name = "Twitter.m: 60";
+		rLen = 0;
+		rLoc = 3209;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 2160;
+	};
+	E0760B8512131B3300B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564A4E11FBD2E7000A9753 /* Twitter.m */;
+		name = "Twitter.m: 60";
+		rLen = 0;
+		rLoc = 3209;
+		rType = 0;
+		vrLen = 1606;
 		vrLoc = 2160;
 	};
 	E079ECFC120772340083B77B /* TwitterComposer.h */ = {
@@ -1669,7 +1746,7 @@
 		fRef = E0564A6311FBD2E7000A9753 /* TwitterAction.m */;
 		name = "TwitterAction.m: 225";
 		rLen = 16;
-		rLoc = 9136;
+		rLoc = 9231;
 		rType = 0;
 		vrLen = 1042;
 		vrLoc = 7193;

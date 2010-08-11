@@ -56,6 +56,8 @@
 }
 
 - (void) parseReceivedData:(NSData*)data {
+	if (statusCode >= 400) return;
+	
 	NSString *resultString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 	if (resultString != nil) {
 		// Store tokens
