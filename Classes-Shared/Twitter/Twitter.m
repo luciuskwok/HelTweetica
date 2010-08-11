@@ -52,12 +52,12 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 		
 		// Create tables and indexes if they don't exist.
 		NSError *error = nil;
-		NSString *creationPath = [[NSBundle mainBundle] pathForResource:@"CreationStatement" ofType:@"sql"];
-		NSString *creationStatement = [NSString stringWithContentsOfFile:creationPath encoding:NSUTF8StringEncoding error:&error];
-		if (creationStatement == nil) {
-			NSLog (@"Unable to load SQL statements to create tables. %@", [error localizedDescription]);
+		NSString *creationPath = [[NSBundle mainBundle] pathForResource:@"SqliteInit" ofType:@"sql"];
+		NSString *initStatement = [NSString stringWithContentsOfFile:creationPath encoding:NSUTF8StringEncoding error:&error];
+		if (initStatement == nil) {
+			NSLog (@"Unable to SQL statements for init. %@", [error localizedDescription]);
 		} else {
-			[database execute:creationStatement];
+			[database execute:initStatement];
 		}
 
 		// Set up pragmas

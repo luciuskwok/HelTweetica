@@ -268,6 +268,7 @@
 								<string>E05649CC11FBCEE6000A9753</string>
 								<string>E05649E611FBD2D8000A9753</string>
 								<string>E05649CF11FBCF0C000A9753</string>
+								<string>E0564A4911FBD2E7000A9753</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>E0564AB211FBD314000A9753</string>
 								<string>1C37FBAC04509CD000000102</string>
@@ -275,13 +276,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>40</integer>
-									<integer>39</integer>
+									<integer>44</integer>
+									<integer>36</integer>
+									<integer>30</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 119}, {294, 873}}</string>
+							<string>{{0, 56}, {294, 873}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -316,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E05648CD11FBCB3D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>style.css</string>
+								<string>Twitter.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -324,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E05648CE11FBCB3D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>style.css</string>
+										<string>Twitter.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E06CFD591212A27E00B52FB2</string>
+										<string>E0760B2C121313E100B025A1</string>
 										<key>history</key>
 										<array>
 											<string>E0564B0011FBD458000A9753</string>
@@ -405,11 +407,11 @@
 											<string>E06CFB3E121265D000B52FB2</string>
 											<string>E06CFC4D121281EF00B52FB2</string>
 											<string>E06CFC4E121281EF00B52FB2</string>
-											<string>E06CFD00121292CD00B52FB2</string>
 											<string>E06CFD1B1212951600B52FB2</string>
 											<string>E06CFD411212979E00B52FB2</string>
 											<string>E06CFD421212979E00B52FB2</string>
-											<string>E06CFD431212979E00B52FB2</string>
+											<string>E0760B2A121313E100B025A1</string>
+											<string>E0760B2B121313E100B025A1</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -448,7 +450,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {878, -27}}</string>
+										<string>{{10, 27}, {668, -27}}</string>
+										<key>RubberWindowFrame</key>
+										<string>466 96 984 932 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -502,9 +506,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {668, -27}}</string>
-										<key>RubberWindowFrame</key>
-										<string>466 96 984 932 0 0 1680 1028 </string>
+										<string>{{0, 0}, {568, 405}}</string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -532,11 +534,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E06CF8B712124B4F00B52FB2</string>
+				<string>E0760B2D121313E100B025A1</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>E06CF8B812124B4F00B52FB2</string>
+				<string>E0760B2E121313E100B025A1</string>
 				<string>E05648CD11FBCB3D000A9753</string>
-				<string>E06CF8B912124B4F00B52FB2</string>
+				<string>E0760B2F121313E100B025A1</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -726,8 +728,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E06CF8E412124CCF00B52FB2</string>
-		<string>E06CF8E512124CCF00B52FB2</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-iPad.xcodeproj</string>
 	</array>
 	<key>WindowString</key>

@@ -129,7 +129,7 @@
 		E0D14E5911FCD4C400452E63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D14E5811FCD4C400452E63 /* libsqlite3.dylib */; };
 		E0D14F6911FD024A00452E63 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */; };
 		E0D1502811FD1AD100452E63 /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D1502611FD1AD100452E63 /* LKSqliteStatement.m */; };
-		E0D1509C11FD2E1400452E63 /* CreationStatement.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509B11FD2E1400452E63 /* CreationStatement.sql */; };
+		E0D1509C11FD2E1400452E63 /* SqliteInit.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509B11FD2E1400452E63 /* SqliteInit.sql */; };
 		E0E6F8BF12041140005760D2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0E6F8BE12041140005760D2 /* CoreLocation.framework */; };
 		E0F182EB11FDB1C300DEDE0D /* TwitterDirectMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F182EA11FDB1C300DEDE0D /* TwitterDirectMessage.m */; };
 		E0F1838511FDBBE800DEDE0D /* TwitterDirectMessageJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1838411FDBBE800DEDE0D /* TwitterDirectMessageJSONParser.m */; };
@@ -314,7 +314,7 @@
 		E0D14F6711FD024A00452E63 /* LKSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteDatabase.m; sourceTree = "<group>"; };
 		E0D1502511FD1AD100452E63 /* LKSqliteStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteStatement.h; sourceTree = "<group>"; };
 		E0D1502611FD1AD100452E63 /* LKSqliteStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteStatement.m; sourceTree = "<group>"; };
-		E0D1509B11FD2E1400452E63 /* CreationStatement.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreationStatement.sql; sourceTree = "<group>"; };
+		E0D1509B11FD2E1400452E63 /* SqliteInit.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SqliteInit.sql; sourceTree = "<group>"; };
 		E0E6F8BE12041140005760D2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E0F182E911FDB1C300DEDE0D /* TwitterDirectMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessage.h; sourceTree = "<group>"; };
 		E0F182EA11FDB1C300DEDE0D /* TwitterDirectMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDirectMessage.m; sourceTree = "<group>"; };
@@ -609,7 +609,7 @@
 				E0564C8A11FBD6AC000A9753 /* user-info-template.html */,
 				E0564C8B11FBD6AC000A9753 /* user-page-template.html */,
 				E0564C8C11FBD6AC000A9753 /* verified.png */,
-				E0D1509B11FD2E1400452E63 /* CreationStatement.sql */,
+				E0D1509B11FD2E1400452E63 /* SqliteInit.sql */,
 			);
 			path = "Resources-Shared";
 			sourceTree = "<group>";
@@ -750,7 +750,7 @@
 				E0564CAF11FBD6AC000A9753 /* user-info-template.html in Resources */,
 				E0564CB011FBD6AC000A9753 /* user-page-template.html in Resources */,
 				E0564CB111FBD6AC000A9753 /* verified.png in Resources */,
-				E0D1509C11FD2E1400452E63 /* CreationStatement.sql in Resources */,
+				E0D1509C11FD2E1400452E63 /* SqliteInit.sql in Resources */,
 				E08BC74812017BC000CEEC44 /* dm-row-template.html in Resources */,
 				E0524BCB12038F4C00EF28F8 /* dm-row-section-close.html in Resources */,
 				E0524BCC12038F4C00EF28F8 /* dm-row-section-open.html in Resources */,

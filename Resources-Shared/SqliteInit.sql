@@ -1,4 +1,9 @@
-﻿CREATE TABLE if not exists Users (
+﻿Pragma cache_size = 6000;
+Pragma synchronous = off;
+Pragma count_changes = false;
+Pragma temp_store = memory;
+
+CREATE TABLE if not exists Users (
 	identifier integer primary key,
 	screenName text, 
 	fullName text, 

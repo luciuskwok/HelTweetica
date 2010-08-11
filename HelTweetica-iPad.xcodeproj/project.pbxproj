@@ -254,8 +254,8 @@
 		E0CADD4711FD82000075F657 /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4511FD82000075F657 /* LKSqliteStatement.m */; };
 		E0CADD4811FD82000075F657 /* LKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */; };
 		E0CADD4911FD82000075F657 /* LKSqliteStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CADD4511FD82000075F657 /* LKSqliteStatement.m */; };
-		E0D1509911FD2DE900452E63 /* CreationStatement.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509811FD2DE900452E63 /* CreationStatement.sql */; };
-		E0D1509A11FD2DE900452E63 /* CreationStatement.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509811FD2DE900452E63 /* CreationStatement.sql */; };
+		E0D1509911FD2DE900452E63 /* SqliteInit.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509811FD2DE900452E63 /* SqliteInit.sql */; };
+		E0D1509A11FD2DE900452E63 /* SqliteInit.sql in Resources */ = {isa = PBXBuildFile; fileRef = E0D1509811FD2DE900452E63 /* SqliteInit.sql */; };
 		E0DCF6F51200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0DCF6F41200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m */; };
 		E0DCF6F61200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0DCF6F41200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m */; };
 		E0F1831C11FDB53900DEDE0D /* TwitterDirectMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1831711FDB53900DEDE0D /* TwitterDirectMessage.m */; };
@@ -465,7 +465,7 @@
 		E0CADD4311FD82000075F657 /* LKSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteDatabase.m; sourceTree = "<group>"; };
 		E0CADD4411FD82000075F657 /* LKSqliteStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKSqliteStatement.h; sourceTree = "<group>"; };
 		E0CADD4511FD82000075F657 /* LKSqliteStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKSqliteStatement.m; sourceTree = "<group>"; };
-		E0D1509811FD2DE900452E63 /* CreationStatement.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CreationStatement.sql; path = "Resources-Shared/CreationStatement.sql"; sourceTree = "<group>"; };
+		E0D1509811FD2DE900452E63 /* SqliteInit.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SqliteInit.sql; path = "Resources-Shared/SqliteInit.sql"; sourceTree = "<group>"; };
 		E0DCF6F31200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterLoadDirectMessagesAction.h; sourceTree = "<group>"; };
 		E0DCF6F41200FCF7002CD8C7 /* TwitterLoadDirectMessagesAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterLoadDirectMessagesAction.m; sourceTree = "<group>"; };
 		E0F1831611FDB53900DEDE0D /* TwitterDirectMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDirectMessage.h; sourceTree = "<group>"; };
@@ -857,7 +857,7 @@
 				E0564ACA11FBD325000A9753 /* user-info-template.html */,
 				E0564ACB11FBD325000A9753 /* user-page-template.html */,
 				E0564ACC11FBD325000A9753 /* verified.png */,
-				E0D1509811FD2DE900452E63 /* CreationStatement.sql */,
+				E0D1509811FD2DE900452E63 /* SqliteInit.sql */,
 			);
 			name = "Resources-Shared";
 			sourceTree = "<group>";
@@ -997,7 +997,7 @@
 				E0564AE311FBD325000A9753 /* verified.png in Resources */,
 				E0564ED411FBD93E000A9753 /* MainWindow-iPad.xib in Resources */,
 				E0564ED511FBD93E000A9753 /* MainWindow.xib in Resources */,
-				E0D1509911FD2DE900452E63 /* CreationStatement.sql in Resources */,
+				E0D1509911FD2DE900452E63 /* SqliteInit.sql in Resources */,
 				E08BC75C12017BD500CEEC44 /* dm-row-template.html in Resources */,
 				E0524CA31203DE1B00EF28F8 /* dm-row-section-close.html in Resources */,
 				E0524CA41203DE1B00EF28F8 /* dm-row-section-open.html in Resources */,
@@ -1062,7 +1062,7 @@
 				E0564B4711FBD4AB000A9753 /* user-info-template.html in Resources */,
 				E0564B4811FBD4AB000A9753 /* user-page-template.html in Resources */,
 				E0564B4911FBD4AB000A9753 /* verified.png in Resources */,
-				E0D1509A11FD2DE900452E63 /* CreationStatement.sql in Resources */,
+				E0D1509A11FD2DE900452E63 /* SqliteInit.sql in Resources */,
 				E08BC75D12017BD500CEEC44 /* dm-row-template.html in Resources */,
 				E0524CA51203DE1B00EF28F8 /* dm-row-section-close.html in Resources */,
 				E0524CA61203DE1B00EF28F8 /* dm-row-section-open.html in Resources */,

@@ -278,14 +278,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>80</integer>
-									<integer>78</integer>
-									<integer>23</integer>
+									<integer>160</integer>
+									<integer>133</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 958}, {291, 744}}</string>
+							<string>{{0, 2039}, {291, 744}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -302,7 +301,7 @@
 							<real>291</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>272 135 1252 803 0 0 1680 1028 </string>
+						<string>136 71 1252 803 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -320,7 +319,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E0564BA811FBD59D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>style.css</string>
+								<string>SqliteInit.sql</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -328,11 +327,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E0564BA911FBD59D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>style.css</string>
+										<string>SqliteInit.sql</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0760B0812130BC000B025A1</string>
+										<string>E0760B351213152800B025A1</string>
 										<key>history</key>
 										<array>
 											<string>E0D14EA511FCDFFD00452E63</string>
@@ -401,7 +400,9 @@
 											<string>E06CFC8D1212885700B52FB2</string>
 											<string>E06CFC931212889700B52FB2</string>
 											<string>E06CFD241212953400B52FB2</string>
-											<string>E06CFD5B1212A27F00B52FB2</string>
+											<string>E0760B1D121313E100B025A1</string>
+											<string>E0760B1E121313E100B025A1</string>
+											<string>E0760B301213143800B025A1</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -417,7 +418,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {939, 757}}</string>
 								<key>RubberWindowFrame</key>
-								<string>272 135 1252 803 0 0 1680 1028 </string>
+								<string>136 71 1252 803 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -442,7 +443,7 @@
 										<key>Frame</key>
 										<string>{{10, 27}, {939, -27}}</string>
 										<key>RubberWindowFrame</key>
-										<string>272 135 1252 803 0 0 1680 1028 </string>
+										<string>136 71 1252 803 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -677,14 +678,14 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E06CFB42121265D000B52FB2</string>
+				<string>E0760B21121313E100B025A1</string>
 				<string>1CCC7628064C1048000F2A68</string>
 				<string>1CCC7629064C1048000F2A68</string>
-				<string>E06CFB43121265D000B52FB2</string>
-				<string>E06CFB44121265D000B52FB2</string>
-				<string>E06CFB45121265D000B52FB2</string>
-				<string>E06CFB46121265D000B52FB2</string>
-				<string>E06CFB47121265D000B52FB2</string>
+				<string>E0760B22121313E100B025A1</string>
+				<string>E0760B23121313E100B025A1</string>
+				<string>E0760B24121313E100B025A1</string>
+				<string>E0760B25121313E100B025A1</string>
+				<string>E0760B26121313E100B025A1</string>
 			</array>
 			<key>ToolbarConfigUserDefaultsMinorVersion</key>
 			<string>2</string>
@@ -718,10 +719,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>E0760B28121313E100B025A1</string>
+		<string>E0760B29121313E100B025A1</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Mac.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>272 135 1252 803 0 0 1680 1028 </string>
+	<string>136 71 1252 803 0 0 1680 1028 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
