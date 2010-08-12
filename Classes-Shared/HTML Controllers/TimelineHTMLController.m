@@ -34,6 +34,7 @@ const int kDefaultMaxTweetsShown = 400;
 #else
 const int kDefaultMaxTweetsShown = 160;
 #endif
+const int kRewriteHTMLTimerInterval = 60;
 static NSString *kTimelineIdentifier = @"Timeline";
 static NSString *kMentionsIdentifier = @"Mentions";
 static NSString *kDirectMessagesIdentifier = @"Direct";
@@ -45,6 +46,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 @synthesize webView, twitter, account, timeline, messages;
 @synthesize maxTweetsShown, webViewHasValidHTML, isLoading, noInternetConnection, suppressNetworkErrorAlerts;
 @synthesize customPageTitle, customTabName;
+@synthesize useRewriteHTMLTimer;
 @synthesize delegate;
 
 
@@ -60,7 +62,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		tweetGapRowTemplate = [[self loadHTMLTemplate:@"load-gap-template"] retain];
 		
 		// Loading template
-		loadingHTML = [@"<div class='status'><img class='status_spinner_image' src='spinner.gif'> Loading...</div>"retain];
+		loadingHTML = [@"<div class='status'><img class='status_spinner_image' src='spinner.gif'> Loading...</div>" retain];
 
 		// Misc
 		isLoading = YES;
@@ -95,6 +97,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	
 	[customPageTitle release];
 	[customTabName release];
+	
+	[rewriteHTMLTimer invalidate];
+	rewriteHTMLTimer = nil;
 	
 	[super dealloc];
 }
@@ -336,6 +341,10 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	[html replaceOccurrencesOfString:@"<tabAreaHTML/>" withString:tabAreaHTML options:0 range:NSMakeRange(0, html.length)];
 	
 	[self.webView loadHTMLString:html];
+
+	if (useRewriteHTMLTimer) {
+		[self scheduleRewriteHTMLTimer];
+	}
 }
 
 - (void)setLoadingSpinnerVisibility:(BOOL)isVisible {
@@ -359,6 +368,23 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	} else {
 		// This isn't really a bug or exception to call this method when the web view isn't ready, so it isn't logged. 
 		//NSLog (@"rewriteTweetArea called when webViewHasValidHTML == NO.");
+	}
+
+	if (useRewriteHTMLTimer) {
+		[self scheduleRewriteHTMLTimer];
+	}
+}
+
+- (void)scheduleRewriteHTMLTimer {
+	if (useRewriteHTMLTimer) {
+		[rewriteHTMLTimer invalidate];
+		rewriteHTMLTimer = [NSTimer scheduledTimerWithTimeInterval:kRewriteHTMLTimerInterval target:self selector:@selector(fireRewriteHTMLTimer:) userInfo:nil repeats:NO];
+	}
+}
+
+- (void)fireRewriteHTMLTimer:(NSTimer *)timer {
+	if (useRewriteHTMLTimer) {
+		[self rewriteTweetArea];
 	}
 }
 
@@ -405,6 +431,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		return [NSNumber numberWithLongLong: identifierInt64];
 	return nil;
 }
+
 
 #pragma mark HTML
 

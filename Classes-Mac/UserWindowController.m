@@ -40,6 +40,7 @@
 		controller.twitter = appDelegate.twitter;
 		controller.account = anAccount;
 		controller.delegate = self;
+		controller.useRewriteHTMLTimer = YES;
 		self.htmlController = controller;
 	}
 	return self;

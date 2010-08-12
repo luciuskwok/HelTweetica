@@ -54,6 +54,9 @@
 	BOOL noInternetConnection;
 	BOOL suppressNetworkErrorAlerts;
 	
+	NSTimer *rewriteHTMLTimer;
+	BOOL useRewriteHTMLTimer;
+	
 	id delegate;
 }
 
@@ -72,6 +75,8 @@
 @property (assign) BOOL isLoading;
 @property (assign) BOOL noInternetConnection;
 @property (assign) BOOL suppressNetworkErrorAlerts;
+
+@property (assign) BOOL useRewriteHTMLTimer;
 
 @property (assign) id <TimelineHTMLControllerDelegate> delegate;
 
@@ -99,6 +104,7 @@
 // Web view updating
 - (void)loadWebView;
 - (void)rewriteTweetArea;
+- (void)scheduleRewriteHTMLTimer;
 
 // Web actions
 - (BOOL)handleWebAction:(NSString*)action;

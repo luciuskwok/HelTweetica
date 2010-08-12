@@ -31,8 +31,9 @@
 		// Timeline HTML Controller generates the HTML from a timeline
 		ConversationHTMLController *controller = [[[ConversationHTMLController alloc] initWithMessageIdentifier:nil] autorelease];
 		controller.twitter = appDelegate.twitter;
-		self.htmlController = controller;
 		controller.delegate = self;
+		controller.useRewriteHTMLTimer = YES;
+		self.htmlController = controller;
 	}
 	return self;
 }

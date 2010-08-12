@@ -44,6 +44,7 @@
 		self.htmlController = [[[TimelineHTMLController alloc] init] autorelease];
 		htmlController.twitter = appDelegate.twitter;
 		htmlController.delegate = self;
+		htmlController.useRewriteHTMLTimer = YES;
 		
 		// Listen for changes to Twitter state data
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];

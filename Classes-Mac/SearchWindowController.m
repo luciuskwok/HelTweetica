@@ -36,6 +36,7 @@
 		SearchResultsHTMLController *controller = [[[SearchResultsHTMLController alloc] initWithQuery:aQuery twitter:appDelegate.twitter] autorelease];
 		controller.twitter = appDelegate.twitter;
 		controller.delegate = self;
+		controller.useRewriteHTMLTimer = YES;
 		self.htmlController = controller;
 	
 		// Listen for changes to Saved Searches list
