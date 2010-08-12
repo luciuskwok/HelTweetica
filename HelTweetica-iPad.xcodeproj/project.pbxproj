@@ -214,6 +214,10 @@
 		E0564B8411FBD4AB000A9753 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564AEC11FBD344000A9753 /* AVFoundation.framework */; };
 		E0564ED411FBD93E000A9753 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564ED211FBD93E000A9753 /* MainWindow-iPad.xib */; };
 		E0564ED511FBD93E000A9753 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0564ED311FBD93E000A9753 /* MainWindow.xib */; };
+		E05A115F121494C0004D7259 /* whale_error.gif in Resources */ = {isa = PBXBuildFile; fileRef = E05A115E121494C0004D7259 /* whale_error.gif */; };
+		E05A1160121494C0004D7259 /* whale_error.gif in Resources */ = {isa = PBXBuildFile; fileRef = E05A115E121494C0004D7259 /* whale_error.gif */; };
+		E05A1168121495AD004D7259 /* twitter-503-whale.html in Resources */ = {isa = PBXBuildFile; fileRef = E05A1167121495AD004D7259 /* twitter-503-whale.html */; };
+		E05A1169121495AD004D7259 /* twitter-503-whale.html in Resources */ = {isa = PBXBuildFile; fileRef = E05A1167121495AD004D7259 /* twitter-503-whale.html */; };
 		E0651CC6120A7E5000F9D256 /* action-dm.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CC1120A7E5000F9D256 /* action-dm.png */; };
 		E0651CC7120A7E5000F9D256 /* action-reply.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CC2120A7E5000F9D256 /* action-reply.png */; };
 		E0651CC8120A7E5000F9D256 /* action-rt.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CC3120A7E5000F9D256 /* action-rt.png */; };
@@ -435,6 +439,8 @@
 		E0564B8811FBD4AB000A9753 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0564ED211FBD93E000A9753 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		E0564ED311FBD93E000A9753 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = "Resources-iPad/MainWindow.xib"; sourceTree = "<group>"; };
+		E05A115E121494C0004D7259 /* whale_error.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = whale_error.gif; path = "Resources-Shared/whale_error.gif"; sourceTree = "<group>"; };
+		E05A1167121495AD004D7259 /* twitter-503-whale.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "twitter-503-whale.html"; path = "Resources-Shared/twitter-503-whale.html"; sourceTree = "<group>"; };
 		E0651CC1120A7E5000F9D256 /* action-dm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-dm.png"; path = "Resources-Shared/action-dm.png"; sourceTree = "<group>"; };
 		E0651CC2120A7E5000F9D256 /* action-reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-reply.png"; path = "Resources-Shared/action-reply.png"; sourceTree = "<group>"; };
 		E0651CC3120A7E5000F9D256 /* action-rt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action-rt.png"; path = "Resources-Shared/action-rt.png"; sourceTree = "<group>"; };
@@ -834,6 +840,7 @@
 		E0564AB211FBD314000A9753 /* Resources-Shared */ = {
 			isa = PBXGroup;
 			children = (
+				E0D1509811FD2DE900452E63 /* SqliteInit.sql */,
 				E0651CE1120A801200F9D256 /* action-delete.png */,
 				E0651CC1120A7E5000F9D256 /* action-dm.png */,
 				E0651CC2120A7E5000F9D256 /* action-reply.png */,
@@ -858,10 +865,11 @@
 				E0564AC611FBD325000A9753 /* tab.png */,
 				E0760D561213B3C200B025A1 /* thread.png */,
 				E0564AC911FBD325000A9753 /* tweet-row-template.html */,
+				E05A1167121495AD004D7259 /* twitter-503-whale.html */,
 				E0564ACA11FBD325000A9753 /* user-info-template.html */,
 				E0564ACB11FBD325000A9753 /* user-page-template.html */,
 				E0564ACC11FBD325000A9753 /* verified.png */,
-				E0D1509811FD2DE900452E63 /* SqliteInit.sql */,
+				E05A115E121494C0004D7259 /* whale_error.gif */,
 			);
 			name = "Resources-Shared";
 			sourceTree = "<group>";
@@ -1016,6 +1024,8 @@
 				E0651CCA120A7E5000F9D256 /* action-star.png in Resources */,
 				E0651CE2120A801200F9D256 /* action-delete.png in Resources */,
 				E0760D571213B3C200B025A1 /* thread.png in Resources */,
+				E05A115F121494C0004D7259 /* whale_error.gif in Resources */,
+				E05A1168121495AD004D7259 /* twitter-503-whale.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1082,6 +1092,8 @@
 				E0651CCF120A7E5000F9D256 /* action-star.png in Resources */,
 				E0651CE3120A801200F9D256 /* action-delete.png in Resources */,
 				E0760D581213B3C200B025A1 /* thread.png in Resources */,
+				E05A1160121494C0004D7259 /* whale_error.gif in Resources */,
+				E05A1169121495AD004D7259 /* twitter-503-whale.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

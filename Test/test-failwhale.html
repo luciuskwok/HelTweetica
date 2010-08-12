@@ -1,0 +1,83 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<!-- Test (Mac) HTML -->
+<head>
+<meta name='viewport' content='width=device-width' />
+<link href='../Resources-Mac/style.css' rel='styleSheet' type='text/css' />
+</head>
+<body>
+	<div id='twitter_status' class='twitter_status' onclick="document.getElementById('twitter_status').style.visibility = 'hidden';">
+<!-- Begin Twitter fail whale HTML -->
+<h2>Twitter is over capacity.</h2>
+<p>Please wait a moment and try again. For more information, check out <a href="http://status.twitter.com">Twitter Status &raquo;</a></p>
+<div class="whale"><img src="../Resources-Shared/whale_error.gif" /></div>
+<!-- End Twitter fail whale HTML -->
+	</div>
+	
+	<div class='artboard'>
+		
+		<div id='tweet_area' class='tweet_area '>
+			<div class='tweet_table'>
+			
+
+				<div class='tweet_row self_tweet_row'>
+					<div class='tweet_avatar'>
+						<a href='action:user/{screenName}'><img class='avatar_img' id='avatar-{messageIdentifier}' src='../Resources-Shared/profile-image-proxy.png'></a>
+					</div><!-- tweet_avatar -->
+					<div class='tweet_content'>
+						<img align="right" src="../Resources-Shared/dm-button.png">
+						<div class="direct_message_header">Direct with <span class='screen_name'><a href='action:user/{screenName}'>{screenName}</a></span></div>
+						
+						<span class='screen_name'><a href='action:user/{user1}'>{user1}</a></span>
+						{Text of the direct message.}
+						<span class='time'>36 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user2}'>{user2}</a></span>
+						{Text of the direct message.}
+						<span class='time'>36 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user1}'>{user1}</a></span>
+						{Text of the direct message.}
+						<span class='time'>37 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user2}'>{user2}</a></span>
+						{Text of the direct message.}
+						<span class='time'>38 hours ago</span><br>
+						
+					</div><!-- /tweet_content -->
+				</div><!-- /tweet_row -->
+				
+
+				<div class='tweet_row'>
+					<div class='tweet_avatar'>
+						<a href='action:user/{screenName}'><img class='avatar_img' id='avatar-{messageIdentifier}' src='../Resources-Shared/profile-image-proxy.png'></a>
+					</div><!-- tweet_avatar -->
+					<div class='tweet_content'>
+						<img align="right" src="../Resources-Shared/action-dm.png">
+						<div class="direct_message_header">Direct with <span class='screen_name'><a href='action:user/{screenName}'>{screenName}</a></span></div>
+						
+						<span class='screen_name'><a href='action:user/{user1}'>{user1}</a></span>
+						{Text of the direct message.}
+						<span class='time'>36 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user2}'>{user2}</a></span>
+						{Text of the direct message.}
+						<span class='time'>36 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user1}'>{user1}</a></span>
+						{Text of the direct message.}
+						<span class='time'>37 hours ago</span><br>
+						
+						<span class='screen_name'><a href='action:user/{user2}'>{user2}</a></span>
+						{Text of the direct message.}
+						<span class='time'>38 hours ago</span><br>
+						
+					</div><!-- /tweet_content -->
+				</div><!-- /tweet_row -->
+
+				
+			</div><!-- /tweet_table -->
+		</div><!-- /tweet_area -->
+	</div><!-- artboard -->
+</body>
+</html>

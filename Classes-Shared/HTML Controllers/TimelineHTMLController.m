@@ -110,13 +110,12 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	// Call this after selecting a different timeline.
 	suppressNetworkErrorAlerts = NO;
 	self.messages = [timeline messagesWithLimit:maxTweetsShown];
+	[self rewriteTweetArea];
 
 	// Unread messages.
 	if (messages.count > 0) {
 		timeline.latestReadIdentifier = [timeline newestStatusIdentifier];
 	}
-	
-	[self rewriteTweetArea];
 	
 	// Notify delegate that a different timeline was selected.
 	if ([delegate respondsToSelector:@selector(didSelectTimeline:)])
@@ -156,7 +155,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[webView setDocumentElement:@"twitter_status" innerHTML:string];
 	}
 	[webView setDocumentElement:@"twitter_status" visibility:YES];
-	//[webView setDocumentElement:@"twitter_status" height:24];
 }
 
 - (void)showLoadingStatus {
@@ -166,7 +164,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)hideTwitterStatus {
 	[webView setDocumentElement:@"twitter_status" visibility:NO];
 	[webView setDocumentElement:@"twitter_status" innerHTML:@"Twitter is all right."];
-	//[webView setDocumentElement:@"twitter_status" height:0];
 }
 
 
@@ -716,13 +713,24 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		[self hideTwitterStatus];
 		self.messages = [timeline messagesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];
+
+		// Unread messages.
+		if (messages.count > 0) {
+			timeline.latestReadIdentifier = [timeline newestStatusIdentifier];
+		}
 	}
 }
 
 - (void)showTwitterError:(NSNotification *)notification {
 	NSError *error = [notification object];
-	NSString *message = [error localizedDescription];
-	//int statusCode = [error code];
+	NSString *message = nil;
+	int statusCode = [error code];
+	
+	if (statusCode == 503) { // Show our custom fail whale instead of what twitter gives us.
+		message = [self loadHTMLTemplate:@"twitter-503-whale"];
+	} else {
+		message = [error localizedDescription];
+	}
 	
 	[self showTwitterStatusWithString:message];
 }

@@ -112,6 +112,8 @@
 		E0564E1A11FBD871000A9753 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0564E1911FBD871000A9753 /* WebKit.framework */; };
 		E0564EC411FBD881000A9753 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		E0564EC511FBD888000A9753 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
+		E05A116C121495B8004D7259 /* twitter-503-whale.html in Resources */ = {isa = PBXBuildFile; fileRef = E05A116A121495B8004D7259 /* twitter-503-whale.html */; };
+		E05A116D121495B8004D7259 /* whale_error.gif in Resources */ = {isa = PBXBuildFile; fileRef = E05A116B121495B8004D7259 /* whale_error.gif */; };
 		E0651CBA120A7E3F00F9D256 /* action-dm.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CB5120A7E3F00F9D256 /* action-dm.png */; };
 		E0651CBB120A7E3F00F9D256 /* action-reply.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CB6120A7E3F00F9D256 /* action-reply.png */; };
 		E0651CBC120A7E3F00F9D256 /* action-rt.png in Resources */ = {isa = PBXBuildFile; fileRef = E0651CB7120A7E3F00F9D256 /* action-rt.png */; };
@@ -291,6 +293,8 @@
 		E0564CB311FBD6DA000A9753 /* HelTweetica_Mac_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelTweetica_Mac_Prefix.pch; sourceTree = "<group>"; };
 		E0564E0B11FBD833000A9753 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		E0564E1911FBD871000A9753 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		E05A116A121495B8004D7259 /* twitter-503-whale.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "twitter-503-whale.html"; sourceTree = "<group>"; };
+		E05A116B121495B8004D7259 /* whale_error.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = whale_error.gif; sourceTree = "<group>"; };
 		E0651CB5120A7E3F00F9D256 /* action-dm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-dm.png"; sourceTree = "<group>"; };
 		E0651CB6120A7E3F00F9D256 /* action-reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-reply.png"; sourceTree = "<group>"; };
 		E0651CB7120A7E3F00F9D256 /* action-rt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-rt.png"; sourceTree = "<group>"; };
@@ -622,6 +626,8 @@
 				E0564C8B11FBD6AC000A9753 /* user-page-template.html */,
 				E0564C8C11FBD6AC000A9753 /* verified.png */,
 				E0D1509B11FD2E1400452E63 /* SqliteInit.sql */,
+				E05A116A121495B8004D7259 /* twitter-503-whale.html */,
+				E05A116B121495B8004D7259 /* whale_error.gif */,
 			);
 			path = "Resources-Shared";
 			sourceTree = "<group>";
@@ -787,6 +793,8 @@
 				E0760CBC1213929600B025A1 /* mac-toolbar-direct-badged.png in Resources */,
 				E0760CBD1213929600B025A1 /* mac-toolbar-mentions-badged.png in Resources */,
 				E0760D531213B3B600B025A1 /* thread.png in Resources */,
+				E05A116C121495B8004D7259 /* twitter-503-whale.html in Resources */,
+				E05A116D121495B8004D7259 /* whale_error.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

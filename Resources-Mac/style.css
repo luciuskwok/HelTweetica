@@ -22,12 +22,27 @@ p { margin: 0px 0px 20px 0px; }
 	color: #333;
 	padding: 4px 10px 9px 16px;
 	border: 1px solid #666;
-	opacity: 0.85;
+	opacity: 0.88;
 	background-color: #fff;
 	-webkit-border-radius: 6px; 
 	-webkit-box-shadow: 0px 2px 8px #666; 
 }
-.twitter_status img {
+.twitter_status h2 {
+	font-size: 20px;
+	line-height: 1.2em;
+	font-weight: bold;
+	margin: 10px 0px 0px 0px;
+}
+
+.whale {
+	text-align: center;
+}
+.whale img {
+	max-width: 320px;
+	-webkit-border-radius: 5px; 
+}
+
+.spinner_img {
 	width: 20px;
 	height: 20px;
 	margin: -2px 0px -6px 0px;

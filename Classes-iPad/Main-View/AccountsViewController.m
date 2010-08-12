@@ -70,8 +70,8 @@
 	// Title
 	[self.navigationItem setTitle:@"Twitter"];
 
-    // Edit button.
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	// Edit button.
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
 	// Add button
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
