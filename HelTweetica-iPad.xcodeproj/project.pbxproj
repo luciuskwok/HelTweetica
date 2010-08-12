@@ -230,6 +230,8 @@
 		E0651D2F120A886100F9D256 /* TwitterDeleteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0651D2D120A886100F9D256 /* TwitterDeleteAction.m */; };
 		E0651DE6120A99C500F9D256 /* DeleteAlertDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */; };
 		E0651DE7120A99C500F9D256 /* DeleteAlertDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */; };
+		E0760D571213B3C200B025A1 /* thread.png in Resources */ = {isa = PBXBuildFile; fileRef = E0760D561213B3C200B025A1 /* thread.png */; };
+		E0760D581213B3C200B025A1 /* thread.png in Resources */ = {isa = PBXBuildFile; fileRef = E0760D561213B3C200B025A1 /* thread.png */; };
 		E079ECFE120772340083B77B /* TwitterComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = E079ECFD120772340083B77B /* TwitterComposer.m */; };
 		E079ECFF120772340083B77B /* TwitterComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = E079ECFD120772340083B77B /* TwitterComposer.m */; };
 		E079ED28120783690083B77B /* LKUploadPictureAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E079ED27120783690083B77B /* LKUploadPictureAction.m */; };
@@ -443,6 +445,7 @@
 		E0651D2D120A886100F9D256 /* TwitterDeleteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDeleteAction.m; sourceTree = "<group>"; };
 		E0651DE4120A99C500F9D256 /* DeleteAlertDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteAlertDelegate.h; sourceTree = "<group>"; };
 		E0651DE5120A99C500F9D256 /* DeleteAlertDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteAlertDelegate.m; sourceTree = "<group>"; };
+		E0760D561213B3C200B025A1 /* thread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thread.png; path = "Resources-Shared/thread.png"; sourceTree = "<group>"; };
 		E079ECFC120772340083B77B /* TwitterComposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterComposer.h; sourceTree = "<group>"; };
 		E079ECFD120772340083B77B /* TwitterComposer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterComposer.m; sourceTree = "<group>"; };
 		E079ED26120783690083B77B /* LKUploadPictureAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKUploadPictureAction.h; sourceTree = "<group>"; };
@@ -853,6 +856,7 @@
 				E0564AC411FBD325000A9753 /* tab-bkgnd.png */,
 				E0564AC511FBD325000A9753 /* tab-off.png */,
 				E0564AC611FBD325000A9753 /* tab.png */,
+				E0760D561213B3C200B025A1 /* thread.png */,
 				E0564AC911FBD325000A9753 /* tweet-row-template.html */,
 				E0564ACA11FBD325000A9753 /* user-info-template.html */,
 				E0564ACB11FBD325000A9753 /* user-page-template.html */,
@@ -1011,6 +1015,7 @@
 				E0651CC9120A7E5000F9D256 /* action-star-on.png in Resources */,
 				E0651CCA120A7E5000F9D256 /* action-star.png in Resources */,
 				E0651CE2120A801200F9D256 /* action-delete.png in Resources */,
+				E0760D571213B3C200B025A1 /* thread.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1076,6 +1081,7 @@
 				E0651CCE120A7E5000F9D256 /* action-star-on.png in Resources */,
 				E0651CCF120A7E5000F9D256 /* action-star.png in Resources */,
 				E0651CE3120A801200F9D256 /* action-delete.png in Resources */,
+				E0760D581213B3C200B025A1 /* thread.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

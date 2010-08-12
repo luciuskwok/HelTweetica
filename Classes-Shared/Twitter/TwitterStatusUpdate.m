@@ -199,8 +199,8 @@
 		[substitutions setObject:[self.createdDate relativeDateSinceNow] forKey:@"createdDate"];
 	if (self.source) 
 		[substitutions setObject:self.source forKey:@"via"];
-	if (self.inReplyToScreenName) 
-		[substitutions setObject:self.inReplyToScreenName forKey:@"inReplyToScreenName"];
+	if (self.inReplyToStatusIdentifier) 
+		[substitutions setObject:self.inReplyToScreenName forKey:@"inReplyToStatusIdentifier"];
 	if ([self isLocked])
 		[substitutions setObject:@"<img src='lock.png'>" forKey:@"lockIcon"];
 	if (self.longitude && self.latitude) {

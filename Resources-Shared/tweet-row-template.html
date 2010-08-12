@@ -22,12 +22,12 @@
 			{Block:via} 
 				via {via}
 			{/Block:via} 
-			{Block:inReplyToScreenName} 
-				<a href='action:conversation/{messageIdentifier}'>in reply to {inReplyToScreenName}</a>
-			{/Block:inReplyToScreenName} 
 			{Block:retweetedBy}
 				retweeted by <a href='action:user/{retweetedBy}'>{retweetedBy}</a>
 			{/Block:retweetedBy}
+			{Block:inReplyToStatusIdentifier} 
+				<a href='action:conversation/{messageIdentifier}'><img class='thread_img' src='thread.png'></a>
+			{/Block:inReplyToStatusIdentifier} 
 		</span>
 		
 		{geotagIcon}
