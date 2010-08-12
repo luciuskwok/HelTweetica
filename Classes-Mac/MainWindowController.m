@@ -57,12 +57,6 @@
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[webView setFrameLoadDelegate:nil];
-	[webView close];
-	
-	htmlController.delegate = nil;
-	[htmlController release];
-	
 	[lists release];
 	[subscriptions release];
 	
@@ -685,6 +679,19 @@
 	[htmlController loadTimeline:htmlController.timeline];
 	
 }	
+
+- (BOOL)windowShouldClose:(id)sender {
+	[webView setFrameLoadDelegate:nil];
+	[webView close];
+	self.webView = nil;
+	
+	htmlController.useRewriteHTMLTimer = NO;
+	[htmlController invalidateRewriteHTMLTimer];
+	htmlController.delegate = nil;
+	self.htmlController = nil;
+	
+	return YES;
+}
 
 #pragma mark Alert
 

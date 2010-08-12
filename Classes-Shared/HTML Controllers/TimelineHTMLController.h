@@ -104,6 +104,7 @@
 // Web view updating
 - (void)loadWebView;
 - (void)rewriteTweetArea;
+- (void)invalidateRewriteHTMLTimer;
 - (void)scheduleRewriteHTMLTimer;
 
 // Web actions

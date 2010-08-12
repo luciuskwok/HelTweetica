@@ -34,7 +34,7 @@ const int kDefaultMaxTweetsShown = 400;
 #else
 const int kDefaultMaxTweetsShown = 160;
 #endif
-const int kRewriteHTMLTimerInterval = 60;
+const NSTimeInterval kRewriteHTMLTimerInterval = 60.0;
 static NSString *kTimelineIdentifier = @"Timeline";
 static NSString *kMentionsIdentifier = @"Mentions";
 static NSString *kDirectMessagesIdentifier = @"Direct";
@@ -374,6 +374,11 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if (useRewriteHTMLTimer) {
 		[self scheduleRewriteHTMLTimer];
 	}
+}
+
+- (void)invalidateRewriteHTMLTimer {
+	[rewriteHTMLTimer invalidate];
+	rewriteHTMLTimer = nil;
 }
 
 - (void)scheduleRewriteHTMLTimer {

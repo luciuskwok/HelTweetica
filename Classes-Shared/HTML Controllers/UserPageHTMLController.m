@@ -30,10 +30,6 @@
 	self = [super init];
 	if (self) {
 		followsBack = @"";
-
-		// Timeline update notifications
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
 	}
 	return self;
 }
