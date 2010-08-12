@@ -169,7 +169,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)refresh {
 	isLoading = YES;
 	[self showLoadingStatus];
-	//[self setLoadingSpinnerVisibility:YES];
 	if (timeline == account.homeTimeline || timeline == account.mentions || timeline == account.directMessages) {
 		self.messages = [timeline messagesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];

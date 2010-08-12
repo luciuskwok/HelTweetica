@@ -342,7 +342,7 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 
 - (void)fireRefreshTimer:(NSTimer *)timer {
 	if (refreshCount <= 0) {
-		// Refresh all only once every four times.
+		// Refresh all only once every three times.
 		for (TwitterAccount *account in accounts) {
 			[account reloadNewer];
 		}

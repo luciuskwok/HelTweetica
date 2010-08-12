@@ -42,6 +42,9 @@
 		controller.delegate = self;
 		controller.useRewriteHTMLTimer = YES;
 		self.htmlController = controller;
+
+		if (aScreenName == nil) 
+			controller.isLoading = NO;
 	}
 	return self;
 }

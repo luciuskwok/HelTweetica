@@ -617,6 +617,10 @@
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
 	//[appDelegate decrementNetworkActionCount];
 	htmlController.webViewHasValidHTML = YES;
+	
+	if (htmlController.isLoading == NO) {
+		[htmlController hideTwitterStatus];
+	}
 }
 
 #pragma mark TimelineHTMLController delegate
