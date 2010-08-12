@@ -109,9 +109,9 @@
 	if ([timelineSegmentedControl segmentCount] != images.count) return;
 	NSString *imageName;
 	BOOL unread[3];
-	unread[0] = htmlController.account.homeTimeline.hasUnreadMessages;
-	unread[1] = htmlController.account.mentions.hasUnreadMessages;
-	unread[2] = htmlController.account.directMessages.hasUnreadMessages;
+	unread[0] = [htmlController.account hasUnreadInHomeTimeline];
+	unread[1] = [htmlController.account hasUnreadInMentions];
+	unread[2] = [htmlController.account hasUnreadInDirectMessages];
 	
 	for (int index = 0; index < images.count; index++) {
 		imageName = [images objectAtIndex:index];

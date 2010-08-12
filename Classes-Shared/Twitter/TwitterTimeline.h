@@ -28,21 +28,22 @@
 	TwitterAccount *account;
 	NSString *databaseTableName;
 	BOOL noOlderMessages;
-	BOOL hasUnreadMessages;
 	TwitterLoadTimelineAction *loadAction;
 	BOOL replaceExistingStatusUpdates;
 	
 	NSNumber *secondNewestIdentifier;
+	NSNumber *latestReadIdentifier;
 }
 @property (nonatomic, assign) Twitter *twitter;
 @property (nonatomic, assign) TwitterAccount *account;
 @property (nonatomic, copy) NSString *databaseTableName;
 @property (assign) BOOL noOlderMessages;
-@property (assign) BOOL hasUnreadMessages;
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
 @property (assign) BOOL replaceExistingStatusUpdates;
 
 @property (nonatomic, retain) NSNumber *secondNewestIdentifier;
+@property (nonatomic, retain) NSNumber *latestReadIdentifier;
+
 
 // Database
 - (void)setTwitter:(Twitter *)aTwitter tableName:(NSString*)tableName temp:(BOOL)temp;
@@ -55,6 +56,7 @@
 - (BOOL)containsIdentifier:(NSNumber *)identifier;
 - (NSArray *)messagesWithLimit:(int)limit;
 - (NSArray *)messagesSinceDate:(NSDate*)date;
+- (NSNumber *)newestStatusIdentifier;
 
 // Gap
 - (BOOL)hasGapAfter:(NSNumber *)identifier;

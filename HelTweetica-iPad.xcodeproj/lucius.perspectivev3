@@ -269,21 +269,19 @@
 								<string>E05649E611FBD2D8000A9753</string>
 								<string>E05649CF11FBCF0C000A9753</string>
 								<string>E0564A4911FBD2E7000A9753</string>
-								<string>29B97317FDCFA39411CA2CEA</string>
-								<string>E0564AB211FBD314000A9753</string>
 								<string>29B97315FDCFA39411CA2CEA</string>
 								<string>1C37FBAC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>76</integer>
-									<integer>75</integer>
+									<integer>78</integer>
+									<integer>77</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 873}, {294, 744}}</string>
+							<string>{{0, 837}, {294, 744}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -311,14 +309,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>E05648CD11FBCB3D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>style.css</string>
+								<string>iPad-Info.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +322,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E05648CE11FBCB3D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>style.css</string>
+										<string>iPad-Info.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0760E8C1213E2C500B025A1</string>
+										<string>E0760E931213E33E00B025A1</string>
 										<key>history</key>
 										<array>
 											<string>E0564B0011FBD458000A9753</string>
@@ -361,7 +357,6 @@
 											<string>E079EED21207D9AE0083B77B</string>
 											<string>E023D9861207F3650046B37F</string>
 											<string>E01AF398120A027B00B4250F</string>
-											<string>E01AF39E120A06D700B4250F</string>
 											<string>E0651C59120A677C00F9D256</string>
 											<string>E0651E02120A9C3500F9D256</string>
 											<string>E0651E43120AA1DC00F9D256</string>
@@ -372,10 +367,8 @@
 											<string>E02D16C112114DEE00EA0435</string>
 											<string>E008C4B81211EB07004B0DB2</string>
 											<string>E008C581121203FF004B0DB2</string>
-											<string>E0F056631212084F00E51EB9</string>
 											<string>E0F056651212084F00E51EB9</string>
 											<string>E0F056661212084F00E51EB9</string>
-											<string>E0F056681212084F00E51EB9</string>
 											<string>E0F0589B121210E300E51EB9</string>
 											<string>E0F058C11212133300E51EB9</string>
 											<string>E0F058C31212133300E51EB9</string>
@@ -384,36 +377,22 @@
 											<string>E0F0590612121EF800E51EB9</string>
 											<string>E0F0590712121EF800E51EB9</string>
 											<string>E0F0590812121EF800E51EB9</string>
-											<string>E0F0590912121EF800E51EB9</string>
 											<string>E0F0590C12121EF800E51EB9</string>
-											<string>E0F0591E1212207000E51EB9</string>
 											<string>E0F0593C1212246800E51EB9</string>
-											<string>E0F0595A12122BAC00E51EB9</string>
 											<string>E0F0595B12122BAC00E51EB9</string>
 											<string>E0F059EE12124B2700E51EB9</string>
 											<string>E0F059F112124B2700E51EB9</string>
 											<string>E0F059F212124B2700E51EB9</string>
 											<string>E06CF8D812124C8F00B52FB2</string>
-											<string>E06CF8D912124C8F00B52FB2</string>
-											<string>E06CFB38121265D000B52FB2</string>
 											<string>E06CFB39121265D000B52FB2</string>
 											<string>E06CFB3A121265D000B52FB2</string>
-											<string>E06CFB3B121265D000B52FB2</string>
 											<string>E06CFB3C121265D000B52FB2</string>
 											<string>E06CFB3D121265D000B52FB2</string>
-											<string>E06CFC4D121281EF00B52FB2</string>
 											<string>E06CFD1B1212951600B52FB2</string>
 											<string>E06CFD411212979E00B52FB2</string>
-											<string>E0760C0F1213848E00B025A1</string>
-											<string>E0760C1F1213859B00B025A1</string>
-											<string>E0760D621213B4B900B025A1</string>
-											<string>E0760D631213B4B900B025A1</string>
-											<string>E0760DB11213D0F000B025A1</string>
-											<string>E0760E1B1213D88900B025A1</string>
-											<string>E0760E7F1213E26400B025A1</string>
 											<string>E0760E801213E26400B025A1</string>
-											<string>E0760E8A1213E2C500B025A1</string>
-											<string>E0760E8B1213E2C500B025A1</string>
+											<string>E0760E911213E33E00B025A1</string>
+											<string>E0760E921213E33E00B025A1</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -730,7 +709,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E0760E8D1213E2C500B025A1</string>
 		<string>E0760BB11213339000B025A1</string>
 		<string>E0760BB21213339000B025A1</string>
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-iPad.xcodeproj</string>

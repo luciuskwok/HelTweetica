@@ -110,6 +110,12 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	// Call this after selecting a different timeline.
 	suppressNetworkErrorAlerts = NO;
 	self.messages = [timeline messagesWithLimit:maxTweetsShown];
+
+	// Unread messages.
+	if (messages.count > 0) {
+		timeline.latestReadIdentifier = [timeline newestStatusIdentifier];
+	}
+	
 	[self rewriteTweetArea];
 	
 	// Notify delegate that a different timeline was selected.
@@ -120,21 +126,18 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)selectHomeTimeline {
 	self.customTabName = kTimelineIdentifier;
 	self.timeline = account.homeTimeline;
-	account.homeTimeline.hasUnreadMessages = NO;
 	[self updateForNewTimeline];
 }
 
 - (void)selectMentionsTimeline {
 	self.customTabName = kMentionsIdentifier;
 	self.timeline = account.mentions;
-	account.mentions.hasUnreadMessages = NO;
 	[self updateForNewTimeline];
 }
 
 - (void)selectDirectMessageTimeline {
 	self.customTabName = kDirectMessagesIdentifier;
 	self.timeline = account.directMessages;
-	account.directMessages.hasUnreadMessages = NO;
 	[self updateForNewTimeline];
 }
 
@@ -201,6 +204,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 			[timeline reloadNewer];
 		}
 	}
+	[self rewriteTweetArea];
 }
 
 - (void)loadOlderWithMaxIdentifier:(NSNumber*)maxIdentifier {
@@ -709,7 +713,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	TwitterTimeline *aTimeline = [notification object];
 	if (aTimeline == self.timeline) {
 		isLoading = NO;
-		aTimeline.hasUnreadMessages = NO;
 		[self hideTwitterStatus];
 		self.messages = [timeline messagesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];

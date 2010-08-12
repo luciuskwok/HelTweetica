@@ -31,6 +31,7 @@
 @synthesize identifier, screenName, xAuthToken, xAuthSecret;
 @synthesize homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
+
 - (id)init {
 	// Initialize a blank account
 	self = [super init];
@@ -65,6 +66,10 @@
 		self.screenName = [decoder decodeObjectForKey:@"screenName"];
 		self.xAuthToken = [decoder decodeObjectForKey:@"xAuthToken"];
 		self.xAuthSecret = [decoder decodeObjectForKey:@"xAuthSecret"];
+		
+		self.homeTimeline.latestReadIdentifier = [decoder decodeObjectForKey:@"homeTimeline.latestReadIdentifier"];
+		self.mentions.latestReadIdentifier = [decoder decodeObjectForKey:@"mentions.latestReadIdentifier"];
+		self.directMessages.latestReadIdentifier = [decoder decodeObjectForKey:@"directMessages.latestReadIdentifier"];
 	}
 	return self;
 }
@@ -74,6 +79,10 @@
 	[encoder encodeObject: screenName forKey:@"screenName"];
 	[encoder encodeObject: xAuthToken forKey:@"xAuthToken"];
 	[encoder encodeObject: xAuthSecret forKey:@"xAuthSecret"];
+
+	[encoder encodeObject: homeTimeline.latestReadIdentifier forKey:@"homeTimeline.latestReadIdentifier"];
+	[encoder encodeObject: mentions.latestReadIdentifier forKey:@"mentions.latestReadIdentifier"];
+	[encoder encodeObject: directMessages.latestReadIdentifier forKey:@"directMessages.latestReadIdentifier"];
 }
 
 - (void) dealloc {
@@ -235,6 +244,28 @@ static NSString *kKeychainServiceName = @"com.felttip.HelTweetica";
 	[directMessages deleteCaches];
 	[favorites deleteCaches];
 	[self removePassword];
+}
+
+#pragma mark Unread messages
+
+- (BOOL)messageIdentifier:(NSNumber *)message isFirstObjectInTimeline:(TwitterTimeline *)timeline {
+	if (message == nil) return NO;
+	NSNumber *newest = [timeline newestStatusIdentifier];
+	if (newest == nil) return NO;
+	
+	return [message isEqualToNumber:newest];
+}
+
+- (BOOL)hasUnreadInHomeTimeline {
+	return [self messageIdentifier:homeTimeline.latestReadIdentifier isFirstObjectInTimeline:homeTimeline] == NO;
+}
+			
+- (BOOL)hasUnreadInMentions {
+	return [self messageIdentifier:mentions.latestReadIdentifier isFirstObjectInTimeline:mentions] == NO;
+}
+
+- (BOOL)hasUnreadInDirectMessages {
+	return [self messageIdentifier:directMessages.latestReadIdentifier isFirstObjectInTimeline:directMessages] == NO;
 }
 
 @end

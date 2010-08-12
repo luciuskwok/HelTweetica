@@ -34,8 +34,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 
 @implementation TwitterTimeline
-@synthesize twitter, account, databaseTableName, noOlderMessages, hasUnreadMessages, loadAction, replaceExistingStatusUpdates;
-@synthesize secondNewestIdentifier;
+@synthesize twitter, account, databaseTableName, noOlderMessages, loadAction, replaceExistingStatusUpdates;
+@synthesize secondNewestIdentifier, latestReadIdentifier;
 
 
 - (id)init {
@@ -50,6 +50,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	[databaseTableName release];
 	[loadAction release];
 	[secondNewestIdentifier release];
+	[latestReadIdentifier release];
 	[super dealloc];
 }
 
@@ -256,8 +257,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	[twitter addStatusUpdates:action.retweetedMessages replaceExisting:replaceExistingStatusUpdates];
 	[twitter addOrReplaceUsers:action.users];
 	
-	// Ignore gaps for own RTs.
-	BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO);
+	// Ignore gaps for own RTs or when the number of loaded messages is less than half the load count.
+	BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO) && (action.loadedMessages.count < [self defaultLoadCount] / 2);
 	[self addMessages:action.loadedMessages updateGap:updateGap];
 	
 	[account addFavorites:action.favoriteMessages];
@@ -352,14 +353,6 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (void)didReloadNewer:(TwitterLoadTimelineAction *)action {
-	// Set the unread flag to YES if there were any new messages not already in cache.
-	if (action.loadedMessages.count >= 2) {
-		hasUnreadMessages = YES;
-	} else if (action.loadedMessages.count == 1) {
-		NSNumber *messageIdentifier = [[action.loadedMessages lastObject] identifier];
-		if ([self containsIdentifier:messageIdentifier] == NO)
-			hasUnreadMessages = YES;
-	}
 	
 	// Cache the second newest message identifier for next reloadNewer
 	if ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO && action.loadedMessages.count >= 2) {

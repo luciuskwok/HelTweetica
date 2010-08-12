@@ -50,6 +50,7 @@
 @property (nonatomic, retain) NSMutableArray *listSubscriptions;
 @property (nonatomic, retain) NSMutableArray *savedSearches;
 
+
 - (void)setTwitter:(Twitter *)twttr;
 - (void)reloadNewer;
 - (void)synchronizeExisting:(NSMutableArray*)existingLists withNew:(NSArray*)newLists;
@@ -59,5 +60,9 @@
 - (void)deleteStatusUpdate:(NSNumber*)anIdentifier;
 
 - (void)deleteCaches;
+
+- (BOOL)hasUnreadInHomeTimeline;
+- (BOOL)hasUnreadInMentions;
+- (BOOL)hasUnreadInDirectMessages;
 
 @end

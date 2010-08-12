@@ -269,8 +269,6 @@ enum {
 	//NSLog (@"didLoadDirectMessages: %d messages for %@/%@", action.loadedMessages.count, account.screenName, action.twitterMethod);
 
 	if (action.loadedMessages.count > 0) {
-		hasUnreadMessages = YES;
-		
 		// Latest message
 		BOOL sent = [action.twitterMethod hasSuffix:@"sent"];
 		TwitterDirectMessage *newestMessage = [action.loadedMessages objectAtIndex:0];
