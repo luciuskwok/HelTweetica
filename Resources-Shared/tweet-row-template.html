@@ -6,7 +6,6 @@
 	
 	<div class='tweet_content'>
 		<span class='screen_name'>
-			{retweetIcon}
 			<a href='action:user/{screenName}'>{screenName}</a>
 			{lockIcon}
 		</span>
@@ -18,19 +17,18 @@
 		{content}
 		
 		<span class='time'>
-			<nobr><a href='action:conversation/{messageIdentifier}'>{createdDate}</a></nobr>
+			<a href='action:conversation/{messageIdentifier}'>{createdDate}</a>
 			{Block:via} 
 				via {via}
 			{/Block:via} 
+			{geotagIcon}
 			{Block:retweetedBy}
-				retweeted by <a href='action:user/{retweetedBy}'>{retweetedBy}</a>
+				<nobr><img class='retweet_img' src='retweet.png'> by <a href='action:user/{retweetedBy}'>{retweetedBy}</a></nobr>
 			{/Block:retweetedBy}
 			{Block:inReplyToStatusIdentifier} 
 				<a href='action:conversation/{messageIdentifier}'><img class='thread_img' src='thread.png'></a>
 			{/Block:inReplyToStatusIdentifier} 
 		</span>
-		
-		{geotagIcon}
 		
 	</div><!-- tweet_content -->
 	

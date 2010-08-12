@@ -5,7 +5,7 @@ body {
 	padding: 0px; 
 	font-size: 18px; 
 	font-family: Helvetica, Arial, sans-serif; 
-	line-height: 20px; 
+	line-height: 1.2em; 
 	background-color: #888; 
 	color: #333; 
 	width: auto;
@@ -15,20 +15,26 @@ a {color: #448; text-decoration: none; }
 p { margin: 0px 0px 20px 0px; }
 
 .twitter_status {
-	position: fixed;
-	left: -7px;
-	bottom: -7px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	margin: 4px;
 	font-size: 16px; 
-	line-height: 20px; 
+	line-height: auto; 
 	color: #333;
-	padding: 4px 10px 9px 16px;
-	border: 1px solid #666;
+	padding: 5px 10px 5px 10px;
+	border: 1px solid #333;
 	opacity: 0.85;
 	background-color: #fff;
-	-webkit-border-radius: 7px; 
-	-webkit-box-shadow: 0px 2px 8px #666; 
+	-webkit-border-radius: 6px; 
+	-webkit-box-shadow: 0px 1px 4px #333; 
+}
+.twitter_status_with_toolbar {
+	top: 44px;
 }
 .twitter_status img {
+	width: 20px;
+	height: 20px;
 	margin: 0px 0px -4px 0px;
 }
 
@@ -143,7 +149,6 @@ p { margin: 0px 0px 20px 0px; }
 .time { 
 	color: #888; 
 	font-size: 13px;
-	line-height: 15px; 
 	font-style: italic; 
 }
 .time a { color: #88A; }
@@ -152,6 +157,11 @@ p { margin: 0px 0px 20px 0px; }
 	width: 16px;
 	height: 16px;
 	margin: -1px 2px -4px 2px;
+}
+.retweet_img {
+	width: 18px;
+	height: 14px;
+	margin: -1px 0px -3px 0px;
 }
 
 .load_older { 
