@@ -28,6 +28,7 @@
 	TwitterAccount *account;
 	NSString *databaseTableName;
 	BOOL noOlderMessages;
+	BOOL hasUnreadMessages;
 	TwitterLoadTimelineAction *loadAction;
 	BOOL replaceExistingStatusUpdates;
 	
@@ -37,6 +38,7 @@
 @property (nonatomic, assign) TwitterAccount *account;
 @property (nonatomic, copy) NSString *databaseTableName;
 @property (assign) BOOL noOlderMessages;
+@property (assign) BOOL hasUnreadMessages;
 @property (nonatomic, retain) TwitterLoadTimelineAction *loadAction;
 @property (assign) BOOL replaceExistingStatusUpdates;
 

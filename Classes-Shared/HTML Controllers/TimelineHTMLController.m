@@ -120,18 +120,21 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)selectHomeTimeline {
 	self.customTabName = kTimelineIdentifier;
 	self.timeline = account.homeTimeline;
+	account.homeTimeline.hasUnreadMessages = NO;
 	[self updateForNewTimeline];
 }
 
 - (void)selectMentionsTimeline {
 	self.customTabName = kMentionsIdentifier;
 	self.timeline = account.mentions;
+	account.mentions.hasUnreadMessages = NO;
 	[self updateForNewTimeline];
 }
 
 - (void)selectDirectMessageTimeline {
 	self.customTabName = kDirectMessagesIdentifier;
 	self.timeline = account.directMessages;
+	account.directMessages.hasUnreadMessages = NO;
 	[self updateForNewTimeline];
 }
 
@@ -706,6 +709,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	TwitterTimeline *aTimeline = [notification object];
 	if (aTimeline == self.timeline) {
 		isLoading = NO;
+		aTimeline.hasUnreadMessages = NO;
 		[self hideTwitterStatus];
 		self.messages = [timeline messagesWithLimit: maxTweetsShown];
 		[self rewriteTweetArea];

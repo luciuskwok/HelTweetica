@@ -50,6 +50,7 @@
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(savedSearchesDidChange:) name:@"savedSearchesDidChange" object:nil];
 		[nc addObserver:self selector:@selector(accountsDidChange:) name:@"accountsDidChange" object:nil];
+		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
 	}
 	return self;
 }
@@ -101,14 +102,30 @@
 #pragma mark Timelines
 
 - (void)updateTimelineSegmentedControl {
+	if (timelineSegmentedControl == nil) 
+		return;
+	
 	NSArray *images = [NSArray arrayWithObjects:@"mac-toolbar-home", @"mac-toolbar-mentions", @"mac-toolbar-direct", @"mac-toolbar-star", nil];
 	if ([timelineSegmentedControl segmentCount] != images.count) return;
 	NSString *imageName;
+	BOOL unread[3];
+	unread[0] = htmlController.account.homeTimeline.hasUnreadMessages;
+	unread[1] = htmlController.account.mentions.hasUnreadMessages;
+	unread[2] = htmlController.account.directMessages.hasUnreadMessages;
 	
 	for (int index = 0; index < images.count; index++) {
 		imageName = [images objectAtIndex:index];
-		if ([timelineSegmentedControl isSelectedForSegment:index])
+		if ([timelineSegmentedControl isSelectedForSegment:index]) {
+			// Use white version for selected segments.
 			imageName = [imageName stringByAppendingString:@"-alt"];
+		} else {
+			// Use badged version for unread items.
+			if (index <= 2) {
+				if (unread[index]) {
+					imageName = [imageName stringByAppendingString:@"-badged"];
+				}
+			}
+		}
 		imageName = [imageName stringByAppendingString:@".png"];
 		[timelineSegmentedControl setImage:[NSImage imageNamed:imageName] forSegment:index];
 	}
@@ -173,6 +190,13 @@
 	
 	// If showing a list or favorites or search or something that isn't automatically refreshed by the Twitter class, refresh just that timeline.
 	[htmlController refresh];
+}
+
+- (void)timelineDidFinishLoading:(NSNotification *)notification {
+	TwitterTimeline *timeline = [notification object];
+	if (timeline == htmlController.account.homeTimeline || timeline == htmlController.account.mentions || timeline == htmlController.account.directMessages) {
+		[self updateTimelineSegmentedControl];
+	}
 }
 
 #pragma mark Users

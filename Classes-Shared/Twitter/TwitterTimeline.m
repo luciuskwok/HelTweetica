@@ -34,7 +34,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 
 
 @implementation TwitterTimeline
-@synthesize twitter, account, databaseTableName, noOlderMessages, loadAction, replaceExistingStatusUpdates;
+@synthesize twitter, account, databaseTableName, noOlderMessages, hasUnreadMessages, loadAction, replaceExistingStatusUpdates;
 @synthesize secondNewestIdentifier;
 
 
@@ -310,7 +310,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		NSLog(@"TwitterTimeline is missing its Twitter cache connection.");
 	
 	// Get first two status updates that are not retweets.
-	NSString *query = [NSString stringWithFormat:@"Select StatusUpdates.identifier from StatusUpdates inner join %@ on %@.identifier=StatusUpdates.identifier where StatusUpdates.retweetedStatusIdentifier NotNull order by StatusUpdates.CreatedDate desc limit 2", databaseTableName, databaseTableName];
+	NSString *query = [NSString stringWithFormat:@"Select StatusUpdates.identifier from StatusUpdates inner join %@ on %@.identifier=StatusUpdates.identifier where StatusUpdates.retweetedStatusIdentifier is Null order by StatusUpdates.CreatedDate desc limit 2", databaseTableName, databaseTableName];
 	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	
 	// Skip first row.
@@ -342,7 +342,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	if (secondNewestIdentifier)
 		[loadAction.parameters setObject:secondNewestIdentifier forKey:@"since_id"];
 		
-	// Set the default load count. (Note that searches use rpp instead of count, so this will have no effect on search actions.) 
+	// Set the default load count.
 	[loadAction setCount:[self defaultLoadCount]];
 	
 	// Prepare action and start it. 
@@ -352,6 +352,14 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 }
 
 - (void)didReloadNewer:(TwitterLoadTimelineAction *)action {
+	// Set the unread flag to YES if there were any new messages not already in cache.
+	if (action.loadedMessages.count >= 2) {
+		hasUnreadMessages = YES;
+	} else if (action.loadedMessages.count == 1) {
+		NSNumber *messageIdentifier = [[action.loadedMessages lastObject] identifier];
+		if ([self containsIdentifier:messageIdentifier] == NO)
+			hasUnreadMessages = YES;
+	}
 	
 	// Cache the second newest message identifier for next reloadNewer
 	if ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO && action.loadedMessages.count >= 2) {
