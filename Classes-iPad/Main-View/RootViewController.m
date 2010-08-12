@@ -35,15 +35,17 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[accountsButton release];
 	
 	[currentPopover release];
 	[currentActionSheet release];
-    [super dealloc];
+	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+	[super didReceiveMemoryWarning];
 }
 
 - (void)viewDidUnload {
@@ -62,6 +64,10 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 		if (twitter.accounts.count > 0) 
 			timelineHTMLController.account = [twitter.accounts objectAtIndex: 0];
 	}
+	
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
+
 }
 
 - (AccountsViewController*) showAccounts:(id)sender {
@@ -73,7 +79,8 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 	return accountsController;
 }
 
-#pragma mark UIWebView delegate
+
+#pragma mark Delegates
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 	NSURL *url = [request URL];
@@ -92,8 +99,6 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 	return [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
 }
 
-#pragma mark AccountsViewController delegate
-
 - (void) didSelectAccount:(TwitterAccount*)anAccount {
 	timelineHTMLController.account = anAccount;
 	[self closeAllPopovers];
@@ -110,7 +115,14 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 	[defaults setObject: timelineHTMLController.account.screenName forKey: @"currentAccount"];
 }
 
-#pragma mark -
+- (void)timelineDidFinishLoading:(NSNotification *)notification {
+	TwitterTimeline *timeline = [notification object];
+	if (timeline == timelineHTMLController.account.homeTimeline || timeline == timelineHTMLController.account.mentions || timeline == timelineHTMLController.account.directMessages) {
+		[timelineHTMLController rewriteTabArea];
+	}
+}
+
+
 #pragma mark View lifecycle
 
 - (void) viewDidLoad {
@@ -130,7 +142,7 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 	}
 }
 
-#pragma mark -
+
 #pragma mark IBActions
 
 - (IBAction) login: (id) sender {

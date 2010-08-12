@@ -103,6 +103,7 @@
 
 // Web view updating
 - (void)loadWebView;
+- (void)rewriteTabArea;
 - (void)rewriteTweetArea;
 - (void)invalidateRewriteHTMLTimer;
 - (void)scheduleRewriteHTMLTimer;

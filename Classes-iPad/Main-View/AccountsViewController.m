@@ -132,6 +132,9 @@
 	if ((0 <= row) && (row < accounts.count)) {
 		TwitterAccount *account = [accounts objectAtIndex: indexPath.row];
 
+		// Profile image
+		cell.imageView.image = account.profileImage;
+		
 		// Screen name
 		BOOL loggedIn = (account.xAuthToken != nil);
 		cell.textLabel.text = account.screenName;

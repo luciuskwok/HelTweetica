@@ -266,21 +266,22 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>E05649CC11FBCEE6000A9753</string>
+								<string>E05649E611FBD2D8000A9753</string>
 								<string>E05649CF11FBCF0C000A9753</string>
 								<string>E0564A3B11FBD2E7000A9753</string>
-								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>1C37FBAC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>32</integer>
-									<integer>31</integer>
+									<integer>7</integer>
+									<integer>4</integer>
+									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {292, 680}}</string>
+							<string>{{0, 3}, {292, 680}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -297,7 +298,7 @@
 							<real>292</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>166 207 1342 739 0 0 1680 1028 </string>
+						<string>11 187 1342 739 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -315,7 +316,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E05648CD11FBCB3D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>style.css</string>
+								<string>AccountsViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -323,11 +324,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E05648CE11FBCB3D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>style.css</string>
+										<string>AccountsViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E05A12001214A775004D7259</string>
+										<string>E05A123D1214B182004D7259</string>
 										<key>history</key>
 										<array>
 											<string>E0564B0011FBD458000A9753</string>
@@ -388,14 +389,21 @@
 											<string>E06CFB3A121265D000B52FB2</string>
 											<string>E06CFB3C121265D000B52FB2</string>
 											<string>E06CFB3D121265D000B52FB2</string>
-											<string>E06CFD1B1212951600B52FB2</string>
-											<string>E06CFD411212979E00B52FB2</string>
 											<string>E05A1140121491DD004D7259</string>
 											<string>E05A11641214954F004D7259</string>
 											<string>E05A11FB1214A74B004D7259</string>
-											<string>E05A11FC1214A74B004D7259</string>
-											<string>E05A11FD1214A74B004D7259</string>
-											<string>E05A11FE1214A74B004D7259</string>
+											<string>E05A12211214AFE2004D7259</string>
+											<string>E05A12221214AFE2004D7259</string>
+											<string>E05A12231214AFE2004D7259</string>
+											<string>E05A12241214AFE2004D7259</string>
+											<string>E05A12251214AFE2004D7259</string>
+											<string>E05A12261214AFE2004D7259</string>
+											<string>E05A12271214AFE2004D7259</string>
+											<string>E05A12281214AFE2004D7259</string>
+											<string>E05A12291214AFE2004D7259</string>
+											<string>E05A122A1214AFE2004D7259</string>
+											<string>E05A122B1214AFE2004D7259</string>
+											<string>E05A122C1214AFE2004D7259</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -411,7 +419,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1028, 693}}</string>
 								<key>RubberWindowFrame</key>
-								<string>166 207 1342 739 0 0 1680 1028 </string>
+								<string>11 187 1342 739 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -435,8 +443,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {1028, -27}}</string>
-										<key>RubberWindowFrame</key>
-										<string>166 207 1342 739 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -452,7 +458,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {970, 241}}</string>
+										<string>{{10, 27}, {1028, -27}}</string>
+										<key>RubberWindowFrame</key>
+										<string>11 187 1342 739 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXProjectFindModule</string>
@@ -717,7 +725,7 @@
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-iPad.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>166 207 1342 739 0 0 1680 1028 </string>
+	<string>11 187 1342 739 0 0 1680 1028 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

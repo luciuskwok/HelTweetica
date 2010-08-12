@@ -236,6 +236,9 @@
 			[item setState:NSOnState];
 		}
 		
+		// Profile image
+		[item setImage:account.profileImage];
+		
 		[usersPopUp.menu addItem:item];
 	}
 }
