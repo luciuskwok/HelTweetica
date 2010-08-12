@@ -162,7 +162,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (void)hideTwitterStatus {
 	[webView setDocumentElement:@"twitter_status" visibility:NO];
-	[webView setDocumentElement:@"twitter_status" innerHTML:@"Twitter is alright."];
+	[webView setDocumentElement:@"twitter_status" innerHTML:@"Twitter is all right."];
 	//[webView setDocumentElement:@"twitter_status" height:0];
 }
 

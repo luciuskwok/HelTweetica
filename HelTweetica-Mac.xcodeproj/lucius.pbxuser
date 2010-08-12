@@ -1,7 +1,7 @@
 // !$*UTF8*$!
 {
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = E0564B9B11FBD59C000A9753 /* Mac */;
 		activeTarget = 8D1107260486CEB800E47090 /* Mac */;
 		addToTargets = (
@@ -436,6 +436,12 @@
 			E0760D7C1213B5FA00B025A1 /* PBXTextBookmark */ = E0760D7C1213B5FA00B025A1 /* PBXTextBookmark */;
 			E0760D7D1213B5FA00B025A1 /* PBXTextBookmark */ = E0760D7D1213B5FA00B025A1 /* PBXTextBookmark */;
 			E0760D7E1213B5FA00B025A1 /* PBXTextBookmark */ = E0760D7E1213B5FA00B025A1 /* PBXTextBookmark */;
+			E0760D8E1213BBDA00B025A1 /* PBXTextBookmark */ = E0760D8E1213BBDA00B025A1 /* PBXTextBookmark */;
+			E0760D8F1213BBDA00B025A1 /* PlistBookmark */ = E0760D8F1213BBDA00B025A1 /* PlistBookmark */;
+			E0760D901213BBDA00B025A1 /* PlistBookmark */ = E0760D901213BBDA00B025A1 /* PlistBookmark */;
+			E0760D911213C0FD00B025A1 /* PlistBookmark */ = E0760D911213C0FD00B025A1 /* PlistBookmark */;
+			E0760D921213C0FD00B025A1 /* PBXTextBookmark */ = E0760D921213C0FD00B025A1 /* PBXTextBookmark */;
+			E0760D931213C0FD00B025A1 /* PBXTextBookmark */ = E0760D931213C0FD00B025A1 /* PBXTextBookmark */;
 			E079EDA71207955B0083B77B = E079EDA71207955B0083B77B /* PBXTextBookmark */;
 			E079EDAC1207955B0083B77B = E079EDAC1207955B0083B77B /* PBXTextBookmark */;
 			E079EDAE1207955B0083B77B = E079EDAE1207955B0083B77B /* PBXTextBookmark */;
@@ -520,7 +526,7 @@
 		ignoreCount = 0;
 		lineNumber = 140;
 		location = HelTweetica;
-		modificationTime = 303281595.264715;
+		modificationTime = 303281663.252968;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -967,9 +973,9 @@
 	};
 	E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {999, 13049}}";
-			sepNavSelRange = "{25900, 0}";
-			sepNavVisRange = "{25307, 1189}";
+			sepNavIntBoundsRect = "{{0, 0}, {795, 13698}}";
+			sepNavSelRange = "{6087, 0}";
+			sepNavVisRange = "{5445, 981}";
 		};
 	};
 	E0564C0111FBD6A0000A9753 /* UserPageHTMLController.h */ = {
@@ -1321,7 +1327,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {999, 4716}}";
 			sepNavSelRange = "{2248, 27}";
-			sepNavVisRange = "{1795, 559}";
+			sepNavVisRange = "{1797, 587}";
 		};
 	};
 	E0564C7B11FBD6AC000A9753 /* basic-template.html */ = {
@@ -2156,7 +2162,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 344";
 		rLen = 19;
-		rLoc = 12423;
+		rLoc = 12425;
 		rType = 0;
 		vrLen = 1414;
 		vrLoc = 11821;
@@ -2236,7 +2242,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 377";
 		rLen = 32;
-		rLoc = 13577;
+		rLoc = 13579;
 		rType = 0;
 		vrLen = 843;
 		vrLoc = 12806;
@@ -2256,7 +2262,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 385";
 		rLen = 45;
-		rLoc = 13846;
+		rLoc = 13848;
 		rType = 0;
 		vrLen = 1029;
 		vrLoc = 12957;
@@ -2266,7 +2272,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 385";
 		rLen = 45;
-		rLoc = 13846;
+		rLoc = 13848;
 		rType = 0;
 		vrLen = 1029;
 		vrLoc = 12957;
@@ -2286,7 +2292,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 385";
 		rLen = 45;
-		rLoc = 13846;
+		rLoc = 13848;
 		rType = 0;
 		vrLen = 1096;
 		vrLoc = 12711;
@@ -2296,7 +2302,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 385";
 		rLen = 45;
-		rLoc = 13846;
+		rLoc = 13848;
 		rType = 0;
 		vrLen = 1096;
 		vrLoc = 12711;
@@ -2306,7 +2312,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 385";
 		rLen = 45;
-		rLoc = 13846;
+		rLoc = 13848;
 		rType = 0;
 		vrLen = 1182;
 		vrLoc = 12425;
@@ -2316,7 +2322,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 385";
 		rLen = 45;
-		rLoc = 13846;
+		rLoc = 13848;
 		rType = 0;
 		vrLen = 1208;
 		vrLoc = 12399;
@@ -2326,7 +2332,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 385";
 		rLen = 45;
-		rLoc = 13846;
+		rLoc = 13848;
 		rType = 0;
 		vrLen = 1066;
 		vrLoc = 13178;
@@ -2406,7 +2412,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 164";
 		rLen = 0;
-		rLoc = 6061;
+		rLoc = 6063;
 		rType = 0;
 		vrLen = 949;
 		vrLoc = 5024;
@@ -2593,7 +2599,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 169";
 		rLen = 15;
-		rLoc = 6086;
+		rLoc = 6088;
 		rType = 0;
 		vrLen = 1123;
 		vrLoc = 5769;
@@ -2803,7 +2809,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 169";
 		rLen = 15;
-		rLoc = 6086;
+		rLoc = 6088;
 		rType = 0;
 		vrLen = 1123;
 		vrLoc = 5769;
@@ -2813,7 +2819,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 172";
 		rLen = 0;
-		rLoc = 6149;
+		rLoc = 6151;
 		rType = 0;
 		vrLen = 1106;
 		vrLoc = 5769;
@@ -2823,7 +2829,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 172";
 		rLen = 0;
-		rLoc = 6149;
+		rLoc = 6151;
 		rType = 0;
 		vrLen = 1080;
 		vrLoc = 5769;
@@ -3017,7 +3023,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 700";
 		rLen = 63;
-		rLoc = 25930;
+		rLoc = 25932;
 		rType = 0;
 		vrLen = 1267;
 		vrLoc = 24962;
@@ -3087,7 +3093,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 700";
 		rLen = 63;
-		rLoc = 25930;
+		rLoc = 25932;
 		rType = 0;
 		vrLen = 1338;
 		vrLoc = 24890;
@@ -3097,7 +3103,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 700";
 		rLen = 63;
-		rLoc = 25930;
+		rLoc = 25932;
 		rType = 0;
 		vrLen = 1215;
 		vrLoc = 2618;
@@ -3149,7 +3155,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 368";
 		rLen = 0;
-		rLoc = 13207;
+		rLoc = 13209;
 		rType = 0;
 		vrLen = 1144;
 		vrLoc = 11206;
@@ -3159,7 +3165,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 368";
 		rLen = 0;
-		rLoc = 13207;
+		rLoc = 13209;
 		rType = 0;
 		vrLen = 1231;
 		vrLoc = 11174;
@@ -3259,7 +3265,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 379";
 		rLen = 34;
-		rLoc = 13480;
+		rLoc = 13482;
 		rType = 0;
 		vrLen = 1024;
 		vrLoc = 12762;
@@ -3359,7 +3365,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 368";
 		rLen = 0;
-		rLoc = 13207;
+		rLoc = 13209;
 		rType = 0;
 		vrLen = 1199;
 		vrLoc = 11206;
@@ -3369,7 +3375,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 384";
 		rLen = 32;
-		rLoc = 13577;
+		rLoc = 13579;
 		rType = 0;
 		vrLen = 818;
 		vrLoc = 13071;
@@ -3379,7 +3385,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 384";
 		rLen = 32;
-		rLoc = 13577;
+		rLoc = 13579;
 		rType = 0;
 		vrLen = 818;
 		vrLoc = 13071;
@@ -3399,7 +3405,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 384";
 		rLen = 32;
-		rLoc = 13577;
+		rLoc = 13579;
 		rType = 0;
 		vrLen = 773;
 		vrLoc = 13071;
@@ -3409,7 +3415,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 384";
 		rLen = 32;
-		rLoc = 13577;
+		rLoc = 13579;
 		rType = 0;
 		vrLen = 797;
 		vrLoc = 13048;
@@ -3419,7 +3425,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 384";
 		rLen = 32;
-		rLoc = 13577;
+		rLoc = 13579;
 		rType = 0;
 		vrLen = 797;
 		vrLoc = 13048;
@@ -3552,7 +3558,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 712";
 		rLen = 0;
-		rLoc = 26137;
+		rLoc = 26139;
 		rType = 0;
 		vrLen = 1189;
 		vrLoc = 25307;
@@ -3712,7 +3718,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 712";
 		rLen = 0;
-		rLoc = 26137;
+		rLoc = 26139;
 		rType = 0;
 		vrLen = 1190;
 		vrLoc = 25307;
@@ -3769,7 +3775,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 387";
 		rLen = 32;
-		rLoc = 13577;
+		rLoc = 13579;
 		rType = 0;
 		vrLen = 1077;
 		vrLoc = 12768;
@@ -3846,7 +3852,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 709";
 		rLen = 264;
-		rLoc = 25996;
+		rLoc = 25998;
 		rType = 0;
 		vrLen = 1575;
 		vrLoc = 24928;
@@ -4113,7 +4119,7 @@
 		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
 		name = "TimelineHTMLController.m: 704";
 		rLen = 0;
-		rLoc = 25900;
+		rLoc = 25902;
 		rType = 0;
 		vrLen = 1189;
 		vrLoc = 25307;
@@ -4177,6 +4183,71 @@
 		rType = 0;
 		vrLen = 559;
 		vrLoc = 1795;
+	};
+	E0760D8E1213BBDA00B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C7411FBD6AC000A9753 /* style.css */;
+		name = "style.css: 125";
+		rLen = 27;
+		rLoc = 2248;
+		rType = 0;
+		vrLen = 587;
+		vrLoc = 1797;
+	};
+	E0760D8F1213BBDA00B025A1 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E0564CB211FBD6D2000A9753 /* Mac-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/Mac-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E0760D901213BBDA00B025A1 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E0564CB211FBD6D2000A9753 /* Mac-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/Mac-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E0760D911213C0FD00B025A1 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E0564CB211FBD6D2000A9753 /* Mac-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleDevelopmentRegion,
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/Mac-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E0760D921213C0FD00B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 704";
+		rLen = 0;
+		rLoc = 25902;
+		rType = 0;
+		vrLen = 1142;
+		vrLoc = 25307;
+	};
+	E0760D931213C0FD00B025A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C0011FBD6A0000A9753 /* TimelineHTMLController.m */;
+		name = "TimelineHTMLController.m: 171";
+		rLen = 0;
+		rLoc = 6087;
+		rType = 0;
+		vrLen = 981;
+		vrLoc = 5445;
 	};
 	E079ECF71207721A0083B77B /* TwitterComposer.h */ = {
 		uiCtxt = {
@@ -4315,7 +4386,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 16;
-		modificationTime = 303281595.264423;
+		modificationTime = 303281663.252678;
 		originalNumberOfMultipleMatches = 1;
 		state = 0;
 	};
