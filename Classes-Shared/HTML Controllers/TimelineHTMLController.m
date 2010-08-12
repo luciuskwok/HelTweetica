@@ -146,7 +146,9 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 #pragma mark Twitter status line
 
 - (void)showTwitterStatusWithString:(NSString *)string {
-	[webView setDocumentElement:@"twitter_status" innerHTML:string];
+	if (string) {
+		[webView setDocumentElement:@"twitter_status" innerHTML:string];
+	}
 	[webView setDocumentElement:@"twitter_status" visibility:YES];
 	//[webView setDocumentElement:@"twitter_status" height:24];
 }
@@ -157,7 +159,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (void)hideTwitterStatus {
 	[webView setDocumentElement:@"twitter_status" visibility:NO];
-	//[webView setDocumentElement:@"twitter_status" innerHTML:@""];
+	[webView setDocumentElement:@"twitter_status" innerHTML:@"Twitter is alright."];
 	//[webView setDocumentElement:@"twitter_status" height:0];
 }
 

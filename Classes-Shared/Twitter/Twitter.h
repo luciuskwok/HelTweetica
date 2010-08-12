@@ -36,6 +36,7 @@
 	LKSqliteDatabase *database;
 	NSMutableSet *actions;
 	NSTimer *refreshTimer;
+	int refreshCount;
 }
 
 @property (nonatomic, retain) NSMutableArray *accounts;

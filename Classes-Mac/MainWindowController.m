@@ -700,10 +700,10 @@
 	self.currentSheet = nil;
 }
 
-#pragma mark Testing
+#pragma mark Twitter status 
 
 - (IBAction)showTwitterStatus:(id)sender {
-	[htmlController showTwitterStatusWithString:@"Testing the Twitter status line."];
+	[htmlController showTwitterStatusWithString:nil];
 }
 
 - (IBAction)hideTwitterStatus:(id)sender {

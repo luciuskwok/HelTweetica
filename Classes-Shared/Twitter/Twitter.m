@@ -30,7 +30,7 @@
 // #define kConsumerSecret @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 // Refresh
-const NSTimeInterval kRefreshTimerInterval = 90.0;
+const NSTimeInterval kRefreshTimerInterval = 60.0;
 
 
 @implementation Twitter
@@ -59,14 +59,6 @@ const NSTimeInterval kRefreshTimerInterval = 90.0;
 		} else {
 			[database execute:initStatement];
 		}
-
-		// Set up pragmas
-		[database execute:@"Pragma cache_size = 6000"];
-		[database execute:@"Pragma synchronous = off"];
-		[database execute:@"Pragma count_changes = false"];
-		[database execute:@"Pragma temp_store = memory"];
-		
-		//[database execute:@"CREATE INDEX DirectMessageCreatedDateIndex ON DirectMessages (createdDate);"];
 		
 		// == User defaults ==
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -349,12 +341,22 @@ const NSTimeInterval kRefreshTimerInterval = 90.0;
 #pragma mark Refresh timer
 
 - (void)fireRefreshTimer:(NSTimer *)timer {
-	for (TwitterAccount *account in accounts) {
-		[account reloadNewer];
+	if (refreshCount <= 0) {
+		// Refresh all only once every four times.
+		for (TwitterAccount *account in accounts) {
+			[account reloadNewer];
+		}
+		refreshCount = 3;
+	} else {
+		for (TwitterAccount *account in accounts) {
+			[account.homeTimeline reloadNewer];
+		}
+		refreshCount--;
 	}
 }
 
 - (void)refreshNow {
+	refreshCount = 0;
 	[self fireRefreshTimer:refreshTimer];
 	[self scheduleRefreshTimer:kRefreshTimerInterval];
 }
