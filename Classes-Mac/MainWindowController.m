@@ -129,6 +129,8 @@
 		imageName = [imageName stringByAppendingString:@".png"];
 		[timelineSegmentedControl setImage:[NSImage imageNamed:imageName] forSegment:index];
 	}
+
+	[self reloadUsersMenu];
 }
 
 - (IBAction)selectTimelineWithSegmentedControl:(id)sender {
@@ -204,6 +206,9 @@
 - (void)reloadUsersMenu {
 	const int kUsersMenuPresetItems = 8;
 	
+	if (usersPopUp == nil) 
+		return;
+	
 	// Remove all items after separator and insert screen names of all accounts.
 	while (usersPopUp.menu.numberOfItems > kUsersMenuPresetItems) {
 		[usersPopUp.menu removeItemAtIndex:kUsersMenuPresetItems];
@@ -211,9 +216,23 @@
 	
 	// Insert
 	for (TwitterAccount *account  in htmlController.twitter.accounts) {
-		NSMenuItem *item = [self menuItemWithTitle:account.screenName action:@selector(selectAccount:) representedObject:account indentationLevel:1];
+		// Check for unread mentions and direct messages.
+		NSString *title = account.screenName;
+		if ([account hasUnreadInHomeTimeline]) {
+			title = [title stringByAppendingString:@" ⌂"];
+		} 
+		if ([account hasUnreadInMentions]) {
+			title = [title stringByAppendingString:@" ﹫"];
+		} 
+		if ([account hasUnreadInDirectMessages]) {
+			title = [title stringByAppendingString:@" ✉"];
+		}
+		
+		// Create the menu item.
+		NSMenuItem *item = [self menuItemWithTitle:title action:@selector(selectAccount:) representedObject:account indentationLevel:1];
+		
+		// Put checkmark next to current account
 		if (account == htmlController.account) {
-			// Put checkmark next to current account
 			[item setState:NSOnState];
 		}
 		

@@ -48,6 +48,7 @@
 // Database
 - (void)setTwitter:(Twitter *)aTwitter tableName:(NSString*)tableName temp:(BOOL)temp;
 - (void)deleteCaches;
+- (int)numberOfStatusUpdates;
 - (void)limitDatabaseTableSize;
 
 // Messages (Status Updates or Direct Messages)

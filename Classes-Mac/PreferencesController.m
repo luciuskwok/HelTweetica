@@ -129,6 +129,8 @@ NSString *kTableRowDragType = @"tableRowIndexSet";
 		} else if ([aTableColumn.identifier isEqual:@"status"]) {
 			if (account.xAuthToken == nil) 
 				result = alertImage;
+			else
+				result = account.profileImage;
 		}
 		
 	}

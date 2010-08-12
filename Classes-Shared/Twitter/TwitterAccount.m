@@ -28,7 +28,7 @@
 
 
 @implementation TwitterAccount
-@synthesize identifier, screenName, xAuthToken, xAuthSecret;
+@synthesize identifier, screenName, xAuthToken, xAuthSecret, profileImage;
 @synthesize homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
 
@@ -66,6 +66,7 @@
 		self.screenName = [decoder decodeObjectForKey:@"screenName"];
 		self.xAuthToken = [decoder decodeObjectForKey:@"xAuthToken"];
 		self.xAuthSecret = [decoder decodeObjectForKey:@"xAuthSecret"];
+		self.profileImage = [decoder decodeObjectForKey:@"profileImage"];
 		
 		self.homeTimeline.latestReadIdentifier = [decoder decodeObjectForKey:@"homeTimeline.latestReadIdentifier"];
 		self.mentions.latestReadIdentifier = [decoder decodeObjectForKey:@"mentions.latestReadIdentifier"];
@@ -79,6 +80,7 @@
 	[encoder encodeObject: screenName forKey:@"screenName"];
 	[encoder encodeObject: xAuthToken forKey:@"xAuthToken"];
 	[encoder encodeObject: xAuthSecret forKey:@"xAuthSecret"];
+	[encoder encodeObject: profileImage forKey:@"profileImage"];
 
 	[encoder encodeObject: homeTimeline.latestReadIdentifier forKey:@"homeTimeline.latestReadIdentifier"];
 	[encoder encodeObject: mentions.latestReadIdentifier forKey:@"mentions.latestReadIdentifier"];
@@ -90,6 +92,7 @@
 	[screenName release];
 	[xAuthToken release];
 	[xAuthSecret release];
+	[profileImage release];
 	
 	[homeTimeline release];
 	[mentions release];
@@ -257,14 +260,17 @@ static NSString *kKeychainServiceName = @"com.felttip.HelTweetica";
 }
 
 - (BOOL)hasUnreadInHomeTimeline {
+	if ([homeTimeline numberOfStatusUpdates] == 0) return NO;
 	return [self messageIdentifier:homeTimeline.latestReadIdentifier isFirstObjectInTimeline:homeTimeline] == NO;
 }
 			
 - (BOOL)hasUnreadInMentions {
+	if ([mentions numberOfStatusUpdates] == 0) return NO;
 	return [self messageIdentifier:mentions.latestReadIdentifier isFirstObjectInTimeline:mentions] == NO;
 }
 
 - (BOOL)hasUnreadInDirectMessages {
+	if ([directMessages numberOfStatusUpdates] == 0) return NO;
 	return [self messageIdentifier:directMessages.latestReadIdentifier isFirstObjectInTimeline:directMessages] == NO;
 }
 

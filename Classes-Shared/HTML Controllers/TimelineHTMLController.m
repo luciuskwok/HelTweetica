@@ -158,7 +158,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 }
 
 - (void)showLoadingStatus {
-	[self showTwitterStatusWithString:@"<img src='fave-spinner.gif'> Loading..."];
+	[self showTwitterStatusWithString:@"<img class='spinner_img' src='fave-spinner.gif'> Loading..."];
 }
 
 - (void)hideTwitterStatus {
@@ -355,6 +355,12 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 - (void)setLoadingSpinnerVisibility:(BOOL)isVisible {
 	if (webViewHasValidHTML)
 		[self.webView setDocumentElement:@"spinner" visibility:isVisible];
+}
+
+- (void)rewriteTabArea {
+	if (webViewHasValidHTML && customTabName != nil) {
+		[self.webView setDocumentElement:@"tab_area" innerHTML:[self tabAreaHTML]];
+	}
 }
 
 - (void)rewriteTweetArea {
@@ -604,27 +610,49 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (NSString *)tabAreaHTML {
 	NSMutableString *html = [[[NSMutableString alloc] init] autorelease];
+	BOOL hasSelectedTab = NO;
+	NSString *homeTimelineStyle, *mentionsStyle, *directMessagesStyle, *favoritesStyle;
 	
-	int selectedTab = 0;
-	NSString *tabName = self.customTabName;
-	if ([tabName isEqualToString: kTimelineIdentifier] || (tabName == nil)) {
-		selectedTab = 1;
-	} else if ([tabName isEqualToString: kMentionsIdentifier]) {
-		selectedTab = 2;
-	} else if ([tabName isEqualToString: kDirectMessagesIdentifier]) {
-		selectedTab = 3;
-	} else if ([tabName isEqualToString: kFavoritesIdentifier]) {
-		selectedTab = 4;
+	if ([customTabName isEqualToString: kTimelineIdentifier] || (customTabName == nil)) {
+		homeTimelineStyle = @"selected";
+		hasSelectedTab = YES;
+	} else if ([account hasUnreadInHomeTimeline]) {
+		homeTimelineStyle = @"unread";
 	} else {
-		selectedTab = 5;
+		homeTimelineStyle = @"deselected";
 	}
 	
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Timeline';\">Timeline</div>", (selectedTab == 1)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Mentions';\">Mentions</div>", (selectedTab == 2)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Direct';\">Direct</div>", (selectedTab == 3)? @"" : @"de"];
-	[html appendFormat:@"<div class='tab %@selected' onclick=\"location.href='action:Favorites';\">Favorites</div>", (selectedTab == 4)? @"" : @"de"];
-	if (selectedTab == 5)
-		[html appendFormat:@"<div class='tab selected'>%@</div>", tabName];
+	if ([customTabName isEqualToString: kMentionsIdentifier]) {
+		mentionsStyle = @"selected";
+		hasSelectedTab = YES;
+	} else if ([account hasUnreadInMentions]) {
+		mentionsStyle = @"unread";
+	} else {
+		mentionsStyle = @"deselected";
+	}
+	
+	if ([customTabName isEqualToString: kDirectMessagesIdentifier]) {
+		directMessagesStyle = @"selected";
+		hasSelectedTab = YES;
+	} else if ([account hasUnreadInDirectMessages]) {
+		directMessagesStyle = @"unread";
+	} else {
+		directMessagesStyle = @"deselected";
+	}
+	
+	if ([customTabName isEqualToString: kFavoritesIdentifier]) {
+		favoritesStyle = @"selected";
+		hasSelectedTab = YES;
+	} else {
+		favoritesStyle = @"deselected";
+	}
+	
+	[html appendFormat:@"<div class='tab %@' onclick=\"location.href='action:Timeline';\">Timeline</div>", homeTimelineStyle];
+	[html appendFormat:@"<div class='tab %@' onclick=\"location.href='action:Mentions';\">Mentions</div>", mentionsStyle];
+	[html appendFormat:@"<div class='tab %@' onclick=\"location.href='action:Direct';\">Direct</div>", directMessagesStyle];
+	[html appendFormat:@"<div class='tab %@' onclick=\"location.href='action:Favorites';\">Favorites</div>", favoritesStyle];
+	if (hasSelectedTab == NO)
+		[html appendFormat:@"<div class='tab selected'>%@</div>", customTabName];
 	
 	return html;
 }

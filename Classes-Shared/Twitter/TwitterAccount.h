@@ -26,6 +26,7 @@
 	NSString *screenName;
 	NSString *xAuthToken;
 	NSString *xAuthSecret;
+	id profileImage;
 	
 	// Cached data. References to sqlite db.
 	TwitterTimeline *homeTimeline;
@@ -41,6 +42,7 @@
 @property (nonatomic, assign) NSString *password;
 @property (nonatomic, retain) NSString *xAuthToken;
 @property (nonatomic, retain) NSString *xAuthSecret;
+@property (nonatomic, retain) id profileImage;
 
 @property (nonatomic, retain) TwitterTimeline *homeTimeline;
 @property (nonatomic, retain) TwitterTimeline *mentions;

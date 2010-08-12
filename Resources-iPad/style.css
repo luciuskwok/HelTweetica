@@ -94,6 +94,11 @@ p { margin: 0px 0px 20px 0px; }
 	color: #444; 
 }
 
+.unread { 
+	background-image:url('tab-unread.png'); 
+	color: #444; 
+}
+
 .deselected { 
 	background-image:url('tab-off.png'); 
 	color: #666; 

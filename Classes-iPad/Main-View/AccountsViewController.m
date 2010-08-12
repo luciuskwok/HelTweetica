@@ -117,25 +117,38 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    // Configure the cell
+	
+	static NSString *CellIdentifier = @"Cell";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:20.0f];
+	}
+	
+	// Configure the cell
 	NSArray *accounts = [twitter accounts];
 	int row = indexPath.row;
 	if ((0 <= row) && (row < accounts.count)) {
 		TwitterAccount *account = [accounts objectAtIndex: indexPath.row];
+
+		// Screen name
 		BOOL loggedIn = (account.xAuthToken != nil);
 		cell.textLabel.text = account.screenName;
 		cell.textLabel.textColor = loggedIn ? [UIColor blackColor] : [UIColor grayColor];
+		
+		// Unread status
+		NSMutableString *unreadStatus = [NSMutableString string];
+		if ([account hasUnreadInHomeTimeline])
+			[unreadStatus appendString:@" ⌂"];
+		if ([account hasUnreadInMentions])
+			[unreadStatus appendString:@" ﹫"];
+		if ([account hasUnreadInDirectMessages])
+			[unreadStatus appendString:@" ✉"];
+		cell.detailTextLabel.text = unreadStatus;
 	}
-    
-    return cell;
+	
+	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
