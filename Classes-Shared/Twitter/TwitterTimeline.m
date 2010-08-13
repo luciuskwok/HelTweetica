@@ -258,7 +258,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	[twitter addOrReplaceUsers:action.users];
 	
 	// Ignore gaps for own RTs or when the number of loaded messages is less than half the load count.
-	BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO) && (action.loadedMessages.count < [self defaultLoadCount] / 2);
+	BOOL updateGap = ([action.twitterMethod isEqualToString:@"statuses/retweeted_by_me"] == NO) && (action.loadedMessages.count > [self defaultLoadCount] / 2);
 	[self addMessages:action.loadedMessages updateGap:updateGap];
 	
 	[account addFavorites:action.favoriteMessages];
