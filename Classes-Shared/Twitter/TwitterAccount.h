@@ -21,7 +21,7 @@
 @class TwitterStatusUpdate, TwitterTimeline, TwitterDirectMessageTimeline, Twitter;
 
 
-@interface TwitterAccount : NSObject <LKLoadURLActionDelegate> {
+@interface TwitterAccount : NSObject {
 	// Core account info. Saved in user defaults.
 	NSNumber *identifier;
 	NSString *screenName;
@@ -72,7 +72,6 @@
 - (BOOL)hasUnreadInDirectMessages;
 
 // Profile images
-- (void)loadProfileImageURL:(NSString *)url;
 - (id)profileImage;
 - (id)profileImage16px;
 

@@ -31,7 +31,7 @@
 #define TwitterErrorNotification @"TwitterErrorNotification"
 
 
-@interface Twitter : NSObject <TwitterActionDelegate> {
+@interface Twitter : NSObject <TwitterActionDelegate, LKLoadURLActionDelegate> {
 	NSMutableArray *accounts;
 	LKSqliteDatabase *database;
 	NSMutableSet *actions;

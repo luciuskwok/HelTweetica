@@ -104,8 +104,8 @@
 
 - (void)startUpload {
 	// Set up URL request.
-	NSURL *url = [NSURL URLWithString:@"http://twitpic.com/api/upload"];
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30.0];
+	NSURL *anURL = [NSURL URLWithString:@"http://twitpic.com/api/upload"];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:anURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30.0];
 	[request setHTTPShouldHandleCookies:NO];
 	[request setHTTPMethod:@"POST"];
 	[request setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", [self multipartBoundaryString]] forHTTPHeaderField:@"Content-Type"];

@@ -33,6 +33,10 @@
 
 @synthesize twitter, windowControllers;
 
++ (HelTweeticaAppDelegate *)sharedAppDelegate {
+	return [NSApp delegate];
+}
+
 - (void)dealloc {
 	[twitter release];
 	[windowControllers release];
@@ -165,6 +169,9 @@
 
 @synthesize window, navigationController, twitter;
 
++ (HelTweeticaAppDelegate *)sharedAppDelegate {
+	return [[UIApplication sharedApplication] delegate];
+}
 
 - (void)awakeFromNib {
 	twitter = [[Twitter alloc] init];

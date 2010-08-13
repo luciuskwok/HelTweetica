@@ -10,16 +10,25 @@
 
 
 @implementation LKLoadURLAction
-@synthesize connection, receivedData, identifier, delegate;
+@synthesize url, connection, receivedData, identifier, delegate;
+
+- (id)initWithURL:(NSURL *)anURL {
+	self = [super init];
+	if (self) {
+		self.url = anURL;
+	}
+	return self;
+}
 
 - (void)dealloc {
+	[url release];
 	[connection release];
 	[receivedData release];
 	[identifier release];
 	[super dealloc];
 }
 
-- (void)loadURL:(NSURL*)url {
+- (void)start {
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url] autorelease];
 	[request setHTTPMethod:@"GET"];
 	

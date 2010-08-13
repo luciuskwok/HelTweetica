@@ -11,6 +11,7 @@
 
 
 @interface LKLoadURLAction : NSObject {
+	NSURL *url;
 	NSURLConnection *connection;
 	NSMutableData *receivedData;
 	NSString *identifier;
@@ -18,18 +19,19 @@
 	BOOL isLoading;
 	id delegate;
 }
+@property (nonatomic, retain) NSURL *url;
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSMutableData *receivedData;
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, assign) id<LKLoadURLActionDelegate> delegate;
 
-- (void)loadURL:(NSURL*)url;
+- (id)initWithURL:(NSURL *)anURL;
+- (void)start;
 - (void)cancel;
 - (void)dataFinishedLoading:(NSData *)data;
 - (void)failedWithError:(NSError *)error;
 
 @end
-
 
 
 @protocol LKLoadURLActionDelegate <NSObject>

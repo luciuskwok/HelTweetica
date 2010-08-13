@@ -31,6 +31,8 @@
 @property (nonatomic, retain) Twitter *twitter;
 @property (nonatomic, retain) NSMutableSet *windowControllers;
 
++ (HelTweeticaAppDelegate *)sharedAppDelegate;
+
 // Windows
 - (IBAction)newMainWindow:(id)sender;
 - (void)newMainWindowWithAccount:(TwitterAccount*)account;
@@ -58,6 +60,8 @@
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) Twitter *twitter;
+
++ (HelTweeticaAppDelegate *)sharedAppDelegate;
 
 - (void) incrementNetworkActionCount;
 - (void) decrementNetworkActionCount;

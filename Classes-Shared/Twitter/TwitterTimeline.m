@@ -78,7 +78,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 		NSLog(@"TwitterTimeline is missing its Twitter connection.");
 	
 	// Check if oldest message exists in timeline.
-	id last = [messages lastObject];
+	TwitterStatusUpdate *last = [messages lastObject];
 	BOOL hasGap = ([self containsIdentifier:[last identifier]] == NO);
 	
 	// Insert or replace rows. Rows with the same identifier will be replaced with the new one.
@@ -86,7 +86,7 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	NSString *query = [twitter.database queryWithCommand:@"Insert or replace into" table:databaseTableName keys:allKeys];
 	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
 	
-	for (id message in messages) {
+	for (TwitterStatusUpdate *message in messages) {
 		// Bind variables.
 		[statement bindNumber:[message identifier] atIndex:1];
 		[statement bindDate:[message createdDate] atIndex:2];
@@ -364,7 +364,8 @@ enum { kMaxNumberOfMessagesInATimeline = 2000 };
 	NSNumber *sinceIdentifier = nil;
 	if (action.loadedMessages.count > 1) {
 		// If any messages were loaded, load RTs that would be mixed in with these tweets.
-		sinceIdentifier = [[action.loadedMessages lastObject] identifier];
+		TwitterStatusUpdate *statusUpdate = [action.loadedMessages lastObject];
+		sinceIdentifier = [statusUpdate identifier];
 	} else if ([self numberOfStatusUpdates] > 0) {
 		// If no messages were loaded, still load RTs since newest tweet.
 		sinceIdentifier = [self newestStatusIdentifier];

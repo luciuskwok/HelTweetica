@@ -73,7 +73,8 @@
 	NSString *shortenerPrefix = @"http://is.gd/api.php?longurl=";
 	NSString *request = [shortenerPrefix stringByAppendingString:[identifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	
-	[self loadURL:[NSURL URLWithString:request]];
+	self.url = [NSURL URLWithString:request];
+	[self start];
 }
 
 - (void)dataFinishedLoading:(NSData *)data {

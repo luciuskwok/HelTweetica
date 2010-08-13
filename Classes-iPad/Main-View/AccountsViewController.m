@@ -133,7 +133,7 @@
 		TwitterAccount *account = [accounts objectAtIndex: indexPath.row];
 
 		// Profile image
-		cell.imageView.image = account.profileImage;
+		cell.imageView.image = [account profileImage];
 		
 		// Screen name
 		BOOL loggedIn = (account.xAuthToken != nil);

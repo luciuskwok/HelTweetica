@@ -18,6 +18,7 @@
 #import "Twitter.h"
 #import "TwitterTimeline.h"
 #import "TwitterUserInfoAction.h"
+#import "HelTweeticaAppDelegate.h"
 
 
 
@@ -314,6 +315,37 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 	return set;
 }
 
+#pragma mark TwitterActions
+
+- (void)startTwitterAction:(TwitterAction *)action withAccount:(TwitterAccount *)account {
+	[actions addObject:action];
+	
+	// Set up Twitter action
+	[action setDelegate: self];
+	if (account) {
+		[action setConsumerToken: account.xAuthToken];
+		[action setConsumerSecret: account.xAuthSecret];
+	}
+	
+	// Start the URL connection
+	[action start];
+}
+
+- (void)removeAction:(id)action {
+	[[HelTweeticaAppDelegate sharedAppDelegate] decrementNetworkActionCount];
+	[actions removeObject: action];
+}
+
+- (void) twitterActionDidFinishLoading:(TwitterAction*)action {
+	[self removeAction: action];
+}
+
+- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
+	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterErrorNotification object:error];
+	[self removeAction: action];
+}
+
+
 #pragma mark Profile images
 
 - (void)loadProfileImageURL:(NSString *)url withAccount:(TwitterAccount *)account {
@@ -323,7 +355,26 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 		if ([url isEqualToString:account.profileImageURL])
 			return; // Don't reload the profile image if the url is the same.
 	}
-	[account loadProfileImageURL:url];
+	
+	// Start an action to load the url.
+	LKLoadURLAction *action = [[[LKLoadURLAction alloc] initWithURL:[NSURL URLWithString:url]] autorelease];
+	action.delegate = self;
+	action.identifier = account.screenName;
+	[action start];
+	[actions addObject:action];
+}
+
+- (void)loadURLAction:(LKLoadURLAction*)action didLoadData:(NSData*)data {
+	if (data.length > 0) {
+		TwitterAccount *account = [self accountWithScreenName:action.identifier];
+		account.profileImageURL = [action.url absoluteString];
+		account.profileImageData = data;
+	}
+	[self removeAction:action];
+}
+
+- (void)loadURLAction:(LKLoadURLAction*)action didFailWithError:(NSError*)error {
+	[self removeAction:action];
 }
 
 - (void)loadUserInfoForAccount:(TwitterAccount *)account {
@@ -353,31 +404,6 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 	}
 }
 
-
-#pragma mark TwitterActions
-
-- (void)startTwitterAction:(TwitterAction*)action withAccount:(TwitterAccount *)account {
-	[actions addObject: action];
-	
-	// Set up Twitter action
-	action.delegate = self;
-	if (account) {
-		action.consumerToken = account.xAuthToken;
-		action.consumerSecret = account.xAuthSecret;
-	}
-	
-	// Start the URL connection
-	[action start];
-}
-
-- (void) twitterActionDidFinishLoading:(TwitterAction*)action {
-	[actions removeObject: action];
-}
-
-- (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
-	[[NSNotificationCenter defaultCenter] postNotificationName:TwitterErrorNotification object:error];
-	[actions removeObject: action];
-}
 
 #pragma mark Refresh timer
 

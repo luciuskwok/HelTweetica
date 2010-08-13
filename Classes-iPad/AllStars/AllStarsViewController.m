@@ -121,10 +121,10 @@ const int kMaximumNumberOfAvatarsToShow = 96;
 		image = [profileImages objectForKey:largeImageURLString];
 		if (image == nil) {
 			// Start an action to load the url.
-			LKLoadURLAction *action = [[[LKLoadURLAction alloc] init] autorelease];
+			LKLoadURLAction *action = [[[LKLoadURLAction alloc] initWithURL:[NSURL URLWithString:message.profileImageURL]] autorelease];
 			action.delegate = self;
 			action.identifier = message.profileImageURL;
-			[action loadURL:[NSURL URLWithString:largeImageURLString]];
+			[action start];
 			
 			[loadURLActions addObject:action];
 			[appDelegate incrementNetworkActionCount];

@@ -278,28 +278,8 @@ static NSString *kKeychainServiceName = @"com.felttip.HelTweetica";
 	return [self messageIdentifier:directMessages.latestReadIdentifier isFirstObjectInTimeline:directMessages] == NO;
 }
 
+
 #pragma mark Profile image
-
-- (void)loadProfileImageURL:(NSString *)url {
-	// Start an action to load the url.
-	LKLoadURLAction *action = [[[LKLoadURLAction alloc] init] autorelease];
-	action.delegate = self;
-	action.identifier = url;
-	[action loadURL:[NSURL URLWithString:url]];
-	[[NSApp delegate] incrementNetworkActionCount];
-}
-
-- (void)loadURLAction:(LKLoadURLAction*)action didLoadData:(NSData*)data {
-	if (data.length > 0) {
-		self.profileImageURL = action.identifier;
-		self.profileImageData = data;
-	}
-	[[NSApp delegate] decrementNetworkActionCount];
-}
-
-- (void)loadURLAction:(LKLoadURLAction*)action didFailWithError:(NSError*)error {
-	[[NSApp delegate] decrementNetworkActionCount];
-}
 
 - (id)profileImage {
 	if (profileImageData == nil) 
@@ -319,7 +299,7 @@ static NSString *kKeychainServiceName = @"com.felttip.HelTweetica";
 	[image setSize:NSMakeSize(16, 16)];
 	return image;
 #else
-	return [[[UIImage alloc] initWithData:profileImageData] autorelease];
+	return nil;
 #endif
 	
 }
