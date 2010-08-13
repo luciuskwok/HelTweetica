@@ -138,7 +138,6 @@
 }
 
 - (IBAction) reloadData: (id) sender {
-	timelineHTMLController.suppressNetworkErrorAlerts = NO;
 	[timelineHTMLController refresh];
 }
 
@@ -380,7 +379,6 @@
 		webViewHasFinishedLoading = YES;
 
 		// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
-		timelineHTMLController.suppressNetworkErrorAlerts = YES;
 		[timelineHTMLController loadTimeline:timelineHTMLController.timeline];
 	}
 }

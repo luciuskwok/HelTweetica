@@ -449,8 +449,7 @@
 	[controller setAccount:htmlController.account];
 	[controller showWindow:nil];
 	[appDelegate addWindowController:controller];
-	
-}	
+}
 
 - (void)loadSavedSearches {
 	// Load Saved Searches from Twitter, if logged in.
@@ -715,15 +714,6 @@
 	[self reloadUsersMenu];
 	[self reloadListsMenu];
 	[self reloadSearchMenu];
-	
-	// Start loading lists and saved searches
-	[self loadListsOfUser:nil];
-	[self loadSavedSearches];
-	
-	// Automatically reload the current timeline over the network if this is the first time the web view is loaded.
-	htmlController.suppressNetworkErrorAlerts = YES;
-	[htmlController loadTimeline:htmlController.timeline];
-	
 }	
 
 - (BOOL)windowShouldClose:(id)sender {

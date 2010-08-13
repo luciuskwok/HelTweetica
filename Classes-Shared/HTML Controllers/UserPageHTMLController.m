@@ -183,7 +183,6 @@
 	TwitterFriendshipsAction *action = [[[TwitterFriendshipsAction alloc] initWithScreenName:user.screenName create:YES] autorelease];
 	action.completionAction = @selector(didFollow:);
 	action.completionTarget = self;
-	//suppressNetworkErrorAlerts = NO;
 	[twitter startTwitterAction:action withAccount:account];
 }
 

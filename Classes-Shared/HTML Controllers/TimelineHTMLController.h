@@ -52,7 +52,6 @@
 	BOOL webViewHasValidHTML;
 	BOOL isLoading;
 	BOOL noInternetConnection;
-	BOOL suppressNetworkErrorAlerts;
 	
 	NSTimer *rewriteHTMLTimer;
 	BOOL useRewriteHTMLTimer;
@@ -74,7 +73,6 @@
 @property (assign) BOOL webViewHasValidHTML;
 @property (assign) BOOL isLoading;
 @property (assign) BOOL noInternetConnection;
-@property (assign) BOOL suppressNetworkErrorAlerts;
 
 @property (assign) BOOL useRewriteHTMLTimer;
 
@@ -88,6 +86,7 @@
 
 // Twitter status line
 - (void)showTwitterStatusWithString:(NSString *)string;
+- (void)showLoadingStatus;
 - (void)hideTwitterStatus;
 
 // Loading
