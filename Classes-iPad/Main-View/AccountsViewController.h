@@ -23,8 +23,11 @@
 @protocol AccountsViewControllerDelegate;
 
 
-@interface AccountsViewController : UITableViewController <LoginViewControllerDelegate, TwitterActionDelegate> {
+@interface AccountsViewController : UITableViewController 
+	<LoginViewControllerDelegate, TwitterActionDelegate> 
+{
 	Twitter *twitter;
+	NSTimer *refreshTimer;
 	id  delegate;
 }
 @property (assign) id <AccountsViewControllerDelegate> delegate;

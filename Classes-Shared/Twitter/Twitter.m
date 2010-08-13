@@ -319,7 +319,8 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 
 - (void)startTwitterAction:(TwitterAction *)action withAccount:(TwitterAccount *)account {
 	[actions addObject:action];
-	
+	[[HelTweeticaAppDelegate sharedAppDelegate] incrementNetworkActionCount];
+
 	// Set up Twitter action
 	[action setDelegate: self];
 	if (account) {
@@ -362,6 +363,7 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 	action.identifier = account.screenName;
 	[action start];
 	[actions addObject:action];
+	[[HelTweeticaAppDelegate sharedAppDelegate] incrementNetworkActionCount];
 }
 
 - (void)loadURLAction:(LKLoadURLAction*)action didLoadData:(NSData*)data {

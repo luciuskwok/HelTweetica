@@ -109,6 +109,10 @@
 #pragma mark IBActions
 
 - (IBAction)close:(id)sender {
+	timelineHTMLController.useRewriteHTMLTimer = NO;
+	[timelineHTMLController invalidateRewriteHTMLTimer];
+	timelineHTMLController.delegate = nil;
+
 	[self closeAllPopovers];
 	[self.navigationController popViewControllerAnimated: YES];
 }

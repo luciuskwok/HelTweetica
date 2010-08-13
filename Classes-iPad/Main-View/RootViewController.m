@@ -102,15 +102,14 @@ const float kDelayBeforeEnteringShuffleMode = 60.0;
 - (void) didSelectAccount:(TwitterAccount*)anAccount {
 	timelineHTMLController.account = anAccount;
 	[self closeAllPopovers];
+	timelineHTMLController.isLoading = YES;
 	if (timelineHTMLController.webViewHasValidHTML) {
 		[self.webView setDocumentElement:@"current_account" innerHTML:[timelineHTMLController currentAccountHTML]];
+		[timelineHTMLController hideTwitterStatus];
 		[self.webView scrollToTop];
 	}
 	[timelineHTMLController selectHomeTimeline];
-	
-	// Refresh
-	[timelineHTMLController.twitter refreshNow];
-	
+
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: timelineHTMLController.account.screenName forKey: @"currentAccount"];
 }

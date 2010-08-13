@@ -17,6 +17,7 @@
 
 #import "AccountsViewController.h"
 #import "LoginViewController.h"
+#import "TwitterLoadTimelineAction.h"
 
 
 @implementation AccountsViewController
@@ -42,19 +43,13 @@
 			[closeButton release];
 		}
 		[self setContentSize];
+		
+		// Notifications
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
+		
 	}
 	return self;
-}
-
-- (IBAction) add:(id)sender {
- 	LoginViewController *c = [[[LoginViewController alloc] initWithTwitter:twitter] autorelease];
-	c.delegate = self;
-	[self.navigationController pushViewController: c animated: YES];
-}
-
-- (IBAction) close:(id)sender {
-	// This is only called on the iPhone.
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (void) reload {
@@ -244,6 +239,40 @@
 	}
 }
 
+#pragma mark Refresh timer
+
+- (void)invalidateRefreshTimer {
+	[refreshTimer invalidate];
+	refreshTimer = nil;
+}
+
+- (void)scheduleRefreshTimer {
+	[refreshTimer invalidate];
+	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
+}
+
+- (void)fireRefreshTimer:(NSTimer *)timer {
+	[self.tableView reloadData];
+	refreshTimer = nil;
+}
+
+- (void)timelineDidFinishLoading:(NSNotification *)notification {
+	[self scheduleRefreshTimer];
+}
+
+#pragma mark IBActions
+
+- (IBAction) add:(id)sender {
+ 	LoginViewController *c = [[[LoginViewController alloc] initWithTwitter:twitter] autorelease];
+	c.delegate = self;
+	[self.navigationController pushViewController: c animated: YES];
+}
+
+- (IBAction) close:(id)sender {
+	// This is only called on the iPhone.
+	[self dismissModalViewControllerAnimated:YES];
+	[self invalidateRefreshTimer];
+}
 
 #pragma mark Memory management
 
