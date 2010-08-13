@@ -38,6 +38,8 @@
 	NSMutableArray *lists;
 	NSMutableArray *subscriptions;
 	
+	NSTimer *refreshTimer;
+	
 	id currentSheet;
 }
 

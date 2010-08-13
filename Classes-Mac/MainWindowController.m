@@ -194,11 +194,26 @@
 	[htmlController refresh];
 }
 
+#pragma mark Refresh timer
+
+- (void)scheduleRefreshTimer {
+	[refreshTimer invalidate];
+	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
+}
+
+- (void)invalidateRefreshTimer {
+	[refreshTimer invalidate];
+	refreshTimer = nil;
+}
+
+- (void)fireRefreshTimer:(NSTimer *)timer {
+	[self updateTimelineSegmentedControl];
+	[self reloadUsersMenu];
+	refreshTimer = nil;
+}
+
 - (void)timelineDidFinishLoading:(NSNotification *)notification {
-	TwitterTimeline *timeline = [notification object];
-	if (timeline == htmlController.account.homeTimeline || timeline == htmlController.account.mentions || timeline == htmlController.account.directMessages) {
-		[self updateTimelineSegmentedControl];
-	}
+	[self scheduleRefreshTimer];
 }
 
 #pragma mark Users
