@@ -130,7 +130,7 @@ NSString *kTableRowDragType = @"tableRowIndexSet";
 			if (account.xAuthToken == nil) 
 				result = alertImage;
 			else
-				result = account.profileImage;
+				result = [account profileImage16px];
 		}
 		
 	}
@@ -140,7 +140,6 @@ NSString *kTableRowDragType = @"tableRowIndexSet";
 #pragma mark Double click
 
 - (void)openSelectedTableRow:(id)sender {
-//- (BOOL)tableView:(NSTableView *)aTableView shouldEditTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
 	// Double clicks end up here.
 	
 	int rowIndex = [tableView selectedRow];

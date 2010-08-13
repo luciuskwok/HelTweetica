@@ -21,6 +21,7 @@
 #import "TwitterStatusUpdate.h"
 #import "TwitterLoadTimelineAction.h"
 #import "TwitterList.h"
+#import "HelTweeticaAppDelegate.h"
 
 #ifndef TARGET_PROJECT_MAC
 #import "SFHFKeychainUtils.h"
@@ -28,7 +29,7 @@
 
 
 @implementation TwitterAccount
-@synthesize identifier, screenName, xAuthToken, xAuthSecret, profileImage;
+@synthesize identifier, screenName, xAuthToken, xAuthSecret, profileImageData, profileImageURL;
 @synthesize homeTimeline, mentions, directMessages, favorites, lists, listSubscriptions, savedSearches;
 
 
@@ -66,7 +67,8 @@
 		self.screenName = [decoder decodeObjectForKey:@"screenName"];
 		self.xAuthToken = [decoder decodeObjectForKey:@"xAuthToken"];
 		self.xAuthSecret = [decoder decodeObjectForKey:@"xAuthSecret"];
-		self.profileImage = [decoder decodeObjectForKey:@"profileImage"];
+		self.profileImageData = [decoder decodeObjectForKey:@"profileImageData"];
+		self.profileImageURL = [decoder decodeObjectForKey:@"profileImageURL"];
 		
 		self.homeTimeline.latestReadIdentifier = [decoder decodeObjectForKey:@"homeTimeline.latestReadIdentifier"];
 		self.mentions.latestReadIdentifier = [decoder decodeObjectForKey:@"mentions.latestReadIdentifier"];
@@ -80,7 +82,8 @@
 	[encoder encodeObject: screenName forKey:@"screenName"];
 	[encoder encodeObject: xAuthToken forKey:@"xAuthToken"];
 	[encoder encodeObject: xAuthSecret forKey:@"xAuthSecret"];
-	[encoder encodeObject: profileImage forKey:@"profileImage"];
+	[encoder encodeObject: profileImageData forKey:@"profileImageData"];
+	[encoder encodeObject: profileImageURL forKey:@"profileImageURL"];
 
 	[encoder encodeObject: homeTimeline.latestReadIdentifier forKey:@"homeTimeline.latestReadIdentifier"];
 	[encoder encodeObject: mentions.latestReadIdentifier forKey:@"mentions.latestReadIdentifier"];
@@ -92,7 +95,8 @@
 	[screenName release];
 	[xAuthToken release];
 	[xAuthSecret release];
-	[profileImage release];
+	[profileImageData release];
+	[profileImageURL release];
 	
 	[homeTimeline release];
 	[mentions release];
@@ -270,8 +274,55 @@ static NSString *kKeychainServiceName = @"com.felttip.HelTweetica";
 }
 
 - (BOOL)hasUnreadInDirectMessages {
-	if ([directMessages numberOfStatusUpdates] == 0) return NO;
+	if ([directMessages newestStatusIdentifier] == nil) return NO;
 	return [self messageIdentifier:directMessages.latestReadIdentifier isFirstObjectInTimeline:directMessages] == NO;
 }
+
+#pragma mark Profile image
+
+- (void)loadProfileImageURL:(NSString *)url {
+	// Start an action to load the url.
+	LKLoadURLAction *action = [[[LKLoadURLAction alloc] init] autorelease];
+	action.delegate = self;
+	action.identifier = url;
+	[action loadURL:[NSURL URLWithString:url]];
+	[[NSApp delegate] incrementNetworkActionCount];
+}
+
+- (void)loadURLAction:(LKLoadURLAction*)action didLoadData:(NSData*)data {
+	if (data.length > 0) {
+		self.profileImageURL = action.identifier;
+		self.profileImageData = data;
+	}
+	[[NSApp delegate] decrementNetworkActionCount];
+}
+
+- (void)loadURLAction:(LKLoadURLAction*)action didFailWithError:(NSError*)error {
+	[[NSApp delegate] decrementNetworkActionCount];
+}
+
+- (id)profileImage {
+	if (profileImageData == nil) 
+		return nil;
+#ifdef TARGET_PROJECT_MAC
+	return [[[NSImage alloc] initWithData:profileImageData] autorelease];
+#else
+	return [[[UIImage alloc] initWithData:profileImageData] autorelease];
+#endif
+}
+
+- (id)profileImage16px {
+	if (profileImageData == nil) 
+		return nil;
+#ifdef TARGET_PROJECT_MAC
+	NSImage *image = [[[NSImage alloc] initWithData:profileImageData] autorelease];
+	[image setSize:NSMakeSize(16, 16)];
+	return image;
+#else
+	return [[[UIImage alloc] initWithData:profileImageData] autorelease];
+#endif
+	
+}
+
 
 @end

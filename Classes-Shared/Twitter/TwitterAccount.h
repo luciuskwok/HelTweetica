@@ -16,17 +16,19 @@
 
 
 #import <Foundation/Foundation.h>
+#import "LKLoadURLAction.h"
 
 @class TwitterStatusUpdate, TwitterTimeline, TwitterDirectMessageTimeline, Twitter;
 
 
-@interface TwitterAccount : NSObject {
+@interface TwitterAccount : NSObject <LKLoadURLActionDelegate> {
 	// Core account info. Saved in user defaults.
 	NSNumber *identifier;
 	NSString *screenName;
 	NSString *xAuthToken;
 	NSString *xAuthSecret;
-	id profileImage;
+	NSData *profileImageData;
+	NSString *profileImageURL;
 	
 	// Cached data. References to sqlite db.
 	TwitterTimeline *homeTimeline;
@@ -42,7 +44,8 @@
 @property (nonatomic, assign) NSString *password;
 @property (nonatomic, retain) NSString *xAuthToken;
 @property (nonatomic, retain) NSString *xAuthSecret;
-@property (nonatomic, retain) id profileImage;
+@property (nonatomic, retain) NSData *profileImageData;
+@property (nonatomic, retain) NSString *profileImageURL;
 
 @property (nonatomic, retain) TwitterTimeline *homeTimeline;
 @property (nonatomic, retain) TwitterTimeline *mentions;
@@ -63,8 +66,14 @@
 
 - (void)deleteCaches;
 
+// Unread messages
 - (BOOL)hasUnreadInHomeTimeline;
 - (BOOL)hasUnreadInMentions;
 - (BOOL)hasUnreadInDirectMessages;
+
+// Profile images
+- (void)loadProfileImageURL:(NSString *)url;
+- (id)profileImage;
+- (id)profileImage16px;
 
 @end

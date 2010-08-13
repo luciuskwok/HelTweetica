@@ -67,6 +67,9 @@
 - (void)refreshNow;
 - (void)scheduleRefreshTimer:(NSTimeInterval)interval;
 
+// Profile images
+- (void)loadAccountProfileImages;
+
 // Actions
 - (void)startTwitterAction:(TwitterAction*)action withAccount:(TwitterAccount *)account;
 

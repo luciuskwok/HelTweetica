@@ -17,6 +17,7 @@
 
 #import "Twitter.h"
 #import "TwitterTimeline.h"
+#import "TwitterUserInfoAction.h"
 
 
 
@@ -313,6 +314,46 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 	return set;
 }
 
+#pragma mark Profile images
+
+- (void)loadProfileImageURL:(NSString *)url withAccount:(TwitterAccount *)account {
+	if (url == nil)
+		return;
+	if (account.profileImageURL != nil) {
+		if ([url isEqualToString:account.profileImageURL])
+			return; // Don't reload the profile image if the url is the same.
+	}
+	[account loadProfileImageURL:url];
+}
+
+- (void)loadUserInfoForAccount:(TwitterAccount *)account {
+	TwitterUserInfoAction *action = [[[TwitterUserInfoAction alloc] initWithScreenName:account.screenName] autorelease];
+	action.completionAction = @selector(didLoadUserInfo:);
+	action.completionTarget = self;
+	[self startTwitterAction:action withAccount:account];
+}
+
+- (void)didLoadUserInfo:(TwitterUserInfoAction*)action {
+	// Update just the profile image.
+	NSString *url = action.userResult.profileImageURL;
+	TwitterAccount *account = [self accountWithScreenName:action.userResult.screenName];
+	[self loadProfileImageURL:url withAccount:account];
+}
+
+- (void)loadAccountProfileImages {
+	for (TwitterAccount *account in accounts) {
+		TwitterUser *user = [self userWithIdentifier:account.identifier];
+		if (user.profileImageURL == nil) {
+			// Load user info
+			[self loadUserInfoForAccount:account];
+		} else {
+			// Load profile image data
+			[self loadProfileImageURL:user.profileImageURL withAccount:account];
+		}
+	}
+}
+
+
 #pragma mark TwitterActions
 
 - (void)startTwitterAction:(TwitterAction*)action withAccount:(TwitterAccount *)account {
@@ -347,6 +388,9 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 			[account reloadNewer];
 		}
 		refreshCount = 3;
+		
+		// Also update account profile images
+		[self loadAccountProfileImages];
 	} else {
 		for (TwitterAccount *account in accounts) {
 			[account.homeTimeline reloadNewer];

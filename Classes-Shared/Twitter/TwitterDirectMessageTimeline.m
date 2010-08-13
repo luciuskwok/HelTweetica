@@ -114,6 +114,18 @@ enum {
 	}
 }
 
+- (NSNumber *)newestStatusIdentifier {
+	// This is used only by the unread messages indicator, so only consider received messages.
+	NSString *query = [NSString stringWithFormat:@"Select identifier from %@ where sent == 0 order by CreatedDate desc limit 1", databaseTableName];
+	LKSqliteStatement *statement = [twitter.database statementWithQuery:query];
+	NSNumber *n = nil;
+	
+	if ([statement step] == SQLITE_ROW) { // Row has data.
+		n = [statement objectForColumnIndex:0];
+	}
+	return n;
+}
+
 #pragma mark Conversations
 
 - (NSArray *)usersSortedByMostRecentDirectMessage {

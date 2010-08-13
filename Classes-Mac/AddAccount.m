@@ -83,6 +83,9 @@
 		// Set database connection.
 		[account setTwitter:twitter];
 		
+		// Load profile images
+		[twitter loadAccountProfileImages];
+		
 		// Tell delegate we're done
 		if ([delegate respondsToSelector:@selector(didLoginToAccount:)])
 			[delegate didLoginToAccount:account];

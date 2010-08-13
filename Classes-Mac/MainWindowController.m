@@ -237,7 +237,7 @@
 		}
 		
 		// Profile image
-		[item setImage:account.profileImage];
+		[item setImage:[account profileImage16px]];
 		
 		[usersPopUp.menu addItem:item];
 	}
