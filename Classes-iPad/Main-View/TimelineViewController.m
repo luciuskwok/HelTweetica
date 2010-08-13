@@ -77,6 +77,8 @@
 	[composeButton release];
 	
 	[twitter release];
+	
+	timelineHTMLController.delegate = nil;
 	[timelineHTMLController release];
 	
 	currentPopover.delegate = nil;
