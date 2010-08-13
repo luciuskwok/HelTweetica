@@ -123,6 +123,10 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 
 	for (TwitterStatusUpdate *status in newUpdates) {
 		if ([status isKindOfClass:[TwitterStatusUpdate class]]) {
+			// Sanity check.
+			if (status.identifier == nil || status.text == nil) 
+				continue;
+			
 			// Bind variables.
 			for (int index = 0; index<allKeys.count; index++) {
 				id key = [allKeys objectAtIndex:index];
