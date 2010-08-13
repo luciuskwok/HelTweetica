@@ -38,5 +38,5 @@
 
 
 @protocol GoToUserViewControllerDelegate <NSObject>
-	- (void)showUserPage:(NSString*)screenName;
+- (void)didSelectScreenName:(NSString*)screenName;
 @end

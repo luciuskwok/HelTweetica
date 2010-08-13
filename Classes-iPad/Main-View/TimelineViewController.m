@@ -120,19 +120,21 @@
 }
 
 - (IBAction) search: (id) sender {
-	if ([self closeAllPopovers] == NO) {
-		SearchViewController *search = [[[SearchViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
-		search.delegate = self;
-		[self presentViewController: search inNavControllerInPopoverFromItem: sender];
-	}
+	if ([self closeAllPopovers])
+		return;
+	
+	SearchViewController *search = [[[SearchViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
+	search.delegate = self;
+	[self presentViewController: search inNavControllerInPopoverFromItem: sender];
 }
 
 - (IBAction) goToUser:(id)sender {
-	if ([self closeAllPopovers] == NO) { 
-		GoToUserViewController *vc = [[[GoToUserViewController alloc] initWithTwitter:twitter] autorelease];
-		vc.delegate = self;
-		[self presentViewController:vc inNavControllerInPopoverFromItem:sender];
-	}
+	if ([self closeAllPopovers])
+		return;
+
+	GoToUserViewController *vc = [[[GoToUserViewController alloc] initWithTwitter:twitter] autorelease];
+	vc.delegate = self;
+	[self presentViewController:vc inNavControllerInPopoverFromItem:sender];
 }
 
 - (IBAction) reloadData: (id) sender {
@@ -406,6 +408,9 @@
 	[self searchForQuery:query];
 }
 
+- (void)didSelectScreenName:(NSString *)screenName {
+	[self showUserPage:screenName];
+}
 
 #pragma mark Alert view
 

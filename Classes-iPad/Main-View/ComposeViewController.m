@@ -29,7 +29,7 @@ const int kTwitterCharacterMax = 140;
 
 @implementation ComposeViewController
 @synthesize messageField;
-@synthesize topToolbar, accountButton, retweetStyleButton, photosButton, sendButton;
+@synthesize topToolbar, accountButton, retweetStyleButton, userButton, photosButton, sendButton;
 @synthesize inputToolbar, geotagButton, charactersRemaining;
 @synthesize currentPopover, currentActionSheet, delegate;
 
@@ -74,6 +74,7 @@ const int kTwitterCharacterMax = 140;
 	[topToolbar release];
 	[accountButton release];
 	[retweetStyleButton release];
+	[userButton release];
 	[photosButton release];
 	[sendButton release];
 
@@ -172,6 +173,7 @@ const int kTwitterCharacterMax = 140;
 		messageField.textColor = [UIColor grayColor];
 		messageField.editable = NO;
 		charactersRemaining.title = @"";
+		userButton.enabled = NO;
 		photosButton.enabled = NO;
 		sendButton.enabled = YES;
 	} else {
@@ -181,6 +183,7 @@ const int kTwitterCharacterMax = 140;
 		messageField.inputAccessoryView = inputToolbar;
 		[messageField becomeFirstResponder];
 		[self updateCharacterCountWithText: messageField.text];
+		userButton.enabled = YES;
 		photosButton.enabled = YES;
 	}
 	
@@ -325,33 +328,55 @@ const int kTwitterCharacterMax = 140;
 #pragma mark Accounts
 
 - (IBAction)chooseAccount:(id)sender {
-	if ([self closeAllPopovers]) return;
-	
-	UIActionSheet *actionSheet = [[[UIActionSheet alloc] init] autorelease];
-	actionSheet.delegate = self;
-	for (TwitterAccount *anAccount in appDelegate.twitter.accounts) {
-		[actionSheet addButtonWithTitle:anAccount.screenName];
-	}
-	[actionSheet showFromBarButtonItem:sender animated:YES];
-	self.currentActionSheet = actionSheet;
+	if ([self closeAllPopovers]) 
+		return;
+
+	AccountsViewController *accountsController = [[[AccountsViewController alloc] initWithTwitter:composer.twitter] autorelease];
+	accountsController.delegate = self;
+	accountsController.navigationItem.title = NSLocalizedString (@"Tweet from", @"title");
+	[self presentViewController:accountsController inNavControllerInPopoverFromItem:sender];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex < 0 || buttonIndex >= appDelegate.twitter.accounts.count) return;
-	
-	composer.account = [composer.twitter.accounts objectAtIndex:buttonIndex];
+- (void) didSelectAccount:(TwitterAccount*)anAccount {
+	composer.account = anAccount;
 	[self updateAccountButton];
+	[self closeAllPopovers];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	if (actionSheet == self.currentActionSheet)
-		self.currentActionSheet = nil;
+#pragma mark Users
+
+- (IBAction)addUser:(id)sender {
+	if ([self closeAllPopovers])
+		return;
+
+	[messageField resignFirstResponder];
+	GoToUserViewController *vc = [[[GoToUserViewController alloc] initWithTwitter:composer.twitter] autorelease];
+	vc.delegate = self;
+	[self presentViewController:vc inNavControllerInPopoverFromItem:sender];
+	
+}
+
+- (void)didSelectScreenName:(NSString *)screenName {
+	[self closeAllPopovers];
+	if (screenName == nil) return;
+
+	[messageField becomeFirstResponder];
+	NSString *replacement = [NSString stringWithFormat:@"@%@ ",screenName];
+	NSRange selection = messageField.selectedRange;
+	if (selection.location = NSNotFound) {
+		selection.location = messageField.text.length;
+		selection.length = 0;
+	}
+	messageField.text = [messageField.text stringByReplacingCharactersInRange:selection withString:replacement];
+	//messageField.selectedRange = 
+	[self updateCharacterCountWithText:messageField.text];
 }
 
 #pragma mark Pictures
 
 - (IBAction)addPicture:(id)sender {
-	if ([self closeAllPopovers]) return;
+	if ([self closeAllPopovers]) 
+		return;
 
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] == NO) {
 		// Show error alert.
@@ -477,6 +502,7 @@ const int kTwitterCharacterMax = 140;
 	self.topToolbar = nil;
 	self.accountButton = nil;
 	self.retweetStyleButton = nil;
+	self.userButton = nil;
 	self.photosButton = nil;
 	self.sendButton = nil;
 	

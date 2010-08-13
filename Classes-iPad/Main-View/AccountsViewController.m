@@ -36,6 +36,9 @@
 	if (self = [super initWithNibName:@"Accounts" bundle:nil]) {
 		twitter= [aTwitter retain];
 		
+		// Title
+		[self.navigationItem setTitle:@"Twitter"];
+		
 		if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
 			NSString *closeTitle = NSLocalizedString (@"Close", @"");
 			UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:closeTitle style:UIBarButtonSystemItemDone target:self action:@selector(close:)];
@@ -44,9 +47,6 @@
 		}
 		[self setContentSize];
 		
-		// Notifications
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
 		
 	}
 	return self;
@@ -55,49 +55,6 @@
 - (void) reload {
 	[self setContentSize];
 	[[self tableView] reloadData];
-}
-
-#pragma mark View lifecycle
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-	// Title
-	[self.navigationItem setTitle:@"Twitter"];
-
-	// Edit button.
-	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	
-	// Add button
-	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
-	self.navigationItem.leftBarButtonItem = addButton;
-	[addButton release];
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-	[self setContentSize];
-	[super viewWillAppear:animated];
-}
-
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-     return YES;
 }
 
 #pragma mark Table view data source
@@ -274,6 +231,47 @@
 	[self invalidateRefreshTimer];
 }
 
+#pragma mark View lifecycle
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	// Edit button.
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	
+	// Add button
+	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
+	self.navigationItem.leftBarButtonItem = addButton;
+	[addButton release];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[self setContentSize];
+	[super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
+	[self.tableView flashScrollIndicators];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self invalidateRefreshTimer];
+}
+
+/*
+ - (void)viewDidDisappear:(BOOL)animated {
+ [super viewDidDisappear:animated];
+ }
+ */
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	return YES;
+}
+
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
@@ -285,6 +283,7 @@
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[twitter release];
 	[super dealloc];
 }

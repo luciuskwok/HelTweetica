@@ -18,13 +18,16 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "TwitterComposer.h"
+#import "AccountsViewController.h"
+#import "GoToUserViewController.h"
 @class HelTweeticaAppDelegate, TwitterAccount;
 
 
 @protocol ComposeViewControllerDelegate;
 
 @interface ComposeViewController : UIViewController 
-	<TwitterComposerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, 
+	<TwitterComposerDelegate, AccountsViewControllerDelegate, GoToUserViewControllerDelegate, 
+	UINavigationControllerDelegate, UIImagePickerControllerDelegate, 
 	UIPopoverControllerDelegate, UIActionSheetDelegate> 
 {
 	IBOutlet UITextView *messageField;
@@ -32,6 +35,7 @@
 	IBOutlet UIToolbar *topToolbar;
 	IBOutlet UIBarButtonItem *accountButton;
 	IBOutlet UIBarButtonItem *retweetStyleButton;
+	IBOutlet UIBarButtonItem *userButton;
 	IBOutlet UIBarButtonItem *photosButton;
 	IBOutlet UIBarButtonItem *sendButton;
 	
@@ -50,6 +54,7 @@
 @property (nonatomic, retain) UIToolbar *topToolbar;
 @property (nonatomic, retain) UIBarButtonItem *accountButton;
 @property (nonatomic, retain) UIBarButtonItem *retweetStyleButton;
+@property (nonatomic, retain) UIBarButtonItem *userButton;
 @property (nonatomic, retain) UIBarButtonItem *photosButton;
 @property (nonatomic, retain) UIBarButtonItem *sendButton;
 
@@ -72,6 +77,7 @@
 - (IBAction)toggleGeotag:(id)sender;
 - (IBAction)shrinkURLs:(id)sender;
 - (IBAction)addPicture:(id)sender;
+- (IBAction)addUser:(id)sender;
 - (IBAction)clear:(id)sender;
 
 @end

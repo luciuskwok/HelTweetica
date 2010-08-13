@@ -273,14 +273,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>31</integer>
-									<integer>29</integer>
-									<integer>23</integer>
+									<integer>13</integer>
+									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 405}, {291, 593}}</string>
+							<string>{{0, 0}, {291, 593}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -297,7 +296,7 @@
 							<real>291</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>146 41 1008 652 0 0 1280 778 </string>
+						<string>90 126 1008 652 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -315,7 +314,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>E0564BA811FBD59D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Twitter.m</string>
+								<string>MainWindowController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -323,11 +322,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E0564BA911FBD59D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Twitter.m</string>
+										<string>MainWindowController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E05A13DA121500F0004D7259</string>
+										<string>E05A148E12151F8D004D7259</string>
 										<key>history</key>
 										<array>
 											<string>E0D14EA511FCDFFD00452E63</string>
@@ -417,7 +416,6 @@
 											<string>E05A12D91214D615004D7259</string>
 											<string>E05A12E81214D683004D7259</string>
 											<string>E05A12F31214E781004D7259</string>
-											<string>E05A12F51214E781004D7259</string>
 											<string>E05A13031214E948004D7259</string>
 											<string>E05A133A1214F1AD004D7259</string>
 											<string>E05A133B1214F1AD004D7259</string>
@@ -428,7 +426,8 @@
 											<string>E05A13731214F420004D7259</string>
 											<string>E05A13B81214FD75004D7259</string>
 											<string>E05A13D8121500F0004D7259</string>
-											<string>E05A13D9121500F0004D7259</string>
+											<string>E05A148C12151F8D004D7259</string>
+											<string>E05A148D12151F8D004D7259</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -444,7 +443,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {695, 606}}</string>
 								<key>RubberWindowFrame</key>
-								<string>146 41 1008 652 0 0 1280 778 </string>
+								<string>90 126 1008 652 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -523,7 +522,7 @@
 										<key>Frame</key>
 										<string>{{10, 27}, {695, -27}}</string>
 										<key>RubberWindowFrame</key>
-										<string>146 41 1008 652 0 0 1280 778 </string>
+										<string>90 126 1008 652 0 0 1280 778 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -751,7 +750,7 @@
 		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Mac.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>146 41 1008 652 0 0 1280 778 </string>
+	<string>90 126 1008 652 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

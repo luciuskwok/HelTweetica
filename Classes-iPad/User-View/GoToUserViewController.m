@@ -121,8 +121,8 @@
 
 	if (indexPath.row < array.count) {
 		TwitterUser *user = [array objectAtIndex:indexPath.row];
-		if ([delegate respondsToSelector:@selector(showUserPage:)])
-			[delegate showUserPage: user.screenName];
+		if ([delegate respondsToSelector:@selector(didSelectScreenName:)])
+			[delegate didSelectScreenName: user.screenName];
 	}
 }
 
@@ -139,8 +139,8 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	// Use the entered search term as the user name. Remove whitespace from screenName.
 	NSString *screenName = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	if ([delegate respondsToSelector:@selector(showUserPage:)])
-		[delegate showUserPage: screenName];
+	if ([delegate respondsToSelector:@selector(didSelectScreenName:)])
+		[delegate didSelectScreenName: screenName];
 	
 }
 
