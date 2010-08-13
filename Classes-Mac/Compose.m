@@ -265,6 +265,7 @@ enum { kTwitterCharacterMax = 140 };
 	// Insert
 	for (TwitterAccount *anAccount  in composer.twitter.accounts) {
 		NSMenuItem *item = [self menuItemWithTitle:anAccount.screenName action:@selector(selectAccount:) representedObject:anAccount indentationLevel:1];
+		[item setImage:[anAccount profileImage16px]];
 		[accountsPopUp.menu addItem:item];
 		if ([anAccount isEqual:composer.account]) {
 			[accountsPopUp selectItem:item];

@@ -232,6 +232,10 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 	
 	for (TwitterUser *user in newUsers) {
 		if ([user isKindOfClass:[TwitterUser class]]) {
+			// Sanity check.
+			if (user.identifier == nil || user.screenName == nil)
+				continue;
+			
 			// Bind variables.
 			for (int index = 0; index<allKeys.count; index++) {
 				id key = [allKeys objectAtIndex:index];
@@ -255,6 +259,10 @@ const NSTimeInterval kRefreshTimerInterval = 60.0;
 	LKSqliteStatement *statement = [database statementWithQuery:query];
 	
 	for (TwitterUser *user in newUsers) {
+		// Sanity check.
+		if (user.identifier == nil || user.screenName == nil)
+			continue;
+
 		// Bind variables.
 		for (int index = 0; index<allKeys.count; index++) {
 			id key = [allKeys objectAtIndex:index];
