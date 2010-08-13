@@ -224,6 +224,11 @@
 			E05A13AC1214FAAA004D7259 /* PBXTextBookmark */ = E05A13AC1214FAAA004D7259 /* PBXTextBookmark */;
 			E05A13AD1214FAAA004D7259 /* PBXTextBookmark */ = E05A13AD1214FAAA004D7259 /* PBXTextBookmark */;
 			E05A13AE1214FAAA004D7259 /* PBXTextBookmark */ = E05A13AE1214FAAA004D7259 /* PBXTextBookmark */;
+			E05A13BB1214FD75004D7259 /* PlistBookmark */ = E05A13BB1214FD75004D7259 /* PlistBookmark */;
+			E05A13BC1214FD75004D7259 /* PBXTextBookmark */ = E05A13BC1214FD75004D7259 /* PBXTextBookmark */;
+			E05A13BD1214FD75004D7259 /* PBXTextBookmark */ = E05A13BD1214FD75004D7259 /* PBXTextBookmark */;
+			E05A13C21214FD93004D7259 /* PBXTextBookmark */ = E05A13C21214FD93004D7259 /* PBXTextBookmark */;
+			E05A13CA1214FDCE004D7259 /* PBXTextBookmark */ = E05A13CA1214FDCE004D7259 /* PBXTextBookmark */;
 			E0651C59120A677C00F9D256 = E0651C59120A677C00F9D256 /* PBXBookmark */;
 			E0651E02120A9C3500F9D256 = E0651E02120A9C3500F9D256 /* PBXTextBookmark */;
 			E0651E43120AA1DC00F9D256 = E0651E43120AA1DC00F9D256 /* PBXTextBookmark */;
@@ -336,7 +341,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 217";
 		rLen = 0;
-		rLoc = 8667;
+		rLoc = 8561;
 		rType = 0;
 		vrLen = 1013;
 		vrLoc = 7614;
@@ -469,9 +474,9 @@
 	};
 	E05649E911FBD2D8000A9753 /* AccountsViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {741, 5328}}";
-			sepNavSelRange = "{5005, 0}";
-			sepNavVisRange = "{4307, 1165}";
+			sepNavIntBoundsRect = "{{0, 0}, {741, 5220}}";
+			sepNavSelRange = "{4886, 0}";
+			sepNavVisRange = "{4307, 1189}";
 		};
 	};
 	E05649EA11FBD2D8000A9753 /* Analyze.h */ = {
@@ -1424,7 +1429,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 136";
 		rLen = 0;
-		rLoc = 5040;
+		rLoc = 4934;
 		rType = 0;
 		vrLen = 1409;
 		vrLoc = 4036;
@@ -1434,7 +1439,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 136";
 		rLen = 0;
-		rLoc = 5040;
+		rLoc = 4934;
 		rType = 0;
 		vrLen = 1383;
 		vrLoc = 4454;
@@ -1444,7 +1449,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 136";
 		rLen = 0;
-		rLoc = 5040;
+		rLoc = 4934;
 		rType = 0;
 		vrLen = 1383;
 		vrLoc = 4454;
@@ -1524,7 +1529,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 136";
 		rLen = 0;
-		rLoc = 5039;
+		rLoc = 4933;
 		rType = 0;
 		vrLen = 1001;
 		vrLoc = 4365;
@@ -1574,7 +1579,7 @@
 		fRef = E0564A5011FBD2E7000A9753 /* TwitterAccount.m */;
 		name = "TwitterAccount.m: 302";
 		rLen = 0;
-		rLoc = 11663;
+		rLoc = 11775;
 		rType = 0;
 		vrLen = 817;
 		vrLoc = 10519;
@@ -1861,7 +1866,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 137";
 		rLen = 0;
-		rLoc = 5039;
+		rLoc = 4933;
 		rType = 0;
 		vrLen = 1259;
 		vrLoc = 4214;
@@ -1871,7 +1876,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 137";
 		rLen = 0;
-		rLoc = 5039;
+		rLoc = 4933;
 		rType = 0;
 		vrLen = 1259;
 		vrLoc = 4214;
@@ -1881,7 +1886,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 137";
 		rLen = 0;
-		rLoc = 5039;
+		rLoc = 4933;
 		rType = 0;
 		vrLen = 1259;
 		vrLoc = 4214;
@@ -1891,7 +1896,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 137";
 		rLen = 0;
-		rLoc = 5039;
+		rLoc = 4933;
 		rType = 0;
 		vrLen = 1303;
 		vrLoc = 4214;
@@ -1911,7 +1916,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 138";
 		rLen = 0;
-		rLoc = 5008;
+		rLoc = 4886;
 		rType = 0;
 		vrLen = 646;
 		vrLoc = 4596;
@@ -1935,7 +1940,7 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 138";
 		rLen = 0;
-		rLoc = 5008;
+		rLoc = 4886;
 		rType = 0;
 		vrLen = 1149;
 		vrLoc = 4307;
@@ -1945,9 +1950,60 @@
 		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
 		name = "AccountsViewController.m: 138";
 		rLen = 0;
-		rLoc = 5005;
+		rLoc = 4886;
 		rType = 0;
 		vrLen = 1165;
+		vrLoc = 4307;
+	};
+	E05A13BB1214FD75004D7259 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E0564AF211FBD361000A9753 /* iPad-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/iPad-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E05A13BC1214FD75004D7259 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
+		name = "AccountsViewController.m: 138";
+		rLen = 0;
+		rLoc = 4886;
+		rType = 0;
+		vrLen = 1165;
+		vrLoc = 4307;
+	};
+	E05A13BD1214FD75004D7259 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
+		name = "AccountsViewController.m: 136";
+		rLen = 0;
+		rLoc = 4886;
+		rType = 0;
+		vrLen = 1184;
+		vrLoc = 4307;
+	};
+	E05A13C21214FD93004D7259 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
+		name = "AccountsViewController.m: 136";
+		rLen = 0;
+		rLoc = 4886;
+		rType = 0;
+		vrLen = 1184;
+		vrLoc = 4307;
+	};
+	E05A13CA1214FDCE004D7259 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E05649E911FBD2D8000A9753 /* AccountsViewController.m */;
+		name = "AccountsViewController.m: 136";
+		rLen = 0;
+		rLoc = 4886;
+		rType = 0;
+		vrLen = 1189;
 		vrLoc = 4307;
 	};
 	E0651C59120A677C00F9D256 /* PBXBookmark */ = {
@@ -2046,7 +2102,7 @@
 		ignoreCount = 0;
 		lineNumber = 72;
 		location = HelTweetica;
-		modificationTime = 303364549.811125;
+		modificationTime = 303365581.18772;
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};

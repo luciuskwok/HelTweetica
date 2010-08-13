@@ -133,10 +133,7 @@
 		TwitterAccount *account = [accounts objectAtIndex: indexPath.row];
 
 		// Profile image
-		UIImage *image = [account profileImage];
-		if (image == nil)
-			image = [UIImage imageNamed:@"profile-image-proxy.png"];
-		cell.imageView.image = image;
+		cell.imageView.image = [account profileImage];
 		
 		// Screen name
 		BOOL loggedIn = (account.xAuthToken != nil);

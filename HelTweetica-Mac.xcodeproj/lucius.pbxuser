@@ -386,6 +386,11 @@
 			E05A138A1214F489004D7259 /* PBXTextBookmark */ = E05A138A1214F489004D7259 /* PBXTextBookmark */;
 			E05A138B1214F492004D7259 /* PBXTextBookmark */ = E05A138B1214F492004D7259 /* PBXTextBookmark */;
 			E05A13981214F7A2004D7259 /* PBXTextBookmark */ = E05A13981214F7A2004D7259 /* PBXTextBookmark */;
+			E05A13B71214FD75004D7259 /* PBXTextBookmark */ = E05A13B71214FD75004D7259 /* PBXTextBookmark */;
+			E05A13B81214FD75004D7259 /* PlistBookmark */ = E05A13B81214FD75004D7259 /* PlistBookmark */;
+			E05A13B91214FD75004D7259 /* PBXTextBookmark */ = E05A13B91214FD75004D7259 /* PBXTextBookmark */;
+			E05A13BA1214FD75004D7259 /* PBXTextBookmark */ = E05A13BA1214FD75004D7259 /* PBXTextBookmark */;
+			E05A13C11214FD93004D7259 /* PBXTextBookmark */ = E05A13C11214FD93004D7259 /* PBXTextBookmark */;
 			E0651CD3120A7E8F00F9D256 = E0651CD3120A7E8F00F9D256 /* PBXTextBookmark */;
 			E0651D52120A8B7500F9D256 = E0651D52120A8B7500F9D256 /* PBXTextBookmark */;
 			E0651D54120A8B7500F9D256 = E0651D54120A8B7500F9D256 /* PBXTextBookmark */;
@@ -500,7 +505,7 @@
 		ignoreCount = 0;
 		lineNumber = 140;
 		location = HelTweetica;
-		modificationTime = 303363168.711408;
+		modificationTime = 303365502.857271;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -990,9 +995,9 @@
 	};
 	E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {846, 6353}}";
-			sepNavSelRange = "{12311, 0}";
-			sepNavVisRange = "{11470, 933}";
+			sepNavIntBoundsRect = "{{0, 0}, {646, 6245}}";
+			sepNavSelRange = "{11205, 0}";
+			sepNavVisRange = "{11137, 651}";
 		};
 	};
 	E0564C1011FBD6A0000A9753 /* TwitterList.h */ = {
@@ -3308,7 +3313,7 @@
 		fRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */;
 		name = "TwitterAccount.m: 314";
 		rLen = 16;
-		rLoc = 11423;
+		rLoc = 11622;
 		rType = 0;
 		vrLen = 801;
 		vrLoc = 11545;
@@ -3368,7 +3373,7 @@
 		fRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */;
 		name = "TwitterAccount.m: 314";
 		rLen = 16;
-		rLoc = 11423;
+		rLoc = 11622;
 		rType = 0;
 		vrLen = 877;
 		vrLoc = 11469;
@@ -3378,7 +3383,7 @@
 		fRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */;
 		name = "TwitterAccount.m: 320";
 		rLen = 0;
-		rLoc = 11644;
+		rLoc = 11756;
 		rType = 0;
 		vrLen = 933;
 		vrLoc = 11470;
@@ -3388,7 +3393,7 @@
 		fRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */;
 		name = "TwitterAccount.m: 320";
 		rLen = 0;
-		rLoc = 11644;
+		rLoc = 11756;
 		rType = 0;
 		vrLen = 933;
 		vrLoc = 11470;
@@ -3656,6 +3661,57 @@
 		rType = 0;
 		vrLen = 1106;
 		vrLoc = 13484;
+	};
+	E05A13B71214FD75004D7259 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C0B11FBD6A0000A9753 /* Twitter.m */;
+		name = "Twitter.m: 363";
+		rLen = 0;
+		rLoc = 13600;
+		rType = 0;
+		vrLen = 1106;
+		vrLoc = 13484;
+	};
+	E05A13B81214FD75004D7259 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = E0564CB211FBD6D2000A9753 /* Mac-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/lucius/_Work/iPhone/HelTweetica/Mac-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	E05A13B91214FD75004D7259 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */;
+		name = "TwitterAccount.m: 300";
+		rLen = 0;
+		rLoc = 11756;
+		rType = 0;
+		vrLen = 663;
+		vrLoc = 11020;
+	};
+	E05A13BA1214FD75004D7259 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */;
+		name = "TwitterAccount.m: 307";
+		rLen = 0;
+		rLoc = 11706;
+		rType = 0;
+		vrLen = 673;
+		vrLoc = 11167;
+	};
+	E05A13C11214FD93004D7259 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E0564C0D11FBD6A0000A9753 /* TwitterAccount.m */;
+		name = "TwitterAccount.m: 286";
+		rLen = 0;
+		rLoc = 11205;
+		rType = 0;
+		vrLen = 651;
+		vrLoc = 11137;
 	};
 	E0651CD3120A7E8F00F9D256 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -4201,7 +4257,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 16;
-		modificationTime = 303363168.71113;
+		modificationTime = 303365502.856694;
 		originalNumberOfMultipleMatches = 1;
 		state = 0;
 	};

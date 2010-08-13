@@ -282,20 +282,26 @@ static NSString *kKeychainServiceName = @"com.felttip.HelTweetica";
 #pragma mark Profile image
 
 - (id)profileImage {
-	if (profileImageData == nil) 
-		return nil;
+	id image = nil;
 #ifdef TARGET_PROJECT_MAC
-	return [[[NSImage alloc] initWithData:profileImageData] autorelease];
+	if (profileImageData != nil) {
+		image = [[[NSImage alloc] initWithData:profileImageData] autorelease];
+	} else {
+		image = [NSImage imageNamed:@"profile-image-proxy.png"];
+	}
 #else
-	return [[[UIImage alloc] initWithData:profileImageData] autorelease];
+	if (profileImageData != nil) {
+		image = [[[UIImage alloc] initWithData:profileImageData] autorelease];
+	} else {
+		image = [UIImage imageNamed:@"profile-image-proxy.png"];
+	}
 #endif
+	return image;
 }
 
 - (id)profileImage16px {
-	if (profileImageData == nil) 
-		return nil;
 #ifdef TARGET_PROJECT_MAC
-	NSImage *image = [[[NSImage alloc] initWithData:profileImageData] autorelease];
+	NSImage *image = [self profileImage];
 	[image setSize:NSMakeSize(16, 16)];
 	return image;
 #else
