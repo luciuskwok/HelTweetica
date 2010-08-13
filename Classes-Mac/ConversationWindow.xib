@@ -10,7 +10,9 @@
 			<string key="com.apple.InterfaceBuilder.CocoaPlugin">788</string>
 			<string key="com.apple.WebKitIBPlugin">788</string>
 		</dictionary>
-		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs"/>
+		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
+			<integer value="1"/>
+		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string>com.apple.WebKitIBPlugin</string>
@@ -29,7 +31,7 @@
 			<object class="NSWindowTemplate" id="1005">
 				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{34, 379}, {480, 600}}</string>
+				<string key="NSWindowRect">{{10, 380}, {480, 600}}</string>
 				<int key="NSWTFlags">539492352</int>
 				<string key="NSWindowTitle">Conversation</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -37,7 +39,7 @@
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSWindowContentMinSize">{320, 270}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="WebView" id="132746819">
@@ -78,8 +80,9 @@
 						</object>
 					</array>
 					<string key="NSFrameSize">{480, 600}</string>
+					<reference key="NSSuperview"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1600, 1002}}</string>
 				<string key="NSMinSize">{320, 292}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSFrameAutosaveName"/>
@@ -178,9 +181,9 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="1.IBEditorWindowLastContentRect">{{34, 379}, {480, 600}}</string>
+				<string key="1.IBEditorWindowLastContentRect">{{10, 380}, {480, 600}}</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="1.IBWindowTemplateEditedContentRect">{{34, 379}, {480, 600}}</string>
+				<string key="1.IBWindowTemplateEditedContentRect">{{10, 380}, {480, 600}}</string>
 				<boolean value="NO" key="1.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="1.WindowOrigin">{196, 240}</string>
 				<string key="1.editorWindowContentRectSynchronizationRect">{{202, 428}, {480, 270}}</string>
@@ -227,6 +230,7 @@
 						<string key="editAccounts:">id</string>
 						<string key="favorites:">id</string>
 						<string key="goToUser:">id</string>
+						<string key="hideTwitterStatus:">id</string>
 						<string key="homeTimeline:">id</string>
 						<string key="mentions:">id</string>
 						<string key="myProfile:">id</string>
@@ -235,6 +239,7 @@
 						<string key="selectAccount:">id</string>
 						<string key="selectList:">id</string>
 						<string key="selectTimelineWithSegmentedControl:">id</string>
+						<string key="showTwitterStatus:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addAccount:">
@@ -263,6 +268,10 @@
 						</object>
 						<object class="IBActionInfo" key="goToUser:">
 							<string key="name">goToUser:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="hideTwitterStatus:">
+							<string key="name">hideTwitterStatus:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="homeTimeline:">
@@ -295,6 +304,10 @@
 						</object>
 						<object class="IBActionInfo" key="selectTimelineWithSegmentedControl:">
 							<string key="name">selectTimelineWithSegmentedControl:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showTwitterStatus:">
+							<string key="name">showTwitterStatus:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>

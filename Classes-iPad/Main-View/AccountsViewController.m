@@ -205,7 +205,7 @@
 
 - (void)scheduleRefreshTimer {
 	[refreshTimer invalidate];
-	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
+	refreshTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(fireRefreshTimer:) userInfo:nil repeats:NO];
 }
 
 - (void)fireRefreshTimer:(NSTimer *)timer {

@@ -34,7 +34,7 @@ const int kDefaultMaxTweetsShown = 400;
 #else
 const int kDefaultMaxTweetsShown = 160;
 #endif
-const NSTimeInterval kRewriteHTMLTimerInterval = 60.0;
+const NSTimeInterval kRewriteHTMLTimerInterval = 75.0;
 static NSString *kTimelineIdentifier = @"Timeline";
 static NSString *kMentionsIdentifier = @"Mentions";
 static NSString *kDirectMessagesIdentifier = @"Direct";
@@ -44,7 +44,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 @implementation TimelineHTMLController
 @synthesize webView, twitter, account, timeline, messages;
-@synthesize maxTweetsShown, webViewHasValidHTML, isLoading, noInternetConnection, suppressNetworkErrorAlerts;
+@synthesize maxTweetsShown, webViewHasValidHTML, isLoading, noInternetConnection;
 @synthesize customPageTitle, customTabName;
 @synthesize useRewriteHTMLTimer;
 @synthesize delegate;
@@ -108,7 +108,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 
 - (void)updateForNewTimeline {
 	// Call this after selecting a different timeline.
-	suppressNetworkErrorAlerts = NO;
 	self.messages = [timeline messagesWithLimit:maxTweetsShown];
 	[self rewriteTweetArea];
 
@@ -241,7 +240,6 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	NSString *method = [NSString stringWithFormat:@"%@/lists/%@/statuses", list.username, list.identifier];
 	listTimeline.loadAction = [[[TwitterLoadTimelineAction alloc] initWithTwitterMethod:method] autorelease];
 	listTimeline.loadAction.countKey = @"per_page";
-	suppressNetworkErrorAlerts = NO;
 	
 	// Set the Twitter cache connection.
 	[list setTwitter:twitter account:account];
@@ -738,16 +736,16 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	TwitterTimeline *aTimeline = [notification object];
 	if (aTimeline == self.timeline) {
 		isLoading = NO;
-		self.messages = [timeline messagesWithLimit: maxTweetsShown];
-		if (webViewHasValidHTML) {
-			[self rewriteTweetArea];
+		if ([webView scrollPosition].y < 4) {
+			self.messages = [timeline messagesWithLimit: maxTweetsShown];
 			[self hideTwitterStatus];
-		}
 
-		// Unread messages.
-		if (messages.count > 0) {
-			timeline.latestReadIdentifier = [timeline newestStatusIdentifier];
+			// Unread messages.
+			if (messages.count > 0) {
+				timeline.latestReadIdentifier = [timeline newestStatusIdentifier];
+			}
 		}
+		[self rewriteTweetArea];
 	}
 }
 
@@ -763,6 +761,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	}
 	
 	[self showTwitterStatusWithString:message];
+	NSLog (@"Twitter returned status code %d", statusCode);
 }
 
 

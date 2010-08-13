@@ -30,8 +30,8 @@
 			<object class="NSWindowTemplate" id="1005">
 				<int key="NSWindowStyleMask">4367</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{33, 790}, {400, 120}}</string>
-				<int key="NSWTFlags">1618477056</int>
+				<string key="NSWindowRect">{{31, 767}, {400, 120}}</string>
+				<int key="NSWTFlags">1613234176</int>
 				<string key="NSWindowTitle">Compose</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<object class="NSToolbar" key="NSViewClass" id="874591926">
@@ -529,7 +529,7 @@
 												<string>WebURLsWithTitlesPboardType</string>
 												<string>public.url</string>
 											</set>
-											<string key="NSFrameSize">{400, 86}</string>
+											<string key="NSFrame">{{0, 40}, {400, 46}}</string>
 											<reference key="NSSuperview" ref="416407495"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="106360925">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -638,7 +638,7 @@
 					<reference key="NSSuperview"/>
 					<int key="NSViewLayerContentsRedrawPolicy">2</int>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1600, 1002}}</string>
 				<string key="NSMinSize">{360, 190}</string>
 				<string key="NSMaxSize">{800, 470}</string>
 				<string key="NSFrameAutosaveName">Compose</string>
@@ -1091,9 +1091,9 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="1.IBEditorWindowLastContentRect">{{34, 825}, {400, 120}}</string>
+				<string key="1.IBEditorWindowLastContentRect">{{34, 812}, {400, 120}}</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="1.IBWindowTemplateEditedContentRect">{{34, 825}, {400, 120}}</string>
+				<string key="1.IBWindowTemplateEditedContentRect">{{34, 812}, {400, 120}}</string>
 				<boolean value="NO" key="1.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="1.WindowOrigin">{196, 240}</string>
 				<string key="1.editorWindowContentRectSynchronizationRect">{{202, 428}, {480, 270}}</string>
