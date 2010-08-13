@@ -269,6 +269,7 @@
 
 - (void) showUserPage:(NSString*)screenName {
 	[self closeAllPopovers];
+	if (screenName == nil) return;
 	
 	// Use a custom timeline showing the user's tweets, but with a big header showing the user's info.
 	TwitterUser *user = [twitter userWithScreenName:screenName];

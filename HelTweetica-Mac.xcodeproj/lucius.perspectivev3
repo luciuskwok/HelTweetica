@@ -272,8 +272,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>13</integer>
-									<integer>1</integer>
+									<integer>27</integer>
+									<integer>26</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -306,14 +306,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>E0564BA811FBD59D000A9753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MainWindowController.m</string>
+								<string>Mac-Info.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -321,11 +319,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>E0564BA911FBD59D000A9753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MainWindowController.m</string>
+										<string>Mac-Info.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>E0E276551215D2F000BF301F</string>
+										<string>E0E278AB1215E6B200BF301F</string>
 										<key>history</key>
 										<array>
 											<string>E0D14EA511FCDFFD00452E63</string>
@@ -425,8 +423,8 @@
 											<string>E0ED89801215BD4D0010C5F5</string>
 											<string>E0E276241215CF0B00BF301F</string>
 											<string>E0E276251215CF0B00BF301F</string>
-											<string>E0E276441215D08500BF301F</string>
-											<string>E0E276451215D08500BF301F</string>
+											<string>E0E278981215E54400BF301F</string>
+											<string>E0E278991215E54400BF301F</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -549,11 +547,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E0E276291215CF0B00BF301F</string>
+				<string>E0E2789B1215E54400BF301F</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>E0E2762A1215CF0B00BF301F</string>
+				<string>E0E2789C1215E54400BF301F</string>
 				<string>E0564BA811FBD59D000A9753</string>
-				<string>E0E2762B1215CF0B00BF301F</string>
+				<string>E0E2789D1215E54400BF301F</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -742,11 +740,7 @@
 	<key>WindowJustification</key>
 	<integer>5</integer>
 	<key>WindowOrderList</key>
-	<array>
-		<string>E0E276361215CF3B00BF301F</string>
-		<string>E0E276371215CF3B00BF301F</string>
-		<string>/Users/lucius/_Work/iPhone/HelTweetica/HelTweetica-Mac.xcodeproj</string>
-	</array>
+	<array/>
 	<key>WindowString</key>
 	<string>463 66 1085 936 0 0 1600 1002 </string>
 	<key>WindowToolsV3</key>
