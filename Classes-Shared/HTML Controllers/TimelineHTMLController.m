@@ -738,9 +738,11 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	TwitterTimeline *aTimeline = [notification object];
 	if (aTimeline == self.timeline) {
 		isLoading = NO;
-		[self hideTwitterStatus];
 		self.messages = [timeline messagesWithLimit: maxTweetsShown];
-		[self rewriteTweetArea];
+		if (webViewHasValidHTML) {
+			[self rewriteTweetArea];
+			[self hideTwitterStatus];
+		}
 
 		// Unread messages.
 		if (messages.count > 0) {
