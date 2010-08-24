@@ -94,7 +94,7 @@
 
 - (NSString*) description {
 	// for the debugger po command.
-	return screenName ? screenName : @"<no screen name>";
+	return [NSString stringWithFormat:@"%@ (%@)", screenName, identifier];
 }
 
 - (NSUInteger) hash {

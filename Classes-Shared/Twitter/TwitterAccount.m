@@ -310,5 +310,22 @@ static NSString *kKeychainServiceName = @"com.felttip.HelTweetica";
 	
 }
 
+#pragma mark Debug and compare
+
+- (NSString *)description {
+	return [NSString stringWithFormat:@"%@ (%@)", screenName, identifier];
+}
+
+- (NSUInteger)hash {
+	return [identifier hash];
+}
+
+- (BOOL)isEqual:(id)object {
+	BOOL result = NO;
+	if ([object respondsToSelector:@selector(identifier)]) {
+		result = [self.identifier isEqual: [object identifier]];
+	}
+	return result;
+}
 
 @end

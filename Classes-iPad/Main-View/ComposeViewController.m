@@ -432,9 +432,6 @@ const int kTwitterCharacterMax = 140;
 		if (jpgData) {
 			[composer uploadPicture:jpgData withFileExtension:@"jpg"];
 		}
-		// Testing
-		// TODO: remove test code before release.
-		//NSLog(@"Image size: %1.0fx%1.0f, raw %1.2f Kb, jpeg %1.2f Kb, quality %1.2f.", image.size.width, image.size.height, raw/1024.0f, jpgData.length/1024.0f, qualtiy );
 	} else {
 		// Show error alert.
 		UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];

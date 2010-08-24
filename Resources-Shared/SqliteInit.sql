@@ -1,5 +1,5 @@
 ﻿Pragma cache_size = 6000;
-Pragma synchronous = off;
+Pragma synchronous = normal;
 Pragma count_changes = false;
 Pragma temp_store = memory;
 
