@@ -40,6 +40,8 @@
 	NSString *originalRetweetContent;
 	BOOL newStyleRetweet;
 	
+	NSString *directMessageScreenname;
+	
 	TwitterComposer *composer;
 	id delegate;
 }
@@ -59,6 +61,7 @@
 @property (nonatomic, retain) NSNumber *inReplyTo;
 @property (nonatomic, retain) NSString *originalRetweetContent;
 @property (assign) BOOL newStyleRetweet;
+@property (nonatomic, copy) NSString *directMessageScreenname;
 
 @property (assign) id <ComposeDelegate> delegate;
 

@@ -31,7 +31,7 @@ const int kTwitterCharacterMax = 140;
 @synthesize messageField;
 @synthesize topToolbar, accountButton, retweetStyleButton, userButton, photosButton, sendButton;
 @synthesize inputToolbar, geotagButton, charactersRemaining;
-@synthesize currentPopover, currentActionSheet, delegate;
+@synthesize currentPopover, currentActionSheet, delegate, directMessageToScreename;
 
 
 - (id)initWithAccount:(TwitterAccount*)anAccount {
@@ -68,6 +68,14 @@ const int kTwitterCharacterMax = 140;
 	return self;
 }
 
+- (id)initDirectMessageWithAccount:(TwitterAccount*)anAccount to:(NSString*)screenName; {
+	if (self = [self initWithAccount:anAccount]) {
+		self.directMessageToScreename = screenName;
+	}
+	
+	return self;
+}
+
 - (void)dealloc {
 	[messageField release];
 	
@@ -87,6 +95,7 @@ const int kTwitterCharacterMax = 140;
 	[currentPopover release];
 	currentActionSheet.delegate = nil;
 	[currentActionSheet release];
+	[directMessageToScreename release];
 	
 	[super dealloc];
 }
@@ -237,6 +246,27 @@ const int kTwitterCharacterMax = 140;
 	[self resetMessageContent];
 }
 
+- (void)composerDidFinishSendingDirectMessage:(TwitterComposer *)aComposer {
+	[delegate composeDidFinish:self];
+	[self resetMessageContent];
+}
+
+- (void)composerDidFailSendingDirectMessage:(TwitterComposer *)aComposer error:(NSError*)error {
+	NSString *title = [error.userInfo objectForKey:@"title"];
+	NSString *message = [error.userInfo objectForKey:@"message"];
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title 
+														message:message
+													   delegate:nil 
+											  cancelButtonTitle:@"OK" 
+											  otherButtonTitles:nil];
+	[alertView show];
+	[alertView release];
+	
+	[delegate composeDidFinish:self];
+	[self resetMessageContent];
+}
+
 - (void)composer:(TwitterComposer *)aComposer didFailWithError:(NSError *)error {
 	UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
 	alert.title = NSLocalizedString (@"Network error", @"title");
@@ -277,7 +307,12 @@ const int kTwitterCharacterMax = 140;
 		BOOL geotag = [defaults boolForKey:@"geotag"];
 		CLLocation *location = geotag? [composer.locationManager location] : nil;
 		
-		[composer updateStatus:normalizedText inReplyTo:inReplyTo location:location];
+		// Direct message or status update
+		if (self.directMessageToScreename)
+			[composer sendDirectMessage:normalizedText to:self.directMessageToScreename];
+		else	
+			[composer updateStatus:normalizedText inReplyTo:inReplyTo location:location];
+		
 	}
 	
 	// Close but don't cancel actions

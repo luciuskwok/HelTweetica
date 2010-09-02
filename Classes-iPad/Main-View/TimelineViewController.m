@@ -154,6 +154,14 @@
 	[self presentModalViewController:compose animated:YES];
 }
 
+- (void)composeDirectMessageToScreenName:(NSString *)screenName {
+	ComposeViewController *compose = [[ComposeViewController alloc] initDirectMessageWithAccount:timelineHTMLController.account to:screenName];
+	compose.delegate = self;
+		
+	[self closeAllPopovers];
+	[self presentModalViewController:compose animated:YES];
+}
+
 - (IBAction)compose:(id)sender {
 	if ([self closeAllPopovers] == NO) {
 		[self composeWithText:nil];
@@ -192,13 +200,11 @@
 - (void)directMessageWithScreenName:(NSString*)screenName {
 	if (screenName.length == 0) return;
 	
-	// "d username "
-	NSString *text = [NSString stringWithFormat:@"d %@ ", screenName];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults removeObjectForKey:@"originalRetweetContent"];
 	[defaults removeObjectForKey:@"inReplyTo"];
 	
-	[self composeWithText:text];
+	[self composeDirectMessageToScreenName:screenName];
 }
 
 #pragma mark Delete

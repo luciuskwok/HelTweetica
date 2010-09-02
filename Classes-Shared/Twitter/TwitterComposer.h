@@ -11,7 +11,7 @@
 #import "TwitterAction.h"
 #import "LKShrinkURLAction.h"
 #import "LKUploadPictureAction.h"
-@class Twitter, TwitterAccount;
+@class Twitter, TwitterAccount,TwitterSendDirectMessageAction;
 @protocol TwitterComposerDelegate;
 
 
@@ -39,10 +39,12 @@
 // Tweet and Retweet
 - (void)retweetMessageWithIdentifier:(NSNumber *)messageIdentifier;
 - (void)updateStatus:(NSString *)text inReplyTo:(NSNumber *)reply location:(CLLocation *)location;
+- (void)sendDirectMessage:(NSString *)text to:(NSString*)screenName;
 
 // Actions
 - (void)shrinkURLsInString:(NSString *)string;
 - (void)uploadPicture:(NSData *)picture withFileExtension:(NSString *)ext;
+- (void)didSendDirectMessage:(TwitterSendDirectMessageAction*)action;
 
 @end
 
@@ -52,6 +54,8 @@
 - (void)composerDidStartNetworkAction:(TwitterComposer *)aComposer;
 - (void)composerDidFinishNetworkAction:(TwitterComposer *)aComposer;
 - (void)composerDidFinishSendingStatusUpdate:(TwitterComposer *)aComposer;
+- (void)composerDidFinishSendingDirectMessage:(TwitterComposer *)aComposer;
+- (void)composerDidFailSendingDirectMessage:(TwitterComposer *)aComposer error:(NSError*)error;
 - (void)composer:(TwitterComposer *)aComposer didShrinkLongURL:(NSString *)longURL toShortURL:(NSString *)shortURL;
 - (void)composer:(TwitterComposer *)aComposer didUploadPictureWithURL:(NSString *)url;
 - (void)composer:(TwitterComposer *)aComposer didFailWithError:(NSError *)error;

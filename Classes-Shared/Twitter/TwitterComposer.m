@@ -11,6 +11,7 @@
 #import "Twitter.h"
 #import "TwitterUpdateStatusAction.h"
 #import "TwitterRetweetAction.h"
+#import "TwitterSendDirectMessageAction.h"
 
 
 @implementation TwitterComposer
@@ -116,8 +117,13 @@
 }
 
 - (void) twitterAction:(TwitterAction*)action didFailWithError:(NSError*)error {
-	[delegate composer:self didFailWithError:error];
-	[self removeAction: action];
+	if (error.code == TwitterActionErrorCodeDirectMessageFailedNoFollow) {
+		// didSendDirectMessage handles communication with delegate
+		[self removeAction: action];
+	} else {
+		[delegate composer:self didFailWithError:error];
+		[self removeAction: action];
+	}
 }
 
 #pragma mark Tweeting and Retweeting
@@ -130,6 +136,13 @@
 - (void)updateStatus:(NSString *)text inReplyTo:(NSNumber *)reply location:(CLLocation *)location {
 	TwitterUpdateStatusAction *action = [[[TwitterUpdateStatusAction alloc] initWithText:text inReplyTo:reply] autorelease];
 	[action setLocation:location];
+	[self startTwitterAction:action];
+}
+
+- (void)sendDirectMessage:(NSString *)text to:(NSString*)screenName {
+	TwitterSendDirectMessageAction *action = [[[TwitterSendDirectMessageAction alloc] initWithText:text to:screenName] autorelease];
+	action.completionTarget= self;
+	action.completionAction = @selector(didSendDirectMessage:);
 	[self startTwitterAction:action];
 }
 
@@ -185,6 +198,14 @@
 - (void)action:(LKUploadPictureAction *)action didUploadPictureWithURL:(NSString *)url {
 	[delegate composer:self didUploadPictureWithURL:url];
 	[self removeAction:action];
+}
+
+- (void)didSendDirectMessage:(TwitterSendDirectMessageAction*)action {
+	if (action.twitterAPIError)
+		[self.delegate composerDidFailSendingDirectMessage:self error:action.twitterAPIError];
+	else {
+		[self.delegate composerDidFinishSendingDirectMessage:self];
+	}
 }
 
 

@@ -15,6 +15,9 @@
 
 #import <Foundation/Foundation.h>
 
+enum TwitterActionErrorCode {
+	TwitterActionErrorCodeDirectMessageFailedNoFollow = 0	
+} TwitterActionErrorCode;
 
 @protocol TwitterActionDelegate;
 @class HelTweeticaAppDelegate;
@@ -30,6 +33,7 @@
 	NSMutableData *receivedData;
 	NSInteger statusCode;
 	BOOL isLoading;
+	NSError *twitterAPIError;
 	
 	id completionTarget;
 	SEL completionAction;
@@ -48,6 +52,7 @@
 @property (nonatomic, retain) NSMutableData *receivedData;
 @property (assign) NSInteger statusCode;
 @property (assign) BOOL isLoading;
+@property (nonatomic, retain) NSError *twitterAPIError;
 
 @property (assign) id completionTarget;
 @property (assign) SEL completionAction;

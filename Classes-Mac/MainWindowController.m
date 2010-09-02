@@ -535,14 +535,9 @@
 - (void)directMessageWithScreenName:(NSString*)screenName {
 	Compose* compose = [self standardComposeController];
 	
-	// Insert d username in beginnig of message. This preserves any other people being replied to.
 	if (screenName != nil) {
-		if (compose.messageContent != nil) {
-			compose.messageContent = [NSString stringWithFormat:@"d %@ %@", screenName, compose.messageContent];
-		} else {
-			compose.messageContent = [NSString stringWithFormat:@"d %@ ", screenName];
-		}
 		compose.originalRetweetContent = nil;
+		compose.directMessageScreenname = screenName;
 	}
 	
 	[compose showWindow:nil];

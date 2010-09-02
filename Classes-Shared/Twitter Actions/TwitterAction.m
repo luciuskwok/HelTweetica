@@ -26,7 +26,7 @@
 
 
 @implementation TwitterAction
-@synthesize consumerToken, consumerSecret, twitterMethod, parameters, countKey, connection, receivedData, statusCode, isLoading;
+@synthesize consumerToken, consumerSecret, twitterMethod, parameters, countKey, connection, receivedData, statusCode, isLoading, twitterAPIError;
 @synthesize completionTarget, completionAction, delegate;
 
 #pragma mark -
@@ -186,9 +186,14 @@
 		// Parse the received data
 		[self parseReceivedData:receivedData];
 		
-		// Call the did finish loading on delegate
-		if ([delegate respondsToSelector:@selector(twitterActionDidFinishLoading:)])
-			[delegate twitterActionDidFinishLoading:self];
+		// check if there was a semantic error when interacting with the Twitter API
+		if (self.twitterAPIError)
+			[delegate twitterAction:self didFailWithError:self.twitterAPIError];
+		else {
+			// Call the did finish loading on delegate
+			if ([delegate respondsToSelector:@selector(twitterActionDidFinishLoading:)])
+				[delegate twitterActionDidFinishLoading:self];
+		}
 		
 	} else { 
 		// Extract error description from the JSON result.

@@ -48,6 +48,7 @@
 	UIActionSheet *currentActionSheet;
 	HelTweeticaAppDelegate *appDelegate;
 	id delegate;
+	NSString *directMessageToScreename;
 }
 @property (nonatomic, retain) UITextView *messageField;
 
@@ -65,8 +66,10 @@
 @property (nonatomic, retain) UIPopoverController *currentPopover;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (assign) id <ComposeViewControllerDelegate> delegate;
+@property (nonatomic, copy) NSString *directMessageToScreename;
 
 - (id)initWithAccount:(TwitterAccount*)anAccount;
+- (id)initDirectMessageWithAccount:(TwitterAccount*)anAccount to:(NSString*)screenName;
 - (void)updateCharacterCountWithText:(NSString *)text;
 
 - (IBAction)send:(id)sender;

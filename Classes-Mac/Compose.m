@@ -22,7 +22,7 @@
 @implementation Compose
 @synthesize textView, charactersRemaining, statusLabel;
 @synthesize accountsPopUp, retweetStyleControl, shrinkURLButton, locationButton, tweetButton, pictureButton, activityIndicator;
-@synthesize messageContent, inReplyTo, originalRetweetContent, newStyleRetweet;
+@synthesize messageContent, inReplyTo, originalRetweetContent, newStyleRetweet, directMessageScreenname;
 @synthesize delegate;
 
 
@@ -101,6 +101,16 @@ enum { kTwitterCharacterMax = 140 };
 }
 
 - (void)composer:(TwitterComposer *)aComposer didFailWithError:(NSError *)error {
+	[tweetButton setEnabled:YES];
+	[statusLabel setStringValue:[error localizedDescription]];
+}
+
+- (void)composerDidFinishSendingDirectMessage:(TwitterComposer *)aComposer {
+	[delegate composeDidFinish:self];
+	[[self window] performClose:nil];
+}
+
+- (void)composerDidFailSendingDirectMessage:(TwitterComposer *)aComposer error:(NSError*)error {
 	[tweetButton setEnabled:YES];
 	[statusLabel setStringValue:[error localizedDescription]];
 }
@@ -230,7 +240,11 @@ enum { kTwitterCharacterMax = 140 };
 			location = [composer.locationManager location];
 		}
 
-		[composer updateStatus:normalizedText inReplyTo:inReplyTo location:location];
+		if (!self.directMessageScreenname)
+			[composer updateStatus:normalizedText inReplyTo:inReplyTo location:location];
+		else
+			[composer sendDirectMessage:normalizedText to:self.directMessageScreenname];
+
 	}
 	
 	// Disable button to prevent double-clicks.

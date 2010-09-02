@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B5CA4117122DBFD300CAECCC /* TwitterSendDirectMessageAction.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CA4116122DBFD300CAECCC /* TwitterSendDirectMessageAction.m */; };
 		E00978DA120A4E670057ED35 /* emoji in Resources */ = {isa = PBXBuildFile; fileRef = E0097701120A4E670057ED35 /* emoji */; };
 		E013985412083462007F1B4C /* mac-toolbar-geotag-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = E013985312083462007F1B4C /* mac-toolbar-geotag-alt.png */; };
 		E01AF3C0120A1F8800B4250F /* mac-toolbar-home-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = E01AF3BF120A1F8800B4250F /* mac-toolbar-home-alt.png */; };
@@ -164,6 +165,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* HelTweetica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelTweetica.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5CA4115122DBFD300CAECCC /* TwitterSendDirectMessageAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSendDirectMessageAction.h; sourceTree = "<group>"; };
+		B5CA4116122DBFD300CAECCC /* TwitterSendDirectMessageAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterSendDirectMessageAction.m; sourceTree = "<group>"; };
 		E0097701120A4E670057ED35 /* emoji */ = {isa = PBXFileReference; lastKnownFileType = folder; path = emoji; sourceTree = "<group>"; };
 		E013985312083462007F1B4C /* mac-toolbar-geotag-alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-geotag-alt.png"; sourceTree = "<group>"; };
 		E01AF3BF120A1F8800B4250F /* mac-toolbar-home-alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac-toolbar-home-alt.png"; sourceTree = "<group>"; };
@@ -553,6 +556,8 @@
 				E0564C3611FBD6A0000A9753 /* TwitterUpdateStatusAction.m */,
 				E0564C3711FBD6A0000A9753 /* TwitterUserInfoAction.h */,
 				E0564C3811FBD6A0000A9753 /* TwitterUserInfoAction.m */,
+				B5CA4115122DBFD300CAECCC /* TwitterSendDirectMessageAction.h */,
+				B5CA4116122DBFD300CAECCC /* TwitterSendDirectMessageAction.m */,
 			);
 			path = "Twitter Actions";
 			sourceTree = "<group>";
@@ -852,6 +857,7 @@
 				E079ECF91207721B0083B77B /* TwitterComposer.m in Sources */,
 				E079EE141207BC090083B77B /* OAuthClient.m in Sources */,
 				E0651D12120A863800F9D256 /* TwitterDeleteAction.m in Sources */,
+				B5CA4117122DBFD300CAECCC /* TwitterSendDirectMessageAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
