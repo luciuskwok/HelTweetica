@@ -55,6 +55,22 @@ const BOOL kConvertEmojiToImg = NO;
 	return nil;
 }
 
+- (BOOL)string:(NSString*)theString hasCharacter:(unichar)theChar orEscapeSequence:(NSString*)escapeSequence atIndex:(unsigned int)theIndex {
+	unichar indexedChar = [theString characterAtIndex:theIndex];
+	if (indexedChar == theChar)
+		return YES;
+	
+	if (indexedChar != '&')
+		return NO;
+	
+	if ([theString length] < theIndex + [escapeSequence length])
+		return NO;
+	
+	NSRange range = NSMakeRange(theIndex, [escapeSequence length]);
+	NSString *nextCharacters = [theString substringWithRange:range];
+	return [nextCharacters isEqualToString:escapeSequence];
+}
+
 - (NSString *)HTMLFormatted {
 	
 	// Add link tags to URLs
@@ -84,9 +100,9 @@ const BOOL kConvertEmojiToImg = NO;
 	unichar c, previousChar = 0;
 	while (index < result.length) {
 		c = [result characterAtIndex:index];
-		if (c == '<') {
+		if ([self string:result hasCharacter:'<' orEscapeSequence:@"&lt;" atIndex:index]) {
 			isInsideTag = YES;
-		} else if (c == '>') {
+		} else if ([self string:result hasCharacter:'>' orEscapeSequence:@"&gt;" atIndex:index]) {
 			isInsideTag = NO;
 			wordLength = 0;
 		} else if (c == 160) { // non-breaking space
@@ -147,6 +163,5 @@ const BOOL kConvertEmojiToImg = NO;
 	
 	return result;
 }
-
 
 @end
