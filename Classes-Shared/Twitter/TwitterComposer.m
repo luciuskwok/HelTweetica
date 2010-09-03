@@ -105,8 +105,11 @@
 }
 
 - (void) twitterActionDidFinishLoading:(TwitterAction*)action {
-	if (action.statusCode < 400 || action.statusCode == 403) {
+	if (action.statusCode == 403) {
 		// Twitter returns 403 if a duplicate status was posted.
+		NSError *error = [self errorWithCode:action.statusCode description:NSLocalizedString(@"Duplicate status update.", @"description")];
+		[delegate composer:self didFailWithError:error];
+	} else if (action.statusCode < 400) {
 		[delegate composerDidFinishSendingStatusUpdate:self];
 	} else { 
 		// An error occurred.
