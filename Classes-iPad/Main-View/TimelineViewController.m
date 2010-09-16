@@ -144,7 +144,7 @@
 #pragma mark Compose
 
 - (void)composeWithText:(NSString *)text {
-	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account] autorelease];
+	ComposeViewController *compose = [[[ComposeViewController alloc] initWithAccount:timelineHTMLController.account withNibName:@"Compose"] autorelease];
 	compose.delegate = self;
 	
 	if (text != nil)

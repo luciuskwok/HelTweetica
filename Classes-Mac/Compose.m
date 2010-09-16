@@ -444,6 +444,10 @@ enum { kTwitterCharacterMax = 140 };
 	
 	// Enable receiving dragged files in window.
 	[self.window registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
+	
+	// Change title if a Direct Message
+	if (self.directMessageScreenname)
+		self.window.title = [NSString stringWithFormat:@"DM to %@",directMessageScreenname];
 }
 
 - (BOOL)windowShouldClose:(id)sender {

@@ -43,6 +43,8 @@
 	IBOutlet UIBarButtonItem *geotagButton;
 	IBOutlet UIBarButtonItem *charactersRemaining;
 	
+	IBOutlet UILabel *directMessageToLabel;
+	
 	TwitterComposer *composer;
 	UIPopoverController *currentPopover;
 	UIActionSheet *currentActionSheet;
@@ -63,12 +65,14 @@
 @property (nonatomic, retain) UIBarButtonItem *geotagButton;
 @property (nonatomic, retain) UIBarButtonItem *charactersRemaining;
 
+@property (nonatomic, retain) UILabel *directMessageToLabel;
+
 @property (nonatomic, retain) UIPopoverController *currentPopover;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (assign) id <ComposeViewControllerDelegate> delegate;
 @property (nonatomic, copy) NSString *directMessageToScreename;
 
-- (id)initWithAccount:(TwitterAccount*)anAccount;
+- (id)initWithAccount:(TwitterAccount*)anAccount withNibName:(NSString*)nibName;
 - (id)initDirectMessageWithAccount:(TwitterAccount*)anAccount to:(NSString*)screenName;
 - (void)updateCharacterCountWithText:(NSString *)text;
 
