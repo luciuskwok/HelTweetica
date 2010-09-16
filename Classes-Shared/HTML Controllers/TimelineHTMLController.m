@@ -71,6 +71,7 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 		// Timeline update notifications
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingNotification object:nil];
+		[nc addObserver:self selector:@selector(timelineDidFinishLoading:) name:TwitterTimelineDidFinishLoadingGapNotification object:nil];
 		[nc addObserver:self selector:@selector(showTwitterError:) name:TwitterErrorNotification object:nil];
 		
 	}
@@ -737,12 +738,14 @@ static NSString *kFavoritesIdentifier = @"Favorites";
 	if (aTimeline == self.timeline) {
 		isLoading = NO;
 
-		self.messages = [timeline messagesWithLimit: maxTweetsShown];
-		[self hideTwitterStatus];
+		if (([webView scrollPosition].y < 4) || [[notification name] isEqualToString:TwitterTimelineDidFinishLoadingGapNotification]){
+			self.messages = [timeline messagesWithLimit: maxTweetsShown];
+			[self hideTwitterStatus];
 
-		// Unread messages.
-		if (messages.count > 0) {
-			timeline.latestReadIdentifier = [timeline newestStatusIdentifier];
+			// Unread messages.
+			if (messages.count > 0) {
+				timeline.latestReadIdentifier = [timeline newestStatusIdentifier];
+			}
 		}
 		
 		[self rewriteTweetArea];

@@ -22,11 +22,13 @@
 	NSArray *retweetedMessages;
 	NSArray *favoriteMessages;
 	NSSet *users;
+	BOOL isLoadingGap;
 }
 @property (nonatomic, retain) NSArray *loadedMessages;
 @property (nonatomic, retain) NSArray *retweetedMessages;
 @property (nonatomic, retain) NSArray *favoriteMessages;
 @property (nonatomic, retain) NSSet *users;
+@property (assign) BOOL isLoadingGap;
 
 - (id)initWithTwitterMethod:(NSString*)method ;
 
