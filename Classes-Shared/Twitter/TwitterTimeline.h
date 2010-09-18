@@ -20,7 +20,7 @@
 
 // Notification constants
 #define TwitterTimelineDidFinishLoadingNotification @"TwitterTimelineDidFinishLoadingNotification"
-
+#define TwitterTimelineDidFinishLoadingGapNotification @"TwitterTimelineDidFinishLoadingGapNotification"
 
 
 @interface TwitterTimeline : NSObject {

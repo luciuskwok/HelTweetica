@@ -18,7 +18,7 @@
 
 
 @implementation TwitterLoadTimelineAction
-@synthesize retweetedMessages, loadedMessages, favoriteMessages, users;
+@synthesize retweetedMessages, loadedMessages, favoriteMessages, users,isLoadingGap;
 
 - (id)initWithTwitterMethod:(NSString*)method {
 	self = [super init];

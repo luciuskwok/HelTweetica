@@ -32,10 +32,11 @@ const int kTwitterCharacterMax = 140;
 @synthesize topToolbar, accountButton, retweetStyleButton, userButton, photosButton, sendButton;
 @synthesize inputToolbar, geotagButton, charactersRemaining;
 @synthesize currentPopover, currentActionSheet, delegate, directMessageToScreename;
+@synthesize directMessageToLabel;
 
 
-- (id)initWithAccount:(TwitterAccount*)anAccount {
-	if (self = [super initWithNibName:@"Compose" bundle:nil]) {
+- (id)initWithAccount:(TwitterAccount*)anAccount withNibName:(NSString*)nibName {	
+	if (self = [super initWithNibName:nibName bundle:nil]) {
 		appDelegate = [[UIApplication sharedApplication] delegate];
 		composer = [[TwitterComposer alloc] initWithTwitter:appDelegate.twitter account:anAccount];
 		composer.delegate = self;
@@ -68,8 +69,8 @@ const int kTwitterCharacterMax = 140;
 	return self;
 }
 
-- (id)initDirectMessageWithAccount:(TwitterAccount*)anAccount to:(NSString*)screenName; {
-	if (self = [self initWithAccount:anAccount]) {
+- (id)initDirectMessageWithAccount:(TwitterAccount*)anAccount to:(NSString*)screenName {
+	if (self = [self initWithAccount:anAccount withNibName:@"DirectMessageCompose"]) {
 		self.directMessageToScreename = screenName;
 	}
 	
@@ -89,6 +90,8 @@ const int kTwitterCharacterMax = 140;
 	[inputToolbar release];
 	[geotagButton release];
 	[charactersRemaining release];
+	
+	[directMessageToLabel release];
 	
 	[composer release];
 	currentPopover.delegate = nil;
@@ -152,6 +155,11 @@ const int kTwitterCharacterMax = 140;
 - (void)updateAccountButton {
 	NSString *prefix = NSLocalizedString (@"From: ", @"prefix");
 	accountButton.title = [prefix stringByAppendingString:composer.account.screenName];
+}
+
+- (void)updateDirectMessageToLabel {
+	NSString *prefix = NSLocalizedString (@"DM to ", @"prefix");
+	self.directMessageToLabel.text = [prefix stringByAppendingString:self.directMessageToScreename];
 }
 
 - (void)updateRetweetStyle {
@@ -507,6 +515,9 @@ const int kTwitterCharacterMax = 140;
 
 	// From: Account.
 	[self updateAccountButton];
+	
+	if (directMessageToScreename)
+		[self updateDirectMessageToLabel];
 	
 	// Message field.
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

@@ -268,8 +268,10 @@ enum { kMaxNumberOfMessagesInATimeline = 2000};
 	[twitter.database endTransaction];
 
 	// Update display.
-	if (notify) {
+	if (notify && !action.isLoadingGap) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingNotification object:self userInfo:nil];
+	} else if (notify && action.isLoadingGap) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:TwitterTimelineDidFinishLoadingGapNotification object:self userInfo:nil];
 	}
 }	
 
@@ -387,8 +389,10 @@ enum { kMaxNumberOfMessagesInATimeline = 2000};
 		maxIdentifier = [self oldestStatusIdentifier];
 	}
 	
-	if (maxIdentifier)
+	if (maxIdentifier) {
 		[action.parameters setObject:maxIdentifier forKey:@"max_id"];
+		action.isLoadingGap = YES;	
+	}
 	
 	// Remove "since_id" parameter in case it was set from loading newer messages;
 	[action.parameters removeObjectForKey:@"since_id"];
